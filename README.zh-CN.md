@@ -28,11 +28,12 @@
 
 ### 使用 Docker 运行
 
-1.  **创建数据目录:**
-    此目录将用于存储应用的数据库、配置文件和 WebDAV 文件。
+1.  **创建持久化数据目录:**
+    您需要为配置/数据库和 WebDAV 数据分别创建目录。
 
     ```bash
-    mkdir -p /path/to/your/appdata
+    mkdir -p /path/to/your/config
+    mkdir -p /path/to/your/webdav
     ```
 
 2.  **运行 Docker 容器:**
@@ -44,7 +45,8 @@
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -v /path/to/your/appdata:/data \
+      -v /path/to/your/config:/config \
+      -v /path/to/your/webdav:/webdav \
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -65,7 +67,8 @@
         ports:
           - "5000:5000"
         volumes:
-          - /path/to/your/appdata:/data
+          - /path/to/your/config:/config
+          - /path/to/your/webdav:/webdav
         environment:
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
@@ -85,7 +88,8 @@
 | 变量 | 描述 | 默认值 |
 | --- | --- | --- |
 | `PORT` | 应用在容器内监听的端口。 | `5000` |
-| `DATA_DIR` | 所有持久化数据 (数据库, 配置, WebDAV) 的基础目录。 | `/data` |
+| `CONFIG_DIR` | 用于存放数据库和 `settings.json` 的目录。 | `/config` |
+| `WEBDAV_DIR` | 用于存放 WebDAV 用户文件的基础目录。 | `/webdav` |
 | `SECRET_KEY` | **必需。** 用于会话安全的、长的、随机的字符串。 | `""` |
 | `CALIBRE_URL` | 您的 Calibre 内容服务器的 URL。 | `""` |
 | `CALIBRE_USERNAME` | 您的 Calibre 服务器的用户名。 | `""` |

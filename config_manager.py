@@ -1,12 +1,13 @@
 import os
 import json
 
-# The base directory for all application data, configurable via environment variable.
-# Defaults to /data, which is a common convention for container volumes.
-DATA_DIR = os.environ.get('DATA_DIR', '/data')
-CONFIG_FILE = os.path.join(DATA_DIR, 'config', 'settings.json')
-DATABASE_PATH = os.path.join(DATA_DIR, 'database.db')
-WEBDAV_DEFAULT_PATH = os.path.join(DATA_DIR, 'webdav')
+# Use separate, standard directories for config and data.
+# These are intended to be mounted as separate volumes in Docker.
+CONFIG_DIR = os.environ.get('CONFIG_DIR', '/config')
+WEBDAV_DIR = os.environ.get('WEBDAV_DIR', '/webdav')
+
+CONFIG_FILE = os.path.join(CONFIG_DIR, 'settings.json')
+DATABASE_PATH = os.path.join(CONFIG_DIR, 'app.db')
 
 # Define default configuration and environment variable mappings
 DEFAULT_CONFIG = {
@@ -20,7 +21,7 @@ DEFAULT_CONFIG = {
     'LOGIN_MAX_ATTEMPTS': {'env': 'LOGIN_MAX_ATTEMPTS', 'default': 5},
 
     # WebDAV root directory
-    'WEBDAV_ROOT': {'env': 'WEBDAV_ROOT', 'default': WEBDAV_DEFAULT_PATH},
+    'WEBDAV_ROOT': {'env': 'WEBDAV_ROOT', 'default': WEBDAV_DIR},
 
     # Default format priority
     'DEFAULT_FORMAT_PRIORITY': {'env': 'DEFAULT_FORMAT_PRIORITY', 'default': 'azw3,mobi,epub,fb2,txt,pdf'},
@@ -33,14 +34,15 @@ DEFAULT_CONFIG = {
     'SMTP_ENCRYPTION': {'env': 'SMTP_ENCRYPTION', 'default': 'ssl'}, # 'ssl', 'starttls', or 'none'
 }
 
+# Initialize config as a dictionary first to avoid NameError during initial load
+config = {}
+
 def load_config():
     """
     Loads the global configuration.
     Priority: Config file > Environment variables > Default values
     """
-    config_dir = os.path.dirname(CONFIG_FILE)
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
+    os.makedirs(CONFIG_DIR, exist_ok=True)
 
     if os.path.exists(CONFIG_FILE):
         try:
@@ -82,9 +84,7 @@ def save_config(new_config):
     """
     Saves the global configuration to a file and updates the in-memory config.
     """
-    global config
-    config_dir = os.path.dirname(CONFIG_FILE)
-    os.makedirs(config_dir, exist_ok=True)
+    os.makedirs(CONFIG_DIR, exist_ok=True)
     
     current_config = {}
     if os.path.exists(CONFIG_FILE):
@@ -121,7 +121,5 @@ def save_config(new_config):
     except IOError as e:
         return False, f"Failed to save config file: {e}"
 
-# Initialize config as a dictionary first to avoid NameError during initial load
-config = {}
 # Load the configuration when the module is loaded
 config.update(load_config())

@@ -28,11 +28,12 @@ This application is designed to be deployed using Docker.
 
 ### Running with Docker
 
-1.  **Create a data directory:**
-    This directory will store the application's database, configuration, and WebDAV files.
+1.  **Create directories for persistent data:**
+    You need separate directories for configuration/database and for WebDAV data.
 
     ```bash
-    mkdir -p /path/to/your/appdata
+    mkdir -p /path/to/your/config
+    mkdir -p /path/to/your/webdav
     ```
 
 2.  **Run the Docker container:**
@@ -44,7 +45,8 @@ This application is designed to be deployed using Docker.
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -v /path/to/your/appdata:/data \
+      -v /path/to/your/config:/config \
+      -v /path/to/your/webdav:/webdav \
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -65,7 +67,8 @@ This application is designed to be deployed using Docker.
         ports:
           - "5000:5000"
         volumes:
-          - /path/to/your/appdata:/data
+          - /path/to/your/config:/config
+          - /path/to/your/webdav:/webdav
         environment:
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
@@ -85,7 +88,8 @@ The application is configured via environment variables.
 | Variable | Description | Default |
 | --- | --- | --- |
 | `PORT` | The port the application listens on inside the container. | `5000` |
-| `DATA_DIR` | The base directory for all persistent data (database, config, WebDAV). | `/data` |
+| `CONFIG_DIR` | The directory for the database and `settings.json`. | `/config` |
+| `WEBDAV_DIR` | The base directory for WebDAV user files. | `/webdav` |
 | `SECRET_KEY` | **Required.** A long, random string for session security. | `""` |
 | `CALIBRE_URL` | The URL of your Calibre content server. | `""` |
 | `CALIBRE_USERNAME` | Username for your Calibre server. | `""` |

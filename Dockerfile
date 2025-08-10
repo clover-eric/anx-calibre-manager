@@ -27,7 +27,6 @@ FROM python:3.9-slim
 # Set environment variables for the application.
 # Default port and data directory.
 ENV PORT=5000
-ENV DATA_DIR=/data
 # The following are placeholders and should be set securely at runtime,
 # for example, using `docker run -e` or a docker-compose file.
 ENV SECRET_KEY=""
@@ -40,11 +39,10 @@ ENV SMTP_USERNAME=""
 ENV SMTP_PASSWORD=""
 ENV SMTP_ENCRYPTION="ssl"
 
-# Create data directory and non-root user as root
-RUN mkdir -p ${DATA_DIR}/config && \
-    mkdir -p ${DATA_DIR}/webdav && \
-    useradd --uid 1001 --create-home appuser && \
-    chown -R appuser:appuser ${DATA_DIR}
+# Create app user and standard directories as root
+RUN useradd --uid 1001 --create-home appuser && \
+    mkdir -p /config /webdav && \
+    chown -R appuser:appuser /config /webdav
 
 # Set working directory
 WORKDIR /home/appuser
@@ -62,8 +60,8 @@ ENV PATH="/home/appuser/venv/bin:$PATH"
 # Expose the port the app runs on
 EXPOSE $PORT
 
-# Define a volume for persistent data
-VOLUME $DATA_DIR
+# Define volumes for persistent data
+VOLUME ["/config", "/webdav"]
 
 # Define the command to run the application
 CMD gunicorn --bind 0.0.0.0:$PORT --workers $(( 2 * $(nproc) + 1 )) "app:create_app()"
