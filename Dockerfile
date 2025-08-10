@@ -66,4 +66,4 @@ EXPOSE $PORT
 VOLUME $DATA_DIR
 
 # Define the command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "4", "app:create_app()"]
+CMD gunicorn --bind 0.0.0.0:$PORT --workers $(( 2 * $(nproc) + 1 )) "app:create_app()"
