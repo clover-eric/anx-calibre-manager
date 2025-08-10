@@ -28,7 +28,15 @@
 
 ### 使用 Docker 运行
 
-1.  **创建持久化数据目录:**
+1.  **获取您的用户和组 ID (PUID/PGID):**
+    在您的宿主机上运行 `id $USER` 来获取您当前用户的 UID 和 GID。这对于避免挂载卷的权限问题至关重要。
+
+    ```bash
+    id $USER
+    # 示例输出: uid=1000(myuser) gid=1000(myuser) ...
+    ```
+
+2.  **创建持久化数据目录:**
     您需要为配置/数据库和 WebDAV 数据分别创建目录。
 
     ```bash
@@ -36,7 +44,7 @@
     mkdir -p /path/to/your/webdav
     ```
 
-2.  **运行 Docker 容器:**
+3.  **运行 Docker 容器:**
     您可以使用 `docker run` 或 `docker-compose.yml` 文件。
 
     **使用 `docker run`:**
@@ -45,6 +53,9 @@
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
       -e "SECRET_KEY=your_super_secret_key" \
@@ -70,6 +81,9 @@
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
         environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Asia/Shanghai
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
@@ -87,6 +101,9 @@
 
 | 变量 | 描述 | 默认值 |
 | --- | --- | --- |
+| `PUID` | 指定运行应用的用户 ID。 | `1001` |
+| `PGID` | 指定运行应用的组 ID。 | `1001` |
+| `TZ` | 您的时区, 例如 `America/New_York`。 | `UTC` |
 | `PORT` | 应用在容器内监听的端口。 | `5000` |
 | `CONFIG_DIR` | 用于存放数据库和 `settings.json` 的目录。 | `/config` |
 | `WEBDAV_DIR` | 用于存放 WebDAV 用户文件的基础目录。 | `/webdav` |

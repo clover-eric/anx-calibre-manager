@@ -1,11 +1,12 @@
 # Stage 1: Builder - To build dependencies
-FROM python:3.9-slim AS builder
+FROM python:3.9-slim-bullseye AS builder
 
 # Set the working directory
 WORKDIR /app
 
 # Install build tools needed for some Python packages
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -22,13 +23,16 @@ COPY --chown=appuser:appuser requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 
 # Stage 2: Final image - For running the application
-FROM python:3.9-slim
+FROM python:3.9-slim-bullseye
+
+# Install gosu for user switching
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gosu && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
-# Default port and data directory.
 ENV PORT=5000
-# The following are placeholders and should be set securely at runtime,
-# for example, using `docker run -e` or a docker-compose file.
+# The following are placeholders and should be set securely at runtime
 ENV SECRET_KEY=""
 ENV CALIBRE_URL=""
 ENV CALIBRE_USERNAME=""
@@ -51,8 +55,9 @@ WORKDIR /home/appuser
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --chown=appuser:appuser . .
 
-# Switch to the non-root user
-USER appuser
+# Copy the entrypoint script
+COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Activate the virtual environment
 ENV PATH="/home/appuser/venv/bin:$PATH"
@@ -63,5 +68,8 @@ EXPOSE $PORT
 # Define volumes for persistent data
 VOLUME ["/config", "/webdav"]
 
-# Define the command to run the application
-CMD gunicorn --bind 0.0.0.0:$PORT --workers $(( 2 * $(nproc) + 1 )) "app:create_app()"
+# Set the entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Define the default command
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "app:create_app()"]

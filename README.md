@@ -28,7 +28,15 @@ This application is designed to be deployed using Docker.
 
 ### Running with Docker
 
-1.  **Create directories for persistent data:**
+1.  **Find your User and Group ID (PUID/PGID):**
+    Run `id $USER` on your host machine to get your user's UID and GID. This is crucial for avoiding permission issues with the mounted volumes.
+
+    ```bash
+    id $USER
+    # Example output: uid=1000(myuser) gid=1000(myuser) ...
+    ```
+
+2.  **Create directories for persistent data:**
     You need separate directories for configuration/database and for WebDAV data.
 
     ```bash
@@ -36,7 +44,7 @@ This application is designed to be deployed using Docker.
     mkdir -p /path/to/your/webdav
     ```
 
-2.  **Run the Docker container:**
+3.  **Run the Docker container:**
     You can use `docker run` or a `docker-compose.yml` file.
 
     **Using `docker run`:**
@@ -45,6 +53,9 @@ This application is designed to be deployed using Docker.
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
       -e "SECRET_KEY=your_super_secret_key" \
@@ -70,6 +81,9 @@ This application is designed to be deployed using Docker.
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
         environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Asia/Shanghai
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
@@ -87,6 +101,9 @@ The application is configured via environment variables.
 
 | Variable | Description | Default |
 | --- | --- | --- |
+| `PUID` | The User ID to run the application as. | `1001` |
+| `PGID` | The Group ID to run the application as. | `1001` |
+| `TZ` | Your timezone, e.g., `America/New_York`. | `UTC` |
 | `PORT` | The port the application listens on inside the container. | `5000` |
 | `CONFIG_DIR` | The directory for the database and `settings.json`. | `/config` |
 | `WEBDAV_DIR` | The base directory for WebDAV user files. | `/webdav` |
