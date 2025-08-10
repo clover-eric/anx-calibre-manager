@@ -401,18 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    navHome.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.setItem('mobileView', 'calibre');
-        setupMobileView();
-    });
-
-    navAnx.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.setItem('mobileView', 'anx');
-        setupMobileView();
-    });
-
     // --- Anx WebDAV URL ---
     function setupAnxWebDavUrl() {
         if (anxWebDavUrlElement) {

@@ -47,11 +47,11 @@
     </div>
     
     <div class="bottom-nav">
-        <a href="{{ url_for('main.index') }}" class="nav-button" id="nav-home">
+        <a href="{{ url_for('main.index') }}?view=calibre" class="nav-button" id="nav-home">
             <i class="fas fa-book icon"></i>
             <span>书库</span>
         </a>
-        <a href="#" class="nav-button" id="nav-anx-mobile-view">
+        <a href="{{ url_for('main.index') }}?view=anx" class="nav-button" id="nav-anx-mobile-view">
              <i class="fas fa-feather-alt icon"></i>
             <span>Anx</span>
         </a>
@@ -74,42 +74,38 @@
         }
     </script>
     <script>
-    // Global Navigation Enhancement v2
+    // Global Navigation Enhancement v3
     document.addEventListener('DOMContentLoaded', () => {
         const globalLoader = document.getElementById('global-loader');
 
         function handleNavClick(event) {
-            // Prevent the browser from navigating immediately
             event.preventDefault();
             
             const targetLink = event.currentTarget;
             const destination = targetLink.href;
+            const url = new URL(destination);
+            const view = url.searchParams.get('view');
 
-            // Special logic for the home button
-            if (targetLink.id === 'nav-home') {
-                localStorage.setItem('mobileView', 'calibre');
+            // If a view is specified (calibre or anx), store it for the index page to use
+            if (view) {
+                localStorage.setItem('mobileView', view);
             }
 
-            // Show the loader
             if (globalLoader) {
                 globalLoader.style.display = 'flex';
             }
 
-            // Give the browser a moment to paint the loader, then navigate
             setTimeout(() => {
-                window.location.href = destination;
-            }, 50); // 50ms is a short but generally safe delay
+                // Navigate to the base URL without the view parameter
+                url.searchParams.delete('view');
+                window.location.href = url.toString();
+            }, 50);
         }
 
-        const navHomeButton = document.getElementById('nav-home');
-        const navSettingsButton = document.getElementById('nav-settings');
-
-        if (navHomeButton) {
-            navHomeButton.addEventListener('click', handleNavClick);
-        }
-        if (navSettingsButton) {
-            navSettingsButton.addEventListener('click', handleNavClick);
-        }
+        // Attach event listeners to all navigation buttons
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', handleNavClick);
+        });
     });
     </script>
     {% block scripts %}{% endblock %}
