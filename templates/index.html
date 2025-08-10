@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block title %}书库 - Anx Calibre Manager{% endblock %}
+
+{% block content %}
+<!-- Data Island for Books -->
+<script id="anx-books-data" type="application/json">{{ anx_books | tojson | safe }}</script>
+<script id="calibre-books-data" type="application/json">{{ calibre_books | tojson | safe }}</script>
+
+<div class="main-content">
+    <div class="library-container">
+        <!-- Calibre Library Section -->
+        <div class="library" id="calibre-library">
+            <div class="library-header">
+                <div class="header-actions">
+                    <button type="button" class="button-primary" data-action="go-home">首页</button>                   
+                    <form action="/" method="get" class="search-form">
+                        <input type="text" name="search" placeholder="搜索 Calibre 书籍..." value="{{ search_query }}">
+                        <button type="submit" class="button-primary"><i class="fas fa-search"></i></button>
+                    </form>
+                    <button type="button" class="button-primary" data-action="show-upload-modal">上传</button>
+                </div>
+            </div>
+            <div class="pagination-controls" data-total-pages="{{ pagination.total_pages }}">
+                 <span>共 {{ pagination.total_books }} 本 ({{ pagination.page }}/{{ pagination.total_pages }})
+</span>
+                <form action="/" method="get" class="pagination-form" id="pagination-form">
+                    <input type="hidden" name="search" value="{{ search_query }}">
+                    <select name="page_size" onchange="this.form.submit()">
+                        <option value="20" {% if pagination.page_size == 20 %}selected{% endif %}>20/页</option>
+                        <option value="50" {% if pagination.page_size == 50 %}selected{% endif %}>50/页</option>
+                        <option value="100" {% if pagination.page_size == 100 %}selected{% endif %}>100/页</option>
+                    </select>
+                    {% if pagination.page > 1 %}<a href="?search={{ search_query }}&page={{ pagination.page - 1 }}&page_size={{ pagination.page_size }}" class="button button-link">上一页</a>{% endif %}
+                    <input type="number" name="page" id="page-jump-input" class="page-jump-input" value="{{ pagination.page }}" min="1" max="{{ pagination.total_pages }}">
+                    <button type="button" class="button" data-action="jump-to-page">跳转</button>
+                    {% if pagination.page < pagination.total_pages %}<a href="?search={{ search_query }}&page={{ pagination.page + 1 }}&page_size={{ pagination.page_size }}" class="button button-link">下一页</a>{% endif %}
+                </form>
+            </div>
+            <div class="book-list" id="calibre-book-list">
+                {% for book in calibre_books %}
+                <div class="book-row" data-book-id="{{ book.id }}">
+                    <div class="cover">
+                        <img src="{{ url_for('main.calibre_cover', book_id=book.id) }}" alt="{{ book.title }}">
+                    </div>
+                    <div class="info">
+                        <h3>{{ book.title }}</h3>
+                        <p class="author">{{ book.authors | join(', ') }}</p>
+                        <div class="extra-details">
+                            <span><strong>格式:</strong> {{ book.formats_with_sizes | join(', ') }}</span><br>
+                            {% if book.publisher and book.publisher != 'None' %}<span><strong>出版社:</strong> {{ book.publisher }}</span><br>{% endif %}
+                            {% if book.pubdate and book.pubdate != 'None' %}<span><strong>出版日期:</strong> {{ book.pubdate.split('T')[0] }}</span><br>{% endif %}
+                            {% set library = book.user_metadata['#library'] %}
+                            {% if library and library['#value#'] and library['#value#'] != 'None' %}
+                                <span><strong>库:</strong> {{ library['#value#'] }}</span><br>
+                            {% endif %}
+                            {% set readdate = book.user_metadata['#readdate'] %}
+                            {% if readdate and readdate['#value#'] and readdate['#value#'] != 'None' %}
+                                <span><strong>已读日期:</strong> {{ readdate['#value#'].split('T')[0] }}</span><br>
+                            {% endif %}
+                             {% if book.comments %}<p class="description" style="margin-top: 5px;"><strong>描述:</strong> {{ book.comments | striptags | truncate(150, True) }}</p>{% endif %}
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="button" data-action="download-calibre" data-id="{{ book.id }}">下载</button>
+                        <button class="button" data-action="send-kindle" data-id="{{ book.id }}">Kindle</button>
+                        <button class="button button-secondary" data-action="push-to-anx" data-id="{{ book.id }}">Anx</button>
+                        {% if g.user.is_admin %}
+                        <button class="button edit-button" data-action="edit-calibre" data-id="{{ book.id }}">编辑</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <p>Calibre 书库中没有书籍。</p>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Anx Library Section -->
+        <div class="library" id="anx-library">
+            <div class="library-header">
+                <h2>Anx 书库</h2>
+            </div>
+            <div id="anx-library-subheader">
+                 <p class="webdav-info">在 Anx Reader 设置页面中填入 WebDAV 地址进行同步（用户名密码为你的登录用户名密码）: <span id="anx-webdav-url" class="webdav-url" title="点击复制"></span></p>
+            </div>
+            <div class="book-list" id="anx-book-list">
+                {% for book in anx_books %}
+            
+                <div class="book-row" data-book-id="{{ book.id }}">
+                    <div class="cover">
+                        {% if book.cover_path %}<img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="{{ book.title }}">
+                        {% else %}<img src="https://via.placeholder.com/100x150.png?text=No+Cover" alt="No Cover">{% endif %}
+                    </div>
+                    <div class="info">
+                        <h3>{{ book.title }}</h3>
+                        <p class="author">{{ book.author }}</p>
+                        <div class="extra-details">
+                            {% if book.rating is not none and book.rating > 0 %}<span><strong>评分:</strong> {{ "%.1f" | format(book.rating) }}/10</span><br>{% endif %}
+                            {% if book.publisher %}<span><strong>出版社:</strong> {{ book.publisher }}</span><br>{% endif %}
+                             <span><strong>阅读进度:</strong> {% if book.reading_percentage is not none %}{{ "%.1f" | format(book.reading_percentage * 100) }}%{% else %}0.0%{% endif %}</span><br>
+                             <span><strong>总阅读时长:</strong> {{ book.formatted_reading_time }}</span><br>
+                             <span><strong>笔记数量:</strong> {{ book.note_count }}</span><br>
+                            {% if book.create_time %}<span><strong>创建时间:</strong> {{ book.create_time.split('T')[0] }}</span><br>{% endif %}
+                            {% if book.update_time %}<span><strong>更新时间:</strong> {{ book.update_time.split('T')[0] }}</span><br>{% endif %}
+                            {% if book.book_producer %}<span><strong>制作人:</strong> {{ book.book_producer }}</span><br>{% endif %}
+                            {% if book.description %}<p class="description" style="margin-top: 5px;"><strong>描述:</strong> {{ book.description | truncate(150, True) }}</p>{% endif %}
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="button" data-action="download-anx" data-id="{{ book.id }}">下载</button>
+                        <button class="button edit-button" data-action="edit-anx" data-id="{{ book.id }}">编辑</button>
+                        <button class="button button-danger" data-action="delete-anx" data-id="{{ book.id }}">删除</button>
+                    </div>
+                </div>
+                {% else %}
+
+                <p>Anx 书库中没有书籍。</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>上传书籍</h2>
+            <button class="close-button" data-action="close-modal">&times;</button>
+        </div>
+         <div class="modal-body">
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="book-upload-input">选择文件:</label>
+                    <input id="book-upload-input" type="file" name="book" required>
+                </div>
+                <div class="modal-footer">
+                     <button type="button" class="button" data-action="close-modal">取消</button>
+                    <button type="submit" class="button-primary">上传</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="editBookModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="edit-modal-title">编辑书籍信息</h2>
+            <button class="close-button" data-action="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="editBookForm"></form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="button" data-action="close-modal">取消</button>
+            <button type="button" class="button-primary" data-action="save-changes">保存</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Data ---
+    const anxBooksData = JSON.parse(document.getElementById('anx-books-data').textContent);
+    const calibreBooksData = JSON.parse(document.getElementById('calibre-books-data').textContent);
+    let currentEditing = { type: null, id: null };
+
+    // --- DOM Elements ---
+    const mainContainer = document.querySelector('.main-content');
+    const editModal = document.getElementById('editBookModal');
+    const uploadModal = document.getElementById('uploadModal');
+    const editBookForm = document.getElementById('editBookForm');
+    const calibreLibrary = document.getElementById('calibre-library');
+    const anxLibrary = document.getElementById('anx-library');
+    const navHome = document.getElementById('nav-home');
+    const navAnx = document.getElementById('nav-anx-mobile-view');
+    const anxWebDavUrlElement = document.getElementById('anx-webdav-url');
+    const paginationControls = document.querySelector('.pagination-controls');
+
+    // --- API Helper ---
+    function fetch_with_token(url, options) {
+        return fetch(url, { ...options });
+    }
+    
+    // --- Modal Controls ---
+    const showModal = (modal) => modal.style.display = 'block';
+    const hideModal = (modal) => modal.style.display = 'none';
+
+    // --- Edit Modal Population ---
+    function populateAnxEditForm(book) {
+        currentEditing = { type: 'anx', id: book.id };
+        editBookForm.innerHTML = `
+            <div class="form-group"><label>标题:</label><input type="text" name="title" value="${book.title || ''}"></div>
+            <div class="form-group"><label>作者:</label><input type="text" name="author" value="${book.author || ''}"></div>
+            <div class="form-group"><label>评分 (0-10):</label><input type="number" name="rating" min="0" max="10" step="0.5" value="${book.rating || 0}"></div>
+            <div class="form-group"><label>阅读进度(%):</label><input type="number" name="reading_percentage" min="0" max="100" step="0.1" value="${(book.reading_percentage * 100).toFixed(1)}"></div>
+            <div class="form-group"><label>描述:</label><textarea name="description">${book.description || ''}</textarea></div>
+        `;
+        showModal(editModal);
+    }
+
+    function populateCalibreEditForm(book) {
+        currentEditing = { type: 'calibre', id: book.id };
+        // Helper to get nested custom field values safely
+        const getCustom = (field) => book.user_metadata[field] ? book.user_metadata[field]['#value#'] : '';
+        const pubdate = book.pubdate ? book.pubdate.split('T')[0] : '';
+        const readdate = getCustom('#readdate') ? getCustom('#readdate').split('T')[0] : '';
+
+        editBookForm.innerHTML = `
+            <p><strong>注意:</strong> Calibre 书籍的元数据更新是异步的，可能需要一点时间才能生效。</p>
+            <div class="form-group"><label>标题:</label><input type="text" name="title" value="${book.title || ''}"></div>
+            <div class="form-group"><label>作者 (逗号分隔):</label><input type="text" name="authors" value="${book.authors.join(', ')}"></div>
+            <div class="form-group"><label>出版社:</label><input type="text" name="publisher" value="${book.publisher || ''}"></div>
+            <div class="form-group"><label>出版日期:</label><input type="date" name="pubdate" value="${pubdate}"></div>
+            <div class="form-group"><label>评分 (0-10):</label><input type="number" name="rating" min="0" max="10" step="1" value="${book.rating || 0}"></div>
+            <div class="form-group"><label>标签 (逗号分隔):</label><input type="text" name="tags" value="${book.tags.join(', ')}"></div>
+            <div class="form-group"><label>库 (自定义字段 #library):</label><input type="text" name="_library" value="${getCustom('#library')}"></div>
+            <div class="form-group"><label>已读日期 (自定义字段 #readdate):</label><input type="date" name="_readdate" value="${readdate}"></div>
+            <div class="form-group"><label>描述:</label><textarea name="comments" rows="4">${book.comments || ''}</textarea></div>
+        `;
+        showModal(editModal);
+    }
+    
+    // --- Main Click Handler via Event Delegation ---
+    document.body.addEventListener('click', (e) => {
+        // Special case for our non-data-action span
+        if (e.target.id === 'anx-webdav-url') {
+            const url = e.target.textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                const originalText = e.target.textContent;
+                e.target.textContent = '已复制!';
+                setTimeout(() => {
+                    e.target.textContent = originalText;
+                }, 2000);
+            }, (err) => {
+                alert('复制失败: ', err);
+            });
+            return;
+        }
+
+        const target = e.target.closest('[data-action]');
+        if (!target) return;
+
+        const action = target.dataset.action;
+        const id = target.dataset.id;
+        
+        switch (action) {
+            case 'go-home':
+                window.location.href = "{{ url_for('main.index') }}";
+                break;
+            case 'show-upload-modal':
+                showModal(uploadModal);
+                break;
+            case 'close-modal':
+                hideModal(target.closest('.modal'));
+                break;
+            case 'edit-anx': {
+                const book = anxBooksData.find(b => b.id == id);
+                if (book) populateAnxEditForm(book);
+                break;
+            }
+            case 'edit-calibre': {
+                const book = calibreBooksData.find(b => b.id == id);
+                if (book) populateCalibreEditForm(book);
+                break;
+            }
+            case 'delete-anx':
+                if (confirm('确定要删除这本书吗？此操作不可恢复。')) {
+                    fetch_with_token(`/api/delete_anx_book/${id}`, { method: 'DELETE' })
+                        .then(res => res.json()).then(data => {
+                            alert(data.message || data.error);
+                            if (data.message) location.reload();
+                        });
+                }
+                break;
+            case 'push-to-anx':
+                fetch_with_token(`/api/push_to_anx/${id}`, { method: 'POST' })
+                    .then(res => res.json()).then(data => {
+                        alert(data.message || data.error);
+                        if (data.message) {
+                            location.reload();
+                        }
+                    });
+                break;
+            case 'send-kindle':
+                 fetch_with_token(`/api/send_to_kindle/${id}`, { method: 'POST' })
+                    .then(res => res.json()).then(data => alert(data.message || data.error));
+                break;
+            case 'save-changes':
+                handleSaveChanges();
+                break;
+            case 'download-anx':
+                window.location.href = `/api/download_anx_book/${id}`;
+                break;
+            case 'download-calibre':
+                window.location.href = `/api/download_book/${id}`;
+                break;
+            case 'jump-to-page':
+                handleJumpToPage();
+                break;
+            default:
+                console.warn(`Unknown action: ${action}`);
+        }
+    });
+
+    // --- Form Submission Handlers ---
+    function handleSaveChanges() {
+        const formData = new FormData(editBookForm);
+        const data = Object.fromEntries(formData.entries());
+        let url;
+
+        if (currentEditing.type === 'anx') {
+            url = `/api/edit_anx_metadata`; // Corrected endpoint
+            data.id = currentEditing.id;
+            data.reading_percentage = parseFloat(data.reading_percentage) / 100.0;
+        } else { // calibre
+            url = `/api/update_calibre_book/${currentEditing.id}`;
+        }
+        
+        fetch_with_token(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(res => res.json()).then(result => {
+            alert(result.message || result.error);
+            if (result.message) location.reload();
+        });
+    }
+
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch_with_token("{{ url_for('api.upload_to_calibre_api') }}", {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json()).then(result => {
+            alert(result.message || result.error);
+            if (result.message) location.reload();
+        });
+    });
+
+    function handleJumpToPage() {
+        const pageInput = document.getElementById('page-jump-input');
+        const totalPages = parseInt(paginationControls.dataset.totalPages, 10);
+        const page = parseInt(pageInput.value, 10);
+        if (page && page > 0 && page <= totalPages) {
+            const form = document.getElementById('pagination-form');
+            const search = form.elements.search.value;
+            const pageSize = form.elements.page_size.value;
+            window.location.href = `?search=${search}&page_size=${pageSize}&page=${page}`;
+        } else {
+            alert(`请输入一个介于 1 和 ${totalPages} 之间的有效页码。`);
+        }
+    }
+
+    // --- Mobile View Logic ---
+    function setupMobileView() {
+        if (window.innerWidth > 768) {
+            // Desktop: show both
+            calibreLibrary.style.display = 'flex';
+            anxLibrary.style.display = 'flex';
+            return;
+        }
+
+        // Mobile: show one at a time
+        const activeView = localStorage.getItem('mobileView') || 'calibre';
+        if (activeView === 'anx') {
+            calibreLibrary.style.display = 'none';
+            anxLibrary.style.display = 'flex';
+            navAnx.classList.add('active');
+            navHome.classList.remove('active');
+        } else {
+            calibreLibrary.style.display = 'flex';
+            anxLibrary.style.display = 'none';
+            navHome.classList.add('active');
+            navAnx.classList.remove('active');
+        }
+    }
+
+    navHome.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.setItem('mobileView', 'calibre');
+        setupMobileView();
+    });
+
+    navAnx.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.setItem('mobileView', 'anx');
+        setupMobileView();
+    });
+
+    // --- Anx WebDAV URL ---
+    function setupAnxWebDavUrl() {
+        if (anxWebDavUrlElement) {
+            const protocol = window.location.protocol;
+            const host = window.location.host;
+            const username = "{{ g.user.username }}";
+            const url = `${protocol}//${host}/webdav/${username}`;
+            anxWebDavUrlElement.textContent = url;
+        }
+    }
+
+    // Initial setup
+    setupMobileView();
+    setupAnxWebDavUrl();
+    window.addEventListener('resize', setupMobileView);
+
+});
+</script>
+{% endblock %}

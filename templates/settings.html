@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block title %}设置 - Anx Calibre Manager{% endblock %}
+
+{% block head_extra %}
+<style>
+    .settings-container { max-width: 960px; margin: 0 auto; }
+    .tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem; }
+    .tab-link { padding: 1rem 1.5rem; cursor: pointer; border-bottom: 3px solid transparent; }
+    .tab-link.active { border-bottom-color: var(--primary-color); font-weight: 500; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+    #qr_code_container img { max-width: 200px; margin: 1rem 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>设置</h2>
+
+    <div class="tabs">
+        <div class="tab-link active" onclick="openTab(event, 'userSettings')">用户设置</div>
+        {% if g.user and g.user.is_admin %}
+        <div class="tab-link" onclick="openTab(event, 'globalSettings')">全局设置</div>
+        <div class="tab-link" onclick="openTab(event, 'userManagement')">用户管理</div>
+        {% endif %}
+    </div>
+
+    <!-- 用户设置 -->
+    <div id="userSettings" class="tab-content active">
+        <form id="userSettingsForm" onsubmit="saveUserSettings(event)">
+            <h3>个人资料</h3>
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" id="username_display" value="{{ g.user.username }}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="new_password">修改密码</label>
+                <input type="password" id="new_password" name="new_password" placeholder="保持不变则留空">
+            </div>
+
+            <h3>推送设置</h3>
+             <div class="form-group">
+                <label for="kindle_email">Kindle 邮箱地址</label>
+                <input type="email" id="kindle_email" name="kindle_email">
+            </div>
+            <div class="form-group">
+                <label for="send_format_priority">格式优先级</label>
+                <input type="text" id="send_format_priority" name="send_format_priority">
+                <small>下载或推送到 Kindle 时，将按此优先顺序查找可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3</small>
+            </div>
+            
+            <h3>两步验证 (2FA)</h3>
+            <div id="2fa_status_container"></div>
+            <div id="2fa_setup_container" style="display:none;">
+                <p>请使用您的验证器应用扫描此二维码：</p>
+                <div id="qr_code_container"></div>
+                <p>或者手动输入密钥: <code id="otp_secret_key"></code></p>
+                <div class="form-group">
+                    <label for="otp_code">验证码</label>
+                    <input type="text" id="otp_code" name="otp_code" placeholder="输入6位数字码以完成设置" autocomplete="off">
+                </div>
+                <button type="button" class="button-primary" onclick="verify2FA()">验证并启用</button>
+                <button type="button" class="button" onclick="cancel2FASetup()">取消</button>
+            </div>
+
+            <div style="text-align: right; margin-top: 2rem;">
+                <button type="submit" class="button-primary">保存用户设置</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 全局设置 (仅限管理员) -->
+    {% if g.user and g.user.is_admin %}
+    <div id="globalSettings" class="tab-content">
+        <form id="globalSettingsForm" onsubmit="saveGlobalSettings(event)">
+            <h3>Calibre 连接</h3>
+            <div class="form-group">
+                <label for="CALIBRE_URL">Calibre 服务器 URL</label>
+                <input type="url" id="CALIBRE_URL" name="CALIBRE_URL">
+            </div>
+            <div class="form-group">
+                <label for="CALIBRE_USERNAME">Calibre 用户名</label>
+                <input type="text" id="CALIBRE_USERNAME" name="CALIBRE_USERNAME">
+            </div>
+            <div class="form-group">
+                <label for="CALIBRE_PASSWORD">Calibre 密码</label>
+                <input type="password" id="CALIBRE_PASSWORD" name="CALIBRE_PASSWORD" placeholder="保持不变则留空">
+            </div>
+            
+            <h3>路径设置</h3>
+            <div class="form-group">
+                <label for="WEBDAV_ROOT">WebDAV 根路径</label>
+                <input type="text" id="WEBDAV_ROOT" name="WEBDAV_ROOT">
+                <small>这是存放所有用户 Anx 库的基础路径。用户文件夹将自动创建在此路径下 (例如: /webdav/username)。</small>
+            </div>
+
+            <h3>默认设置</h3>
+            <div class="form-group">
+                <label for="DEFAULT_FORMAT_PRIORITY">新用户默认格式优先级</label>
+                <input type="text" id="DEFAULT_FORMAT_PRIORITY" name="DEFAULT_FORMAT_PRIORITY">
+                <small>新用户的默认格式优先级，以逗号分隔，例如：azw3,mobi,epub</small>
+            </div>
+
+            <h3>SMTP 设置 (用于发送到 Kindle)</h3>
+            <div class="form-group">
+                <label for="SMTP_SERVER">SMTP 服务器</label>
+                <input type="text" id="SMTP_SERVER" name="SMTP_SERVER">
+            </div>
+            <div class="form-group">
+                <label for="SMTP_PORT">SMTP 端口</label>
+                <input type="number" id="SMTP_PORT" name="SMTP_PORT">
+            </div>
+            <div class="form-group">
+                <label for="SMTP_USERNAME">SMTP 用户名 (通常是您的邮箱)</label>
+                <input type="text" id="SMTP_USERNAME" name="SMTP_USERNAME">
+            </div>
+            <div class="form-group">
+                <label for="SMTP_PASSWORD">SMTP 密码</label>
+                <input type="password" id="SMTP_PASSWORD" name="SMTP_PASSWORD" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="SMTP_ENCRYPTION">加密方式</label>
+                <select id="SMTP_ENCRYPTION" name="SMTP_ENCRYPTION">
+                    <option value="none">无加密</option>
+                    <option value="starttls">STARTTLS</option>
+                    <option value="ssl">SSL/TLS</option>
+                </select>
+                <small>SSL/TLS 通常用于端口 465，STARTTLS 通常用于端口 587。</small>
+            </div>
+
+            <h3>安全</h3>
+            <div class="form-group">
+                <label for="LOGIN_MAX_ATTEMPTS">登录失败锁定阈值</label>
+                <input type="number" id="LOGIN_MAX_ATTEMPTS" name="LOGIN_MAX_ATTEMPTS" min="0">
+                <small>设置为 0 表示禁用此功能。</small>
+            </div>
+
+            <div class="form-group">
+                <label for="test_email_address">测试收件箱</label>
+                <input type="email" id="test_email_address" name="test_email_address" placeholder="输入一个邮箱地址以接收测试邮件">
+            </div>
+            <div style="text-align: right; margin-top: 2rem;">
+                <button type="button" class="button" onclick="testSmtpSettings()">发送测试邮件</button>
+                <button type="submit" class="button-primary">保存全局设置</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 用户管理 (仅限管理员) -->
+    <div id="userManagement" class="tab-content">
+        <form id="userForm" onsubmit="handleUserFormSubmit(event)" class="form-container" style="margin-bottom: 2rem;">
+            <input type="hidden" id="user_id" name="user_id">
+            <h3><span id="formTitle">添加</span>新用户</h3>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password">
+                <small>留空则不修改现有用户密码。</small>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="is_admin" name="is_admin" style="width: auto; margin-right: 5px;">
+                <label for="is_admin" style="display: inline;">管理员权限</label>
+            </div>
+            <div style="text-align: right;">
+                <button type="submit" class="button-primary">保存</button>
+                <button type="button" class="button" onclick="resetUserForm()">取消</button>
+            </div>
+        </form>
+
+        <h3>现有用户</h3>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>管理员</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 用户数据将由 JavaScript 动态填充 -->
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const isAdmin = {{ g.user.is_admin | tojson }};
+
+    // --- Tab Control ---
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+        tablinks = document.getElementsByClassName("tab-link");
+        for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // --- User Settings Logic ---
+    async function populateForms() {
+        const userRes = await fetch('/api/user_settings');
+        const userData = await userRes.json();
+        document.getElementById('kindle_email').value = userData.kindle_email || '';
+        document.getElementById('send_format_priority').value = (userData.send_format_priority || []).join(', ');
+        update2FAStatus(userData.has_2fa);
+        
+        if (isAdmin) {
+            const globalRes = await fetch('/api/global_settings');
+            const globalData = await globalRes.json();
+            for (const key in globalData) {
+                const el = document.getElementById(key);
+                if (el) {
+                    el.value = globalData[key];
+                }
+            }
+        }
+    }
+
+    function update2FAStatus(is_enabled) {
+        const statusContainer = document.getElementById('2fa_status_container');
+        if (is_enabled) {
+            statusContainer.innerHTML = '<p>两步验证已启用。</p><button type="button" class="button-danger" onclick="disable2FA()">禁用</button>';
+        } else {
+            statusContainer.innerHTML = '<p>两步验证未启用。</p><button type="button" class="button" onclick="setup2FA()">启用</button>';
+        }
+    }
+
+    async function setup2FA() {
+        const response = await fetch('/api/2fa/setup', { method: 'POST' });
+        const data = await response.json();
+        if (response.ok) {
+            document.getElementById('2fa_status_container').style.display = 'none';
+            document.getElementById('2fa_setup_container').style.display = 'block';
+            document.getElementById('otp_secret_key').textContent = data.secret;
+            document.getElementById('qr_code_container').innerHTML = `<img src="${data.qr_code}" alt="QR Code">`;
+        } else {
+            alert(data.error);
+        }
+    }
+
+    function cancel2FASetup() {
+        document.getElementById('2fa_status_container').style.display = 'block';
+        document.getElementById('2fa_setup_container').style.display = 'none';
+    }
+
+    async function verify2FA() {
+        const otp_code = document.getElementById('otp_code').value;
+        const response = await fetch('/api/2fa/verify', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ otp_code: otp_code })
+        });
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            cancel2FASetup();
+            update2FAStatus(true);
+        }
+    }
+
+    async function disable2FA() {
+        if (!confirm('确定要禁用两步验证吗？')) return;
+        const response = await fetch('/api/2fa/disable', { method: 'POST' });
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            update2FAStatus(false);
+        }
+    }
+
+    async function saveUserSettings(event) {
+        event.preventDefault();
+        const form = event.target;
+        const data = {
+            new_password: form.new_password.value,
+            kindle_email: form.kindle_email.value,
+            send_format_priority: form.send_format_priority.value
+        };
+        const response = await fetch('/api/user_settings', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert(result.message || result.error);
+    }
+    
+    // --- Admin Functions ---
+    async function saveGlobalSettings(event) {
+        event.preventDefault();
+        const form = event.target;
+        const data = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch('/api/global_settings', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert(result.message || result.error);
+    }
+
+    async function testSmtpSettings() {
+        const form = document.getElementById('globalSettingsForm');
+        const data = {
+            SMTP_SERVER: form.SMTP_SERVER.value,
+            SMTP_PORT: form.SMTP_PORT.value,
+            SMTP_USERNAME: form.SMTP_USERNAME.value,
+            SMTP_PASSWORD: form.SMTP_PASSWORD.value,
+            SMTP_ENCRYPTION: form.SMTP_ENCRYPTION.value,
+            to_address: form.test_email_address.value
+        };
+
+        if (!data.to_address) {
+            alert('请输入一个测试收件箱地址。');
+            return;
+        }
+
+        const response = await fetch('/api/test_smtp', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert(result.message || result.error);
+    }
+
+    async function fetchUsers() {
+        const response = await fetch('{{ url_for("api.get_users") }}');
+        const users = await response.json();
+        const tbody = document.querySelector('#userTable tbody');
+        tbody.innerHTML = '';
+        users.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.is_admin ? '是' : '否'}</td>
+                <td>
+                    <button class="button-small" onclick="editUser(${user.id}, '${user.username}', ${user.is_admin})">编辑</button>
+                    <button class="button-danger button-small" onclick="deleteUser(${user.id})">删除</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function editUser(id, username, isAdmin) {
+        document.getElementById('formTitle').textContent = '编辑';
+        document.getElementById('user_id').value = id;
+        document.getElementById('username').value = username;
+        document.getElementById('is_admin').checked = isAdmin;
+        window.scrollTo(0, 0);
+    }
+
+    function resetUserForm() {
+        document.getElementById('formTitle').textContent = '添加';
+        document.getElementById('userForm').reset();
+        document.getElementById('user_id').value = '';
+    }
+
+    async function handleUserFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const userId = form.user_id.value;
+        const url = '{{ url_for("api.add_user") }}';
+        const method = userId ? 'PUT' : 'POST';
+
+        const data = {
+            username: form.username.value,
+            password: form.password.value,
+            is_admin: form.is_admin.checked
+        };
+        
+        if (userId) {
+            data.user_id = userId;
+        }
+
+        const response = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            resetUserForm();
+            fetchUsers();
+        }
+    }
+
+    async function deleteUser(userId) {
+        if (!confirm('确定要删除此用户吗？')) return;
+
+        const response = await fetch(`{{ url_for("api.delete_user") }}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId })
+        });
+        
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            fetchUsers();
+        }
+    }
+
+    // --- Initializer ---
+    document.addEventListener('DOMContentLoaded', () => {
+        populateForms();
+        if (isAdmin) {
+            fetchUsers();
+        }
+    });
+</script>
+{% endblock %}

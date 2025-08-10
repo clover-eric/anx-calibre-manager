@@ -1,0 +1,354 @@
+/* --- 1. Global Variables & Base Styles --- */
+:root {
+    --primary-color: #007bff;
+    --primary-color-dark: #0056b3;
+    --secondary-color: #6c757d;
+    --background-color: #f4f7f9;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --shadow: 0 4px 8px rgba(0,0,0,0.05);
+    --border-radius: 8px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding-top: 80px; /* Space for fixed top nav */
+    padding-bottom: 80px; /* Space for fixed bottom nav on mobile */
+}
+
+/* --- 2. Layout & Containers --- */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-content {
+    width: 100%;
+}
+
+.library-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.library {
+    flex: 1 1 500px; /* Flex-grow, flex-shrink, flex-basis */
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+.library-header h2 {
+    margin: 0;
+    flex-shrink: 0;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%; /* Make it span the full width */
+}
+
+.book-list {
+    margin-top: 1rem;
+}
+
+.book-row {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    align-items: flex-start;
+}
+.book-row:last-child {
+    border-bottom: none;
+}
+
+.book-row .cover {
+    width: 100px;
+    flex-shrink: 0;
+}
+.book-row .cover img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.book-row .info {
+    flex-grow: 1;
+}
+.book-row .info h3 { font-size: 1.1em; margin: 0 0 5px; }
+.book-row .info .author { margin: 0 0 10px; color: #555; }
+.book-row .extra-details { font-size: 0.85em; color: #777; line-height: 1.5; }
+
+.book-row .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+
+/* --- 3. Navigation (Top & Bottom) --- */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    height: 60px;
+    box-sizing: border-box;
+}
+.top-nav .logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.top-nav .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bottom-nav {
+    display: none; /* Hidden on desktop */
+}
+
+/* --- 4. Buttons & Forms --- */
+.button, button, .button-link {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #f8f9fa;
+    color: var(--text-color);
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 500;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+.button:hover, button:hover, .button-link:hover {
+    background-color: #e9ecef;
+}
+
+.button-primary { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.button-primary:hover { background-color: var(--primary-color-dark); border-color: var(--primary-color-dark); }
+.button-secondary { background-color: var(--secondary-color); color: #fff; border-color: var(--secondary-color); }
+.button-secondary:hover { background-color: #5a6268; border-color: #5a6268; }
+.button-danger { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
+.button-danger:hover { background-color: #c82333; border-color: #c82333; }
+.edit-button { background-color: var(--warning-color); color: var(--text-color); border-color: var(--warning-color); }
+.edit-button:hover { background-color: #e0a800; border-color: #e0a800; }
+
+/* --- Button Width Overrides --- */
+.book-row .actions .button {
+    width: 100%;
+}
+
+.library-header button,
+.top-nav .nav-links .button,
+.modal-footer button,
+.pagination-controls .button, .pagination-controls .button-link {
+    width: auto;
+    flex-shrink: 0;
+}
+
+
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+input[type="text"], 
+input[type="password"], 
+input[type="number"], 
+input[type="email"], 
+input[type="url"], 
+input[type="date"],
+select, 
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.search-form input {
+    width: 100%;
+}
+
+.pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.pagination-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.pagination-controls .page-jump-input {
+    width: 60px;
+    text-align: center;
+}
+
+/* --- 5. Modals --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1010;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10vh auto;
+    padding: 0;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { margin: 0; }
+.modal-body { padding: 1.5rem; }
+.modal-footer { padding: 1rem 1.5rem; text-align: right; border-top: 1px solid var(--border-color); display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+/* Specific style for the close button */
+.close-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+.close-button:hover {
+    color: var(--text-color) !important;
+}
+
+
+/* --- 6. Mobile & Responsive Design --- */
+@media (max-width: 768px) {
+    body {
+        padding-top: 0;
+    }
+    .top-nav {
+        display: none;
+    }
+    .container {
+        padding: 10px;
+    }
+    .library {
+        display: none;
+    }
+    .library.active {
+        display: flex;
+    }
+    .book-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .book-row .actions {
+        flex-direction: row;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .book-row .actions .button {
+        flex: 1;
+    }
+
+    .library-header {
+        justify-content: center;
+    }
+
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: var(--card-bg);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        border-top: 1px solid var(--border-color);
+    }
+    .nav-button {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: none;
+        border: none;
+        font-size: 0.75em;
+        color: var(--secondary-color);
+        padding: 5px 0;
+        gap: 2px;
+        border-top: 3px solid transparent;
+        transition: color 0.2s;
+        text-decoration: none;
+    }
+    .nav-button.active {
+        color: var(--primary-color);
+        border-top-color: var(--primary-color);
+    }
+    .nav-button .icon {
+        font-size: 1.5em;
+    }
+}
+/* --- 7. Overrides & Fixes --- */
+.pagination-controls .button,
+.pagination-controls .button-link {
+    padding-left: 16px;
+    padding-right: 16px;
+    min-width: 80px;
+}

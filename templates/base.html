@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Anx Calibre Manager{% endblock %}</title>
+
+    <!-- PWA & Mobile Meta -->
+    <meta name="theme-color" content="#4A90E2"/>
+    <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="{{ url_for('main.index') }}" class="logo">Anx Calibre Manager</a>
+        {% if g.user and g.user.id %}
+        <div class="nav-links">
+            <a href="{{ url_for('main.settings_page') }}" class="button">设置</a>
+            <a href="{{ url_for('auth.logout') }}" class="button button-danger">登出</a>
+        </div>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <a href="{{ url_for('main.index') }}" class="nav-button" id="nav-home">
+            <i class="fas fa-book icon"></i>
+            <span>书库</span>
+        </a>
+        <a href="#" class="nav-button" id="nav-anx-mobile-view">
+             <i class="fas fa-feather-alt icon"></i>
+            <span>Anx</span>
+        </a>
+        <a href="{{ url_for('main.settings_page') }}" class="nav-button" id="nav-settings">
+            <i class="fas fa-cog icon"></i>
+            <span>设置</span>
+        </a>
+    </div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

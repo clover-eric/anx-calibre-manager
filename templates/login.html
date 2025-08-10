@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}登录 - Anx Calibre Manager{% endblock %}
+
+{% block head_extra %}
+<style>
+    body {
+        padding-top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .content-wrapper {
+        width: 100%;
+        max-width: 400px;
+    }
+    #otp-group {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>登录 Anx Calibre Manager</h2>
+
+<form id="loginForm" style="margin-top: 2rem;">
+    <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group" id="otp-group">
+        <label for="otp_code">两步验证码</label>
+        <input type="number" id="otp_code" name="otp_code" autocomplete="off" pattern="\d{6}" title="请输入6位数字验证码">
+    </div>
+    <button type="submit" class="button-primary" style="width: 100%;">登录</button>
+</form>
+<div id="error-message" style="color: red; margin-top: 1rem;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const errorMessageDiv = document.getElementById('error-message');
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+        const result = await response.json();
+        errorMessageDiv.textContent = '';
+
+        if (result.require_2fa) {
+            document.getElementById('otp-group').style.display = 'block';
+            document.getElementById('otp_code').required = true;
+            document.getElementById('password').disabled = true;
+        } else if (result.success) {
+            window.location.href = result.redirect_url;
+        } else if (result.error) {
+            errorMessageDiv.textContent = result.error;
+            document.getElementById('password').disabled = false;
+        }
+    } catch (error) {
+        errorMessageDiv.textContent = '发生网络错误，请重试。';
+        document.getElementById('password').disabled = false;
+    }
+});
+</script>
+{% endblock %}

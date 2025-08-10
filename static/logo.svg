@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Anx Calibre Manager Logo</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="512" height="512"></rect>
+        <!-- Book Shape -->
+        <path d="M128,448 C128,434.666667 132.666667,428 142,428 L370,428 C379.333333,428 384,434.666667 384,448 L384,128 C384,92.6666667 372.666667,75 350,75 L162,75 C139.333333,75 128,92.6666667 128,128 L128,448 Z" stroke="#4A90E2" stroke-width="24"></path>
+        <path d="M256,128 L256,428" stroke="#4A90E2" stroke-width="12" stroke-linecap="round"></path>
+        
+        <!-- Wifi/Sync Symbol -->
+        <path d="M192,224 C217.6,208 241.6,200 266,200 C290.4,200 314.4,208 340,224" stroke="#4A90E2" stroke-width="20" stroke-linecap="round"></path>
+        <path d="M224,272 C237.6,264 251.6,260 266,260 C280.4,260 294.4,264 308,272" stroke="#4A90E2" stroke-width="20" stroke-linecap="round"></path>
+        <circle fill="#4A90E2" cx="266" cy="320" r="12"></circle>
+    </g>
+</svg>

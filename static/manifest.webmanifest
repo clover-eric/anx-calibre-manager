@@ -1,0 +1,21 @@
+{
+  "name": "Anx Calibre Manager",
+  "short_name": "AnxCalibre",
+  "description": "A web-based manager for your Calibre and Anx ebook libraries.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4A90E2",
+  "icons": [
+    {
+      "src": "/static/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
