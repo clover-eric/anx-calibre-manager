@@ -1,9 +1,10 @@
-const CACHE_NAME = 'anx-calibre-manager-v1';
+const CACHE_NAME = 'anx-calibre-manager-v2'; // Bump version to force update
 const urlsToCache = [
   '/',
   '/static/style.css',
-  '/static/manifest.webmanifest'
-  // Note: We don't cache book data or API calls, only the app shell.
+  '/static/manifest.webmanifest',
+  '/static/logo.svg',
+  '/static/logo.png'
 ];
 
 // Install a service worker
@@ -38,6 +39,11 @@ self.addEventListener('fetch', event => {
             return response || fetch(event.request).then(fetchResponse => {
                 // Check if we received a valid response to cache
                 if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
+                    return fetchResponse;
+                }
+                
+                // IMPORTANT: Only cache requests with http/https scheme.
+                if (!event.request.url.startsWith('http')) {
                     return fetchResponse;
                 }
 
