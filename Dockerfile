@@ -24,11 +24,12 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 # Stage 2: Final image - For running the application
 FROM python:3.9-slim
 
-# Set environment variables for the application
-# These can be overridden at runtime (e.g., with `docker run -e ...`)
+# Set environment variables for the application.
+# Default port and data directory.
 ENV PORT=5000
 ENV DATA_DIR=/data
-# The following are placeholders and should be set securely at runtime
+# The following are placeholders and should be set securely at runtime,
+# for example, using `docker run -e` or a docker-compose file.
 ENV SECRET_KEY=""
 ENV CALIBRE_URL=""
 ENV CALIBRE_USERNAME=""
@@ -39,17 +40,17 @@ ENV SMTP_USERNAME=""
 ENV SMTP_PASSWORD=""
 ENV SMTP_ENCRYPTION="ssl"
 
-# Create the data directory and a non-root user
+# Create data directory and non-root user as root
 RUN mkdir -p ${DATA_DIR}/config && \
     mkdir -p ${DATA_DIR}/webdav && \
-    useradd --create-home appuser && \
+    useradd --uid 1001 --create-home appuser && \
     chown -R appuser:appuser ${DATA_DIR}
 
-# Copy the virtual environment from the builder stage
-COPY --from=builder /home/appuser/venv /home/appuser/venv
-
-# Copy the application source code
+# Set working directory
 WORKDIR /home/appuser
+
+# Copy the virtual environment and application source code from builder stage
+COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --chown=appuser:appuser . .
 
 # Switch to the non-root user
