@@ -210,6 +210,8 @@ def global_settings_api():
         config_manager.save_config(data)
         return jsonify({'message': '全局设置已更新。'})
     else: # GET
+        # Re-load from file to ensure the latest settings are displayed,
+        # bypassing the in-memory cache that might be stale in a multi-worker setup.
         return jsonify(config_manager.load_config())
 
 @api_bp.route('/test_smtp', methods=['POST'])
