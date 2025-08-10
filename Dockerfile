@@ -1,5 +1,5 @@
 # Stage 1: Builder - To build dependencies
-FROM python:3.9-slim as builder
+FROM python:3.9-slim AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -24,20 +24,6 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 # Stage 2: Final image - For running the application
 FROM python:3.9-slim
 
-# Create a non-root user
-RUN useradd --create-home appuser
-USER appuser
-WORKDIR /home/appuser
-
-# Copy the virtual environment from the builder stage
-COPY --from=builder /home/appuser/venv /home/appuser/venv
-
-# Copy the application source code
-COPY --chown=appuser:appuser . .
-
-# Activate the virtual environment
-ENV PATH="/home/appuser/venv/bin:$PATH"
-
 # Set environment variables for the application
 # These can be overridden at runtime (e.g., with `docker run -e ...`)
 ENV PORT=5000
@@ -53,13 +39,27 @@ ENV SMTP_USERNAME=""
 ENV SMTP_PASSWORD=""
 ENV SMTP_ENCRYPTION="ssl"
 
+# Create the data directory and a non-root user
+RUN mkdir -p ${DATA_DIR}/config && \
+    mkdir -p ${DATA_DIR}/webdav && \
+    useradd --create-home appuser && \
+    chown -R appuser:appuser ${DATA_DIR}
+
+# Copy the virtual environment from the builder stage
+COPY --from=builder /home/appuser/venv /home/appuser/venv
+
+# Copy the application source code
+WORKDIR /home/appuser
+COPY --chown=appuser:appuser . .
+
+# Switch to the non-root user
+USER appuser
+
+# Activate the virtual environment
+ENV PATH="/home/appuser/venv/bin:$PATH"
+
 # Expose the port the app runs on
 EXPOSE $PORT
-
-# Create the data directory and set permissions
-RUN mkdir -p $DATA_DIR/config && \
-    mkdir -p $DATA_DIR/webdav && \
-    chown -R appuser:appuser $DATA_DIR
 
 # Define a volume for persistent data
 VOLUME $DATA_DIR
