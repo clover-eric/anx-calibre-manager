@@ -126,9 +126,7 @@ def service_worker():
 @main_bp.route('/settings')
 @login_required
 def settings_page():
-    # Pass the latest config to the template to ensure it's up-to-date
-    latest_config = config_manager.load_config()
-    return render_template('settings.html', config=latest_config)
+    return render_template('settings.html')
 
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required

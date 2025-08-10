@@ -1,5 +1,7 @@
 import os
 import json
+import signal
+import logging
 
 # Use separate, standard directories for config and data.
 # These are intended to be mounted as separate volumes in Docker.
@@ -8,6 +10,7 @@ WEBDAV_DIR = os.environ.get('WEBDAV_DIR', '/webdav')
 
 CONFIG_FILE = os.path.join(CONFIG_DIR, 'settings.json')
 DATABASE_PATH = os.path.join(CONFIG_DIR, 'app.db')
+GUNICORN_PID_FILE = "/tmp/gunicorn.pid"
 
 # Define default configuration and environment variable mappings
 DEFAULT_CONFIG = {
@@ -82,7 +85,7 @@ def load_config():
 
 def save_config(new_config):
     """
-    Saves the global configuration to a file and updates the in-memory config.
+    Saves the global configuration to a file and triggers a reload of Gunicorn workers.
     """
     os.makedirs(CONFIG_DIR, exist_ok=True)
     
@@ -114,10 +117,17 @@ def save_config(new_config):
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(current_config, f, indent=4, ensure_ascii=False)
         
-        # Update in-memory config
-        config.update(current_config)
+        # Signal Gunicorn to reload workers gracefully
+        if os.path.exists(GUNICORN_PID_FILE):
+            try:
+                with open(GUNICORN_PID_FILE, 'r') as f:
+                    pid = int(f.read().strip())
+                logging.info(f"Found Gunicorn PID {pid}. Sending SIGHUP to reload workers.")
+                os.kill(pid, signal.SIGHUP)
+            except (IOError, ValueError, ProcessLookupError) as e:
+                logging.warning(f"Could not signal Gunicorn to reload: {e}")
         
-        return True, "Global configuration saved successfully."
+        return True, "Global configuration saved successfully. Workers are reloading."
     except IOError as e:
         return False, f"Failed to save config file: {e}"
 

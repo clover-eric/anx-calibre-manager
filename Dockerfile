@@ -45,8 +45,8 @@ ENV SMTP_ENCRYPTION="ssl"
 
 # Create app user and standard directories as root
 RUN useradd --uid 1001 --create-home appuser && \
-    mkdir -p /config /webdav && \
-    chown -R appuser:appuser /config /webdav
+    mkdir -p /config /webdav /tmp && \
+    chown -R appuser:appuser /config /webdav /tmp
 
 # Set working directory
 WORKDIR /home/appuser
@@ -72,4 +72,6 @@ VOLUME ["/config", "/webdav"]
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Define the default command
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "app:create_app()"]
+# The --pid flag tells Gunicorn to write its master process ID to a file.
+# This allows us to send signals (like SIGHUP for reloading) to it.
+CMD gunicorn --bind 0.0.0.0:$PORT --workers $(( 2 * $(nproc) + 1 )) --pid /tmp/gunicorn.pid "app:create_app()"
