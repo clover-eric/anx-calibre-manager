@@ -16,6 +16,12 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Integrated WebDAV Server**: Each user gets their own secure WebDAV folder, compatible with Anx-reader and other WebDAV clients.
 - **User Management**: Simple, built-in user management system.
 - **Easy Deployment**: Deployable as a single Docker container.
+## 📸 Screenshots
+
+| Main Interface | Settings Page |
+| :---: | :---: |
+| ![Main Interface](Screen%20Shot%20-%20Main.png) | ![Settings Page](Screen%20Shot%20-%20Setting.png) |
+
 
 ## 🚀 Deployment
 
