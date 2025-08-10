@@ -1,7 +1,7 @@
 # Anx Calibre Manager
 
 [![Docker Image CI](https://github.com/ptbsare/anx-calibre-manager/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/ptbsare/anx-calibre-manager/actions/workflows/docker-publish.yml)
-[![Docker Hub](https://img.shields.io/docker/pulls/ptbsare/anx-calibre-manager.svg)](https://hub.docker.com/r/ptbsare/anx-calibre-manager)
+[![GitHub Container Registry](https://img.shields.io/badge/ghcr.io-ptbsare%2Fanx--calibre--manager-blue?logo=github)](https://github.com/ptbsare/anx-calibre-manager/pkgs/container/anx-calibre-manager)
 
 A modern, mobile-first web application to manage your ebook library, integrating with Calibre and providing a personal WebDAV server for your Anx-reader compatible devices.
 
@@ -50,7 +50,7 @@ This application is designed to be deployed using Docker.
       -e "CALIBRE_USERNAME=your_calibre_username" \
       -e "CALIBRE_PASSWORD=your_calibre_password" \
       --restart unless-stopped \
-      ptbsare/anx-calibre-manager:latest
+      ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
     **Using `docker-compose.yml`:**
@@ -60,7 +60,7 @@ This application is designed to be deployed using Docker.
     version: '3.8'
     services:
       anx-calibre-manager:
-        image: ptbsare/anx-calibre-manager:latest
+        image: ghcr.io/ptbsare/anx-calibre-manager:latest
         container_name: anx-calibre-manager
         ports:
           - "5000:5000"

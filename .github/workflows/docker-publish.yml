@@ -33,7 +33,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./anx-calibre-manager
-          file: ./anx-calibre-manager/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository }}:latest
