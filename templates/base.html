@@ -17,6 +17,9 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
+    <div class="loading-overlay" id="global-loader" style="position: fixed; display: none;">
+        <div class="spinner"></div>
+    </div>
     <nav class="top-nav">
         <a href="{{ url_for('main.index') }}" class="logo">Anx Calibre Manager</a>
         {% if g.user and g.user.id %}
@@ -69,6 +72,45 @@
                 });
             });
         }
+    </script>
+    <script>
+    // Global Navigation Enhancement v2
+    document.addEventListener('DOMContentLoaded', () => {
+        const globalLoader = document.getElementById('global-loader');
+
+        function handleNavClick(event) {
+            // Prevent the browser from navigating immediately
+            event.preventDefault();
+            
+            const targetLink = event.currentTarget;
+            const destination = targetLink.href;
+
+            // Special logic for the home button
+            if (targetLink.id === 'nav-home') {
+                localStorage.setItem('mobileView', 'calibre');
+            }
+
+            // Show the loader
+            if (globalLoader) {
+                globalLoader.style.display = 'flex';
+            }
+
+            // Give the browser a moment to paint the loader, then navigate
+            setTimeout(() => {
+                window.location.href = destination;
+            }, 50); // 50ms is a short but generally safe delay
+        }
+
+        const navHomeButton = document.getElementById('nav-home');
+        const navSettingsButton = document.getElementById('nav-settings');
+
+        if (navHomeButton) {
+            navHomeButton.addEventListener('click', handleNavClick);
+        }
+        if (navSettingsButton) {
+            navSettingsButton.addEventListener('click', handleNavClick);
+        }
+    });
     </script>
     {% block scripts %}{% endblock %}
 </body>

@@ -4,12 +4,13 @@
 
 {% block head_extra %}
 <style>
-    .settings-container { max-width: 960px; margin: 0 auto; }
+    .settings-container { max-width: 960px; margin: 0 auto; position: relative; }
     .tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem; }
     .tab-link { padding: 1rem 1.5rem; cursor: pointer; border-bottom: 3px solid transparent; }
     .tab-link.active { border-bottom-color: var(--primary-color); font-weight: 500; }
-    .tab-content { display: none; }
+    .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
     .tab-content.active { display: block; }
+    .tab-content.visible { opacity: 1; }
     h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
     #qr_code_container img { max-width: 200px; margin: 1rem 0; }
 </style>
@@ -17,6 +18,9 @@
 
 {% block content %}
 <div class="settings-container">
+    <div class="loading-overlay" id="settings-loading-overlay" style="display: flex;">
+        <div class="spinner"></div>
+    </div>
     <h2>设置</h2>
 
     <div class="tabs">
@@ -28,7 +32,7 @@
     </div>
 
     <!-- 用户设置 -->
-    <div id="userSettings" class="tab-content active">
+    <div id="userSettings" class="tab-content page-transition active">
         <form id="userSettingsForm" onsubmit="saveUserSettings(event)">
             <h3>个人资料</h3>
             <div class="form-group">
@@ -73,7 +77,7 @@
 
     <!-- 全局设置 (仅限管理员) -->
     {% if g.user and g.user.is_admin %}
-    <div id="globalSettings" class="tab-content">
+    <div id="globalSettings" class="tab-content page-transition">
         <form id="globalSettingsForm" onsubmit="saveGlobalSettings(event)">
             <h3>Calibre 连接</h3>
             <div class="form-group">
@@ -149,7 +153,7 @@
     </div>
 
     <!-- 用户管理 (仅限管理员) -->
-    <div id="userManagement" class="tab-content">
+    <div id="userManagement" class="tab-content page-transition">
         <form id="userForm" onsubmit="handleUserFormSubmit(event)" class="form-container" style="margin-bottom: 2rem;">
             <input type="hidden" id="user_id" name="user_id">
             <h3><span id="formTitle">添加</span>新用户</h3>
@@ -199,11 +203,22 @@
     function openTab(evt, tabName) {
         let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove('active', 'visible');
+        }
         tablinks = document.getElementsByClassName("tab-link");
-        for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove('active');
+        }
+        
+        const activeTab = document.getElementById(tabName);
+        activeTab.classList.add('active');
+        evt.currentTarget.classList.add('active');
+
+        // Use a short timeout to allow the display property to change before adding the visible class for the transition
+        setTimeout(() => {
+            activeTab.classList.add('visible');
+        }, 10);
     }
 
     // --- User Settings Logic ---
@@ -223,7 +238,12 @@
                     el.value = globalData[key];
                 }
             }
+            await fetchUsers();
         }
+        // Hide the main loader once all data is populated
+        document.getElementById('settings-loading-overlay').style.display = 'none';
+        // Make the content visible
+        document.getElementById('userSettings').classList.add('visible');
     }
 
     function update2FAStatus(is_enabled) {
@@ -307,6 +327,9 @@
         });
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            location.reload();
+        }
     }
 
     async function testSmtpSettings() {
@@ -394,8 +417,7 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
-            resetUserForm();
-            fetchUsers();
+            location.reload();
         }
     }
 
@@ -411,7 +433,7 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
-            fetchUsers();
+            location.reload();
         }
     }
 

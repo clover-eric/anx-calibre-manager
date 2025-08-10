@@ -11,6 +11,9 @@
     <div class="library-container">
         <!-- Calibre Library Section -->
         <div class="library" id="calibre-library">
+            <div class="loading-overlay" id="calibre-loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+            </div>
             <div class="library-header">
                 <div class="header-actions">
                     <button type="button" class="button-primary" data-action="go-home">首页</button>                   
@@ -26,15 +29,15 @@
 </span>
                 <form action="/" method="get" class="pagination-form" id="pagination-form">
                     <input type="hidden" name="search" value="{{ search_query }}">
-                    <select name="page_size" onchange="this.form.submit()">
+                    <select name="page_size">
                         <option value="20" {% if pagination.page_size == 20 %}selected{% endif %}>20/页</option>
                         <option value="50" {% if pagination.page_size == 50 %}selected{% endif %}>50/页</option>
                         <option value="100" {% if pagination.page_size == 100 %}selected{% endif %}>100/页</option>
                     </select>
-                    {% if pagination.page > 1 %}<a href="?search={{ search_query }}&page={{ pagination.page - 1 }}&page_size={{ pagination.page_size }}" class="button button-link">上一页</a>{% endif %}
+                    {% if pagination.page > 1 %}<a href="?search={{ search_query }}&page={{ pagination.page - 1 }}&page_size={{ pagination.page_size }}" class="button button-link pagination-link">上一页</a>{% endif %}
                     <input type="number" name="page" id="page-jump-input" class="page-jump-input" value="{{ pagination.page }}" min="1" max="{{ pagination.total_pages }}">
                     <button type="button" class="button" data-action="jump-to-page">跳转</button>
-                    {% if pagination.page < pagination.total_pages %}<a href="?search={{ search_query }}&page={{ pagination.page + 1 }}&page_size={{ pagination.page_size }}" class="button button-link">下一页</a>{% endif %}
+                    {% if pagination.page < pagination.total_pages %}<a href="?search={{ search_query }}&page={{ pagination.page + 1 }}&page_size={{ pagination.page_size }}" class="button button-link pagination-link">下一页</a>{% endif %}
                 </form>
             </div>
             <div class="book-list" id="calibre-book-list">
@@ -179,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navHome = document.getElementById('nav-home');
     const navAnx = document.getElementById('nav-anx-mobile-view');
     const anxWebDavUrlElement = document.getElementById('anx-webdav-url');
-    const paginationControls = document.querySelector('.pagination-controls');
+    const calibreLoader = document.getElementById('calibre-loading-overlay');
 
     // --- API Helper ---
     function fetch_with_token(url, options) {
@@ -227,21 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Main Click Handler via Event Delegation ---
     document.body.addEventListener('click', (e) => {
-        // Special case for our non-data-action span
-        if (e.target.id === 'anx-webdav-url') {
-            const url = e.target.textContent;
-            navigator.clipboard.writeText(url).then(() => {
-                const originalText = e.target.textContent;
-                e.target.textContent = '已复制!';
-                setTimeout(() => {
-                    e.target.textContent = originalText;
-                }, 2000);
-            }, (err) => {
-                alert('复制失败: ', err);
-            });
-            return;
-        }
-
         const target = e.target.closest('[data-action]');
         if (!target) return;
 
@@ -249,9 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = target.dataset.id;
         
         switch (action) {
-            case 'go-home':
-                window.location.href = "{{ url_for('main.index') }}";
-                break;
             case 'show-upload-modal':
                 showModal(uploadModal);
                 break;
@@ -299,11 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'download-calibre':
                 window.location.href = `/api/download_book/${id}`;
                 break;
-            case 'jump-to-page':
-                handleJumpToPage();
-                break;
             default:
-                console.warn(`Unknown action: ${action}`);
+                // Let navigation handlers take care of the rest
         }
     });
 
@@ -343,19 +325,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function handleJumpToPage() {
+    // --- Navigation with Loader (FINAL VERSION) ---
+    function showLoaderAndNavigate(url) {
+        if (calibreLoader) {
+            calibreLoader.style.display = 'flex';
+        }
+        setTimeout(() => {
+            window.location.href = url;
+        }, 50);
+    }
+
+    document.querySelector('.search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const url = new URL(this.action);
+        url.searchParams.set('search', this.elements.search.value);
+        url.searchParams.set('page_size', document.querySelector('.pagination-form select[name="page_size"]').value);
+        url.searchParams.set('page', 1); // Reset to page 1 on new search
+        showLoaderAndNavigate(url.href);
+    });
+
+    document.querySelectorAll('.pagination-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoaderAndNavigate(this.href);
+        });
+    });
+
+    document.querySelector('.pagination-form select[name="page_size"]').addEventListener('change', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('page_size', this.value);
+        url.searchParams.set('page', 1); // Reset to page 1 on size change
+        showLoaderAndNavigate(url.href);
+    });
+    
+    document.querySelector('[data-action="jump-to-page"]').addEventListener('click', function() {
         const pageInput = document.getElementById('page-jump-input');
-        const totalPages = parseInt(paginationControls.dataset.totalPages, 10);
+        const totalPages = parseInt(document.querySelector('.pagination-controls').dataset.totalPages, 10);
         const page = parseInt(pageInput.value, 10);
         if (page && page > 0 && page <= totalPages) {
-            const form = document.getElementById('pagination-form');
-            const search = form.elements.search.value;
-            const pageSize = form.elements.page_size.value;
-            window.location.href = `?search=${search}&page_size=${pageSize}&page=${page}`;
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', page);
+            showLoaderAndNavigate(url.href);
         } else {
             alert(`请输入一个介于 1 和 ${totalPages} 之间的有效页码。`);
         }
-    }
+    });
+
+    document.querySelector('[data-action="go-home"]').addEventListener('click', function() {
+        showLoaderAndNavigate("{{ url_for('main.index') }}");
+    });
+
 
     // --- Mobile View Logic ---
     function setupMobileView() {

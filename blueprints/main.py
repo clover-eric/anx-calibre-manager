@@ -101,7 +101,7 @@ def format_reading_time(seconds):
 def index():
     search_query = request.args.get('search', '')
     page = request.args.get('page', 1, type=int)
-    page_size = 20
+    page_size = request.args.get('page_size', 20, type=int)
     calibre_books, total_calibre_books = get_calibre_books(search_query, page, page_size)
     
     anx_books = get_anx_books(g.user.username)
