@@ -5,7 +5,9 @@ from contextlib import closing
 import database
 
 # Import necessary functions from other modules
-from .main import get_calibre_books, get_calibre_book_details
+from .main import get_calibre_books
+# Rename the original function to avoid conflicts
+from .main import get_calibre_book_details as get_raw_calibre_book_details
 from .api import _push_calibre_to_anx_logic, _send_to_kindle_logic
 from anx_library import get_anx_books, get_anx_book_details
 
@@ -37,15 +39,45 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# --- Data Formatting for MCP ---
+
+def format_calibre_book_data_for_mcp(book_data):
+    """Formats and filters Calibre book data specifically for MCP tool output."""
+    if not book_data:
+        return None
+
+    book_id = book_data.get('id')
+    if book_id is None:
+        return None
+
+    # Define the fields that are useful for a person reading the output.
+    return {
+        'id': book_id,
+        'title': book_data.get('title', 'N/A'),
+        'authors': book_data.get('authors', []),
+        'tags': book_data.get('tags', []),
+        'series': book_data.get('series', ''),
+        'publisher': book_data.get('publisher', ''),
+        'pubdate': (book_data.get('pubdate') or '').split('T')[0],
+        'comments': book_data.get('comments', ''),
+        'rating': book_data.get('rating', 0),
+        'formats': list(book_data.get('format_metadata', {}).keys())
+    }
+
 # --- Tool Implementations ---
 
 def search_calibre_books(query: str, limit: int = 20):
     books, _ = get_calibre_books(search_query=query, page=1, page_size=limit)
-    return books
+    return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_recent_calibre_books(limit: int = 20):
     books, _ = get_calibre_books(page=1, page_size=limit)
-    return books
+    return [format_calibre_book_data_for_mcp(book) for book in books if book]
+
+def get_calibre_book_details(book_id: int):
+    """Wrapper for getting and formatting book details."""
+    raw_details = get_raw_calibre_book_details(book_id)
+    return format_calibre_book_data_for_mcp(raw_details)
 
 def get_recent_anx_books(limit: int = 20):
     books = get_anx_books(g.user['username'])
@@ -73,7 +105,7 @@ TOOLS = {
     'get_calibre_book_details': {
         'function': get_calibre_book_details,
         'params': {'book_id': int},
-        'description': '获取指定 ID 的 Calibre 书籍的详细信息，包括所有元数据字段。'
+        'description': '获取指定 ID 的 Calibre 书籍的详细信息。'
     },
     'get_recent_anx_books': {
         'function': get_recent_anx_books,
