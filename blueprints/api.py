@@ -385,10 +385,10 @@ def upload_to_calibre_api():
 
     if file:
         filename = secure_filename(file.filename)
-        file_data = file.read()
         url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/1/n/{filename}"
         try:
-            response = requests.post(url, data=file_data, auth=get_calibre_auth(), headers={'Content-Type': 'application/octet-stream'})
+            # Pass the file object directly to requests
+            response = requests.post(url, data=file, auth=get_calibre_auth(), headers={'Content-Type': 'application/octet-stream'})
             response.raise_for_status()
             res_json = response.json()
             if res_json.get('book_id'):
