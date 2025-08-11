@@ -62,6 +62,7 @@ This application is designed to be deployed using Docker.
       -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -e "GUNICORN_WORKERS=2" \ 
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -88,6 +89,7 @@ This application is designed to be deployed using Docker.
           - PUID=1000
           - PGID=1000
           - TZ=Asia/Shanghai
+          - GUNICORN_WORKERS=2 # Optional: Customize the number of Gunicorn worker processes
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
@@ -111,6 +113,7 @@ The application is configured via environment variables.
 | `PGID` | The Group ID to run the application as. | `1001` |
 | `TZ` | Your timezone, e.g., `America/New_York`. | `UTC` |
 | `PORT` | The port the application listens on inside the container. | `5000` |
+| `GUNICORN_WORKERS` | Optional: The number of Gunicorn worker processes. | `2` |
 | `CONFIG_DIR` | The directory for the database and `settings.json`. | `/config` |
 | `WEBDAV_DIR` | The base directory for WebDAV user files. | `/webdav` |
 | `SECRET_KEY` | **Required.** A long, random string for session security. | `""` |

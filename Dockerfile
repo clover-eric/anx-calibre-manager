@@ -27,11 +27,12 @@ FROM python:3.9-slim-bullseye
 
 # Install gosu for user switching and tini for signal handling
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gosu tini procps && \
+    apt-get install -y --no-install-recommends gosu tini && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
 ENV PORT=5000
+ENV GUNICORN_WORKERS=2
 # The following are placeholders and should be set securely at runtime
 ENV SECRET_KEY=""
 ENV CALIBRE_URL=""
@@ -76,4 +77,4 @@ ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 # Define the default command
 # The --pid flag tells Gunicorn to write its master process ID to a file.
 # This allows us to send signals (like SIGHUP for reloading) to it.
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 2 --pid /tmp/gunicorn.pid "app:create_app()"
+CMD gunicorn --bind 0.0.0.0:$PORT --workers ${GUNICORN_WORKERS} --pid /tmp/gunicorn.pid "app:create_app()"

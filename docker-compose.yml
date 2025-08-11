@@ -11,6 +11,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Shanghai
+      - GUNICORN_WORKERS=2 # 可选：自定义 Gunicorn worker 进程数量
       - SECRET_KEY=your_super_secret_key # 请务必修改此项
       - CALIBRE_URL=http://your-calibre-server-ip:8080
       - CALIBRE_USERNAME=your_calibre_username

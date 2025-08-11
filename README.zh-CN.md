@@ -62,6 +62,7 @@
       -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -e "GUNICORN_WORKERS=2" \ 
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -88,6 +89,7 @@
           - PUID=1000
           - PGID=1000
           - TZ=Asia/Shanghai
+          - GUNICORN_WORKERS=2 # 可选：自定义 Gunicorn worker 进程的数量
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
@@ -111,6 +113,7 @@
 | `PGID` | 指定运行应用的组 ID。 | `1001` |
 | `TZ` | 您的时区, 例如 `America/New_York`。 | `UTC` |
 | `PORT` | 应用在容器内监听的端口。 | `5000` |
+| `GUNICORN_WORKERS` | 可选：Gunicorn worker 进程的数量。 | `2` |
 | `CONFIG_DIR` | 用于存放数据库和 `settings.json` 的目录。 | `/config` |
 | `WEBDAV_DIR` | 用于存放 WebDAV 用户文件的基础目录。 | `/webdav` |
 | `SECRET_KEY` | **必需。** 用于会话安全的、长的、随机的字符串。 | `""` |
