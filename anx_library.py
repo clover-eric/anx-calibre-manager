@@ -6,6 +6,34 @@ import shutil
 from contextlib import closing
 from datetime import datetime
 from config_manager import config
+from anx_db_schema import ANX_DB_SCHEMA
+
+def initialize_anx_user_data(username):
+    """Creates the necessary directory structure and initializes an empty Anx database for a new user."""
+    dirs = get_anx_user_dirs(username)
+    if not dirs:
+        print(f"Could not get user directories for {username}. WEBDAV_ROOT might be missing.")
+        return False, f"无法为用户 {username} 获取目录结构。"
+
+    try:
+        # Create all necessary directories
+        # The full structure is /webdav/<user>/anx/data/file, etc.
+        os.makedirs(dirs["file"], exist_ok=True)
+        os.makedirs(dirs["cover"], exist_ok=True)
+        os.makedirs(dirs["import"], exist_ok=True)
+        os.makedirs(dirs["already_in"], exist_ok=True)
+
+        # Initialize the database only if it doesn't exist
+        if not os.path.exists(dirs["db_path"]):
+            with closing(sqlite3.connect(dirs["db_path"])) as db:
+                cursor = db.cursor()
+                cursor.executescript(ANX_DB_SCHEMA)
+                db.commit()
+        
+        return True, "用户 Anx 数据目录和数据库已成功初始化。"
+    except Exception as e:
+        print(f"Error initializing Anx data for user {username}: {e}")
+        return False, f"初始化用户 Anx 数据时出错: {e}"
 
 def get_anx_user_dirs(username):
     """Gets all the relevant directory paths for a user's Anx library."""
@@ -13,9 +41,11 @@ def get_anx_user_dirs(username):
     if not webdav_root or not username:
         return None
     safe_username = os.path.basename(username)
-    base_dir = os.path.join(webdav_root, safe_username, 'anx')
+    user_root = os.path.join(webdav_root, safe_username)
+    base_dir = os.path.join(user_root, 'anx')
     
     return {
+        "user_root": user_root,
         "base": base_dir,
         "db_path": os.path.join(base_dir, "database7.db"),
         "import": os.path.join(base_dir, "import"),

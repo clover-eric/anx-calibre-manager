@@ -8,6 +8,7 @@ import requests
 import bcrypt
 import logging
 import secrets
+import shutil
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
 from contextlib import closing
 from werkzeug.utils import secure_filename
@@ -18,7 +19,13 @@ from urllib.parse import quote
 
 import database
 import config_manager
-from anx_library import process_anx_import_folder, update_anx_book_metadata, delete_anx_book, get_anx_user_dirs
+from anx_library import (
+    process_anx_import_folder, 
+    update_anx_book_metadata, 
+    delete_anx_book, 
+    get_anx_user_dirs,
+    initialize_anx_user_data
+)
 from .main import download_calibre_book, send_email, get_calibre_auth, get_calibre_book_details, download_calibre_cover
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -133,7 +140,15 @@ def add_user():
                 (username, hashed_pw, is_admin)
             )
             db.commit()
-            return jsonify({'message': '用户已成功添加。'}), 201
+            
+            # Initialize Anx data structure for the new user
+            success, message = initialize_anx_user_data(username)
+            if not success:
+                # Log the error, but don't fail the whole request since the user was created.
+                logging.error(f"Failed to initialize Anx data for new user {username}: {message}")
+                return jsonify({'message': f'用户已成功添加，但初始化 Anx 目录失败: {message}'}), 201
+
+            return jsonify({'message': '用户已成功添加并初始化。'}), 201
         except database.sqlite3.IntegrityError:
             return jsonify({'error': '用户名已存在。'}), 409
 
@@ -174,9 +189,25 @@ def delete_user():
         return jsonify({'error': '用户 ID 是必填项。'}), 400
 
     with closing(database.get_db()) as db:
+        # First, get the username to delete their data directory
+        user_to_delete = db.execute('SELECT username FROM users WHERE id = ?', (user_id,)).fetchone()
+        
+        if user_to_delete:
+            username = user_to_delete['username']
+            dirs = get_anx_user_dirs(username)
+            if dirs and dirs.get('user_root') and os.path.exists(dirs['user_root']):
+                try:
+                    shutil.rmtree(dirs['user_root'])
+                    logging.info(f"Successfully deleted WebDAV directory for user {username}")
+                except Exception as e:
+                    logging.error(f"Failed to delete WebDAV directory for user {username}: {e}")
+                    # Don't block DB deletion, but return an error message
+                    return jsonify({'error': f'删除用户数据目录时出错: {e}'}), 500
+        
+        # Now, delete the user from the database
         db.execute('DELETE FROM users WHERE id = ?', (user_id,))
         db.commit()
-        return jsonify({'message': '用户已成功删除。'})
+        return jsonify({'message': '用户及其数据已成功删除。'})
 
 
 @api_bp.route('/user_settings', methods=['GET', 'POST'])
