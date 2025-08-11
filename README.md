@@ -94,6 +94,8 @@ This application is designed to be deployed using Docker.
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
           - CALIBRE_PASSWORD=your_calibre_password
+          - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library
+          - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
     Then run:
@@ -117,6 +119,8 @@ The application is configured via environment variables.
 | `CALIBRE_URL` | The URL of your Calibre content server. | `""` |
 | `CALIBRE_USERNAME` | Username for your Calibre server. | `""` |
 | `CALIBRE_PASSWORD` | Password for your Calibre server. | `""` |
+| `CALIBRE_DEFAULT_LIBRARY_ID` | The default Calibre library ID for browsing, searching, and uploading books. | `Calibre_Library` |
+| `CALIBRE_ADD_DUPLICATES` | Whether to allow uploading duplicate books. | `false` |
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
 | `SMTP_USERNAME` | SMTP username. | `""` |

@@ -1,0 +1,25 @@
+services:
+  anx-calibre-manager:
+    build: .
+    container_name: anx-calibre-manager
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/config:/config
+      - ./data/webdav:/webdav
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - SECRET_KEY=your_super_secret_key # 请务必修改此项
+      - CALIBRE_URL=http://your-calibre-server-ip:8080
+      - CALIBRE_USERNAME=your_calibre_username
+      - CALIBRE_PASSWORD=your_calibre_password
+      - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library
+      - CALIBRE_ADD_DUPLICATES=false
+      - SMTP_SERVER=
+      - SMTP_PORT=587
+      - SMTP_USERNAME=
+      - SMTP_PASSWORD=
+      - SMTP_ENCRYPTION=ssl
+    restart: unless-stopped

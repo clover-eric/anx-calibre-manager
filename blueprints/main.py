@@ -30,7 +30,7 @@ def get_calibre_auth():
 def get_calibre_books(search_query="", page=1, page_size=20):
     config = config_manager.config
     try:
-        library_id = "Calibre_Library"
+        library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
         offset = (page - 1) * page_size
         search_params = { 'query': search_query, 'num': page_size, 'offset': offset, 'library_id': library_id, 'sort': 'id', 'sort_order': 'desc' }
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -46,7 +46,7 @@ def get_calibre_books(search_query="", page=1, page_size=20):
             chunk = book_ids[i:i + chunk_size]
             if not chunk: continue
             requested_fields = 'all' # Request all fields to get format_metadata
-            books_params = {'ids': ",".join(map(str, chunk)), 'library_id': library_id, 'fields': requested_fields}
+            books_params = {'ids': ",".join(map(str, chunk)), 'library_id': config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library'), 'fields': requested_fields}
             books_response = requests.get(f"{config['CALIBRE_URL']}/ajax/books", params=books_params, auth=get_calibre_auth(), headers=headers)
             books_response.raise_for_status()
             books_data.update(books_response.json())

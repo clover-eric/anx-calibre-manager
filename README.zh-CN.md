@@ -94,6 +94,8 @@
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
           - CALIBRE_PASSWORD=your_calibre_password
+          - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library
+          - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
     然后运行:
@@ -117,6 +119,8 @@
 | `CALIBRE_URL` | 您的 Calibre 内容服务器的 URL。 | `""` |
 | `CALIBRE_USERNAME` | 您的 Calibre 服务器的用户名。 | `""` |
 | `CALIBRE_PASSWORD` | 您的 Calibre 服务器的密码。 | `""` |
+| `CALIBRE_DEFAULT_LIBRARY_ID` | 用于浏览、搜索和上传书籍的默认 Calibre 库 ID。 | `Calibre_Library` |
+| `CALIBRE_ADD_DUPLICATES` | 是否允许上传重复的书籍。 | `false` |
 | `SMTP_SERVER` | 用于发送邮件 (例如，推送到 Kindle) 的 SMTP 服务器。 | `""` |
 | `SMTP_PORT` | SMTP 端口。 | `587` |
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |

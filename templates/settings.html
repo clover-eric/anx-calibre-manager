@@ -48,6 +48,7 @@
              <div class="form-group">
                 <label for="kindle_email">Kindle 邮箱地址</label>
                 <input type="email" id="kindle_email" name="kindle_email">
+                <small id="smtp_from_address_tip"></small>
             </div>
             <div class="form-group">
                 <label for="send_format_priority">格式优先级</label>
@@ -92,7 +93,16 @@
                 <label for="CALIBRE_PASSWORD">Calibre 密码</label>
                 <input type="password" id="CALIBRE_PASSWORD" name="CALIBRE_PASSWORD" placeholder="保持不变则留空">
             </div>
-            
+            <div class="setting-item">
+                <label for="CALIBRE_DEFAULT_LIBRARY_ID">默认 Calibre 库 ID</label>
+                <input type="text" id="CALIBRE_DEFAULT_LIBRARY_ID" name="CALIBRE_DEFAULT_LIBRARY_ID" placeholder="Calibre_Library">
+                <small>用于浏览、搜索和上传书籍的默认 Calibre 库 ID。通常是 'Calibre_Library'。</small>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="CALIBRE_ADD_DUPLICATES" name="CALIBRE_ADD_DUPLICATES" value="true" style="width: auto; margin-right: 5px;">
+                <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">允许上传重复书籍</label>
+                <small>如果选中，即使 Calibre 检测到重复的书籍，也会将其添加为新副本。</small>
+            </div>            
             <h3>路径设置</h3>
             <div class="form-group">
                 <label for="WEBDAV_ROOT">WebDAV 根路径</label>
@@ -227,6 +237,10 @@
         const userData = await userRes.json();
         document.getElementById('kindle_email').value = userData.kindle_email || '';
         document.getElementById('send_format_priority').value = (userData.send_format_priority || []).join(', ');
+        if (userData.smtp_from_address) {
+            const tipElement = document.getElementById('smtp_from_address_tip');
+            tipElement.textContent = `请确保将发件邮箱 (${userData.smtp_from_address}) 添加到您的亚马逊 Kindle 信任邮箱列表中。`;
+        }
         update2FAStatus(userData.has_2fa);
         
         if (isAdmin) {
@@ -235,7 +249,11 @@
             for (const key in globalData) {
                 const el = document.getElementById(key);
                 if (el) {
-                    el.value = globalData[key];
+                    if (el.type === 'checkbox') {
+                        el.checked = globalData[key];
+                    } else {
+                        el.value = globalData[key];
+                    }
                 }
             }
             await fetchUsers();

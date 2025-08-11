@@ -42,6 +42,8 @@ ENV SMTP_PORT=587
 ENV SMTP_USERNAME=""
 ENV SMTP_PASSWORD=""
 ENV SMTP_ENCRYPTION="ssl"
+ENV CALIBRE_DEFAULT_LIBRARY_ID="Calibre_Library"
+ENV CALIBRE_ADD_DUPLICATES="false"
 
 # Create app user and standard directories as root
 RUN useradd --uid 1001 --create-home appuser && \
