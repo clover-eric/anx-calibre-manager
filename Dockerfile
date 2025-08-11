@@ -25,9 +25,9 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 # Stage 2: Final image - For running the application
 FROM python:3.9-slim-bullseye
 
-# Install gosu for user switching
+# Install gosu for user switching and tini for signal handling
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gosu && \
+    apt-get install -y --no-install-recommends gosu tini procps && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
@@ -70,8 +70,8 @@ EXPOSE $PORT
 # Define volumes for persistent data
 VOLUME ["/config", "/webdav"]
 
-# Set the entrypoint
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Set the entrypoint to use tini for proper signal handling
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 
 # Define the default command
 # The --pid flag tells Gunicorn to write its master process ID to a file.
