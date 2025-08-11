@@ -14,14 +14,12 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
 - **Push to Anx**: Send books from your Calibre library directly to your personal Anx-reader device folder.
 - **Integrated WebDAV Server**: Each user gets their own secure WebDAV folder, compatible with Anx-reader and other WebDAV clients.
+- **MCP Server**: A built-in, compliant Model Context Protocol (MCP) server, allowing AI agents and external tools to interact with your library securely.
 - **User Management**: Simple, built-in user management system.
 - **Easy Deployment**: Deployable as a single Docker container.
 ## 📸 Screenshots
 
-| Main Interface | Settings Page |
-| :---: | :---: |
-| ![Main Interface](Screen%20Shot%20-%20Main.png) | ![Settings Page](Screen%20Shot%20-%20Setting.png) |
-
+![Main Interface](Screen%20Shot%20-%20Main.png)![Settings Page](Screen%20Shot%20-%20Setting.png)![MCP Settings](Screen%20Shot%20-%20MCP.png)
 
 ## 🚀 Deployment
 
@@ -126,6 +124,29 @@ The application is configured via environment variables.
 | `SMTP_USERNAME` | SMTP username. | `""` |
 | `SMTP_PASSWORD` | SMTP password. | `""` |
 | `SMTP_ENCRYPTION` | SMTP encryption type (`ssl`, `starttls`, `none`). | `ssl` |
+
+## 🤖 MCP Server
+
+This application includes a JSON-RPC 2.0 compliant MCP (Model Context Protocol) server, allowing external tools and AI agents to interact with your library.
+
+### How to Use
+
+1.  **Generate a Token**: After logging in, go to the **Settings -> MCP Settings** page. Click "Generate New Token" to create a new API token.
+2.  **Endpoint URL**: The MCP server endpoint is `http://<your_server_address>/mcp`.
+3.  **Authentication**: Authenticate by appending your token as a query parameter to the URL, e.g., `http://.../mcp?token=YOUR_TOKEN`.
+4.  **Send Requests**: Send `POST` requests to this endpoint with a body compliant with the JSON-RPC 2.0 format.
+
+### Available Tools
+
+You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:
+
+-   `search_calibre_books`: Search for books in the Calibre library.
+-   `get_recent_calibre_books`: Get recent books from the Calibre library.
+-   `get_calibre_book_details`: Get details for a specific Calibre book.
+-   `get_recent_anx_books`: Get recent books from the Anx library.
+-   `get_anx_book_details`: Get details for a specific Anx book.
+-   `push_calibre_book_to_anx`: Push a Calibre book to the Anx library.
+-   `send_calibre_book_to_kindle`: Send a Calibre book to Kindle.
 
 ## 💻 Development
 

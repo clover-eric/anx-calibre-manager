@@ -14,14 +14,12 @@
 - **Calibre 集成**: 连接到您现有的 Calibre 服务器，以浏览和搜索您的书库。
 - **推送到 Anx**: 将书籍从您的 Calibre 书库直接发送到您的个人 Anx-reader 设备文件夹。
 - **集成的 WebDAV 服务器**: 每个用户都会获得自己独立、安全的 WebDAV 文件夹，与 Anx-reader 和其他 WebDAV 客户端兼容。
+- **MCP 服务器**: 内置一个符合规范的 Model Context Protocol (MCP) 服务器，允许 AI 代理和外部工具安全地与您的书库交互。
 - **用户管理**: 简单、内置的用户管理系统。
 - **轻松部署**: 可作为单个 Docker 容器进行部署。
 ## 📸 截图
 
-| 主界面 | 设置页面 |
-| :---: | :---: |
-| ![主界面](Screen%20Shot%20-%20Main.png) | ![设置页面](Screen%20Shot%20-%20Setting.png) |
-
+![主界面](Screen%20Shot%20-%20Main.png)![设置页面](Screen%20Shot%20-%20Setting.png)![MCP 设置](Screen%20Shot%20-%20MCP.png)
 
 ## 🚀 部署
 
@@ -126,6 +124,29 @@
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |
 | `SMTP_PASSWORD` | SMTP 密码。 | `""` |
 | `SMTP_ENCRYPTION` | SMTP 加密类型 (`ssl`, `starttls`, `none`)。 | `ssl` |
+
+## 🤖 MCP 服务器
+
+本应用包含一个符合 JSON-RPC 2.0 规范的 MCP (Model Context Protocol) 服务器，允许外部工具和 AI 代理与您的书库进行交互。
+
+### 使用方法
+
+1.  **生成令牌**: 登录后，进入 **设置 -> MCP 设置** 页面。点击“生成新令牌”来创建一个新的 API 令牌。
+2.  **端点 URL**: MCP 服务器的端点是 `http://<your_server_address>/mcp`。
+3.  **认证**: 在您的请求 URL 中，通过查询参数附加您的令牌，例如：`http://.../mcp?token=YOUR_TOKEN`。
+4.  **发送请求**: 向该端点发送 `POST` 请求，请求体需遵循 JSON-RPC 2.0 格式。
+
+### 可用工具
+
+您可以通过 `tools/list` 方法获取所有可用工具的列表。当前支持的工具包括：
+
+-   `search_calibre_books`: 搜索 Calibre 书籍。
+-   `get_recent_calibre_books`: 获取最近的 Calibre 书籍。
+-   `get_calibre_book_details`: 获取 Calibre 书籍详情。
+-   `get_recent_anx_books`: 获取最近的 Anx 书籍。
+-   `get_anx_book_details`: 获取 Anx 书籍详情。
+-   `push_calibre_book_to_anx`: 推送 Calibre 书籍到 Anx。
+-   `send_calibre_book_to_kindle`: 发送 Calibre 书籍到 Kindle。
 
 ## 💻 开发
 
