@@ -53,13 +53,13 @@
                             {% if book.rating is not none and book.rating > 0 %}<span><strong>Rating:</strong> {{ "%.1f" | format(book.rating/2) }}/5</span><br>{% endif %}
                             <span><strong>格式:</strong> {{ book.formats_with_sizes | join(', ') }}</span><br>
                             {% if book.publisher and book.publisher != 'None' %}<span><strong>出版社:</strong> {{ book.publisher }}</span><br>{% endif %}
-                            {% if book.pubdate and book.pubdate != 'None' %}<span><strong>出版日期:</strong> {{ book.pubdate.split('T')[0] }}</span><br>{% endif %}
+                            {% if book.pubdate and book.pubdate != 'None' and not book.pubdate.startswith('0101-01') %}<span><strong>出版日期:</strong> {{ book.pubdate.split('T')[0] }}</span><br>{% endif %}
                             {% set library = book.user_metadata['#library'] %}
                             {% if library and library['#value#'] and library['#value#'] != 'None' %}
                                 <span><strong>库:</strong> {{ library['#value#'] }}</span><br>
                             {% endif %}
                             {% set readdate = book.user_metadata['#readdate'] %}
-                            {% if readdate and readdate['#value#'] and readdate['#value#'] != 'None' %}
+                            {% if readdate and readdate['#value#'] and readdate['#value#'] != 'None' and not readdate['#value#'].startswith('0101-01') %}
                                 <span><strong>已读日期:</strong> {{ readdate['#value#'].split('T')[0] }}</span><br>
                             {% endif %}
                              {% if book.comments %}<p class="description" style="margin-top: 5px;"><strong>描述:</strong> {{ book.comments | striptags | truncate(150, True) }}</p>{% endif %}
@@ -211,9 +211,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateCalibreEditForm(book) {
         currentEditing = { type: 'calibre', id: book.id };
         // Helper to get nested custom field values safely
-        const getCustom = (field) => book.user_metadata[field] ? book.user_metadata[field]['#value#'] : '';
-        const pubdate = book.pubdate ? book.pubdate.split('T')[0] : '';
-        const readdate = getCustom('#readdate') ? getCustom('#readdate').split('T')[0] : '';
+        const getCustom = (field) => (book.user_metadata[field] ? book.user_metadata[field]['#value#'] : null) || '';
+        
+        const pubdateRaw = book.pubdate;
+        const pubdate = (pubdateRaw && !pubdateRaw.startsWith('0101-01')) ? pubdateRaw.split('T')[0] : '';
+
+        const readdateRaw = getCustom('#readdate');
+        const readdate = (readdateRaw && !readdateRaw.startsWith('0101-01')) ? readdateRaw.split('T')[0] : '';
 
         editBookForm.innerHTML = `
             <p><strong>注意:</strong> Calibre 书籍的元数据更新是异步的，可能需要一点时间才能生效。</p>
@@ -223,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="form-group"><label>出版日期:</label><input type="date" name="pubdate" value="${pubdate}"></div>
             <div class="form-group"><label>评分 (0-10):</label><input type="number" name="rating" min="0" max="10" step="1" value="${book.rating || 0}"></div>
             <div class="form-group"><label>标签 (逗号分隔):</label><input type="text" name="tags" value="${book.tags.join(', ')}"></div>
-            <div class="form-group"><label>库 (自定义字段 #library):</label><input type="text" name="_library" value="${getCustom('#library')}"></div>
-            <div class="form-group"><label>已读日期 (自定义字段 #readdate):</label><input type="date" name="_readdate" value="${readdate}"></div>
+            <div class="form-group"><label>库 (自定义字段 #library):</label><input type="text" name="#library" value="${getCustom('#library')}"></div>
+            <div class="form-group"><label>已读日期 (自定义字段 #readdate):</label><input type="date" name="#readdate" value="${readdate}"></div>
             <div class="form-group"><label>描述:</label><textarea name="comments" rows="4">${book.comments || ''}</textarea></div>
         `;
         showModal(editModal);
@@ -294,21 +298,80 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Form Submission Handlers ---
     function handleSaveChanges() {
         const formData = new FormData(editBookForm);
-        const data = Object.fromEntries(formData.entries());
+        const currentData = Object.fromEntries(formData.entries());
         let url;
+        let payload = {};
 
         if (currentEditing.type === 'anx') {
-            url = `/api/edit_anx_metadata`; // Corrected endpoint
-            data.id = currentEditing.id;
-            data.reading_percentage = parseFloat(data.reading_percentage) / 100.0;
+            url = `/api/edit_anx_metadata`;
+            const originalBook = anxBooksData.find(b => b.id == currentEditing.id);
+            payload = { id: currentEditing.id };
+            
+            for (const key in currentData) {
+                if (key === 'id') continue;
+                let originalValue = originalBook[key];
+                let currentValue = currentData[key];
+
+                if (key === 'reading_percentage') {
+                    currentValue = parseFloat(currentValue) / 100.0;
+                }
+                if (key === 'rating') {
+                    originalValue = originalValue || 0;
+                }
+
+                if (String(originalValue || '') !== String(currentValue)) {
+                    payload[key] = currentValue;
+                }
+            }
+
         } else { // calibre
             url = `/api/update_calibre_book/${currentEditing.id}`;
+            const originalBook = calibreBooksData.find(b => b.id == currentEditing.id);
+            
+            const getOrigCustom = (field) => (originalBook.user_metadata[field] ? originalBook.user_metadata[field]['#value#'] : null) || '';
+
+            for (const key in currentData) {
+                let originalValue;
+                const currentValue = currentData[key];
+
+                switch(key) {
+                    case 'authors':
+                        originalValue = originalBook.authors.join(', ');
+                        break;
+                    case 'tags':
+                        originalValue = originalBook.tags.join(', ');
+                        break;
+                    case 'pubdate':
+                        const pubdateRaw = originalBook.pubdate;
+                        originalValue = (pubdateRaw && !pubdateRaw.startsWith('0101-01-01')) ? pubdateRaw.split('T')[0] : '';
+                        break;
+                    case '#readdate':
+                        const readdateRaw = getOrigCustom('#readdate');
+                        originalValue = (readdateRaw && !readdateRaw.startsWith('0101-01-01')) ? readdateRaw.split('T')[0] : '';
+                        break;
+                    case '#library':
+                        originalValue = getOrigCustom('#library');
+                        break;
+                    default:
+                        originalValue = originalBook[key] || '';
+                }
+                
+                if (String(originalValue) !== String(currentValue)) {
+                    payload[key] = currentValue;
+                }
+            }
         }
         
+        const changeKeys = Object.keys(payload);
+        if (changeKeys.length === 0 || (changeKeys.length === 1 && changeKeys[0] === 'id')) {
+             alert('没有检测到任何更改。');
+             return;
+        }
+
         fetch_with_token(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(payload)
         }).then(res => res.json()).then(result => {
             alert(result.message || result.error);
             if (result.message) location.reload();

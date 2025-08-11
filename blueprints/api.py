@@ -433,36 +433,57 @@ def upload_to_calibre_api():
 def update_calibre_book_api(book_id):
     data = request.get_json()
     
-    form_data = {
-        'library_id': config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library'),
-        'book_id': book_id,
+    # Prepare the 'changes' dictionary
+    changes = {
         'title': data.get('title'),
         'authors': data.get('authors'),
         'rating': data.get('rating'),
         'comments': data.get('comments'),
         'publisher': data.get('publisher'),
         'tags': data.get('tags'),
-        '_library': data.get('_library'),
-        '_readdate': data.get('_readdate'),
+        '#library': data.get('#library'),
+        '#readdate': data.get('#readdate'),
         'pubdate': data.get('pubdate')
     }
     
-    form_data = {k: v for k, v in form_data.items() if v is not None and v != ''}
+    # Filter out any keys with None or empty values
+    # Filter out any keys with None values, but keep empty strings as they represent a deliberate clearing of a field.
+    changes = {k: v for k, v in changes.items() if v is not None}
 
-    url = f"{config_manager.config['CALIBRE_URL']}/ajax/book/edit"
+    # If authors is a string, split it into a list as required by Calibre
+    if 'authors' in changes and isinstance(changes['authors'], str):
+        changes['authors'] = [a.strip() for a in changes['authors'].split('&')]
+
+    # Handle date fields: Calibre expects a special string for undefined/cleared dates.
+    UNDEFINED_DATE_ISO = '0101-01-01T00:00:00+00:00'
+    for date_field in ['pubdate', '#readdate']:
+        if date_field in changes and changes[date_field] == '':
+            changes[date_field] = UNDEFINED_DATE_ISO
+
+    if not changes:
+        return jsonify({'error': '没有提供任何要更新的字段。'}), 400
+
+    payload = {'changes': changes}
+    
+    library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
+    url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{book_id}/{library_id}"
+    
     try:
-        response = requests.post(url, data=form_data, auth=get_calibre_auth())
+        response = requests.post(url, json=payload, auth=get_calibre_auth())
         response.raise_for_status()
         
-        if response.text == "ok":
-            return jsonify({'message': '元数据更新成功。'})
-        else:
-            try:
-                error_details = response.json()
-                return jsonify({'error': 'Calibre 返回了错误。', 'details': error_details}), 400
-            except json.JSONDecodeError:
-                return jsonify({'error': f'Calibre 返回了未知错误: {response.text}'}), 500
+        try:
+            result = response.json()
+            # The cdb endpoint returns the updated metadata for the book
+            if str(book_id) in result:
+                return jsonify({'message': '元数据更新成功。', 'updated_metadata': result[str(book_id)]})
+            else:
+                 return jsonify({'error': 'Calibre 返回了未知响应。', 'details': result}), 500
+        except json.JSONDecodeError:
+            return jsonify({'error': f'Calibre 返回了无效的 JSON 响应: {response.text}'}), 500
                 
+    except requests.exceptions.HTTPError as e:
+        return jsonify({'error': f'连接 Calibre 服务器出错: {e.response.status_code} {e.response.reason}', 'details': e.response.text}), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'error': f'连接 Calibre 服务器出错: {e}'}), 500
 
