@@ -76,4 +76,4 @@ ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 # Define the default command
 # The --pid flag tells Gunicorn to write its master process ID to a file.
 # This allows us to send signals (like SIGHUP for reloading) to it.
-CMD gunicorn --bind 0.0.0.0:$PORT --workers $(( 2 * $(nproc) + 1 )) --pid /tmp/gunicorn.pid "app:create_app()"
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 2 --pid /tmp/gunicorn.pid "app:create_app()"
