@@ -15,8 +15,10 @@ def get_db():
     return conn
 
 def update_schema_if_needed(db):
-    """检查并添加新列，以实现简单的数据库迁移"""
+    """检查并添加新列或表，以实现简单的数据库迁移"""
     cursor = db.cursor()
+    
+    # 检查 users 表的列
     cursor.execute("PRAGMA table_info(users)")
     columns = [row['name'] for row in cursor.fetchall()]
     
@@ -25,6 +27,26 @@ def update_schema_if_needed(db):
         cursor.execute('ALTER TABLE users ADD COLUMN kindle_email TEXT')
         db.commit()
 
+    # 检查 mcp_tokens 表是否存在
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='mcp_tokens'")
+    if cursor.fetchone() is None:
+        print("Migrating database: creating 'mcp_tokens' table.")
+        create_mcp_tokens_table(cursor)
+        db.commit()
+
+
+def create_mcp_tokens_table(cursor):
+    """创建 mcp_tokens 表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE mcp_tokens (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            token TEXT UNIQUE NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        );
+    ''')
+
 def create_schema():
     """
     创建数据库和表结构，并执行必要的迁移。
@@ -32,9 +54,9 @@ def create_schema():
     db_exists = os.path.exists(DATABASE_PATH)
     
     with closing(get_db()) as db:
+        cursor = db.cursor()
         if not db_exists:
             print("Creating new database...")
-            cursor = db.cursor()
             # Users Table
             cursor.execute(f'''
                 CREATE TABLE IF NOT EXISTS users (
@@ -47,6 +69,8 @@ def create_schema():
                     kindle_email TEXT
                 );
             ''')
+            # MCP Tokens Table
+            create_mcp_tokens_table(cursor)
             db.commit()
             print("Database tables created.")
         else:

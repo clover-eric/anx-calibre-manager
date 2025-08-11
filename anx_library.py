@@ -67,6 +67,14 @@ def get_anx_books(username):
     
     return books
 
+def get_anx_book_details(username, book_id):
+    """Fetches the details for a single Anx book by its ID."""
+    all_books = get_anx_books(username)
+    for book in all_books:
+        if book['id'] == book_id:
+            return book
+    return None
+
 def _calculate_md5(file_path):
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as f:

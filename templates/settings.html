@@ -13,6 +13,10 @@
     .tab-content.visible { opacity: 1; }
     h3 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
     #qr_code_container img { max-width: 200px; margin: 1rem 0; }
+    .token-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid #eee; }
+    .token-value { font-family: monospace; background: #f5f5f5; padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .mcp-docs { background: #f9f9f9; border-left: 4px solid var(--primary-color); padding: 1rem; margin-top: 1rem; }
+    .mcp-docs code { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; }
 </style>
 {% endblock %}
 
@@ -25,6 +29,7 @@
 
     <div class="tabs">
         <div class="tab-link active" onclick="openTab(event, 'userSettings')">用户设置</div>
+        <div class="tab-link" onclick="openTab(event, 'mcpSettings')">MCP 设置</div>
         {% if g.user and g.user.is_admin %}
         <div class="tab-link" onclick="openTab(event, 'globalSettings')">全局设置</div>
         <div class="tab-link" onclick="openTab(event, 'userManagement')">用户管理</div>
@@ -74,6 +79,35 @@
                 <button type="submit" class="button-primary">保存用户设置</button>
             </div>
         </form>
+    </div>
+
+    <!-- MCP 设置 -->
+    <div id="mcpSettings" class="tab-content page-transition">
+        <h3>MCP API 令牌</h3>
+        <p>您可以使用这些令牌通过 MCP 协议与您的书库进行交互。</p>
+        <div id="mcp-token-list">
+            <!-- Tokens will be loaded here by JavaScript -->
+        </div>
+        <div style="text-align: right; margin-top: 1rem;">
+            <button class="button-primary" onclick="generateMcpToken()">生成新令牌</button>
+        </div>
+
+        <div class="mcp-docs">
+            <h4>MCP 端点</h4>
+            <p><code>{{ request.host_url.rstrip('/') }}/mcp?token=YOUR_TOKEN</code></p>
+            <h4>认证</h4>
+            <p>通过在 URL 中附加 <code>?token=YOUR_TOKEN</code> 参数进行认证。</p>
+            <h4>可用工具</h4>
+            <ul>
+                <li><strong>search_calibre_books</strong>: 搜索 Calibre 书籍。参数: <code>query</code> (str), <code>limit</code> (int, default 20)</li>
+                <li><strong>get_recent_calibre_books</strong>: 获取最近的 Calibre 书籍。参数: <code>limit</code> (int, default 20)</li>
+                <li><strong>get_calibre_book_details</strong>: 获取 Calibre 书籍详情。参数: <code>book_id</code> (int)</li>
+                <li><strong>get_recent_anx_books</strong>: 获取最近的 Anx 书籍。参数: <code>limit</code> (int, default 20)</li>
+                <li><strong>get_anx_book_details</strong>: 获取 Anx 书籍详情。参数: <code>book_id</code> (int)</li>
+                <li><strong>push_calibre_book_to_anx</strong>: 推送 Calibre 书籍到 Anx。参数: <code>book_id</code> (int)</li>
+                <li><strong>send_calibre_book_to_kindle</strong>: 发送 Calibre 书籍到 Kindle。参数: <code>book_id</code> (int)</li>
+            </ul>
+        </div>
     </div>
 
     <!-- 全局设置 (仅限管理员) -->
@@ -258,6 +292,7 @@
             }
             await fetchUsers();
         }
+        await fetchMcpTokens();
         // Hide the main loader once all data is populated
         document.getElementById('settings-loading-overlay').style.display = 'none';
         // Make the content visible
@@ -333,6 +368,49 @@
         alert(result.message || result.error);
     }
     
+    // --- MCP Token Logic ---
+    async function fetchMcpTokens() {
+        const response = await fetch('/api/mcp_tokens');
+        const tokens = await response.json();
+        const listEl = document.getElementById('mcp-token-list');
+        listEl.innerHTML = '';
+        if (tokens.length === 0) {
+            listEl.innerHTML = '<p>没有可用的令牌。</p>';
+        } else {
+            tokens.forEach(token => {
+                const item = document.createElement('div');
+                item.className = 'token-item';
+                item.innerHTML = `
+                    <div>
+                        <span class="token-value">${token.token}</span>
+                        <small style="display: block; color: #666;">创建于: ${new Date(token.created_at).toLocaleString()}</small>
+                    </div>
+                    <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">删除</button>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+    }
+
+    async function generateMcpToken() {
+        const response = await fetch('/api/mcp_tokens', { method: 'POST' });
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            await fetchMcpTokens();
+        }
+    }
+
+    async function deleteMcpToken(tokenId) {
+        if (!confirm('确定要删除此令牌吗？')) return;
+        const response = await fetch(`/api/mcp_tokens/${tokenId}`, { method: 'DELETE' });
+        const result = await response.json();
+        alert(result.message || result.error);
+        if (response.ok) {
+            await fetchMcpTokens();
+        }
+    }
+
     // --- Admin Functions ---
     async function saveGlobalSettings(event) {
         event.preventDefault();

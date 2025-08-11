@@ -7,6 +7,7 @@ import qrcode
 import requests
 import bcrypt
 import logging
+import secrets
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
 from contextlib import closing
 from werkzeug.utils import secure_filename
@@ -304,81 +305,102 @@ def download_book_api(book_id):
     
     return jsonify({'error': '无法下载书籍。'}), 404
 
-@api_bp.route('/send_to_kindle/<int:book_id>', methods=['POST'])
-def send_to_kindle_api(book_id):
-    if not g.user.kindle_email: return jsonify({'error': '请先在用户设置中配置您的 Kindle 邮箱。'}), 400
+def _send_to_kindle_logic(user, book_id):
+    """Core logic to send a Calibre book to a user's Kindle."""
+    if not user['kindle_email']:
+        return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
+    
     details = get_calibre_book_details(book_id)
-    if not details: return jsonify({'error': '找不到书籍详情。'}), 404
+    if not details:
+        return {'success': False, 'error': '找不到书籍详情。'}
+
     available_formats = [f.lower() for f in details.get('formats', [])]
-    format_to_send = None
-    priority = json.loads(g.user.send_format_priority or '[]')
-    for p_format in priority:
-        if p_format.lower() in available_formats:
-            format_to_send = p_format.lower()
-            break
-            
+    priority_str = user['send_format_priority'] if user['send_format_priority'] else '[]'
+    priority = json.loads(priority_str)
+    format_to_send = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
+
     if not format_to_send:
-        if available_formats:
-            format_to_send = available_formats[0]
-        else:
-            return jsonify({'error': f'未找到可用格式: {", ".join(available_formats)}'}), 400
-            
+        return {'success': False, 'error': f'未找到可用格式: {", ".join(available_formats)}'}
+
     additional_message = ""
     if format_to_send != 'epub' and 'epub' in available_formats:
         additional_message = f"注意: 此书以 {format_to_send.upper()} 格式发送。为获得最佳体验，建议在 Calibre 中将其转为 EPUB。"
-        
+
     content, filename = download_calibre_book(book_id, format_to_send)
-    if not content: return jsonify({'error': '下载书籍时出错。'}), 500
+    if not content:
+        return {'success': False, 'error': '下载书籍时出错。'}
+
     subject = f"推送书籍: {details.get('title', 'N/A')}"
     body = f"附件是您请求的书籍。{additional_message}"
-    success, message = send_email(g.user.kindle_email, subject, body, content, filename)
-    if success:
-        return jsonify({'message': message + (' ' + additional_message if additional_message else '')})
-    else:
-        return jsonify({'error': message}), 500
-
-@api_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
-def push_to_anx_api(book_id):
-    details = get_calibre_book_details(book_id)
-    if not details: return jsonify({'error': '找不到书籍详情。'}), 404
+    success, message = send_email(user['kindle_email'], subject, body, content, filename)
     
+    if success:
+        return {'success': True, 'message': message + (' ' + additional_message if additional_message else '')}
+    else:
+        return {'success': False, 'error': message}
+
+@api_bp.route('/send_to_kindle/<int:book_id>', methods=['POST'])
+def send_to_kindle_api(book_id):
+    result = _send_to_kindle_logic(g.user, book_id)
+    if result['success']:
+        return jsonify({'message': result['message']})
+    else:
+        return jsonify({'error': result['error']}), 500
+
+def _push_calibre_to_anx_logic(user, book_id):
+    """Core logic to push a Calibre book to a user's Anx library."""
+    details = get_calibre_book_details(book_id)
+    if not details:
+        return {'success': False, 'error': '找不到书籍详情。'}
+
     available_formats = [f.lower() for f in details.get('formats', [])]
-    priority = json.loads(g.user.send_format_priority or '[]')
+    priority_str = user['send_format_priority'] if user['send_format_priority'] else '[]'
+    priority = json.loads(priority_str)
     format_to_push = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
     if not format_to_push:
-        return jsonify({'error': '未找到可推送的格式。'}), 400
+        return {'success': False, 'error': '未找到可推送的格式。'}
 
     book_content, book_filename = download_calibre_book(book_id, format_to_push)
-    if not book_content: return jsonify({'error': '下载书籍以进行推送时出错。'}), 500
+    if not book_content:
+        return {'success': False, 'error': '下载书籍以进行推送时出错。'}
 
     cover_content, _ = download_calibre_cover(book_id)
 
-    dirs = get_anx_user_dirs(g.user.username)
+    dirs = get_anx_user_dirs(user['username'])
     if not dirs:
-        return jsonify({'error': '用户目录未配置。'}), 500
-    
+        return {'success': False, 'error': '用户目录未配置。'}
+
     import_dir = dirs["import"]
     os.makedirs(import_dir, exist_ok=True)
-    
+
     book_file_path = os.path.join(import_dir, book_filename)
     with open(book_file_path, 'wb') as f:
         f.write(book_content)
-        
+
     if cover_content:
         base_name, _ = os.path.splitext(book_filename)
         cover_filename = f"{base_name}.jpg"
         cover_file_path = os.path.join(import_dir, cover_filename)
         with open(cover_file_path, 'wb') as f:
             f.write(cover_content)
-            
-    result = process_anx_import_folder(g.user.username)
+
+    result = process_anx_import_folder(user['username'])
     
-    return jsonify({
+    return {
+        'success': True,
         'message': f"书籍 '{book_filename}' 推送完成。 "
                    f"已处理: {result.get('processed', 0)}, "
                    f"已跳过: {result.get('skipped', 0)}."
-    })
+    }
+
+@api_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
+def push_to_anx_api(book_id):
+    result = _push_calibre_to_anx_logic(g.user, book_id)
+    if result['success']:
+        return jsonify({'message': result['message']})
+    else:
+        return jsonify({'error': result['error']}), 500
 
 
 @api_bp.route('/upload_to_calibre', methods=['POST'])
@@ -510,7 +532,31 @@ def delete_anx_book_api(book_id):
     else:
         return jsonify({'error': message}), 500
 
-# --- New Completions API ---
+# --- MCP Token Management ---
+@api_bp.route('/mcp_tokens', methods=['GET'])
+def get_mcp_tokens():
+    with closing(database.get_db()) as db:
+        tokens = db.execute('SELECT id, token, created_at FROM mcp_tokens WHERE user_id = ?', (g.user.id,)).fetchall()
+        return jsonify([dict(row) for row in tokens])
+
+@api_bp.route('/mcp_tokens', methods=['POST'])
+def create_mcp_token():
+    new_token = secrets.token_hex(16)
+    with closing(database.get_db()) as db:
+        db.execute('INSERT INTO mcp_tokens (user_id, token) VALUES (?, ?)', (g.user.id, new_token))
+        db.commit()
+    return jsonify({'message': '新令牌已生成。', 'token': new_token})
+
+@api_bp.route('/mcp_tokens/<int:token_id>', methods=['DELETE'])
+def delete_mcp_token(token_id):
+    with closing(database.get_db()) as db:
+        # Ensure the token belongs to the current user before deleting
+        db.execute('DELETE FROM mcp_tokens WHERE id = ? AND user_id = ?', (token_id, g.user.id))
+        db.commit()
+    return jsonify({'message': '令牌已删除。'})
+
+
+# --- Completions API ---
 @lru_cache(maxsize=16)
 def get_all_items_for_field(library_id, field):
     """

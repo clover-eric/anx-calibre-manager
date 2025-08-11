@@ -89,13 +89,17 @@ def create_app():
     from blueprints.main import main_bp
     from blueprints.auth import auth_bp
     from blueprints.api import api_bp
+    from blueprints.mcp import mcp_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp)
+    app.register_blueprint(mcp_bp)
 
     @app.before_request
     def before_request_handler():
         g.user = get_current_user()
+        # Pass the app context to g for the MCP endpoint to use
+        g.app = app
         with closing(database.get_db()) as db:
             user_count = db.execute('SELECT COUNT(id) FROM users').fetchone()[0]
             if user_count == 0 and request.endpoint and not request.endpoint.startswith('auth.') and not request.endpoint == 'static':
