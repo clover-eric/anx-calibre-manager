@@ -12,6 +12,8 @@ from contextlib import closing
 from werkzeug.utils import secure_filename
 import sqlite3
 import uuid
+from functools import lru_cache
+from urllib.parse import quote
 
 import database
 import config_manager
@@ -446,7 +448,6 @@ def update_calibre_book_api(book_id):
         'pubdate': data.get('pubdate')
     }
     
-    # Filter out any keys with None or empty values
     # Filter out any keys with None values, but keep empty strings as they represent a deliberate clearing of a field.
     changes = {k: v for k, v in changes.items() if v is not None}
 
@@ -508,3 +509,45 @@ def delete_anx_book_api(book_id):
         return jsonify({'message': message})
     else:
         return jsonify({'error': message}), 500
+
+# --- New Completions API ---
+@lru_cache(maxsize=16)
+def get_all_items_for_field(library_id, field):
+    """
+    Fetches all items for a given field from the Calibre server.
+    Results are cached to avoid repeated requests for the same field.
+    """
+    encoded_field = quote(field)
+    url = f"{config_manager.config['CALIBRE_URL']}/interface-data/field-names/{encoded_field}?library_id={library_id}"
+    try:
+        response = requests.get(url, auth=get_calibre_auth())
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Could not fetch completions for field '{field}': {e}")
+        return []
+
+@api_bp.route('/calibre/completions', methods=['GET'])
+@admin_required_api
+def calibre_completions_api():
+    field = request.args.get('field')
+    query = request.args.get('query', '').lower()
+    
+    if not field:
+        return jsonify({'error': 'Field parameter is required.'}), 400
+
+    supported_fields = ['authors', 'publisher', 'tags', '#library']
+    if field not in supported_fields:
+        return jsonify({'error': f"Completions not supported for field: {field}"}), 400
+
+    library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
+    
+    all_items = get_all_items_for_field(library_id, field)
+    
+    if not query:
+        # Return a small subset if query is empty
+        return jsonify(all_items[:20])
+
+    filtered_items = [item for item in all_items if query in item.lower()]
+    
+    return jsonify(filtered_items[:20]) # Return max 20 results
