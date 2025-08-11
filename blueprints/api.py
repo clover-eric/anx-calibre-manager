@@ -305,9 +305,9 @@ def download_book_api(book_id):
     
     return jsonify({'error': '无法下载书籍。'}), 404
 
-def _send_to_kindle_logic(user, book_id):
-    """Core logic to send a Calibre book to a user's Kindle."""
-    if not user['kindle_email']:
+def _send_to_kindle_logic(user_dict, book_id):
+    """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
+    if not user_dict.get('kindle_email'):
         return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
     
     details = get_calibre_book_details(book_id)
@@ -315,7 +315,7 @@ def _send_to_kindle_logic(user, book_id):
         return {'success': False, 'error': '找不到书籍详情。'}
 
     available_formats = [f.lower() for f in details.get('formats', [])]
-    priority_str = user['send_format_priority'] if user['send_format_priority'] else '[]'
+    priority_str = user_dict.get('send_format_priority') or '[]'
     priority = json.loads(priority_str)
     format_to_send = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
@@ -332,7 +332,7 @@ def _send_to_kindle_logic(user, book_id):
 
     subject = f"推送书籍: {details.get('title', 'N/A')}"
     body = f"附件是您请求的书籍。{additional_message}"
-    success, message = send_email(user['kindle_email'], subject, body, content, filename)
+    success, message = send_email(user_dict['kindle_email'], subject, body, content, filename)
     
     if success:
         return {'success': True, 'message': message + (' ' + additional_message if additional_message else '')}
@@ -341,20 +341,29 @@ def _send_to_kindle_logic(user, book_id):
 
 @api_bp.route('/send_to_kindle/<int:book_id>', methods=['POST'])
 def send_to_kindle_api(book_id):
-    result = _send_to_kindle_logic(g.user, book_id)
+    # Convert g.user object to a dictionary for consistent access
+    user_dict = {
+        'username': g.user.username,
+        'kindle_email': g.user.kindle_email,
+        'send_format_priority': g.user.send_format_priority
+    }
+    result = _send_to_kindle_logic(user_dict, book_id)
     if result['success']:
         return jsonify({'message': result['message']})
     else:
+        # Return 400 for user-correctable errors, 500 for others
+        if 'Kindle 邮箱' in result.get('error', ''):
+            return jsonify({'error': result['error']}), 400
         return jsonify({'error': result['error']}), 500
 
-def _push_calibre_to_anx_logic(user, book_id):
-    """Core logic to push a Calibre book to a user's Anx library."""
+def _push_calibre_to_anx_logic(user_dict, book_id):
+    """Core logic to push a Calibre book to a user's Anx library. Expects user as a dict."""
     details = get_calibre_book_details(book_id)
     if not details:
         return {'success': False, 'error': '找不到书籍详情。'}
 
     available_formats = [f.lower() for f in details.get('formats', [])]
-    priority_str = user['send_format_priority'] if user['send_format_priority'] else '[]'
+    priority_str = user_dict.get('send_format_priority') or '[]'
     priority = json.loads(priority_str)
     format_to_push = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
@@ -367,7 +376,7 @@ def _push_calibre_to_anx_logic(user, book_id):
 
     cover_content, _ = download_calibre_cover(book_id)
 
-    dirs = get_anx_user_dirs(user['username'])
+    dirs = get_anx_user_dirs(user_dict['username'])
     if not dirs:
         return {'success': False, 'error': '用户目录未配置。'}
 
@@ -385,7 +394,7 @@ def _push_calibre_to_anx_logic(user, book_id):
         with open(cover_file_path, 'wb') as f:
             f.write(cover_content)
 
-    result = process_anx_import_folder(user['username'])
+    result = process_anx_import_folder(user_dict['username'])
     
     return {
         'success': True,
@@ -396,7 +405,13 @@ def _push_calibre_to_anx_logic(user, book_id):
 
 @api_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
 def push_to_anx_api(book_id):
-    result = _push_calibre_to_anx_logic(g.user, book_id)
+    # Convert g.user object to a dictionary for consistent access
+    user_dict = {
+        'username': g.user.username,
+        'kindle_email': g.user.kindle_email,
+        'send_format_priority': g.user.send_format_priority
+    }
+    result = _push_calibre_to_anx_logic(user_dict, book_id)
     if result['success']:
         return jsonify({'message': result['message']})
     else:

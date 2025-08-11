@@ -84,10 +84,13 @@ def get_recent_anx_books(limit: int = 20):
     return books[:limit]
 
 def push_calibre_book_to_anx(book_id: int):
-    return _push_calibre_to_anx_logic(g.user, book_id)
+    # The logic function expects a dictionary. g.user is a sqlite3.Row, which is dict-like.
+    # To be safe and explicit, we convert it to a standard dict.
+    return _push_calibre_to_anx_logic(dict(g.user), book_id)
 
 def send_calibre_book_to_kindle(book_id: int):
-    return _send_to_kindle_logic(g.user, book_id)
+    # The logic function expects a dictionary.
+    return _send_to_kindle_logic(dict(g.user), book_id)
 
 # --- Main MCP Endpoint ---
 
