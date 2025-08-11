@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-
+# ignore
+#CREATE TABLE sqlite_sequence (
+#  name,
+#  seq
+#);
 ANX_DB_SCHEMA = """
 CREATE TABLE android_metadata (
   locale TEXT
-);
-
-CREATE TABLE sqlite_sequence (
-  name,
-  seq
 );
 
 CREATE TABLE tb_books (
