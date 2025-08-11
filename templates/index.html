@@ -137,8 +137,9 @@
             <form id="uploadForm" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="book-upload-input">选择文件:</label>
-                    <input id="book-upload-input" type="file" name="book" required>
+                    <input id="book-upload-input" type="file" name="books" required multiple>
                 </div>
+                <div id="upload-progress-container"></div>
                 <div class="modal-footer">
                      <button type="button" class="button" data-action="close-modal">取消</button>
                     <button type="submit" class="button-primary">上传</button>
@@ -317,12 +318,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
+        const progressContainer = document.getElementById('upload-progress-container');
+        progressContainer.innerHTML = '正在上传...';
+
         fetch_with_token("{{ url_for('api.upload_to_calibre_api') }}", {
             method: 'POST',
             body: formData
-        }).then(res => res.json()).then(result => {
-            alert(result.message || result.error);
-            if (result.message) location.reload();
+        }).then(res => res.json()).then(results => {
+            progressContainer.innerHTML = '';
+            let allSuccess = true;
+            results.forEach(result => {
+                const p = document.createElement('p');
+                if (result.success) {
+                    p.textContent = `✅ ${result.filename}: ${result.message}`;
+                    p.style.color = 'green';
+                } else {
+                    allSuccess = false;
+                    p.textContent = `❌ ${result.filename}: ${result.error}`;
+                    p.style.color = 'red';
+                }
+                progressContainer.appendChild(p);
+            });
+
+            if (allSuccess) {
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
         });
     });
 

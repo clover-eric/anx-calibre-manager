@@ -11,6 +11,7 @@ from flask import Blueprint, request, jsonify, g, session, send_file, send_from_
 from contextlib import closing
 from werkzeug.utils import secure_filename
 import sqlite3
+import uuid
 
 import database
 import config_manager
@@ -208,6 +209,8 @@ def user_settings_api():
 def global_settings_api():
     if request.method == 'POST':
         data = request.get_json()
+        # Handle checkbox boolean value
+        data['CALIBRE_ADD_DUPLICATES'] = data.get('CALIBRE_ADD_DUPLICATES') == 'true'
         config_manager.save_config(data)
         return jsonify({'message': '全局设置已更新。'})
     else: # GET
@@ -378,44 +381,52 @@ def push_to_anx_api(book_id):
 
 @api_bp.route('/upload_to_calibre', methods=['POST'])
 def upload_to_calibre_api():
-    if 'book' not in request.files:
+    if 'books' not in request.files:
         return jsonify({'error': '没有文件部分。'}), 400
-    file = request.files['book']
-    if file.filename == '':
+    
+    files = request.files.getlist('books')
+    if not files or files[0].filename == '':
         return jsonify({'error': '没有选择文件。'}), 400
 
-    if file:
-        filename = file.filename
-        
-        import uuid
-        job_id = str(uuid.uuid4())
-        
-        library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library') 
-        
-        add_duplicates = config_manager.config.get('CALIBRE_ADD_DUPLICATES', False)
-        add_duplicates_flag = 'y' if add_duplicates else 'n' 
-
-        encoded_filename = requests.utils.quote(filename) 
-
-        url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/{job_id}/{add_duplicates_flag}/{encoded_filename}/{library_id}"
-        
-        try:
-            headers = {'Content-Type': file.mimetype} if file.mimetype else {}
+    results = []
+    for file in files:
+        if file:
+            filename = file.filename
             
-            response = requests.post(url, data=file.read(), auth=get_calibre_auth(), headers=headers)
-            response.raise_for_status()
+            job_id = str(uuid.uuid4())
             
-            res_json = response.json()
-            if res_json.get('book_id'):
-                return jsonify({'message': f"书籍 '{res_json.get('title')}' 已成功上传, ID: {res_json['book_id']}."})
-            else:
-                return jsonify({'error': '上传失败，书籍可能已存在。', 'details': res_json.get('duplicates')}), 409
-        except requests.exceptions.HTTPError as e:
-            error_message = f"Calibre 服务器返回错误: {e.response.status_code} - {e.response.text}"
-            return jsonify({'error': error_message}), e.response.status_code
-        except requests.exceptions.RequestException as e:
-            return jsonify({'error': f'连接 Calibre 服务器出错: {e}'}), 500
-    return jsonify({'error': '文件上传失败。'}), 500
+            library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library') 
+            
+            add_duplicates = config_manager.config.get('CALIBRE_ADD_DUPLICATES', False)
+            add_duplicates_flag = 'y' if add_duplicates else 'n' 
+
+            encoded_filename = requests.utils.quote(filename) 
+
+            url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/{job_id}/{add_duplicates_flag}/{encoded_filename}/{library_id}"
+            
+            try:
+                headers = {'Content-Type': file.mimetype} if file.mimetype else {}
+                
+                # We must read the file content into memory before passing it to requests,
+                # as the file object will be closed after the first iteration.
+                file.seek(0)
+                file_content = file.read()
+                
+                response = requests.post(url, data=file_content, auth=get_calibre_auth(), headers=headers)
+                response.raise_for_status()
+                
+                res_json = response.json()
+                if res_json.get('book_id'):
+                    results.append({'success': True, 'filename': filename, 'message': f"书籍 '{res_json.get('title')}' 已成功上传, ID: {res_json['book_id']}."})
+                else:
+                    results.append({'success': False, 'filename': filename, 'error': '上传失败，书籍可能已存在。', 'details': res_json.get('duplicates')})
+            except requests.exceptions.HTTPError as e:
+                error_message = f"Calibre 服务器返回错误: {e.response.status_code} - {e.response.text}"
+                results.append({'success': False, 'filename': filename, 'error': error_message})
+            except requests.exceptions.RequestException as e:
+                results.append({'success': False, 'filename': filename, 'error': f'连接 Calibre 服务器出错: {e}'})
+    
+    return jsonify(results)
 
 @api_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
 @admin_required_api
