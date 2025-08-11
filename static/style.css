@@ -421,3 +421,45 @@ textarea {
     background-color: DodgerBlue !important;
     color: #ffffff;
 }
+
+/* --- 9. Upload Progress Bar Styles --- */
+.upload-progress-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.progress-wrapper span:first-child {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.progress-wrapper progress {
+    width: 100px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.progress-wrapper span:last-child {
+    width: 150px; /* Wider to accommodate messages */
+    flex-shrink: 0;
+    text-align: left;
+}
+
+.progress-wrapper.success span:last-child {
+    color: green;
+}
+
+.progress-wrapper.error span:last-child {
+    color: var(--danger-color);
+}

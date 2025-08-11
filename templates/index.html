@@ -139,7 +139,7 @@
                     <label for="book-upload-input">选择文件:</label>
                     <input id="book-upload-input" type="file" name="books" required multiple>
                 </div>
-                <div id="upload-progress-container"></div>
+                <div id="upload-progress-container" class="upload-progress-container"></div>
                 <div class="modal-footer">
                      <button type="button" class="button" data-action="close-modal">取消</button>
                     <button type="submit" class="button-primary">上传</button>
@@ -280,7 +280,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'send-kindle':
                  fetch_with_token(`/api/send_to_kindle/${id}`, { method: 'POST' })
-                    .then(res => res.json()).then(data => alert(data.message || data.error));
+                    .then(res => {
+                        if (!res.ok) {
+                           return res.json().then(err => { throw new Error(err.error) });
+                        }
+                        return res.json();
+                    })
+                    .then(data => alert(data.message))
+                    .catch(error => alert(error.message));
                 break;
             case 'save-changes':
                 handleSaveChanges();
@@ -381,34 +388,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const files = document.getElementById('book-upload-input').files;
         const progressContainer = document.getElementById('upload-progress-container');
-        progressContainer.innerHTML = '正在上传...';
+        progressContainer.innerHTML = ''; // Clear previous results
 
-        fetch_with_token("{{ url_for('api.upload_to_calibre_api') }}", {
-            method: 'POST',
-            body: formData
-        }).then(res => res.json()).then(results => {
-            progressContainer.innerHTML = '';
-            let allSuccess = true;
-            results.forEach(result => {
-                const p = document.createElement('p');
-                if (result.success) {
-                    p.textContent = `✅ ${result.filename}: ${result.message}`;
-                    p.style.color = 'green';
-                } else {
-                    allSuccess = false;
-                    p.textContent = `❌ ${result.filename}: ${result.error}`;
-                    p.style.color = 'red';
-                }
-                progressContainer.appendChild(p);
+        if (files.length === 0) {
+            alert('请选择要上传的文件。');
+            return;
+        }
+
+        const uploadPromises = Array.from(files).map(file => {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('books', file);
+
+                // Create progress bar for this file
+                const progressWrapper = document.createElement('div');
+                progressWrapper.className = 'progress-wrapper';
+                const fileNameSpan = document.createElement('span');
+                fileNameSpan.textContent = file.name;
+                const progressBar = document.createElement('progress');
+                progressBar.max = 100;
+                progressBar.value = 0;
+                const progressLabel = document.createElement('span');
+                progressLabel.textContent = '0%';
+                progressWrapper.appendChild(fileNameSpan);
+                progressWrapper.appendChild(progressBar);
+                progressWrapper.appendChild(progressLabel);
+                progressContainer.appendChild(progressWrapper);
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ url_for('api.upload_to_calibre_api') }}", true);
+
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        const percentComplete = (event.loaded / event.total) * 100;
+                        progressBar.value = percentComplete;
+                        progressLabel.textContent = Math.round(percentComplete) + '%';
+                    }
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        const results = JSON.parse(xhr.responseText);
+                        const result = results[0]; // Since we upload one by one
+                        if (result.success) {
+                            progressLabel.textContent = '✅ ' + result.message;
+                            progressWrapper.classList.add('success');
+                            resolve(true);
+                        } else {
+                            progressLabel.textContent = '❌ ' + result.error;
+                            progressWrapper.classList.add('error');
+                            resolve(false);
+                        }
+                    } else {
+                        progressLabel.textContent = `❌ 上传失败: ${xhr.statusText}`;
+                        progressWrapper.classList.add('error');
+                        reject(new Error(xhr.statusText));
+                    }
+                };
+
+                xhr.onerror = function() {
+                    progressLabel.textContent = '❌ 网络错误。';
+                    progressWrapper.classList.add('error');
+                    reject(new Error("Network Error"));
+                };
+
+                xhr.send(formData);
             });
+        });
 
-            if (allSuccess) {
+        Promise.all(uploadPromises).then(results => {
+            if (results.every(r => r === true)) {
                 setTimeout(() => {
+                    alert('所有书籍上传成功！');
                     location.reload();
-                }, 2000);
+                }, 1000);
             }
+        }).catch(error => {
+            console.error("An error occurred during upload:", error);
         });
     });
 
@@ -429,14 +487,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 list.setAttribute('class', 'autocomplete-items');
                 this.parentNode.appendChild(list);
 
-                // For comma-separated fields, use the last part as the query
                 let query = val;
                 if (field === 'authors' || field === 'tags') {
                     const parts = val.split(',');
                     query = parts[parts.length - 1].trim();
                 }
 
-                if (query.length < 1) return; // Don't search for very short strings
+                if (query.length < 1) return;
 
                 fetch_with_token(`/api/calibre/completions?field=${encodeURIComponent(field)}&query=${encodeURIComponent(query)}`)
                     .then(res => res.json())
