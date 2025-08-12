@@ -42,7 +42,7 @@ RUN apt-get update && \
     gosu \
     tini \
     poppler-utils \
-    liberation-fonts && \
+    fonts-liberation && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
