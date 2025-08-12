@@ -32,6 +32,7 @@ def login():
             
             session.clear()
             session['user_id'] = user['id']
+            session.permanent = True
             session.pop('user_id_pending_2fa', None)
             return jsonify({'success': True, 'redirect_url': url_for('main.index')})
         else:

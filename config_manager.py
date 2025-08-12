@@ -22,6 +22,7 @@ DEFAULT_CONFIG = {
     # Global application security settings
     'SECRET_KEY': {'env': 'SECRET_KEY', 'default': ''}, # Will be generated on first load
     'LOGIN_MAX_ATTEMPTS': {'env': 'LOGIN_MAX_ATTEMPTS', 'default': 5},
+    'SESSION_LIFETIME_DAYS': {'env': 'SESSION_LIFETIME_DAYS', 'default': 7},
 
     # WebDAV root directory
     'WEBDAV_ROOT': {'env': 'WEBDAV_ROOT', 'default': WEBDAV_DIR},

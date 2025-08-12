@@ -83,6 +83,11 @@ def create_app():
     
     app.config.from_mapping(config_manager.config)
     app.secret_key = app.config['SECRET_KEY']
+    
+    # Set session lifetime from config
+    from datetime import timedelta
+    session_lifetime_days = app.config.get('SESSION_LIFETIME_DAYS', 7)
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=int(session_lifetime_days))
 
     database.create_schema()
 
