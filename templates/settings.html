@@ -49,6 +49,16 @@
                 <input type="password" id="new_password" name="new_password" placeholder="保持不变则留空">
             </div>
 
+            <h3>外观</h3>
+            <div class="form-group">
+                <label for="theme">主题</label>
+                <select id="theme" name="theme">
+                    <option value="auto">自动 (跟随系统)</option>
+                    <option value="light">亮色模式</option>
+                    <option value="dark">暗色模式</option>
+                </select>
+            </div>
+
             <h3>推送设置</h3>
              <div class="form-group">
                 <label for="kindle_email">Kindle 邮箱地址</label>
@@ -276,6 +286,7 @@
         const userData = await userRes.json();
         document.getElementById('kindle_email').value = userData.kindle_email || '';
         document.getElementById('send_format_priority').value = (userData.send_format_priority || []).join(', ');
+        document.getElementById('theme').value = userData.theme || 'auto';
         if (userData.smtp_from_address) {
             const tipElement = document.getElementById('smtp_from_address_tip');
             tipElement.textContent = `请确保将发件邮箱 (${userData.smtp_from_address}) 添加到您的亚马逊 Kindle 信任邮箱列表中。`;
@@ -341,6 +352,24 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
+        if (response.ok) {
             cancel2FASetup();
             update2FAStatus(true);
         }
@@ -352,6 +381,24 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
+        if (response.ok) {
             update2FAStatus(false);
         }
     }
@@ -359,11 +406,7 @@
     async function saveUserSettings(event) {
         event.preventDefault();
         const form = event.target;
-        const data = {
-            new_password: form.new_password.value,
-            kindle_email: form.kindle_email.value,
-            send_format_priority: form.send_format_priority.value
-        };
+        const data = Object.fromEntries(new FormData(form).entries());
         const response = await fetch('/api/user_settings', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -371,6 +414,24 @@
         });
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
     }
     
     // --- MCP Token Logic ---
@@ -402,6 +463,24 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
+        if (response.ok) {
             await fetchMcpTokens();
         }
     }
@@ -411,6 +490,24 @@
         const response = await fetch(`/api/mcp_tokens/${tokenId}`, { method: 'DELETE' });
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
         if (response.ok) {
             await fetchMcpTokens();
         }
@@ -428,6 +525,24 @@
         });
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
         if (response.ok) {
             location.reload();
         }
@@ -456,6 +571,24 @@
         });
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
     }
 
     async function fetchUsers() {
@@ -518,6 +651,24 @@
         const result = await response.json();
         alert(result.message || result.error);
         if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
+        if (response.ok) {
             location.reload();
         }
     }
@@ -533,6 +684,24 @@
         
         const result = await response.json();
         alert(result.message || result.error);
+        if (response.ok) {
+            localStorage.setItem('theme', data.theme);
+            // Re-apply theme immediately without a page reload
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            })();
+        }
         if (response.ok) {
             location.reload();
         }

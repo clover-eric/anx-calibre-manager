@@ -27,6 +27,11 @@ def update_schema_if_needed(db):
         cursor.execute('ALTER TABLE users ADD COLUMN kindle_email TEXT')
         db.commit()
 
+    if 'theme' not in columns:
+        print("Migrating database: adding 'theme' column to users table.")
+        cursor.execute("ALTER TABLE users ADD COLUMN theme TEXT DEFAULT 'auto'")
+        db.commit()
+
     # 检查 mcp_tokens 表是否存在
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='mcp_tokens'")
     if cursor.fetchone() is None:
@@ -66,7 +71,8 @@ def create_schema():
                     is_admin INTEGER NOT NULL DEFAULT 0,
                     otp_secret TEXT,
                     send_format_priority TEXT,
-                    kindle_email TEXT
+                    kindle_email TEXT,
+                    theme TEXT DEFAULT 'auto'
                 );
             ''')
             # MCP Tokens Table

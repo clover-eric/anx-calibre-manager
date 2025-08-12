@@ -11,6 +11,46 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
 
+    <!-- Theme Manager Script -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'auto';
+            
+            function applyTheme(themeValue) {
+                if (themeValue === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (themeValue === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else { // auto
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                }
+            }
+
+            applyTheme(theme);
+
+            // This script runs in the head, so we need to wait for the body to exist
+            // to pass the theme preference to it for other scripts to potentially use.
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.dataset.theme = theme;
+                
+                // Also, listen for changes in system theme if in auto mode
+                if (theme === 'auto') {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                        if (e.matches) {
+                            document.documentElement.classList.add('dark-mode');
+                        } else {
+                            document.documentElement.classList.remove('dark-mode');
+                        }
+                    });
+                }
+            });
+        })();
+    </script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">

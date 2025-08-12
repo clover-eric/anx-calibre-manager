@@ -221,8 +221,8 @@ def user_settings_api():
                 hashed = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
                 db.execute('UPDATE users SET password_hash = ? WHERE id = ?', (hashed, g.user.id))
             priority_list = [v.strip() for v in data.get('send_format_priority', '').split(',')]
-            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ? WHERE id = ?',
-                       (data.get('kindle_email'), json.dumps(priority_list), g.user.id))
+            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ?, theme = ? WHERE id = ?',
+                       (data.get('kindle_email'), json.dumps(priority_list), data.get('theme', 'auto'), g.user.id))
             db.commit()
         return jsonify({'message': '用户设置已更新。'})
     else: # GET
@@ -237,7 +237,8 @@ def user_settings_api():
             'kindle_email': g.user.kindle_email,
             'send_format_priority': priority,
             'has_2fa': bool(g.user.otp_secret),
-            'smtp_from_address': config_manager.config.get('SMTP_USERNAME')
+            'smtp_from_address': config_manager.config.get('SMTP_USERNAME'),
+            'theme': g.user.theme or 'auto'
         })
 
 @api_bp.route('/global_settings', methods=['GET', 'POST'])
