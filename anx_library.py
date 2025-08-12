@@ -150,8 +150,42 @@ def process_anx_import_folder(username):
             existing = cursor.fetchone()
 
             if existing:
-                shutil.move(file_path, os.path.join(dirs["already_in"], filename))
-                skipped_count += 1
+                existing_id, is_deleted = existing
+                # If the book was soft-deleted, reactivate it
+                if is_deleted == 1:
+                    print(f"Reactivating deleted book with MD5: {file_md5}")
+                    
+                    # Move new book file into place
+                    dest_file_path = os.path.join(dirs["file"], filename)
+                    shutil.move(file_path, dest_file_path)
+                    file_relative_path = 'file/' + filename
+
+                    # Move new cover file into place
+                    cover_filename = f"{base_name}.jpg"
+                    cover_path = os.path.join(dirs["import"], cover_filename)
+                    cover_relative_path = ""
+                    if os.path.exists(cover_path):
+                        dest_cover_path = os.path.join(dirs["cover"], cover_filename)
+                        shutil.move(cover_path, dest_cover_path)
+                        cover_relative_path = 'cover/' + cover_filename
+
+                    # Update the database record
+                    current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+                    cursor.execute("""
+                        UPDATE tb_books
+                        SET is_deleted = 0,
+                            update_time = ?,
+                            file_path = ?,
+                            cover_path = ?
+                        WHERE id = ?
+                    """, (current_time, file_relative_path, cover_relative_path, existing_id))
+                    db.commit()
+                    processed_count += 1
+                else:
+                    # It's a true duplicate, skip it
+                    shutil.move(file_path, os.path.join(dirs["already_in"], filename))
+                    skipped_count += 1
+                
                 continue
 
             # New book
