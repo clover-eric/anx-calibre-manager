@@ -248,20 +248,20 @@ document.addEventListener('DOMContentLoaded', () => {
             progressOverlay.className = 'progress-overlay';
             button.appendChild(progressOverlay);
         }
-
+        
         button.classList.add('in-progress');
         buttonText.textContent = '处理中...';
         
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += 5;
-            if (progress > 95) clearInterval(progressInterval);
-            progressOverlay.style.width = `${progress}%`;
-        }, 100);
+        // Start the animation by setting width to a high value.
+        // The CSS transition will handle the animation.
+        setTimeout(() => {
+            progressOverlay.style.width = '95%';
+        }, 10);
+
 
         apiPromise
             .then(data => {
-                clearInterval(progressInterval);
+                // On success, complete the animation and show success state.
                 progressOverlay.style.width = '100%';
                 button.classList.add('is-success');
                 buttonText.textContent = '成功!';
@@ -269,18 +269,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     button.classList.remove('in-progress', 'is-success');
                     buttonText.textContent = originalText;
+                    progressOverlay.style.transition = 'width 0s'; // Disable transition for instant reset
                     progressOverlay.style.width = '0%';
-                    if (originalText === "Anx") { // Reload only for Anx push
+                    // Re-enable transition for next time
+                    setTimeout(() => {
+                        progressOverlay.style.transition = 'width 1.5s ease-out';
+                    }, 50);
+
+                    if (originalText === "Anx") {
                         location.reload();
                     }
-                }, 2000);
+                }, 7000); // Extended to 3 seconds
             })
             .catch(error => {
-                clearInterval(progressInterval);
                 alert(`错误: ${error.message}`);
                 button.classList.remove('in-progress');
                 buttonText.textContent = originalText;
+                progressOverlay.style.transition = 'width 0s';
                 progressOverlay.style.width = '0%';
+                 setTimeout(() => {
+                    progressOverlay.style.transition = 'width 1.5s ease-out';
+                }, 50);
             });
     }
     
