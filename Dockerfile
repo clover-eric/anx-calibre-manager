@@ -9,6 +9,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     git \
+    pkg-config \
     libxml2-dev \
     libxslt-dev \
     poppler-utils \
