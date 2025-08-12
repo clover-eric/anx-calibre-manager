@@ -9,6 +9,8 @@ import bcrypt
 import logging
 import secrets
 import shutil
+import subprocess
+import tempfile
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
 from contextlib import closing
 from werkzeug.utils import secure_filename
@@ -340,33 +342,75 @@ def _send_to_kindle_logic(user_dict, book_id):
     """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
     if not user_dict.get('kindle_email'):
         return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
-    
+
     details = get_calibre_book_details(book_id)
     if not details:
         return {'success': False, 'error': '找不到书籍详情。'}
 
     available_formats = [f.lower() for f in details.get('formats', [])]
-    priority_str = user_dict.get('send_format_priority') or '[]'
-    priority = json.loads(priority_str)
-    format_to_send = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
+    
+    content_to_send = None
+    filename_to_send = None
+    needs_conversion = False
 
-    if not format_to_send:
-        return {'success': False, 'error': f'未找到可用格式: {", ".join(available_formats)}'}
+    if 'epub' in available_formats:
+        logging.info(f"Book ID {book_id} has EPUB format. Downloading directly.")
+        content_to_send, filename_to_send = download_calibre_book(book_id, 'epub')
+    else:
+        needs_conversion = True
+        priority_str = user_dict.get('send_format_priority') or '[]'
+        priority = json.loads(priority_str)
+        format_to_convert = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
-    additional_message = ""
-    if format_to_send != 'epub' and 'epub' in available_formats:
-        additional_message = f"注意: 此书以 {format_to_send.upper()} 格式发送。为获得最佳体验，建议在 Calibre 中将其转为 EPUB。"
+        if not format_to_convert:
+            return {'success': False, 'error': f'未找到可用格式进行转换: {", ".join(available_formats)}'}
 
-    content, filename = download_calibre_book(book_id, format_to_send)
-    if not content:
-        return {'success': False, 'error': '下载书籍时出错。'}
+        logging.info(f"Book ID {book_id} needs conversion. Converting from {format_to_convert}.")
+        original_content, original_filename = download_calibre_book(book_id, format_to_convert)
+        if not original_content:
+            return {'success': False, 'error': f'下载 {format_to_convert.upper()} 格式时出错。'}
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = os.path.join(temp_dir, original_filename)
+            with open(source_path, 'wb') as f:
+                f.write(original_content)
+
+            base_name, _ = os.path.splitext(original_filename)
+            epub_filename = f"{base_name}.epub"
+            dest_path = os.path.join(temp_dir, epub_filename)
+
+            try:
+                logging.info(f"Running ebook-converter: {source_path} -> {dest_path}")
+                result = subprocess.run(
+                    ['ebook-converter', source_path, dest_path],
+                    capture_output=True, text=True, check=True, timeout=300 # 5-minute timeout
+                )
+                logging.info(f"ebook-converter stdout: {result.stdout}")
+                logging.error(f"ebook-converter stderr: {result.stderr}")
+
+                with open(dest_path, 'rb') as f:
+                    content_to_send = f.read()
+                filename_to_send = epub_filename
+
+            except FileNotFoundError:
+                logging.error("ebook-converter command not found. Is it in the PATH?")
+                return {'success': False, 'error': '转换工具 (ebook-converter) 未找到。'}
+            except subprocess.CalledProcessError as e:
+                logging.error(f"ebook-converter failed: {e.stderr}")
+                return {'success': False, 'error': f'书籍转换失败: {e.stderr}'}
+            except Exception as e:
+                logging.error(f"An unexpected error occurred during conversion: {e}")
+                return {'success': False, 'error': f'转换过程中发生未知错误: {e}'}
+
+    if not content_to_send:
+        return {'success': False, 'error': '无法获取要发送的书籍内容。'}
 
     subject = f"推送书籍: {details.get('title', 'N/A')}"
-    body = f"附件是您请求的书籍。{additional_message}"
-    success, message = send_email(user_dict['kindle_email'], subject, body, content, filename)
+    body = "附件是您请求的书籍。"
+    success, message = send_email(user_dict['kindle_email'], subject, body, content_to_send, filename_to_send)
     
     if success:
-        return {'success': True, 'message': message + (' ' + additional_message if additional_message else '')}
+        return {'success': True, 'message': message, 'needs_conversion': needs_conversion}
     else:
         return {'success': False, 'error': message}
 
@@ -380,7 +424,7 @@ def send_to_kindle_api(book_id):
     }
     result = _send_to_kindle_logic(user_dict, book_id)
     if result['success']:
-        return jsonify({'message': result['message']})
+        return jsonify({'message': result['message'], 'needs_conversion': result.get('needs_conversion', False)})
     else:
         # Return 400 for user-correctable errors, 500 for others
         if 'Kindle 邮箱' in result.get('error', ''):

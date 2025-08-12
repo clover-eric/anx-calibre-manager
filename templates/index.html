@@ -66,11 +66,11 @@
                         </div>
                     </div>
                     <div class="actions">
-                        <button class="button" data-action="download-calibre" data-id="{{ book.id }}">下载</button>
-                        <button class="button" data-action="send-kindle" data-id="{{ book.id }}">Kindle</button>
-                        <button class="button button-secondary" data-action="push-to-anx" data-id="{{ book.id }}">Anx</button>
+                        <button class="button" data-action="download-calibre" data-id="{{ book.id }}"><span class="button-text">下载</span></button>
+                        <button class="button" data-action="send-kindle" data-id="{{ book.id }}"><span class="button-text">Kindle</span></button>
+                        <button class="button button-secondary" data-action="push-to-anx" data-id="{{ book.id }}"><span class="button-text">Anx</span></button>
                         {% if g.user.is_admin %}
-                        <button class="button edit-button" data-action="edit-calibre" data-id="{{ book.id }}">编辑</button>
+                        <button class="button edit-button" data-action="edit-calibre" data-id="{{ book.id }}"><span class="button-text">编辑</span></button>
                         {% endif %}
                     </div>
                 </div>
@@ -111,9 +111,9 @@
                         </div>
                     </div>
                     <div class="actions">
-                        <button class="button" data-action="download-anx" data-id="{{ book.id }}">下载</button>
-                        <button class="button edit-button" data-action="edit-anx" data-id="{{ book.id }}">编辑</button>
-                        <button class="button button-danger" data-action="delete-anx" data-id="{{ book.id }}">删除</button>
+                        <button class="button" data-action="download-anx" data-id="{{ book.id }}"><span class="button-text">下载</span></button>
+                        <button class="button edit-button" data-action="edit-anx" data-id="{{ book.id }}"><span class="button-text">编辑</span></button>
+                        <button class="button button-danger" data-action="delete-anx" data-id="{{ book.id }}"><span class="button-text">删除</span></button>
                     </div>
                 </div>
                 {% else %}
@@ -234,6 +234,55 @@ document.addEventListener('DOMContentLoaded', () => {
         showModal(editModal);
         setupCompletions(editBookForm);
     }
+
+    // --- Button Animation Handler ---
+    function handleButtonAnimation(button, apiPromise) {
+        if (button.classList.contains('in-progress')) return;
+
+        const buttonText = button.querySelector('.button-text');
+        const originalText = buttonText.textContent;
+
+        let progressOverlay = button.querySelector('.progress-overlay');
+        if (!progressOverlay) {
+            progressOverlay = document.createElement('div');
+            progressOverlay.className = 'progress-overlay';
+            button.appendChild(progressOverlay);
+        }
+
+        button.classList.add('in-progress');
+        buttonText.textContent = '处理中...';
+        
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 5;
+            if (progress > 95) clearInterval(progressInterval);
+            progressOverlay.style.width = `${progress}%`;
+        }, 100);
+
+        apiPromise
+            .then(data => {
+                clearInterval(progressInterval);
+                progressOverlay.style.width = '100%';
+                button.classList.add('is-success');
+                buttonText.textContent = '成功!';
+
+                setTimeout(() => {
+                    button.classList.remove('in-progress', 'is-success');
+                    buttonText.textContent = originalText;
+                    progressOverlay.style.width = '0%';
+                    if (data.message.includes("Anx")) { // Reload only for Anx push
+                        location.reload();
+                    }
+                }, 2000);
+            })
+            .catch(error => {
+                clearInterval(progressInterval);
+                alert(`错误: ${error.message}`);
+                button.classList.remove('in-progress');
+                buttonText.textContent = originalText;
+                progressOverlay.style.width = '0%';
+            });
+    }
     
     // --- Main Click Handler via Event Delegation ---
     document.body.addEventListener('click', (e) => {
@@ -269,26 +318,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                 }
                 break;
-            case 'push-to-anx':
-                fetch_with_token(`/api/push_to_anx/${id}`, { method: 'POST' })
-                    .then(res => res.json()).then(data => {
-                        alert(data.message || data.error);
-                        if (data.message) {
-                            location.reload();
-                        }
-                    });
-                break;
-            case 'send-kindle':
-                 fetch_with_token(`/api/send_to_kindle/${id}`, { method: 'POST' })
+            case 'push-to-anx': {
+                const apiCall = fetch_with_token(`/api/push_to_anx/${id}`, { method: 'POST' })
                     .then(res => {
-                        if (!res.ok) {
-                           return res.json().then(err => { throw new Error(err.error) });
-                        }
+                        if (!res.ok) return res.json().then(err => { throw new Error(err.error) });
                         return res.json();
-                    })
-                    .then(data => alert(data.message))
-                    .catch(error => alert(error.message));
+                    });
+                handleButtonAnimation(target, apiCall);
                 break;
+            }
+            case 'send-kindle': {
+                const apiCall = fetch_with_token(`/api/send_to_kindle/${id}`, { method: 'POST' })
+                    .then(res => {
+                        if (!res.ok) return res.json().then(err => { throw new Error(err.error) });
+                        return res.json();
+                    });
+                handleButtonAnimation(target, apiCall);
+                break;
+            }
             case 'save-changes':
                 handleSaveChanges();
                 break;

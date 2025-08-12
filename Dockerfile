@@ -4,9 +4,15 @@ FROM python:3.9-slim-bullseye AS builder
 # Set the working directory
 WORKDIR /app
 
-# Install build tools needed for some Python packages
+# Install build tools and dependencies for ebook-converter
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    libxml2-dev \
+    libxslt-dev \
+    poppler-utils \
+    liberation-fonts
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -22,12 +28,21 @@ COPY --chown=appuser:appuser requirements.txt .
 # Install dependencies into the virtual environment
 RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 
+# Install ebook-converter
+RUN git clone https://github.com/gryf/ebook-converter.git && \
+    cd ebook-converter && \
+    pip install .
+
 # Stage 2: Final image - For running the application
 FROM python:3.9-slim-bullseye
 
-# Install gosu for user switching and tini for signal handling
+# Install gosu for user switching, tini for signal handling, and runtime deps for ebook-converter
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gosu tini && \
+    apt-get install -y --no-install-recommends \
+    gosu \
+    tini \
+    poppler-utils \
+    liberation-fonts && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
