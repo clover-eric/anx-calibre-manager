@@ -12,7 +12,7 @@ RUN apt-get update && \
     build-essential \
     git && \
     if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter dependencies for $TARGETARCH" && \
+        echo "Installing ebook-converter dependencies for $TARGETARCH"; \
         apt-get install -y --no-install-recommends \
         libxml2-dev \
         libxslt-dev \
@@ -36,7 +36,7 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 
 # Install ebook-converter only on non-arm64 architectures
 RUN if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter for $TARGETARCH" && \
+        echo "Installing ebook-converter for $TARGETARCH"; \
         git clone https://github.com/gryf/ebook-converter.git && \
         cd ebook-converter && \
         pip install .; \
@@ -53,10 +53,10 @@ RUN apt-get update && \
     gosu \
     tini && \
     if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter runtime dependencies for $TARGETARCH" && \
+        echo "Installing ebook-converter runtime dependencies for $TARGETARCH"; \
         apt-get install -y --no-install-recommends \
         poppler-utils \
-        fonts-liberation \
+        fonts-liberation; \
     fi && \
     rm -rf /var/lib/apt/lists/*
 
