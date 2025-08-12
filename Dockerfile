@@ -1,24 +1,18 @@
 # Stage 1: Builder - To build dependencies
-FROM python:3.9-slim-bullseye AS builder
+FROM python:3.12-slim-bullseye AS builder
 
 # Set the working directory
 WORKDIR /app
 
 # Install build tools and dependencies for ebook-converter
-# TARGETARCH is automatically set by Docker buildx.
-ARG TARGETARCH
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    git && \
-    if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter dependencies for $TARGETARCH"; \
-        apt-get install -y --no-install-recommends \
-        libxml2-dev \
-        libxslt-dev \
-        poppler-utils \
-        fonts-liberation; \
-    fi
+    git \
+    libxml2-dev \
+    libxslt-dev \
+    poppler-utils \
+    fonts-liberation
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -31,33 +25,26 @@ ENV PATH="/home/appuser/venv/bin:$PATH"
 # Copy only the requirements file to leverage Docker cache
 COPY --chown=appuser:appuser requirements.txt .
 
-# Install dependencies into the virtual environment
-RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
+# Upgrade pip and setuptools, then install dependencies
+RUN pip install --upgrade pip setuptools && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install gunicorn
 
-# Install ebook-converter only on non-arm64 architectures
-RUN if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter for $TARGETARCH"; \
-        git clone https://github.com/gryf/ebook-converter.git && \
-        cd ebook-converter && \
-        pip install .; \
-    fi
+# Install ebook-converter
+RUN git clone https://github.com/gryf/ebook-converter.git && \
+    cd ebook-converter && \
+    pip install .
 
 # Stage 2: Final image - For running the application
-FROM python:3.9-slim-bullseye
+FROM python:3.12-slim-bullseye
 
 # Install gosu for user switching, tini for signal handling, and runtime deps for ebook-converter
-# TARGETARCH is automatically set by Docker buildx.
-ARG TARGETARCH
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gosu \
-    tini && \
-    if [ "$TARGETARCH" != "arm64" ]; then \
-        echo "Installing ebook-converter runtime dependencies for $TARGETARCH"; \
-        apt-get install -y --no-install-recommends \
-        poppler-utils \
-        fonts-liberation; \
-    fi && \
+    tini \
+    poppler-utils \
+    fonts-liberation && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
