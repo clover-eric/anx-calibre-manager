@@ -12,6 +12,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Mobile-First Interface**: A clean, responsive UI designed for easy use on your phone.
 - **PWA Support**: Installable as a Progressive Web App for a native-like experience.
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
+- **Smart Send to Kindle**: Automatically handles formats when sending to your Kindle. If an EPUB exists, it's sent directly. If not, the app **converts the best available format to EPUB** based on your preferences before sending, ensuring optimal compatibility.
 - **Push to Anx**: Send books from your Calibre library directly to your personal Anx-reader device folder.
 - **Integrated WebDAV Server**: Each user gets their own secure WebDAV folder, compatible with Anx-reader and other WebDAV clients.
 - **MCP Server**: A built-in, compliant Model Context Protocol (MCP) server, allowing AI agents and external tools to interact with your library securely.
@@ -46,6 +47,7 @@ This application is designed to be deployed using Docker.
     ```bash
     mkdir -p /path/to/your/config
     mkdir -p /path/to/your/webdav
+    mkdir -p /path/to/your/fonts # Optional: for custom fonts
     ```
 
 3.  **Run the Docker container:**
@@ -59,9 +61,10 @@ This application is designed to be deployed using Docker.
       -p 5000:5000 \
       -e PUID=1000 \
       -e PGID=1000 \
-      -e TZ="Asia/Shanghai" \
+      -e TZ="America/New_York" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -v /path/to/your/fonts:/opt/share/fonts \ # Optional: Mount custom fonts
       -e "GUNICORN_WORKERS=2" \ 
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
@@ -85,10 +88,11 @@ This application is designed to be deployed using Docker.
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
+          - /path/to/your/fonts:/opt/share/fonts # Optional: Mount custom fonts
         environment:
           - PUID=1000
           - PGID=1000
-          - TZ=Asia/Shanghai
+          - TZ=America/New_York
           - GUNICORN_WORKERS=2 # Optional: Customize the number of Gunicorn worker processes
           - SECRET_KEY=your_super_secret_key
           - CALIBRE_URL=http://your-calibre-server-ip:8080
@@ -102,6 +106,10 @@ This application is designed to be deployed using Docker.
     ```bash
     docker-compose up -d
     ```
+
+### Custom Fonts
+
+The book conversion tool, `ebook-converter`, scans the `/opt/share/fonts` directory for fonts. If you encounter font-related issues when converting books with special characters (e.g., Chinese), you can provide custom fonts by mounting a local directory containing your font files (e.g., `.ttf`, `.otf`) to the container's `/opt/share/fonts` path.
 
 ### Configuration
 

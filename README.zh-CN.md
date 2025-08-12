@@ -12,6 +12,7 @@
 - **移动端优先界面**: 简洁、响应式的用户界面，专为在手机上轻松使用而设计。
 - **PWA 支持**: 可作为渐进式 Web 应用 (PWA) 安装，提供类似原生应用的体验。
 - **Calibre 集成**: 连接到您现有的 Calibre 服务器，以浏览和搜索您的书库。
+- **智能推送到 Kindle**: 发送书籍到您的 Kindle 时，应用会自动处理格式。如果书籍已有 EPUB 格式，则直接发送；如果没有，它将根据您的格式偏好设置，自动将最优先的可用格式**转换为 EPUB**后再发送，以确保最佳兼容性。
 - **推送到 Anx**: 将书籍从您的 Calibre 书库直接发送到您的个人 Anx-reader 设备文件夹。
 - **集成的 WebDAV 服务器**: 每个用户都会获得自己独立、安全的 WebDAV 文件夹，与 Anx-reader 和其他 WebDAV 客户端兼容。
 - **MCP 服务器**: 内置一个符合规范的 Model Context Protocol (MCP) 服务器，允许 AI 代理和外部工具安全地与您的书库交互。
@@ -46,6 +47,7 @@
     ```bash
     mkdir -p /path/to/your/config
     mkdir -p /path/to/your/webdav
+    mkdir -p /path/to/your/fonts # 可选：用于自定义字体
     ```
 
 3.  **运行 Docker 容器:**
@@ -62,6 +64,7 @@
       -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -v /path/to/your/fonts:/opt/share/fonts \ # 可选：挂载自定义字体
       -e "GUNICORN_WORKERS=2" \ 
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
@@ -85,6 +88,7 @@
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
+          - /path/to/your/fonts:/opt/share/fonts # 可选：挂载自定义字体
         environment:
           - PUID=1000
           - PGID=1000
@@ -102,6 +106,10 @@
     ```bash
     docker-compose up -d
     ```
+
+### 自定义字体
+
+书籍格式转换工具 `ebook-converter` 会扫描 `/opt/share/fonts` 目录以查找字体。如果您在转换某些包含特殊字符（如中文）的书籍时遇到字体问题，可以通过挂载一个包含您所需字体文件（例如 `.ttf`, `.otf`）的本地目录到容器的 `/opt/share/fonts` 路径来提供自定义字体。
 
 ### 配置
 
