@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     button.classList.remove('in-progress', 'is-success');
                     buttonText.textContent = originalText;
                     progressOverlay.style.width = '0%';
-                    if (data.message.includes("Anx")) { // Reload only for Anx push
+                    if (originalText === "Anx") { // Reload only for Anx push
                         location.reload();
                     }
                 }, 2000);
@@ -329,8 +329,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             case 'send-kindle': {
                 const apiCall = fetch_with_token(`/api/send_to_kindle/${id}`, { method: 'POST' })
-                    .then(res => {
-                        if (!res.ok) return res.json().then(err => { throw new Error(err.error) });
+                    .then(async res => {
+                        if (!res.ok) {
+                            const err = await res.json();
+                            const error = new Error(err.error);
+                            error.status = res.status;
+                            throw error;
+                        }
                         return res.json();
                     });
                 handleButtonAnimation(target, apiCall);

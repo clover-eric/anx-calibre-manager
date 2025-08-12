@@ -358,6 +358,12 @@ def _send_to_kindle_logic(user_dict, book_id):
         content_to_send, filename_to_send = download_calibre_book(book_id, 'epub')
     else:
         needs_conversion = True
+        
+        # Check if converter is available before proceeding
+        if not shutil.which('ebook-converter'):
+            logging.error("ebook-converter not found, but conversion is needed.")
+            return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
+
         priority_str = user_dict.get('send_format_priority') or '[]'
         priority = json.loads(priority_str)
         format_to_convert = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
@@ -426,7 +432,8 @@ def send_to_kindle_api(book_id):
     if result['success']:
         return jsonify({'message': result['message'], 'needs_conversion': result.get('needs_conversion', False)})
     else:
-        # Return 400 for user-correctable errors, 500 for others
+        if result.get('code') == 'CONVERTER_NOT_FOUND':
+            return jsonify({'error': result['error']}), 412 # Precondition Failed
         if 'Kindle 邮箱' in result.get('error', ''):
             return jsonify({'error': result['error']}), 400
         return jsonify({'error': result['error']}), 500

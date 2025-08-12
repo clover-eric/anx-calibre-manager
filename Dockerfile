@@ -5,14 +5,20 @@ FROM python:3.9-slim-bullseye AS builder
 WORKDIR /app
 
 # Install build tools and dependencies for ebook-converter
+# TARGETARCH is automatically set by Docker buildx.
+ARG TARGETARCH
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    git \
-    libxml2-dev \
-    libxslt-dev \
-    poppler-utils \
-    fonts-liberation
+    git && \
+    if [ "$TARGETARCH" != "arm64" ]; then \
+        echo "Installing ebook-converter dependencies for $TARGETARCH" && \
+        apt-get install -y --no-install-recommends \
+        libxml2-dev \
+        libxslt-dev \
+        poppler-utils \
+        fonts-liberation; \
+    fi
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -28,21 +34,30 @@ COPY --chown=appuser:appuser requirements.txt .
 # Install dependencies into the virtual environment
 RUN pip install --no-cache-dir -r requirements.txt && pip install gunicorn
 
-# Install ebook-converter
-RUN git clone https://github.com/gryf/ebook-converter.git && \
-    cd ebook-converter && \
-    pip install .
+# Install ebook-converter only on non-arm64 architectures
+RUN if [ "$TARGETARCH" != "arm64" ]; then \
+        echo "Installing ebook-converter for $TARGETARCH" && \
+        git clone https://github.com/gryf/ebook-converter.git && \
+        cd ebook-converter && \
+        pip install .; \
+    fi
 
 # Stage 2: Final image - For running the application
 FROM python:3.9-slim-bullseye
 
 # Install gosu for user switching, tini for signal handling, and runtime deps for ebook-converter
+# TARGETARCH is automatically set by Docker buildx.
+ARG TARGETARCH
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gosu \
-    tini \
-    poppler-utils \
-    fonts-liberation && \
+    tini && \
+    if [ "$TARGETARCH" != "arm64" ]; then \
+        echo "Installing ebook-converter runtime dependencies for $TARGETARCH" && \
+        apt-get install -y --no-install-recommends \
+        poppler-utils \
+        fonts-liberation \
+    fi && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
