@@ -12,7 +12,7 @@ RUN apt-get update && \
     libxml2-dev \
     libxslt-dev \
     poppler-utils \
-    liberation-fonts
+    fonts-liberation
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
