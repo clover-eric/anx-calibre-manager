@@ -66,13 +66,12 @@ def format_calibre_book_data_for_mcp(book_data):
 
 # --- Tool Implementations ---
 
-def search_calibre_books(query: str, limit: int = 20, field: str = None):
-    """Searches Calibre books by a keyword, optionally within a specific field."""
-    if field:
-        search_query = f'{field}:"{query}"'
-    else:
-        search_query = query
-    books, _ = get_calibre_books(search_query=search_query, page=1, page_size=limit)
+def search_calibre_books(search_expression: str, limit: int = 20):
+    """
+    根据一个搜索表达式在 Calibre 书库中搜索书籍。
+    该函数直接使用 Calibre 强大的搜索查询语言。
+    """
+    books, _ = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_recent_calibre_books(limit: int = 20):
@@ -102,8 +101,15 @@ def send_calibre_book_to_kindle(book_id: int):
 TOOLS = {
     'search_calibre_books': {
         'function': search_calibre_books,
-        'params': {'query': str, 'limit': int, 'field': str},
-        'description': '根据关键词搜索 Calibre 书库。可以指定一个字段（如 title, author, publisher, date, #readdate, #library）进行精确搜索。'
+        'params': {'search_expression': str, 'limit': int},
+        'description': """使用 Calibre 的搜索语法搜索书籍。支持简单的模糊搜索和高级的字段查询。
+基础搜索 (模糊匹配): 直接提供关键词即可。例如: "三体"
+高级搜索 (构建复杂查询):
+- 字段搜索: field_name:"value"。例如: title:"Pride and Prejudice" 或 author:Austen。常用字段: title, authors, tags, series, publisher, pubdate, comments, rating, timestamp, series, size, formats, last_modified。自定义字段示例: #library:"My Lib", #readdate:>=2023-01-15 (以 # 开头)。
+- 布尔运算符: 使用 AND, OR, NOT (或 &, |, !) 组合条件。例如: tags:fiction AND tags:classic 或 title:history NOT author:Jones。
+- 比较运算符: 对数字或日期字段使用 <, >, <=, >=, =。例如: pubdate:>2020-01-01 或 rating:>=4。
+- 通配符: * 匹配任意字符序列, ? 匹配单个字符。例如: title:hist* 或 author:Sm?th。
+- 正则表达式: field_name:~"regex"。例如: title:~"war.*peace"。"""
     },
     'get_recent_calibre_books': {
         'function': get_recent_calibre_books,
