@@ -111,9 +111,6 @@ def index():
     total_pages = math.ceil(total_calibre_books / page_size) if page_size > 0 else 0
     pagination = {'page': page, 'page_size': page_size, 'total_books': total_calibre_books, 'total_pages': total_pages}
     
-    # Construct the user-specific WebDAV URL to display on the page
-    webdav_url = f"{request.host_url.rstrip('/')}/webdav/{g.user.username}"
-
     return render_template('index.html', 
                            calibre_books=calibre_books, 
                            anx_books=anx_books, 

@@ -7,7 +7,7 @@
 <script id="anx-books-data" type="application/json">{{ anx_books | tojson | safe }}</script>
 <script id="calibre-books-data" type="application/json">{{ calibre_books | tojson | safe }}</script>
 
-<div class="main-content">
+<div class="main-content" data-username="{{ g.user.username }}">
     <div class="library-container">
         <!-- Calibre Library Section -->
         <div class="library" id="calibre-library">

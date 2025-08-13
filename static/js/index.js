@@ -26,9 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         calibreBooksData
     };
 
+    // --- Get Username ---
+    const username = domElements.mainContainer.dataset.username;
+
     // Initial setup
     setupMobileView(domElements.calibreLibrary, domElements.anxLibrary, domElements.navHome, domElements.navAnx);
-    setupAnxWebDavUrl(domElements.anxWebDavUrlElement, "{{ g.user.username }}");
+    setupAnxWebDavUrl(domElements.anxWebDavUrlElement, username);
     setupEventHandlers(domElements, data, currentEditing);
     window.addEventListener('resize', () => setupMobileView(domElements.calibreLibrary, domElements.anxLibrary, domElements.navHome, domElements.navAnx));
 });
