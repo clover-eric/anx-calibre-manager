@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anx-calibre-manager-v4'; // Bump version to force update
+const CACHE_NAME = 'anx-calibre-manager-v5'; // Bump version to force update
 const urlsToCache = [
   '/',
   '/login',
@@ -6,7 +6,12 @@ const urlsToCache = [
   '/static/style.css',
   '/static/manifest.webmanifest',
   '/static/logo.svg',
-  '/static/logo.png'
+  '/static/logo.png',
+  '/static/js/index.js',
+  '/static/js/page/utils.js',
+  '/static/js/page/ui.js',
+  '/static/js/page/handlers.js',
+  '/static/js/page/completions.js'
 ];
 
 // Install a service worker
