@@ -151,7 +151,24 @@
 
 您可以通过 `tools/list` 方法获取所有可用工具的列表。当前支持的工具包括：
 
--   `search_calibre_books`: 搜索 Calibre 书籍。
+-   **`search_calibre_books`**: 使用 Calibre 强大的搜索语法搜索书籍。
+    -   **参数**: `search_expression` (字符串), `limit` (整数, 可选)。
+    -   **功能**: 您可以提供简单的关键词进行模糊搜索，也可以构建复杂的查询。
+    -   **示例 (高级搜索)**: 搜索由“人民邮电出版社”出版且评分高于4星的图书。
+        ```json
+        {
+            "jsonrpc": "2.0",
+            "method": "tools/call",
+            "params": {
+                "name": "search_calibre_books",
+                "arguments": {
+                    "search_expression": "publisher:\"人民邮电出版社\" AND rating:>=4",
+                    "limit": 10
+                }
+            },
+            "id": "search-request-1"
+        }
+        ```
 -   `get_recent_calibre_books`: 获取最近的 Calibre 书籍。
 -   `get_calibre_book_details`: 获取 Calibre 书籍详情。
 -   `get_recent_anx_books`: 获取最近的 Anx 书籍。

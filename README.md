@@ -151,7 +151,24 @@ This application includes a JSON-RPC 2.0 compliant MCP (Model Context Protocol) 
 
 You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:
 
--   `search_calibre_books`: Search for books in the Calibre library.
+-   **`search_calibre_books`**: Search for books using Calibre's powerful search syntax.
+    -   **Parameters**: `search_expression` (string), `limit` (integer, optional).
+    -   **Functionality**: You can provide simple keywords for a broad search or construct complex queries.
+    -   **Example (Advanced Search)**: Find books by "O'Reilly Media" with a rating of 4 stars or higher.
+        ```json
+        {
+            "jsonrpc": "2.0",
+            "method": "tools/call",
+            "params": {
+                "name": "search_calibre_books",
+                "arguments": {
+                    "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
+                    "limit": 10
+                }
+            },
+            "id": "search-request-1"
+        }
+        ```
 -   `get_recent_calibre_books`: Get recent books from the Calibre library.
 -   `get_calibre_book_details`: Get details for a specific Calibre book.
 -   `get_recent_anx_books`: Get recent books from the Anx library.
