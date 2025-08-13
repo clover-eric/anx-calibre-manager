@@ -33,7 +33,7 @@ export function populateCalibreEditForm(book, currentEditing, editBookForm, edit
         <div class="form-group autocomplete-container"><label>作者 (逗号分隔):</label><input type="text" name="authors" value="${book.authors.join(', ')}" autocomplete="off" data-completion-field="authors"></div>
         <div class="form-group autocomplete-container"><label>出版社:</label><input type="text" name="publisher" value="${book.publisher || ''}" autocomplete="off" data-completion-field="publisher"></div>
         <div class="form-group"><label>出版日期:</label><input type="date" name="pubdate" value="${pubdate}"></div>
-        <div class="form-group"><label>评分 (0-10):</label><input type="number" name="rating" min="0" max="10" step="1" value="${book.rating || 0}"></div>
+        <div class="form-group"><label>评分 (0-5):</label><input type="number" name="rating" min="0" max="5" step="0.5" value="${book.rating || 0}"></div>
         <div class="form-group autocomplete-container"><label>标签 (逗号分隔):</label><input type="text" name="tags" value="${book.tags.join(', ')}" autocomplete="off" data-completion-field="tags"></div>
         <div class="form-group autocomplete-container"><label>库 (自定义字段 #library):</label><input type="text" name="#library" value="${getCustom('#library')}" autocomplete="off" data-completion-field="#library"></div>
         <div class="form-group"><label>已读日期 (自定义字段 #readdate):</label><input type="date" name="#readdate" value="${readdate}"></div>

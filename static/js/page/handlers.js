@@ -37,7 +37,7 @@ function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksDat
 
         for (const key in currentData) {
             let originalValue;
-            const currentValue = currentData[key];
+            let currentValue = currentData[key];
 
             switch(key) {
                 case 'authors':
@@ -57,6 +57,13 @@ function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksDat
                 case '#library':
                     originalValue = getOrigCustom('#library');
                     break;
+                case 'rating':
+                    originalValue = originalBook[key] || 0;
+                    if (String(originalValue) !== String(currentValue)) {
+                         // Convert rating from 0-5 scale to 0-10 for Calibre's set_fields API
+                         payload[key] = parseFloat(currentValue) * 2;
+                    }
+                    continue; // Skip the generic comparison below
                 default:
                     originalValue = originalBook[key] || '';
             }
