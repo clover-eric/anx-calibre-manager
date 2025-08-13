@@ -66,8 +66,13 @@ def format_calibre_book_data_for_mcp(book_data):
 
 # --- Tool Implementations ---
 
-def search_calibre_books(query: str, limit: int = 20):
-    books, _ = get_calibre_books(search_query=query, page=1, page_size=limit)
+def search_calibre_books(query: str, limit: int = 20, field: str = None):
+    """Searches Calibre books by a keyword, optionally within a specific field."""
+    if field:
+        search_query = f'{field}:"{query}"'
+    else:
+        search_query = query
+    books, _ = get_calibre_books(search_query=search_query, page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_recent_calibre_books(limit: int = 20):
@@ -97,8 +102,8 @@ def send_calibre_book_to_kindle(book_id: int):
 TOOLS = {
     'search_calibre_books': {
         'function': search_calibre_books,
-        'params': {'query': str, 'limit': int},
-        'description': '根据关键词搜索 Calibre 书库，并返回书籍列表。'
+        'params': {'query': str, 'limit': int, 'field': str},
+        'description': '根据关键词搜索 Calibre 书库。可以指定一个字段（如 title, author, publisher, date, #readdate, #library）进行精确搜索。'
     },
     'get_recent_calibre_books': {
         'function': get_recent_calibre_books,
@@ -145,7 +150,9 @@ def get_input_schema(params):
             json_type = "boolean"
         
         properties[name] = {"type": json_type, "description": ""} # Placeholder description
-        required.append(name)
+        # For simplicity, let's make all params optional for now, 
+        # as we don't have default values specified in a structured way.
+        # required.append(name)
         
     return {"type": "object", "properties": properties, "required": required}
 
