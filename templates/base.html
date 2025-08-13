@@ -56,7 +56,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     {% block head_extra %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <div class="loading-overlay" id="global-loader" style="position: fixed; display: none;">
         <div class="spinner"></div>
     </div>

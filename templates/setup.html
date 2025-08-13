@@ -2,35 +2,23 @@
 
 {% block title %}初始设置 - Anx Calibre Manager{% endblock %}
 
-{% block head_extra %}
-<style>
-    body {
-        padding-top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
-    .content-wrapper {
-        width: 100%;
-        max-width: 400px;
-    }
-</style>
-{% endblock %}
+{% block body_class %}setup-body{% endblock %}
 
 {% block content %}
-<h2>欢迎使用 Anx Calibre Manager</h2>
-<p>这是您首次运行，请创建一个管理员账户。</p>
+<div class="setup-wrapper">
+    <h2>欢迎使用 Anx Calibre Manager</h2>
+    <p>这是您首次运行，请创建一个管理员账户。</p>
 
-<form method="post" style="margin-top: 2rem;">
-    <div class="form-group">
-        <label for="username">管理员用户名</label>
-        <input type="text" id="username" name="username" required>
-    </div>
-    <div class="form-group">
-        <label for="password">管理员密码</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit" class="button-primary" style="width: 100%; margin-top: 1rem;">创建管理员账户</button>
-</form>
+    <form method="post" style="margin-top: 2rem;">
+        <div class="form-group">
+            <label for="username">管理员用户名</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">管理员密码</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="button-primary" style="width: 100%; margin-top: 1rem;">创建管理员账户</button>
+    </form>
+</div>
 {% endblock %}

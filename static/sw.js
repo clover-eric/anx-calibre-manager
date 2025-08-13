@@ -11,7 +11,9 @@ const urlsToCache = [
   '/static/js/page/utils.js',
   '/static/js/page/ui.js',
   '/static/js/page/handlers.js',
-  '/static/js/page/completions.js'
+  '/static/js/page/completions.js',
+  '/static/js/settings.js',
+  '/static/js/login.js'
 ];
 
 // Install a service worker
