@@ -234,7 +234,11 @@ export function setupEventHandlers(
                     if (event.lengthComputable) {
                         const percentComplete = (event.loaded / event.total) * 100;
                         progressBar.value = percentComplete;
-                        progressLabel.textContent = Math.round(percentComplete) + '%';
+                        if (percentComplete >= 100) {
+                            progressLabel.textContent = '处理中...';
+                        } else {
+                            progressLabel.textContent = Math.round(percentComplete) + '%';
+                        }
                     }
                 };
 
