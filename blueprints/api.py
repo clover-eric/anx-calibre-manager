@@ -12,6 +12,7 @@ import secrets
 import shutil
 import subprocess
 import tempfile
+import mimetypes
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
 from contextlib import closing
 from werkzeug.utils import secure_filename
@@ -19,7 +20,6 @@ import sqlite3
 import uuid
 from functools import lru_cache
 from urllib.parse import quote
-from email.utils import formataddr
 
 import database
 import config_manager
@@ -32,6 +32,7 @@ from anx_library import (
 )
 from .main import download_calibre_book, get_calibre_auth, get_calibre_book_details, download_calibre_cover
 from epub_fixer import fix_epub_for_kindle
+from utils import random_english_text, create_calibre_mail
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -47,9 +48,6 @@ def admin_required_api(f):
 
 def send_email_with_config(to_address, subject, body, config, attachment_content=None, attachment_filename=None):
     import smtplib
-    from email.mime.application import MIMEApplication
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
     
     logging.info(f"Attempting to send email to {to_address} via {config.get('SMTP_SERVER')}:{config.get('SMTP_PORT')}")
     
@@ -57,18 +55,26 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
         logging.error("SMTP settings are incomplete.")
         return False, "SMTP 未完全配置。"
         
-    msg = MIMEMultipart()
-    # Per user request, set both the name and email fields to the full email address
     from_address = config['SMTP_USERNAME']
-    msg['From'] = formataddr((from_address, from_address))
-    msg['To'] = formataddr((to_address, to_address))
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
     
-    if attachment_content and attachment_filename:
-        part = MIMEApplication(attachment_content, Name=attachment_filename)
-        part['Content-Disposition'] = f'attachment; filename="{attachment_filename}"'
-        msg.attach(part)
+    attachment_type = None
+    if attachment_filename:
+        attachment_type, _ = mimetypes.guess_type(attachment_filename)
+        if attachment_type is None:
+            # Fallback for unknown types
+            attachment_type = 'application/octet-stream'
+            logging.warning(f"Could not guess mimetype for {attachment_filename}, falling back to {attachment_type}")
+
+    # Use Calibre's mail creation logic
+    msg = create_calibre_mail(
+        from_=from_address,
+        to=to_address,
+        subject=subject,
+        text=body,
+        attachment_data=attachment_content,
+        attachment_name=attachment_filename,
+        attachment_type=attachment_type
+    )
         
     try:
         server = None
@@ -91,7 +97,7 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
             server.login(config['SMTP_USERNAME'], config['SMTP_PASSWORD'])
             
         logging.info("Sending email...")
-        server.sendmail(from_address, [to_address], msg.as_string())
+        server.send_message(msg, from_address, [to_address])
         logging.info("Email sent successfully.")
         server.quit()
         return True, "邮件发送成功。"
@@ -432,9 +438,10 @@ def _send_to_kindle_logic(user_dict, book_id):
         safe_title = re.sub(r'[^\w\s._-]', '', title).strip()
         filename_to_send = f"{safe_title}.epub"
 
-        # Per user request, send with empty subject and body
-        subject = "book"
-        body = ""
+        # Per Calibre's logic for Kindle, use random English text for subject and body
+        # to ensure maximum compatibility with Amazon's services.
+        subject = random_english_text(min_words_per_sentence=3, max_words_per_sentence=9, max_num_sentences=1).rstrip('.')
+        body = random_english_text()
         success, message = send_email_with_config(
             user_dict['kindle_email'], 
             subject, 
