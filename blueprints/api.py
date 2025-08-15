@@ -7,6 +7,7 @@ import qrcode
 import requests
 import bcrypt
 import logging
+import re
 import secrets
 import shutil
 import subprocess
@@ -29,6 +30,7 @@ from anx_library import (
     initialize_anx_user_data
 )
 from .main import download_calibre_book, send_email, get_calibre_auth, get_calibre_book_details, download_calibre_cover
+from epub_fixer import fix_epub_for_kindle
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -349,35 +351,39 @@ def _send_to_kindle_logic(user_dict, book_id):
         return {'success': False, 'error': '找不到书籍详情。'}
 
     available_formats = [f.lower() for f in details.get('formats', [])]
-    
-    content_to_send = None
-    filename_to_send = None
     needs_conversion = False
+    epub_to_process_path = None
+    original_epub_filename = None
 
-    if 'epub' in available_formats:
-        logging.info(f"Book ID {book_id} has EPUB format. Downloading directly.")
-        content_to_send, filename_to_send = download_calibre_book(book_id, 'epub')
-    else:
-        needs_conversion = True
-        
-        # Check if converter is available before proceeding
-        if not shutil.which('ebook-converter'):
-            logging.error("ebook-converter not found, but conversion is needed.")
-            return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
+    with tempfile.TemporaryDirectory() as temp_dir:
+        if 'epub' in available_formats:
+            logging.info(f"Book ID {book_id} has EPUB format. Downloading directly.")
+            content, filename = download_calibre_book(book_id, 'epub')
+            if not content:
+                return {'success': False, 'error': '下载 EPUB 文件时出错。'}
+            
+            epub_to_process_path = os.path.join(temp_dir, filename)
+            original_epub_filename = filename
+            with open(epub_to_process_path, 'wb') as f:
+                f.write(content)
+        else:
+            needs_conversion = True
+            if not shutil.which('ebook-converter'):
+                logging.error("ebook-converter not found, but conversion is needed.")
+                return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
 
-        priority_str = user_dict.get('send_format_priority') or '[]'
-        priority = json.loads(priority_str)
-        format_to_convert = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
+            priority_str = user_dict.get('send_format_priority') or '[]'
+            priority = json.loads(priority_str)
+            format_to_convert = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
-        if not format_to_convert:
-            return {'success': False, 'error': f'未找到可用格式进行转换: {", ".join(available_formats)}'}
+            if not format_to_convert:
+                return {'success': False, 'error': f'未找到可用格式进行转换: {", ".join(available_formats)}'}
 
-        logging.info(f"Book ID {book_id} needs conversion. Converting from {format_to_convert}.")
-        original_content, original_filename = download_calibre_book(book_id, format_to_convert)
-        if not original_content:
-            return {'success': False, 'error': f'下载 {format_to_convert.upper()} 格式时出错。'}
+            logging.info(f"Book ID {book_id} needs conversion. Converting from {format_to_convert}.")
+            original_content, original_filename = download_calibre_book(book_id, format_to_convert)
+            if not original_content:
+                return {'success': False, 'error': f'下载 {format_to_convert.upper()} 格式时出错。'}
 
-        with tempfile.TemporaryDirectory() as temp_dir:
             source_path = os.path.join(temp_dir, original_filename)
             with open(source_path, 'wb') as f:
                 f.write(original_content)
@@ -385,37 +391,52 @@ def _send_to_kindle_logic(user_dict, book_id):
             base_name, _ = os.path.splitext(original_filename)
             epub_filename = f"{base_name}.epub"
             dest_path = os.path.join(temp_dir, epub_filename)
+            original_epub_filename = epub_filename
 
             try:
                 logging.info(f"Running ebook-converter: {source_path} -> {dest_path}")
-                result = subprocess.run(
+                subprocess.run(
                     ['ebook-converter', source_path, dest_path],
-                    capture_output=True, text=True, check=True, timeout=300 # 5-minute timeout
+                    capture_output=True, text=True, check=True, timeout=300
                 )
-                logging.info(f"ebook-converter stdout: {result.stdout}")
-                logging.error(f"ebook-converter stderr: {result.stderr}")
-
-                with open(dest_path, 'rb') as f:
-                    content_to_send = f.read()
-                filename_to_send = epub_filename
-
-            except FileNotFoundError:
-                logging.error("ebook-converter command not found. Is it in the PATH?")
-                return {'success': False, 'error': '转换工具 (ebook-converter) 未找到。'}
-            except subprocess.CalledProcessError as e:
-                logging.error(f"ebook-converter failed: {e.stderr}")
-                return {'success': False, 'error': f'书籍转换失败: {e.stderr}'}
+                epub_to_process_path = dest_path
             except Exception as e:
                 logging.error(f"An unexpected error occurred during conversion: {e}")
                 return {'success': False, 'error': f'转换过程中发生未知错误: {e}'}
 
-    if not content_to_send:
-        return {'success': False, 'error': '无法获取要发送的书籍内容。'}
+        if not epub_to_process_path or not os.path.exists(epub_to_process_path):
+            return {'success': False, 'error': '无法获取要处理的 EPUB 文件。'}
 
-    subject = f"推送书籍: {details.get('title', 'N/A')}"
-    body = "附件是您请求的书籍。"
-    success, message = send_email(user_dict['kindle_email'], subject, body, content_to_send, filename_to_send)
-    
+        # --- Fix the EPUB before sending ---
+        logging.info(f"Processing EPUB with kindle-epub-fixer: {epub_to_process_path}")
+        # Force language to Chinese for Kindle compatibility as per user request
+        fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
+        
+        final_epub_path = fixed_epub_path
+
+        logging.info(f"Reading final EPUB content from: {final_epub_path}")
+        with open(final_epub_path, 'rb') as f:
+            content_to_send = f.read()
+
+        if not content_to_send:
+            return {'success': False, 'error': '无法读取最终的 EPUB 文件内容。'}
+
+        # Sanitize title for use in filename, removing brackets and special characters
+        title = details.get('title', 'Untitled')
+        # Remove content within brackets
+        title = re.sub(r'[\(\[].*?[\)\]]', '', title)
+        # Keep only safe characters: letters, numbers, spaces, dots, underscores, hyphens
+        safe_title = re.sub(r'[^\w\s._-]', '', title).strip()
+        filename_to_send = f"{safe_title}.epub"
+
+        # Per user request, send with empty subject and body
+        subject = ""
+        body = ""
+        success, message = send_email(user_dict['kindle_email'], subject, body, content_to_send, filename_to_send)
+
+        # The temporary directory and its contents are automatically cleaned up
+        # when the 'with' block exits.
+
     if success:
         return {'success': True, 'message': message, 'needs_conversion': needs_conversion}
     else:
