@@ -189,6 +189,19 @@ export function setupEventHandlers(
                 }
                 break;
             }
+            case 'jump-to-page-bottom': {
+                const pageInput = document.getElementById('page-jump-input-bottom');
+                const totalPages = parseInt(document.querySelector('.pagination-controls').dataset.totalPages, 10);
+                const page = parseInt(pageInput.value, 10);
+                if (page && page > 0 && page <= totalPages) {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('page', page);
+                    showLoaderAndNavigate(url.href, calibreLoader);
+                } else {
+                    alert(`请输入一个介于 1 和 ${totalPages} 之间的有效页码。`);
+                }
+                break;
+            }
             case 'go-home':
                 showLoaderAndNavigate("/", calibreLoader);
                 break;
@@ -300,10 +313,12 @@ export function setupEventHandlers(
         });
     });
 
-    document.querySelector('.pagination-form select[name="page_size"]').addEventListener('change', function() {
-        const url = new URL(window.location.href);
-        url.searchParams.set('page_size', this.value);
-        url.searchParams.set('page', 1); // Reset to page 1 on size change
-        showLoaderAndNavigate(url.href, calibreLoader);
+    document.querySelectorAll('.pagination-form select[name="page_size"]').forEach(select => {
+        select.addEventListener('change', function() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('page_size', this.value);
+            url.searchParams.set('page', 1); // Reset to page 1 on size change
+            showLoaderAndNavigate(url.href, calibreLoader);
+        });
     });
 }

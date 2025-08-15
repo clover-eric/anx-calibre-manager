@@ -78,6 +78,22 @@
                 <p>Calibre 书库中没有书籍。</p>
                 {% endfor %}
             </div>
+            <div class="pagination-controls bottom" data-total-pages="{{ pagination.total_pages }}">
+                 <span>共 {{ pagination.total_books }} 本 ({{ pagination.page }}/{{ pagination.total_pages }})
+</span>
+                <form action="/" method="get" class="pagination-form" id="pagination-form-bottom">
+                    <input type="hidden" name="search" value="{{ search_query }}">
+                    <select name="page_size">
+                        <option value="20" {% if pagination.page_size == 20 %}selected{% endif %}>20/页</option>
+                        <option value="50" {% if pagination.page_size == 50 %}selected{% endif %}>50/页</option>
+                        <option value="100" {% if pagination.page_size == 100 %}selected{% endif %}>100/页</option>
+                    </select>
+                    {% if pagination.page > 1 %}<a href="?search={{ search_query }}&page={{ pagination.page - 1 }}&page_size={{ pagination.page_size }}" class="button button-link pagination-link">上一页</a>{% endif %}
+                    <input type="number" name="page" id="page-jump-input-bottom" class="page-jump-input" value="{{ pagination.page }}" min="1" max="{{ pagination.total_pages }}">
+                    <button type="button" class="button" data-action="jump-to-page-bottom">跳转</button>
+                    {% if pagination.page < pagination.total_pages %}<a href="?search={{ search_query }}&page={{ pagination.page + 1 }}&page_size={{ pagination.page_size }}" class="button button-link pagination-link">下一页</a>{% endif %}
+                </form>
+            </div>
         </div>
         <!-- Anx Library Section -->
         <div class="library" id="anx-library">
