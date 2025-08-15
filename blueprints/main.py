@@ -188,37 +188,3 @@ def download_calibre_book(book_id, download_format='mobi'):
     except requests.exceptions.RequestException as e:
         print(f"Error downloading book {book_id} in format {download_format} from URL {url}: {e}")
         return None, None
-
-def send_email(to_address, subject, body, attachment_content, attachment_filename):
-    import smtplib
-    from email.mime.application import MIMEApplication
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-    config = config_manager.config
-    if not all([config.get('SMTP_SERVER'), config.get('SMTP_PORT'), config.get('SMTP_USERNAME')]):
-        return False, "SMTP 未完全配置。"
-    msg = MIMEMultipart()
-    msg['From'] = config['SMTP_USERNAME']
-    msg['To'] = to_address
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    part = MIMEApplication(attachment_content, Name=attachment_filename)
-    part['Content-Disposition'] = f'attachment; filename="{attachment_filename}"'
-    msg.attach(part)
-    try:
-        server = None
-        encryption = config.get('SMTP_ENCRYPTION', 'tls').lower()
-        if encryption == 'ssl':
-            server = smtplib.SMTP_SSL(config['SMTP_SERVER'], config['SMTP_PORT'])
-        else:
-            server = smtplib.SMTP(config['SERVER'], config['SMTP_PORT'])
-            if encryption == 'tls':
-                server.starttls()
-        if config.get('SMTP_PASSWORD'):
-            server.login(config['SMTP_USERNAME'], config['SMTP_PASSWORD'])
-        server.sendmail(config['SMTP_USERNAME'], to_address, msg.as_string())
-        server.quit()
-        return True, "邮件发送成功。"
-    except Exception as e:
-        print(f"邮件发送失败: {e}")
-        return False, f"邮件发送失败: {e}"

@@ -19,6 +19,7 @@ import sqlite3
 import uuid
 from functools import lru_cache
 from urllib.parse import quote
+from email.utils import formataddr
 
 import database
 import config_manager
@@ -29,7 +30,7 @@ from anx_library import (
     get_anx_user_dirs,
     initialize_anx_user_data
 )
-from .main import download_calibre_book, send_email, get_calibre_auth, get_calibre_book_details, download_calibre_cover
+from .main import download_calibre_book, get_calibre_auth, get_calibre_book_details, download_calibre_cover
 from epub_fixer import fix_epub_for_kindle
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -57,8 +58,10 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
         return False, "SMTP 未完全配置。"
         
     msg = MIMEMultipart()
-    msg['From'] = config['SMTP_USERNAME']
-    msg['To'] = to_address
+    # Per user request, set both the name and email fields to the full email address
+    from_address = config['SMTP_USERNAME']
+    msg['From'] = formataddr((from_address, from_address))
+    msg['To'] = formataddr((to_address, to_address))
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
     
@@ -81,14 +84,14 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
                 logging.info("Starting TLS...")
                 server.starttls()
         
-        server.set_debuglevel(1) # Log SMTP conversation
+        #server.set_debuglevel(1) # Log SMTP conversation
         
         if config.get('SMTP_PASSWORD'):
             logging.info(f"Logging in as {config['SMTP_USERNAME']}...")
             server.login(config['SMTP_USERNAME'], config['SMTP_PASSWORD'])
             
         logging.info("Sending email...")
-        server.sendmail(config['SMTP_USERNAME'], to_address, msg.as_string())
+        server.sendmail(from_address, [to_address], msg.as_string())
         logging.info("Email sent successfully.")
         server.quit()
         return True, "邮件发送成功。"
@@ -430,9 +433,16 @@ def _send_to_kindle_logic(user_dict, book_id):
         filename_to_send = f"{safe_title}.epub"
 
         # Per user request, send with empty subject and body
-        subject = ""
+        subject = "book"
         body = ""
-        success, message = send_email(user_dict['kindle_email'], subject, body, content_to_send, filename_to_send)
+        success, message = send_email_with_config(
+            user_dict['kindle_email'], 
+            subject, 
+            body, 
+            config_manager.config, # Use the global config
+            content_to_send, 
+            filename_to_send
+        )
 
         # The temporary directory and its contents are automatically cleaned up
         # when the 'with' block exits.
