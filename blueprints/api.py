@@ -32,7 +32,7 @@ from anx_library import (
 )
 from .main import download_calibre_book, get_calibre_auth, get_calibre_book_details, download_calibre_cover
 from epub_fixer import fix_epub_for_kindle
-from utils import random_english_text, create_calibre_mail
+from utils import random_english_text, create_calibre_mail, sanitize_filename
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -232,8 +232,10 @@ def user_settings_api():
                 hashed = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
                 db.execute('UPDATE users SET password_hash = ? WHERE id = ?', (hashed, g.user.id))
             priority_list = [v.strip() for v in data.get('send_format_priority', '').split(',')]
-            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ?, theme = ? WHERE id = ?',
-                       (data.get('kindle_email'), json.dumps(priority_list), data.get('theme', 'auto'), g.user.id))
+            # Handle checkbox boolean value
+            force_conversion = data.get('force_epub_conversion') == 'true'
+            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ?, theme = ?, force_epub_conversion = ? WHERE id = ?',
+                       (data.get('kindle_email'), json.dumps(priority_list), data.get('theme', 'auto'), force_conversion, g.user.id))
             db.commit()
         return jsonify({'message': '用户设置已更新。'})
     else: # GET
@@ -249,7 +251,8 @@ def user_settings_api():
             'send_format_priority': priority,
             'has_2fa': bool(g.user.otp_secret),
             'smtp_from_address': config_manager.config.get('SMTP_USERNAME'),
-            'theme': g.user.theme or 'auto'
+            'theme': g.user.theme or 'auto',
+            'force_epub_conversion': bool(g.user.force_epub_conversion)
         })
 
 @api_bp.route('/global_settings', methods=['GET', 'POST'])
@@ -323,75 +326,55 @@ def disable_2fa():
         db.commit()
     return jsonify({'message': '2FA 已禁用。'})
 
-@api_bp.route('/download_book/<int:book_id>', methods=['GET'])
-def download_book_api(book_id):
+def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - author'):
+    """
+    Core logic to get a processed EPUB for a book.
+    It handles downloading, converting (if necessary), and fixing the EPUB.
+    Returns a tuple: (content, filename, needs_conversion_flag) or (None, None, None) on error.
+    """
     details = get_calibre_book_details(book_id)
     if not details:
-        return jsonify({'error': '找不到书籍详情。'}), 404
-
-    available_formats = [f.lower() for f in details.get('formats', [])]
-    priority = json.loads(g.user.send_format_priority or '[]')
-    
-    format_to_download = None
-    for p_format in priority:
-        if p_format.lower() in available_formats:
-            format_to_download = p_format.lower()
-            break
-    
-    if not format_to_download:
-        if available_formats:
-            format_to_download = available_formats[0]
-        else:
-            return jsonify({'error': '该书籍没有任何可用格式。'}), 400
-
-    content, filename = download_calibre_book(book_id, format_to_download)
-    if content:
-        return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
-    
-    return jsonify({'error': '无法下载书籍。'}), 404
-
-def _send_to_kindle_logic(user_dict, book_id):
-    """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
-    if not user_dict.get('kindle_email'):
-        return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
-
-    details = get_calibre_book_details(book_id)
-    if not details:
-        return {'success': False, 'error': '找不到书籍详情。'}
+        logging.error(f"Could not get details for book_id {book_id}")
+        return None, None, False
 
     available_formats = [f.lower() for f in details.get('formats', [])]
     needs_conversion = False
-    epub_to_process_path = None
-    original_epub_filename = None
-
+    
     with tempfile.TemporaryDirectory() as temp_dir:
+        epub_to_process_path = None
+        
+        # Check if EPUB already exists
         if 'epub' in available_formats:
             logging.info(f"Book ID {book_id} has EPUB format. Downloading directly.")
             content, filename = download_calibre_book(book_id, 'epub')
             if not content:
-                return {'success': False, 'error': '下载 EPUB 文件时出错。'}
+                logging.error(f"Failed to download existing EPUB for book_id {book_id}")
+                return None, None, False
             
             epub_to_process_path = os.path.join(temp_dir, filename)
-            original_epub_filename = filename
             with open(epub_to_process_path, 'wb') as f:
                 f.write(content)
         else:
+            # If no EPUB, convert from another format
             needs_conversion = True
             if not shutil.which('ebook-converter'):
                 logging.error("ebook-converter not found, but conversion is needed.")
-                return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
+                # This case will be handled by the calling function to return a specific error message
+                return None, "CONVERTER_NOT_FOUND", False
 
             priority_str = user_dict.get('send_format_priority') or '[]'
             priority = json.loads(priority_str)
             format_to_convert = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
             if not format_to_convert:
-                return {'success': False, 'error': f'未找到可用格式进行转换: {", ".join(available_formats)}'}
+                logging.error(f"No suitable format found to convert from for book_id {book_id}")
+                return None, None, False
 
             logging.info(f"Book ID {book_id} needs conversion. Converting from {format_to_convert}.")
             original_content, original_filename = download_calibre_book(book_id, format_to_convert)
             if not original_content:
-                return {'success': False, 'error': f'下载 {format_to_convert.upper()} 格式时出错。'}
+                logging.error(f"Failed to download source format {format_to_convert} for book_id {book_id}")
+                return None, None, False
 
             source_path = os.path.join(temp_dir, original_filename)
             with open(source_path, 'wb') as f:
@@ -400,7 +383,6 @@ def _send_to_kindle_logic(user_dict, book_id):
             base_name, _ = os.path.splitext(original_filename)
             epub_filename = f"{base_name}.epub"
             dest_path = os.path.join(temp_dir, epub_filename)
-            original_epub_filename = epub_filename
 
             try:
                 logging.info(f"Running ebook-converter: {source_path} -> {dest_path}")
@@ -410,49 +392,103 @@ def _send_to_kindle_logic(user_dict, book_id):
                 )
                 epub_to_process_path = dest_path
             except Exception as e:
-                logging.error(f"An unexpected error occurred during conversion: {e}")
-                return {'success': False, 'error': f'转换过程中发生未知错误: {e}'}
+                logging.error(f"An unexpected error occurred during conversion for book_id {book_id}: {e}")
+                return None, None, False
 
         if not epub_to_process_path or not os.path.exists(epub_to_process_path):
-            return {'success': False, 'error': '无法获取要处理的 EPUB 文件。'}
+            logging.error(f"Could not find EPUB to process for book_id {book_id}")
+            return None, None, False
 
-        # --- Fix the EPUB before sending ---
+        # --- Fix the EPUB ---
         logging.info(f"Processing EPUB with kindle-epub-fixer: {epub_to_process_path}")
-        # Force language to Chinese for Kindle compatibility as per user request
         fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
         
-        final_epub_path = fixed_epub_path
-
-        logging.info(f"Reading final EPUB content from: {final_epub_path}")
-        with open(final_epub_path, 'rb') as f:
+        with open(fixed_epub_path, 'rb') as f:
             content_to_send = f.read()
 
-        if not content_to_send:
-            return {'success': False, 'error': '无法读取最终的 EPUB 文件内容。'}
-
-        # Sanitize title for use in filename, removing brackets and special characters
+        # Sanitize title for use in filename
         title = details.get('title', 'Untitled')
-        # Remove content within brackets
-        title = re.sub(r'[\(\[].*?[\)\]]', '', title)
-        # Keep only safe characters: letters, numbers, spaces, dots, underscores, hyphens
-        safe_title = re.sub(r'[^\w\s._-]', '', title).strip()
-        filename_to_send = f"{safe_title}.epub"
+        safe_title = re.sub(r'[\\/*?:"<>|]', '', title).strip()
+        
+        if filename_format == 'title':
+            filename_to_send = f"{safe_title}.epub"
+        else: # Default to 'title - author'
+            authors = " & ".join(details.get('authors', []))
+            safe_authors = re.sub(r'[\\/*?:"<>|]', '', authors).strip()
+            if safe_authors:
+                filename_to_send = f"{safe_title} - {safe_authors}.epub"
+            else:
+                filename_to_send = f"{safe_title}.epub"
 
-        # Per Calibre's logic for Kindle, use random English text for subject and body
-        # to ensure maximum compatibility with Amazon's services.
-        subject = random_english_text(min_words_per_sentence=3, max_words_per_sentence=9, max_num_sentences=1).rstrip('.')
-        body = random_english_text()
-        success, message = send_email_with_config(
-            user_dict['kindle_email'], 
-            subject, 
-            body, 
-            config_manager.config, # Use the global config
-            content_to_send, 
-            filename_to_send
-        )
+        return content_to_send, filename_to_send, needs_conversion
 
-        # The temporary directory and its contents are automatically cleaned up
-        # when the 'with' block exits.
+
+@api_bp.route('/download_book/<int:book_id>', methods=['GET'])
+def download_book_api(book_id):
+    if g.user.force_epub_conversion:
+        logging.info(f"Force EPUB conversion is ON for user {g.user.username} for book {book_id}")
+        user_dict = {
+        'username': g.user.username,
+        'kindle_email': g.user.kindle_email,
+        'send_format_priority': g.user.send_format_priority,
+        'force_epub_conversion': g.user.force_epub_conversion
+    }
+        content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+        
+        if filename == 'CONVERTER_NOT_FOUND':
+            return jsonify({'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}), 412
+        if content and filename:
+            return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
+        else:
+            return jsonify({'error': '无法处理或转换书籍。'}), 500
+    else:
+        # Original logic
+        details = get_calibre_book_details(book_id)
+        if not details:
+            return jsonify({'error': '找不到书籍详情。'}), 404
+
+        available_formats = [f.lower() for f in details.get('formats', [])]
+        priority = json.loads(g.user.send_format_priority or '[]')
+        
+        format_to_download = next((p_format.lower() for p_format in priority if p_format.lower() in available_formats), None)
+        
+        if not format_to_download:
+            if available_formats:
+                format_to_download = available_formats[0]
+            else:
+                return jsonify({'error': '该书籍没有任何可用格式。'}), 400
+
+        content, filename = download_calibre_book(book_id, format_to_download)
+        if content:
+            return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
+        
+        return jsonify({'error': '无法下载书籍。'}), 404
+
+def _send_to_kindle_logic(user_dict, book_id):
+    """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
+    if not user_dict.get('kindle_email'):
+        return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
+
+    # Kindle always requires a processed EPUB
+    content_to_send, filename_to_send, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, filename_format='title')
+
+    if filename_to_send == 'CONVERTER_NOT_FOUND':
+        return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
+    
+    if not content_to_send:
+        return {'success': False, 'error': '无法获取或处理书籍的 EPUB 文件。'}
+
+    # Per Calibre's logic for Kindle, use random English text for subject and body
+    subject = random_english_text(min_words_per_sentence=3, max_words_per_sentence=9, max_num_sentences=1).rstrip('.')
+    body = random_english_text()
+    success, message = send_email_with_config(
+        user_dict['kindle_email'], 
+        subject, 
+        body, 
+        config_manager.config, # Use the global config
+        content_to_send, 
+        filename_to_send
+    )
 
     if success:
         return {'success': True, 'message': message, 'needs_conversion': needs_conversion}
@@ -461,11 +497,11 @@ def _send_to_kindle_logic(user_dict, book_id):
 
 @api_bp.route('/send_to_kindle/<int:book_id>', methods=['POST'])
 def send_to_kindle_api(book_id):
-    # Convert g.user object to a dictionary for consistent access
     user_dict = {
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
-        'send_format_priority': g.user.send_format_priority
+        'send_format_priority': g.user.send_format_priority,
+        'force_epub_conversion': g.user.force_epub_conversion
     }
     result = _send_to_kindle_logic(user_dict, book_id)
     if result['success']:
@@ -479,21 +515,31 @@ def send_to_kindle_api(book_id):
 
 def _push_calibre_to_anx_logic(user_dict, book_id):
     """Core logic to push a Calibre book to a user's Anx library. Expects user as a dict."""
-    details = get_calibre_book_details(book_id)
-    if not details:
-        return {'success': False, 'error': '找不到书籍详情。'}
+    book_content, book_filename = None, None
 
-    available_formats = [f.lower() for f in details.get('formats', [])]
-    priority_str = user_dict.get('send_format_priority') or '[]'
-    priority = json.loads(priority_str)
-    format_to_push = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
+    if user_dict.get('force_epub_conversion'):
+        logging.info(f"Force EPUB conversion is ON for user {user_dict['username']} for book {book_id} push to Anx.")
+        content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+        if filename == 'CONVERTER_NOT_FOUND':
+            return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
+        book_content, book_filename = content, filename
+    else:
+        # Original logic
+        details = get_calibre_book_details(book_id)
+        if not details:
+            return {'success': False, 'error': '找不到书籍详情。'}
+        available_formats = [f.lower() for f in details.get('formats', [])]
+        priority_str = user_dict.get('send_format_priority') or '[]'
+        priority = json.loads(priority_str)
+        format_to_push = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
-    if not format_to_push:
-        return {'success': False, 'error': '未找到可推送的格式。'}
+        if not format_to_push:
+            return {'success': False, 'error': '未找到可推送的格式。'}
+        
+        book_content, book_filename = download_calibre_book(book_id, format_to_push)
 
-    book_content, book_filename = download_calibre_book(book_id, format_to_push)
     if not book_content:
-        return {'success': False, 'error': '下载书籍以进行推送时出错。'}
+        return {'success': False, 'error': '下载或处理书籍时出错。'}
 
     cover_content, _ = download_calibre_cover(book_id)
 
@@ -526,11 +572,11 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
 
 @api_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
 def push_to_anx_api(book_id):
-    # Convert g.user object to a dictionary for consistent access
     user_dict = {
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
-        'send_format_priority': g.user.send_format_priority
+        'send_format_priority': g.user.send_format_priority,
+        'force_epub_conversion': g.user.force_epub_conversion
     }
     result = _push_calibre_to_anx_logic(user_dict, book_id)
     if result['success']:

@@ -227,3 +227,11 @@ def create_calibre_mail(from_, to, subject, text=None, attachment_data=None,
         outer.add_attachment(attachment_data, maintype=maintype, subtype=subtype, filename=attachment_name)
 
     return outer
+
+import re
+
+def sanitize_filename(filename):
+    """
+    Removes illegal characters from a filename.
+    """
+    return re.sub(r'[\\/*?:"<>|]', '', filename).rstrip()

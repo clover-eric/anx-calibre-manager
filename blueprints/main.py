@@ -1,4 +1,5 @@
 import math
+import re
 import requests
 import io
 import os
@@ -10,6 +11,7 @@ import json
 import config_manager
 from database import get_db
 from anx_library import get_anx_books
+from utils import sanitize_filename
 
 main_bp = Blueprint('main', __name__)
 
@@ -173,11 +175,14 @@ def download_calibre_book(book_id, download_format='mobi'):
     details = get_calibre_book_details(book_id)
     if not details: return None, None
     title = details.get('title', 'Unknown Title')
-    authors = "_".join(details.get('authors', ['Unknown Author']))
+    authors = " & ".join(details.get('authors', ['Unknown Author']))
     # Sanitize filename
-    safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '-', '_')).rstrip()
-    safe_authors = "".join(c for c in authors if c.isalnum() or c in (' ', '-', '_')).rstrip()
-    filename = f"{safe_title} - {safe_authors}.{download_format}"
+    safe_title = sanitize_filename(title)
+    safe_authors = sanitize_filename(authors)
+    if safe_authors:
+        filename = f"{safe_title} - {safe_authors}.{download_format}"
+    else:
+        filename = f"{safe_title}.{download_format}"
     
     config = config_manager.config
     try:

@@ -32,6 +32,11 @@ def update_schema_if_needed(db):
         cursor.execute("ALTER TABLE users ADD COLUMN theme TEXT DEFAULT 'auto'")
         db.commit()
 
+    if 'force_epub_conversion' not in columns:
+        print("Migrating database: adding 'force_epub_conversion' column to users table.")
+        cursor.execute('ALTER TABLE users ADD COLUMN force_epub_conversion INTEGER NOT NULL DEFAULT 0')
+        db.commit()
+
     # 检查 mcp_tokens 表是否存在
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='mcp_tokens'")
     if cursor.fetchone() is None:
@@ -72,7 +77,8 @@ def create_schema():
                     otp_secret TEXT,
                     send_format_priority TEXT,
                     kindle_email TEXT,
-                    theme TEXT DEFAULT 'auto'
+                    theme TEXT DEFAULT 'auto',
+                    force_epub_conversion INTEGER NOT NULL DEFAULT 0
                 );
             ''')
             # MCP Tokens Table
