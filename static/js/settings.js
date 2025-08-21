@@ -28,6 +28,7 @@ async function populateForms() {
     document.getElementById('kindle_email').value = userData.kindle_email || '';
     document.getElementById('send_format_priority').value = (userData.send_format_priority || []).join(', ');
     document.getElementById('theme').value = userData.theme || 'auto';
+    document.getElementById('force_epub_conversion').checked = userData.force_epub_conversion;
     if (userData.smtp_from_address) {
         const tipElement = document.getElementById('smtp_from_address_tip');
         tipElement.textContent = `请确保将发件邮箱 (${userData.smtp_from_address}) 添加到您的亚马逊 Kindle 信任邮箱列表中。`;

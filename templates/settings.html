@@ -53,7 +53,12 @@
             <div class="form-group">
                 <label for="send_format_priority">格式优先级</label>
                 <input type="text" id="send_format_priority" name="send_format_priority">
-                <small>下载或推送到 Kindle 时，将按此优先顺序查找可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3</small>
+                <small>下载或推送到 Kindle / ANX书库时，将按此优先顺序查找可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3</small>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="force_epub_conversion" name="force_epub_conversion" value="true" style="width: auto; margin-right: 5px;">
+                <label for="force_epub_conversion" style="display: inline;">强制转换为 EPUB</label></br>
+                <small>如果启用，在下载或推送到ANX书库时，将始终尝试将书籍转换为优化过的 EPUB 格式，而不是发送原始格式。</small>
             </div>
             
             <h3>两步验证 (2FA)</h3>
@@ -130,7 +135,7 @@
             <div class="form-group">
                 <input type="checkbox" id="CALIBRE_ADD_DUPLICATES" name="CALIBRE_ADD_DUPLICATES" value="true" style="width: auto; margin-right: 5px;">
                 <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">允许上传重复书籍</label></br>
-                <small>如果选中，即使 Calibre 检测到重复的书籍，也会将其添加为新副本。</small>
+                <small>如果启用，即使 Calibre 检测到重复的书籍，也会将其添加为新副本。</small>
             </div>            
             <h3>路径设置</h3>
             <div class="form-group">
