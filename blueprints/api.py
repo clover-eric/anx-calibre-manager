@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tempfile
 import mimetypes
+import hashlib
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
 from contextlib import closing
 from werkzeug.utils import secure_filename
@@ -146,11 +147,12 @@ def add_user():
         return jsonify({'error': '用户名和密码是必填项。'}), 400
 
     hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    kosync_userkey = hashlib.md5(password.encode('utf-8')).hexdigest()
     with closing(database.get_db()) as db:
         try:
             db.execute(
-                "INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, ?)",
-                (username, hashed_pw, is_admin)
+                "INSERT INTO users (username, password_hash, is_admin, kosync_userkey) VALUES (?, ?, ?, ?)",
+                (username, hashed_pw, is_admin, kosync_userkey)
             )
             db.commit()
             
@@ -181,9 +183,10 @@ def update_user():
     with closing(database.get_db()) as db:
         if password:
             hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            kosync_userkey = hashlib.md5(password.encode('utf-8')).hexdigest()
             db.execute(
-                'UPDATE users SET username = ?, password_hash = ?, is_admin = ? WHERE id = ?',
-                (username, hashed_pw, is_admin, user_id)
+                'UPDATE users SET username = ?, password_hash = ?, is_admin = ?, kosync_userkey = ? WHERE id = ?',
+                (username, hashed_pw, is_admin, kosync_userkey, user_id)
             )
         else:
             db.execute(
@@ -229,8 +232,10 @@ def user_settings_api():
         data = request.get_json()
         with closing(database.get_db()) as db:
             if 'new_password' in data and data['new_password']:
-                hashed = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-                db.execute('UPDATE users SET password_hash = ? WHERE id = ?', (hashed, g.user.id))
+                new_password = data['new_password']
+                hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                kosync_userkey = hashlib.md5(new_password.encode('utf-8')).hexdigest()
+                db.execute('UPDATE users SET password_hash = ?, kosync_userkey = ? WHERE id = ?', (hashed, kosync_userkey, g.user.id))
             priority_list = [v.strip() for v in data.get('send_format_priority', '').split(',')]
             # Handle checkbox boolean value
             force_conversion = data.get('force_epub_conversion') == 'true'

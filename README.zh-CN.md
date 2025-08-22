@@ -12,6 +12,7 @@
 - **移动端优先界面**: 简洁、响应式的用户界面，专为在手机上轻松使用而设计。
 - **PWA 支持**: 可作为渐进式 Web 应用 (PWA) 安装，提供类似原生应用的体验。
 - **Calibre 集成**: 连接到您现有的 Calibre 服务器，以浏览和搜索您的书库。
+- **KOReader 同步**: 与您的 KOReader 设备同步阅读进度。
 - **智能推送到 Kindle**: 发送书籍到您的 Kindle 时，应用会自动处理格式。如果书籍已有 EPUB 格式，则直接发送；如果没有，它将根据您的格式偏好设置，自动将最优先的可用格式**转换为 EPUB**后再发送，以确保最佳兼容性。
 - **推送到 Anx**: 将书籍从您的 Calibre 书库直接发送到您的个人 Anx-reader 设备文件夹。
 - **集成的 WebDAV 服务器**: 每个用户都会获得自己独立、安全的 WebDAV 文件夹，与 Anx-reader 和其他 WebDAV 客户端兼容。
@@ -135,6 +136,21 @@
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |
 | `SMTP_PASSWORD` | SMTP 密码。 | `""` |
 | `SMTP_ENCRYPTION` | SMTP 加密类型 (`ssl`, `starttls`, `none`)。 | `ssl` |
+
+## 📖 KOReader 同步
+
+您可以将您的 Anx 书库与 KOReader 设备的阅读进度进行同步。
+
+### 使用方法
+
+1.  **登录** Anx Calibre Manager。
+2.  进入 **设置 -> KOSync 设置** 页面。
+3.  在 KOReader 中，进入 `工具` -> `进度同步`，然后选择 `KOReader sync`。
+4.  输入以下信息：
+    -   **自定义同步服务器地址**: `http://<your_server_address>/kosync` (使用设置页面中显示的 URL)。
+    -   **用户名**: 您的 Anx Calibre Manager 用户名。
+    -   **密码**: 您的 Anx Calibre Manager 密码。
+5.  点击 **登录**。KOReader 现在即可与您的 Anx 书库同步进度。
 
 ## 🤖 MCP 服务器
 

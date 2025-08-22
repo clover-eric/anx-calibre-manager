@@ -37,6 +37,11 @@ def update_schema_if_needed(db):
         cursor.execute('ALTER TABLE users ADD COLUMN force_epub_conversion INTEGER NOT NULL DEFAULT 0')
         db.commit()
 
+    if 'kosync_userkey' not in columns:
+        print("Migrating database: adding 'kosync_userkey' column to users table.")
+        cursor.execute('ALTER TABLE users ADD COLUMN kosync_userkey TEXT')
+        db.commit()
+
     # 检查 mcp_tokens 表是否存在
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='mcp_tokens'")
     if cursor.fetchone() is None:
@@ -78,7 +83,8 @@ def create_schema():
                     send_format_priority TEXT,
                     kindle_email TEXT,
                     theme TEXT DEFAULT 'auto',
-                    force_epub_conversion INTEGER NOT NULL DEFAULT 0
+                    force_epub_conversion INTEGER NOT NULL DEFAULT 0,
+                    kosync_userkey TEXT
                 );
             ''')
             # MCP Tokens Table

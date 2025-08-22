@@ -6,6 +6,7 @@ from email.utils import formatdate, parseaddr
 import socket
 import sys
 import encodings.idna
+import cfi_converter
 
 # A list of common English words to generate random text from, mimicking Calibre's behavior.
 # Sourced from a standard list of common English words.
@@ -235,3 +236,29 @@ def sanitize_filename(filename):
     Removes illegal characters from a filename.
     """
     return re.sub(r'[\\/*?:"<>|]', '', filename).rstrip()
+
+import os
+
+def convert_koreader_progress(direction, epub_path, progress):
+    """
+    Calls the cfi_converter.py script to convert progress between xpointer and epubcfi.
+    direction: 'to-cfi' or 'from-cfi'
+    epub_path: Absolute path to the EPUB file.
+    progress: The progress string to convert.
+    """
+    if not os.path.exists(epub_path):
+        return None, f"EPUB file not found at {epub_path}"
+
+    try:
+        if direction == 'to-cfi':
+            result = cfi_converter.generate_cfi_from_custom_pointer(epub_path, progress)
+        elif direction == 'from-cfi':
+            result = cfi_converter.generate_custom_pointer_from_cfi(epub_path, progress)
+        else:
+            return None, f"Invalid conversion direction: {direction}"
+
+        if result.startswith('错误:'):
+            return None, result
+        return result, None
+    except Exception as e:
+        return None, f"An unexpected error occurred: {e}"

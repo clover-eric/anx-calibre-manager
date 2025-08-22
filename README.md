@@ -12,6 +12,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Mobile-First Interface**: A clean, responsive UI designed for easy use on your phone.
 - **PWA Support**: Installable as a Progressive Web App for a native-like experience.
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
+- **KOReader Sync**: Sync your reading progress with KOReader devices.
 - **Smart Send to Kindle**: Automatically handles formats when sending to your Kindle. If an EPUB exists, it's sent directly. If not, the app **converts the best available format to EPUB** based on your preferences before sending, ensuring optimal compatibility.
 - **Push to Anx**: Send books from your Calibre library directly to your personal Anx-reader device folder.
 - **Integrated WebDAV Server**: Each user gets their own secure WebDAV folder, compatible with Anx-reader and other WebDAV clients.
@@ -135,6 +136,21 @@ The application is configured via environment variables.
 | `SMTP_USERNAME` | SMTP username. | `""` |
 | `SMTP_PASSWORD` | SMTP password. | `""` |
 | `SMTP_ENCRYPTION` | SMTP encryption type (`ssl`, `starttls`, `none`). | `ssl` |
+
+## 📖 KOReader Sync
+
+You can sync your reading progress between your Anx library and KOReader devices.
+
+### How to Use
+
+1.  **Log in** to Anx Calibre Manager.
+2.  Navigate to **Settings -> KOSync Settings**.
+3.  In KOReader, go to `Tools` -> `Progress sync` and select `KOReader sync`.
+4.  Enter the following details:
+    -   **Custom sync server address**: `http://<your_server_address>/kosync` (use the URL shown in the settings page).
+    -   **Username**: Your Anx Calibre Manager username.
+    -   **Password**: Your Anx Calibre Manager password.
+5.  Tap **Login**. KOReader will now be able to sync progress with your Anx library.
 
 ## 🤖 MCP Server
 
