@@ -201,176 +201,178 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
 end
 
 function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
-    menu_items.anx_progress_sync = {
-        text = _("ANX Progress sync"),
+    if not menu_items.anx_calibre_manager then
+        menu_items.anx_calibre_manager = {
+            text = _("ANX Calibre Manager"),
+            sub_item_table = {},
+            sorting_hint = "more_tools",
+        }
+    end
+
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text = _("Set sync server"),
+        keep_menu_open = true,
+        tap_input_func = function()
+            return {
+                -- @translators Server address defined by user for progress sync.
+                title = _("Progress sync server address"),
+                input = self.settings.custom_server or "",
+                callback = function(input)
+                    self:setCustomServer(input)
+                end,
+            }
+        end,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text_func = function()
+            return self.settings.userkey and (_("Logout")) or _("Login")
+        end,
+        keep_menu_open = true,
+        callback_func = function()
+            if self.settings.userkey then
+                return function(menu)
+                    self:logout(menu)
+                end
+            else
+                return function(menu)
+                    self:login(menu)
+                end
+            end
+        end,
+        separator = true,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text = _("Automatically keep documents in sync"),
+        checked_func = function() return self.settings.auto_sync end,
+        help_text = _([[This may lead to nagging about toggling WiFi on document close and suspend/resume, depending on the device's connectivity.]]),
+        callback = function()
+            self:onAnxCalibreManagerKoreaderPluginToggleAutoSync(nil, true)
+        end,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text_func = function()
+            return T(_("Periodically sync every # pages (%1)"), self:getSyncPeriod())
+        end,
+        enabled_func = function() return self.settings.auto_sync end,
+        -- This is the condition that allows enabling auto_disable_wifi in NetworkManager ;).
+        help_text = NetworkMgr:getNetworkInterfaceName() and _([[Unlike the automatic sync above, this will *not* attempt to setup a network connection, but instead relies on it being already up, and may trigger enough network activity to passively keep WiFi enabled!]]),
+        keep_menu_open = true,
+        callback = function(touchmenu_instance)
+            local SpinWidget = require("ui/widget/spinwidget")
+            local items = SpinWidget:new{
+                text = _([[This value determines how many page turns it takes to update book progress.
+If set to 0, updating progress based on page turns will be disabled.]]),
+                value = self.settings.pages_before_update or 0,
+                value_min = 0,
+                value_max = 999,
+                value_step = 1,
+                value_hold_step = 10,
+                ok_text = _("Set"),
+                title_text = _("Number of pages before update"),
+                default_value = 0,
+                callback = function(spin)
+                    self:setPagesBeforeUpdate(spin.value)
+                    if touchmenu_instance then touchmenu_instance:updateItems() end
+                end
+            }
+            UIManager:show(items)
+        end,
+        separator = true,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text = _("Sync behavior"),
         sub_item_table = {
             {
-                text = _("Set sync server"),
-                keep_menu_open = true,
-                tap_input_func = function()
-                    return {
-                        -- @translators Server address defined by user for progress sync.
-                        title = _("Progress sync server address"),
-                        input = self.settings.custom_server or "",
-                        callback = function(input)
-                            self:setCustomServer(input)
-                        end,
-                    }
-                end,
-            },
-            {
                 text_func = function()
-                    return self.settings.userkey and (_("Logout")) or _("Login")
+                    -- NOTE: With an up-to-date Sync server, "forward" means *newer*, not necessarily ahead in the document.
+                    return T(_("Sync to a newer state (%1)"), getNameStrategy(self.settings.sync_forward))
                 end,
-                keep_menu_open = true,
-                callback_func = function()
-                    if self.settings.userkey then
-                        return function(menu)
-                            self:logout(menu)
-                        end
-                    else
-                        return function(menu)
-                            self:login(menu)
-                        end
-                    end
-                end,
-                separator = true,
-            },
-            {
-                text = _("Automatically keep documents in sync"),
-                checked_func = function() return self.settings.auto_sync end,
-                help_text = _([[This may lead to nagging about toggling WiFi on document close and suspend/resume, depending on the device's connectivity.]]),
-                callback = function()
-                    self:onAnxCalibreManagerKoreaderPluginToggleAutoSync(nil, true)
-                end,
-            },
-            {
-                text_func = function()
-                    return T(_("Periodically sync every # pages (%1)"), self:getSyncPeriod())
-                end,
-                enabled_func = function() return self.settings.auto_sync end,
-                -- This is the condition that allows enabling auto_disable_wifi in NetworkManager ;).
-                help_text = NetworkMgr:getNetworkInterfaceName() and _([[Unlike the automatic sync above, this will *not* attempt to setup a network connection, but instead relies on it being already up, and may trigger enough network activity to passively keep WiFi enabled!]]),
-                keep_menu_open = true,
-                callback = function(touchmenu_instance)
-                    local SpinWidget = require("ui/widget/spinwidget")
-                    local items = SpinWidget:new{
-                        text = _([[This value determines how many page turns it takes to update book progress.
-If set to 0, updating progress based on page turns will be disabled.]]),
-                        value = self.settings.pages_before_update or 0,
-                        value_min = 0,
-                        value_max = 999,
-                        value_step = 1,
-                        value_hold_step = 10,
-                        ok_text = _("Set"),
-                        title_text = _("Number of pages before update"),
-                        default_value = 0,
-                        callback = function(spin)
-                            self:setPagesBeforeUpdate(spin.value)
-                            if touchmenu_instance then touchmenu_instance:updateItems() end
-                        end
-                    }
-                    UIManager:show(items)
-                end,
-                separator = true,
-            },
-            {
-                text = _("Sync behavior"),
                 sub_item_table = {
                     {
-                        text_func = function()
-                            -- NOTE: With an up-to-date Sync server, "forward" means *newer*, not necessarily ahead in the document.
-                            return T(_("Sync to a newer state (%1)"), getNameStrategy(self.settings.sync_forward))
+                        text = _("Silently"),
+                        checked_func = function()
+                            return self.settings.sync_forward == SYNC_STRATEGY.SILENT
                         end,
-                        sub_item_table = {
-                            {
-                                text = _("Silently"),
-                                checked_func = function()
-                                    return self.settings.sync_forward == SYNC_STRATEGY.SILENT
-                                end,
-                                callback = function()
-                                    self:setSyncForward(SYNC_STRATEGY.SILENT)
-                                end,
-                            },
-                            {
-                                text = _("Prompt"),
-                                checked_func = function()
-                                    return self.settings.sync_forward == SYNC_STRATEGY.PROMPT
-                                end,
-                                callback = function()
-                                    self:setSyncForward(SYNC_STRATEGY.PROMPT)
-                                end,
-                            },
-                            {
-                                text = _("Never"),
-                                checked_func = function()
-                                    return self.settings.sync_forward == SYNC_STRATEGY.DISABLE
-                                end,
-                                callback = function()
-                                    self:setSyncForward(SYNC_STRATEGY.DISABLE)
-                                end,
-                            },
-                        }
+                        callback = function()
+                            self:setSyncForward(SYNC_STRATEGY.SILENT)
+                        end,
                     },
                     {
-                        text_func = function()
-                            return T(_("Sync to an older state (%1)"), getNameStrategy(self.settings.sync_backward))
+                        text = _("Prompt"),
+                        checked_func = function()
+                            return self.settings.sync_forward == SYNC_STRATEGY.PROMPT
                         end,
-                        sub_item_table = {
-                            {
-                                text = _("Silently"),
-                                checked_func = function()
-                                    return self.settings.sync_backward == SYNC_STRATEGY.SILENT
-                                end,
-                                callback = function()
-                                    self:setSyncBackward(SYNC_STRATEGY.SILENT)
-                                end,
-                            },
-                            {
-                                text = _("Prompt"),
-                                checked_func = function()
-                                    return self.settings.sync_backward == SYNC_STRATEGY.PROMPT
-                                end,
-                                callback = function()
-                                    self:setSyncBackward(SYNC_STRATEGY.PROMPT)
-                                end,
-                            },
-                            {
-                                text = _("Never"),
-                                checked_func = function()
-                                    return self.settings.sync_backward == SYNC_STRATEGY.DISABLE
-                                end,
-                                callback = function()
-                                    self:setSyncBackward(SYNC_STRATEGY.DISABLE)
-                                end,
-                            },
-                        }
+                        callback = function()
+                            self:setSyncForward(SYNC_STRATEGY.PROMPT)
+                        end,
                     },
-                },
-                separator = true,
+                    {
+                        text = _("Never"),
+                        checked_func = function()
+                            return self.settings.sync_forward == SYNC_STRATEGY.DISABLE
+                        end,
+                        callback = function()
+                            self:setSyncForward(SYNC_STRATEGY.DISABLE)
+                        end,
+                    },
+                }
             },
             {
-                text = _("Push progress from this device now"),
-                enabled_func = function()
-                    return self.settings.userkey ~= nil
+                text_func = function()
+                    return T(_("Sync to an older state (%1)"), getNameStrategy(self.settings.sync_backward))
                 end,
-                callback = function()
-                    self:updateProgress(true, true)
-                end,
+                sub_item_table = {
+                    {
+                        text = _("Silently"),
+                        checked_func = function()
+                            return self.settings.sync_backward == SYNC_STRATEGY.SILENT
+                        end,
+                        callback = function()
+                            self:setSyncBackward(SYNC_STRATEGY.SILENT)
+                        end,
+                    },
+                    {
+                        text = _("Prompt"),
+                        checked_func = function()
+                            return self.settings.sync_backward == SYNC_STRATEGY.PROMPT
+                        end,
+                        callback = function()
+                            self:setSyncBackward(SYNC_STRATEGY.PROMPT)
+                        end,
+                    },
+                    {
+                        text = _("Never"),
+                        checked_func = function()
+                            return self.settings.sync_backward == SYNC_STRATEGY.DISABLE
+                        end,
+                        callback = function()
+                            self:setSyncBackward(SYNC_STRATEGY.DISABLE)
+                        end,
+                    },
+                }
             },
-            {
-                text = _("Pull progress from other devices now"),
-                enabled_func = function()
-                    return self.settings.userkey ~= nil
-                end,
-                callback = function()
-                    self:getProgress(true, true)
-                end,
-                separator = true,
-            },
-            
-        }
-    }
+        },
+        separator = true,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text = _("Push progress from this device now"),
+        enabled_func = function()
+            return self.settings.userkey ~= nil
+        end,
+        callback = function()
+            self:updateProgress(true, true)
+        end,
+    })
+    table.insert(menu_items.anx_calibre_manager.sub_item_table, {
+        text = _("Pull progress from other devices now"),
+        enabled_func = function()
+            return self.settings.userkey ~= nil
+        end,
+        callback = function()
+            self:getProgress(true, true)
+        end,
+        separator = true,
+    })
 end
 
 function AnxCalibreManagerKoreaderPlugin:setPagesBeforeUpdate(pages_before_update)
@@ -534,6 +536,8 @@ function AnxCalibreManagerKoreaderPlugin:syncToProgress(progress)
     else
         self.ui:handleEvent(Event:new("GotoXPointer", progress))
     end
+end
+
 function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
     local now = os.time()
     if self.last_read_timestamp == 0 then
@@ -564,14 +568,14 @@ function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
         read_time,
         date,
         function(ok, body)
-            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] reading time", read_time, "s for", self.view.document.file)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] reading time", read_time, "s for", self.ui.document.file)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
         end)
     if not ok then
         if err then logger.dbg("err:", err) end
     end
 end
-end
+
 
 function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, interactive, on_suspend)
     if not self.settings.username or not self.settings.userkey then
@@ -609,7 +613,7 @@ function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, inter
         Device.model,
         self.device_id,
         function(ok, body)
-            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] progress to", percentage * 100, "% =>", progress, "for", self.view.document.file)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] progress to", percentage * 100, "% =>", progress, "for", self.ui.document.file)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
             if interactive then
                 if ok then
@@ -682,7 +686,7 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
         self.settings.userkey,
         doc_digest,
         function(ok, body)
-            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Pull] progress for", self.view.document.file)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Pull] progress for", self.ui.document.file)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
             if not ok or not body then
                 if interactive then
