@@ -95,12 +95,12 @@ def create_app():
     from blueprints.auth import auth_bp
     from blueprints.api import api_bp
     from blueprints.mcp import mcp_bp
-    from blueprints.kosync import kosync_bp
+    from blueprints.koreader import koreader_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(mcp_bp)
-    app.register_blueprint(kosync_bp)
+    app.register_blueprint(koreader_bp)
 
     @app.before_request
     def before_request_handler():

@@ -142,12 +142,18 @@
 您可以将您的 Anx 书库与 KOReader 设备的阅读进度进行同步。
 
 ### 使用方法
+### 插件安装
+
+1.  **下载插件**: 从本项目的 `anx-calibre-manager-koreader-plugin.koplugin` 目录中下载所有文件。
+2.  **复制到设备**: 将整个 `anx-calibre-manager-koreader-plugin.koplugin` 文件夹复制到您的 KOReader 设备的 `koreader/plugins/` 目录下。
+3.  **重启 KOReader**: 重启您的 KOReader 应用以加载新插件。
+
 
 1.  **登录** Anx Calibre Manager。
-2.  进入 **设置 -> KOSync 设置** 页面。
-3.  在 KOReader 中，进入 `工具` -> `进度同步`，然后选择 `KOReader sync`。
+2.  进入 **设置 -> Koreader 同步设置** 页面。
+3.  在 KOReader 中，进入 `工具` -> `ANX Progress sync`，然后选择 `Set sync server`。
 4.  输入以下信息：
-    -   **自定义同步服务器地址**: `http://<your_server_address>/kosync` (使用设置页面中显示的 URL)。
+    -   **自定义同步服务器地址**: `http://<your_server_address>/koreader` (使用设置页面中显示的 URL)。
     -   **用户名**: 您的 Anx Calibre Manager 用户名。
     -   **密码**: 您的 Anx Calibre Manager 密码。
 5.  点击 **登录**。KOReader 现在即可与您的 Anx 书库同步进度。

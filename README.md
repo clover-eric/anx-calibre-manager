@@ -134,6 +134,12 @@ The application is configured via environment variables.
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
 | `SMTP_USERNAME` | SMTP username. | `""` |
+### Plugin Installation
+
+1.  **Download the Plugin**: Download all files from the `anx-calibre-manager-koreader-plugin.koplugin` directory in this project.
+2.  **Copy to Device**: Copy the entire `anx-calibre-manager-koreader-plugin.koplugin` folder to the `koreader/plugins/` directory on your KOReader device.
+3.  **Restart KOReader**: Restart your KOReader application to load the new plugin.
+
 | `SMTP_PASSWORD` | SMTP password. | `""` |
 | `SMTP_ENCRYPTION` | SMTP encryption type (`ssl`, `starttls`, `none`). | `ssl` |
 
@@ -144,10 +150,10 @@ You can sync your reading progress between your Anx library and KOReader devices
 ### How to Use
 
 1.  **Log in** to Anx Calibre Manager.
-2.  Navigate to **Settings -> KOSync Settings**.
-3.  In KOReader, go to `Tools` -> `Progress sync` and select `KOReader sync`.
+2.  Navigate to **Settings -> Koreader Sync Settings**.
+3.  In KOReader, go to `Tools` -> `ANX Progress sync` and select `Set sync server`.
 4.  Enter the following details:
-    -   **Custom sync server address**: `http://<your_server_address>/kosync` (use the URL shown in the settings page).
+    -   **Custom sync server address**: `http://<your_server_address>/koreader` (use the URL shown in the settings page).
     -   **Username**: Your Anx Calibre Manager username.
     -   **Password**: Your Anx Calibre Manager password.
 5.  Tap **Login**. KOReader will now be able to sync progress with your Anx library.
