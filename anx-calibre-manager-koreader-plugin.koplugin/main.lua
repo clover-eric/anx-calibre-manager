@@ -78,6 +78,7 @@ function AnxCalibreManagerKoreaderPlugin:init()
         self.page_update_counter = 0
         -- We do *NOT* want to make sure networking is up here, as the nagging would be extremely annoying; we're leaving that to the network activity check...
         self:updateProgress(false, false)
+        self:updateReadingTime()
     end
 
     self.settings = G_reader_settings:readSetting("anx-calibre-manager-koreader-plugin", self.default_settings)
@@ -210,13 +211,13 @@ function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
     end
 
     table.insert(menu_items.anx_calibre_manager.sub_item_table, {
-        text = _("Set sync server"),
+        text = _("Progress sync"),
         keep_menu_open = true,
         tap_input_func = function()
             return {
                 -- @translators Server address defined by user for progress sync.
-                title = _("Progress sync server address"),
-                input = self.settings.custom_server or "",
+                title = _("Custom progress sync server address"),
+                input = self.settings.custom_server or "https://your_host:5000/koreader",
                 callback = function(input)
                     self:setCustomServer(input)
                 end,
@@ -548,7 +549,7 @@ function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
     local read_time = now - self.last_read_timestamp
     self.last_read_timestamp = now
 
-    if read_time < 5 or read_time > 120 then
+    if read_time < 5 or read_time > 12000 then
         return
     end
 
@@ -799,6 +800,7 @@ function AnxCalibreManagerKoreaderPlugin:_onCloseDocument()
     NetworkMgr:goOnlineToRun(function()
         -- Drop the inner willRerunWhenOnline ;).
         self:updateProgress(false, false)
+        self:updateReadingTime()
     end)
 end
 
@@ -822,7 +824,7 @@ function AnxCalibreManagerKoreaderPlugin:_onPageUpdate(page)
         if self.periodic_push_scheduled or self.settings.pages_before_update and self.page_update_counter >= self.settings.pages_before_update then
             self:schedulePeriodicPush()
         end
-        self:updateReadingTime()
+        
     end
 end
 
