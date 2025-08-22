@@ -174,3 +174,38 @@ def update_progress():
         db.commit()
 
         return jsonify({'message': 'Progress updated successfully.'})
+
+@koreader_bp.route('/syncs/reading_time', methods=['PUT'])
+def update_reading_time():
+    user = get_user_from_auth_headers()
+    if not user:
+        return jsonify({'message': 'Authentication required.'}), 401
+
+    data = request.get_json()
+    document_digest = data.get('document')
+    reading_time = data.get('reading_time')
+    date = data.get('date')
+
+    if not document_digest or not reading_time or not date:
+        return jsonify({'message': 'Document, reading_time and date are required.'}), 400
+
+    dirs = get_anx_user_dirs(user['username'])
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return jsonify({'message': 'Anx library not found.'}), 404
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tb_books WHERE file_md5 = ? AND is_deleted = 0", (document_digest,))
+        book = cursor.fetchone()
+
+        if not book:
+            return jsonify({'message': 'Document not found.'}), 404
+
+        cursor.execute("""
+            INSERT INTO tb_reading_time (book_id, date, reading_time)
+            VALUES (?, ?, ?)
+        """, (book['id'], date, reading_time))
+        db.commit()
+
+        return jsonify({'message': 'Reading time updated successfully.'})

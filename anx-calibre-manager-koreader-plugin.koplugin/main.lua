@@ -31,6 +31,7 @@ local AnxCalibreManagerKoreaderPlugin = WidgetContainer:extend{
     page_update_counter = nil,
     last_page = nil,
     last_page_turn_timestamp = nil,
+    last_read_timestamp = nil,
     periodic_push_task = nil,
     periodic_push_scheduled = nil,
 
@@ -68,6 +69,7 @@ function AnxCalibreManagerKoreaderPlugin:init()
     self.page_update_counter = 0
     self.last_page = -1
     self.last_page_turn_timestamp = 0
+    self.last_read_timestamp = 0
     self.periodic_push_scheduled = false
 
     -- Like AutoSuspend, we need an instance-specific task for scheduling/resource management reasons.
@@ -199,7 +201,7 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
 end
 
 function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
-    menu_items.progress_sync = {
+    menu_items.anx_progress_sync = {
         text = _("ANX Progress sync"),
         sub_item_table = {
             {
@@ -532,6 +534,43 @@ function AnxCalibreManagerKoreaderPlugin:syncToProgress(progress)
     else
         self.ui:handleEvent(Event:new("GotoXPointer", progress))
     end
+function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
+    local now = os.time()
+    if self.last_read_timestamp == 0 then
+        self.last_read_timestamp = now
+        return
+    end
+
+    local read_time = now - self.last_read_timestamp
+    self.last_read_timestamp = now
+
+    if read_time < 5 or read_time > 120 then
+        return
+    end
+
+    local AnxCalibreManagerKoreaderPluginClient = require("AnxCalibreManagerKoreaderPluginClient")
+    local client = AnxCalibreManagerKoreaderPluginClient:new{
+        custom_url = self.settings.custom_server,
+        service_spec = self.path .. "/api.json"
+    }
+    local doc_digest = self:getDocumentDigest()
+    local date = os.date("!%Y-%m-%d")
+
+    local ok, err = pcall(client.update_reading_time,
+        client,
+        self.settings.username,
+        self.settings.userkey,
+        doc_digest,
+        read_time,
+        date,
+        function(ok, body)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] reading time", read_time, "s for", self.view.document.file)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
+        end)
+    if not ok then
+        if err then logger.dbg("err:", err) end
+    end
+end
 end
 
 function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, interactive, on_suspend)
@@ -779,6 +818,7 @@ function AnxCalibreManagerKoreaderPlugin:_onPageUpdate(page)
         if self.periodic_push_scheduled or self.settings.pages_before_update and self.page_update_counter >= self.settings.pages_before_update then
             self:schedulePeriodicPush()
         end
+        self:updateReadingTime()
     end
 end
 

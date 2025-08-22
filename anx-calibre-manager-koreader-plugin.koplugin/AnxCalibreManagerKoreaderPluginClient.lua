@@ -125,6 +125,42 @@ function AnxCalibreManagerKoreaderPluginClient:update_progress(
     if UIManager.looper then UIManager:setInputTimeout() end
     socketutil:reset_timeout()
 end
+function AnxCalibreManagerKoreaderPluginClient:update_reading_time(
+        username,
+        password,
+        document,
+        reading_time,
+        date,
+        callback)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    -- Set *very* tight timeouts to avoid blocking for too long...
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local co = coroutine.create(function()
+        local ok, res = pcall(function()
+            return self.client:update_reading_time({
+                document = document,
+                reading_time = reading_time,
+                date = date,
+            })
+        end)
+        if ok then
+            callback(res.status == 200, res.body)
+        else
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:update_reading_time failure:", res)
+            callback(false, res.body)
+        end
+    end)
+    self.client:enable("AsyncHTTP", {thread = co})
+    coroutine.resume(co)
+    if UIManager.looper then UIManager:setInputTimeout() end
+    socketutil:reset_timeout()
+end
 
 function AnxCalibreManagerKoreaderPluginClient:get_progress(
         username,

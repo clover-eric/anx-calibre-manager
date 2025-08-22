@@ -33,6 +33,21 @@
                 "document"
             ],
             "expected_status" : [200, 401]
+        },
+        "update_reading_time" : {
+            "path" : "/syncs/reading_time",
+            "method" : "PUT",
+            "required_params" : [
+                "document",
+                "reading_time",
+                "date"
+            ],
+            "payload" : [
+                "document",
+                "reading_time",
+                "date"
+            ],
+            "expected_status" : [200, 401]
         }
     }
 }
