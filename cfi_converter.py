@@ -225,9 +225,8 @@ def generate_cfi_from_custom_pointer(ebook_path: str, custom_pointer: str) -> st
         spine_cfi_step = f"/6/{(doc_index * 2) + 2}"
         
         if offset:
-            prefix, suffix = get_cfi_path_parts(target_element)
-            end_offset = int(offset) + 1
-            final_cfi = f"epubcfi({spine_cfi_step}!{prefix},{suffix}:{offset},{suffix}:{end_offset})"
+            element_cfi_path = get_cfi_element_path(target_element)
+            final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path}:{offset})"
         else:
             element_cfi_path = get_cfi_element_path(target_element)
             final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path})"

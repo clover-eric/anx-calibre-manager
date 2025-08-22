@@ -165,7 +165,7 @@ def update_progress():
         if err:
             return jsonify({'message': f'Failed to convert progress: {err}'}), 500
 
-        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')
         cursor.execute("""
             UPDATE tb_books
             SET last_read_position = ?, reading_percentage = ?, update_time = ?
