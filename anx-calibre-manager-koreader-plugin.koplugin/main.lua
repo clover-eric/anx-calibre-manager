@@ -211,7 +211,7 @@ function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
     end
 
     table.insert(menu_items.anx_calibre_manager.sub_item_table, {
-        text = _("Progress sync"),
+        text = _("Custom sync server"),
         keep_menu_open = true,
         tap_input_func = function()
             return {

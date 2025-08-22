@@ -153,7 +153,7 @@ You can sync your reading progress between your Anx library and KOReader devices
 
 1.  **Log in** to Anx Calibre Manager.
 2.  Navigate to **Settings -> Koreader Sync Settings**.
-3.  In KOReader, go to `Next page` -> `More tools` -> `ANX Calibre Manager` and select `Set sync server`.
+3.  In KOReader, go to Tool Menu `Next page` -> `More tools` -> `ANX Calibre Manager` and select `Custom sync server`.
 4.  Enter the following details:
     -   **Custom sync server address**: `http://<your_server_address>/koreader` (use the URL shown in the settings page).
     -   **Username**: Your Anx Calibre Manager username.

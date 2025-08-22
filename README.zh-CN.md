@@ -151,7 +151,7 @@
 
 1.  **登录** Anx Calibre Manager。
 2.  进入 **设置 -> Koreader 同步设置** 页面。
-3.  在 KOReader 中，进入 `下一页` -> `更多工具` -> `ANX Calibre Manager`，然后选择 `Set sync server`。
+3.  在 KOReader 中，进入工具 `下一页` -> `更多工具` -> `ANX Calibre Manager`，然后选择 `自定义同步服务器`。
 4.  输入以下信息：
     -   **自定义同步服务器地址**: `http://<your_server_address>/koreader` (使用设置页面中显示的 URL)。
     -   **用户名**: 您的 Anx Calibre Manager 用户名。
