@@ -147,6 +147,25 @@ def anx_cover(cover_path):
     full_data_dir = os.path.join(webdav_root, safe_username, 'anx', 'data')
     return send_from_directory(full_data_dir, cover_path)
 
+@main_bp.route('/anx_cover_public/<username>/<path:cover_path>')
+def anx_cover_public(username, cover_path):
+    db = get_db()
+    user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+
+    if not user or not user['stats_public']:
+        return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
+
+    webdav_root = config_manager.config.get("WEBDAV_ROOT")
+    if not webdav_root:
+        return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
+
+    safe_username = os.path.basename(user['username'])
+    full_data_dir = os.path.join(webdav_root, safe_username, 'anx', 'data')
+    
+    if not os.path.exists(os.path.join(full_data_dir, cover_path)):
+        return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
+
+    return send_from_directory(full_data_dir, cover_path)
 # --- Helper Functions (for use in API blueprint) ---
 
 def get_calibre_book_details(book_id):

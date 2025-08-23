@@ -29,7 +29,7 @@
         {% for book in reading_books %}
           <div class="book-row">
             <div class="cover">
-              <img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
+              <img src="{{ url_for('main.anx_cover_public', username=user.username, cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
             </div>
             <div class="info">
               <h3>{{ book.title }}</h3>
@@ -53,7 +53,7 @@
         {% for book in finished_books %}
           <div class="book-row">
             <div class="cover">
-              <img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
+              <img src="{{ url_for('main.anx_cover_public', username=user.username, cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
             </div>
             <div class="info">
               <h3>{{ book.title }}</h3>
