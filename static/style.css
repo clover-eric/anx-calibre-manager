@@ -775,3 +775,25 @@ textarea {
         border: none;
     }
 }
+/* --- 14. Site Footer --- */
+.site-footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: 2.5rem;
+    font-size: 0.8em;
+    color: var(--secondary-color);
+}
+
+.site-footer p {
+    margin: 0.2rem 0;
+}
+
+.site-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
