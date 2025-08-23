@@ -205,6 +205,25 @@ export function setupEventHandlers(
             case 'go-home':
                 showLoaderAndNavigate("/", calibreLoader);
                 break;
+            case 'toggle-fullscreen': {
+                const container = target.closest('.textarea-container');
+                if (container) {
+                    const icon = target.querySelector('i');
+                    const isMobile = window.innerWidth <= 768;
+                    const fullscreenClass = isMobile ? 'fullscreen-mobile' : 'fullscreen-desktop';
+
+                    container.classList.toggle(fullscreenClass);
+                    
+                    if (container.classList.contains(fullscreenClass)) {
+                        icon.classList.remove('fa-expand');
+                        icon.classList.add('fa-compress');
+                    } else {
+                        icon.classList.remove('fa-compress');
+                        icon.classList.add('fa-expand');
+                    }
+                }
+                break;
+            }
             default:
             // Let navigation handlers take care of the rest
         }

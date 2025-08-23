@@ -10,7 +10,13 @@ export function populateAnxEditForm(book, currentEditing, editBookForm, editModa
         <div class="form-group"><label>作者:</label><input type="text" name="author" value="${book.author || ''}"></div>
         <div class="form-group"><label>评分 (0-5):</label><input type="number" name="rating" min="0" max="5" step="0.5" value="${book.rating || 0}"></div>
         <div class="form-group"><label>阅读进度(%):</label><input type="number" name="reading_percentage" min="0" max="100" step="0.1" value="${(book.reading_percentage * 100).toFixed(1)}"></div>
-        <div class="form-group"><label>描述:</label><textarea name="description">${book.description || ''}</textarea></div>
+        <div class="form-group">
+            <label>描述:</label>
+            <div class="textarea-container">
+                <button type="button" class="toggle-fullscreen-btn" data-action="toggle-fullscreen"><i class="fas fa-expand"></i></button>
+                <textarea name="description">${book.description || ''}</textarea>
+            </div>
+        </div>
     `;
     showModal(editModal);
 }
@@ -37,7 +43,13 @@ export function populateCalibreEditForm(book, currentEditing, editBookForm, edit
         <div class="form-group autocomplete-container"><label>标签 (逗号分隔):</label><input type="text" name="tags" value="${book.tags.join(', ')}" autocomplete="off" data-completion-field="tags"></div>
         <div class="form-group autocomplete-container"><label>库 (自定义字段 #library):</label><input type="text" name="#library" value="${getCustom('#library')}" autocomplete="off" data-completion-field="#library"></div>
         <div class="form-group"><label>已读日期 (自定义字段 #readdate):</label><input type="date" name="#readdate" value="${readdate}"></div>
-        <div class="form-group"><label>描述:</label><textarea name="comments" rows="4">${book.comments || ''}</textarea></div>
+        <div class="form-group">
+            <label>描述:</label>
+            <div class="textarea-container">
+                <button type="button" class="toggle-fullscreen-btn" data-action="toggle-fullscreen"><i class="fas fa-expand"></i></button>
+                <textarea name="comments" rows="4">${book.comments || ''}</textarea>
+            </div>
+        </div>
     `;
     showModal(editModal);
     setupCompletions(editBookForm);
