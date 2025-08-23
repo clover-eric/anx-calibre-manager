@@ -205,6 +205,7 @@ def update_reading_time():
         cursor.execute("""
             INSERT INTO tb_reading_time (book_id, date, reading_time)
             VALUES (?, ?, ?)
+            ON CONFLICT(book_id, date) DO UPDATE SET reading_time = reading_time + excluded.reading_time
         """, (book['id'], date, reading_time))
         db.commit()
 
