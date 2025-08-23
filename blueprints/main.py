@@ -152,7 +152,9 @@ def anx_cover_public(username, cover_path):
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
 
-    if not user or not user['stats_public']:
+    # Allow access if the user is logged in and accessing their own cover, or if the stats are public
+    is_owner = g.user and g.user.username == username
+    if not (user and (user['stats_public'] or is_owner)):
         return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
 
     webdav_root = config_manager.config.get("WEBDAV_ROOT")
