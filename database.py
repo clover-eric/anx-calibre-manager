@@ -1,6 +1,8 @@
 import sqlite3
 import os
 import json
+import fcntl
+import time
 from contextlib import closing
 from config_manager import DATABASE_PATH
 
@@ -75,37 +77,47 @@ def create_mcp_tokens_table(cursor):
 def create_schema():
     """
     创建数据库和表结构，并执行必要的迁移。
+    使用文件锁来防止多进程并发问题。
     """
-    db_exists = os.path.exists(DATABASE_PATH)
-    
-    with closing(get_db()) as db:
-        cursor = db.cursor()
-        if not db_exists:
-            print("Creating new database...")
-            # Users Table
-            cursor.execute(f'''
-                CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    username TEXT UNIQUE NOT NULL,
-                    password_hash TEXT NOT NULL,
-                    is_admin INTEGER NOT NULL DEFAULT 0,
-                    otp_secret TEXT,
-                    send_format_priority TEXT,
-                    kindle_email TEXT,
-                    theme TEXT DEFAULT 'auto',
-                    force_epub_conversion INTEGER NOT NULL DEFAULT 0,
-                    kosync_userkey TEXT,
-                    stats_enabled INTEGER NOT NULL DEFAULT 1,
-                    stats_public INTEGER NOT NULL DEFAULT 0
-                );
-            ''')
-            # MCP Tokens Table
-            create_mcp_tokens_table(cursor)
-            db.commit()
-            print("Database tables created.")
-        else:
-            # 如果数据库已存在，检查是否需要更新 schema
-            update_schema_if_needed(db)
+    lock_path = DATABASE_PATH + '.lock'
+    with open(lock_path, 'w') as lock_file:
+        try:
+            # 尝试获取锁，如果失败则等待
+            fcntl.flock(lock_file, fcntl.LOCK_EX)
+            
+            db_exists = os.path.exists(DATABASE_PATH)
+            
+            with closing(get_db()) as db:
+                cursor = db.cursor()
+                if not db_exists:
+                    print("Creating new database...")
+                    # Users Table
+                    cursor.execute(f'''
+                        CREATE TABLE IF NOT EXISTS users (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            username TEXT UNIQUE NOT NULL,
+                            password_hash TEXT NOT NULL,
+                            is_admin INTEGER NOT NULL DEFAULT 0,
+                            otp_secret TEXT,
+                            send_format_priority TEXT,
+                            kindle_email TEXT,
+                            theme TEXT DEFAULT 'auto',
+                            force_epub_conversion INTEGER NOT NULL DEFAULT 0,
+                            kosync_userkey TEXT,
+                            stats_enabled INTEGER NOT NULL DEFAULT 1,
+                            stats_public INTEGER NOT NULL DEFAULT 0
+                        );
+                    ''')
+                    # MCP Tokens Table
+                    create_mcp_tokens_table(cursor)
+                    db.commit()
+                    print("Database tables created.")
+                else:
+                    # 如果数据库已存在，检查是否需要更新 schema
+                    update_schema_if_needed(db)
+        finally:
+            # 确保锁被释放
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
 if __name__ == '__main__':
     create_schema()
