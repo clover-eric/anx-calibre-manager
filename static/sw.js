@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anx-calibre-manager-v5'; // Bump version to force update
+const CACHE_NAME = 'anx-calibre-manager-v6'; // Bump version to force update
 const urlsToCache = [
   '/',
   '/login',
