@@ -233,7 +233,7 @@ def user_settings_api():
         with closing(database.get_db()) as db:
             if 'new_password' in data and data['new_password']:
                 new_password = data['new_password']
-                hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
                 kosync_userkey = hashlib.md5(new_password.encode('utf-8')).hexdigest()
                 db.execute('UPDATE users SET password_hash = ?, kosync_userkey = ? WHERE id = ?', (hashed, kosync_userkey, g.user.id))
             priority_list = [v.strip() for v in data.get('send_format_priority', '').split(',')]

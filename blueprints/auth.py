@@ -15,7 +15,7 @@ def login():
         with closing(database.get_db()) as db:
             user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password_hash']):
             if user['otp_secret']:
                 if not otp_code:
                     session['user_id_pending_2fa'] = user['id']
