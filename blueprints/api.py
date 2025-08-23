@@ -238,9 +238,11 @@ def user_settings_api():
                 db.execute('UPDATE users SET password_hash = ?, kosync_userkey = ? WHERE id = ?', (hashed, kosync_userkey, g.user.id))
             priority_list = [v.strip() for v in data.get('send_format_priority', '').split(',')]
             # Handle checkbox boolean value
-            force_conversion = data.get('force_epub_conversion') == 'true'
-            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ?, theme = ?, force_epub_conversion = ? WHERE id = ?',
-                       (data.get('kindle_email'), json.dumps(priority_list), data.get('theme', 'auto'), force_conversion, g.user.id))
+            force_conversion = data.get('force_epub_conversion', False)
+            stats_enabled = data.get('stats_enabled', False)
+            stats_public = data.get('stats_public', False)
+            db.execute('UPDATE users SET kindle_email = ?, send_format_priority = ?, theme = ?, force_epub_conversion = ?, stats_enabled = ?, stats_public = ? WHERE id = ?',
+                       (data.get('kindle_email'), json.dumps(priority_list), data.get('theme', 'auto'), force_conversion, stats_enabled, stats_public, g.user.id))
             db.commit()
         return jsonify({'message': '用户设置已更新。'})
     else: # GET
@@ -257,7 +259,9 @@ def user_settings_api():
             'has_2fa': bool(g.user.otp_secret),
             'smtp_from_address': config_manager.config.get('SMTP_USERNAME'),
             'theme': g.user.theme or 'auto',
-            'force_epub_conversion': bool(g.user.force_epub_conversion)
+            'force_epub_conversion': bool(g.user.force_epub_conversion),
+            'stats_enabled': bool(g.user.stats_enabled),
+            'stats_public': bool(g.user.stats_public)
         })
 
 @api_bp.route('/global_settings', methods=['GET', 'POST'])

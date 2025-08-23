@@ -29,6 +29,27 @@ async function populateForms() {
     document.getElementById('send_format_priority').value = (userData.send_format_priority || []).join(', ');
     document.getElementById('theme').value = userData.theme || 'auto';
     document.getElementById('force_epub_conversion').checked = userData.force_epub_conversion;
+    document.getElementById('stats_enabled').checked = userData.stats_enabled;
+    document.getElementById('stats_public').checked = userData.stats_public;
+
+    const statsEnabledCheckbox = document.getElementById('stats_enabled');
+    const statsUrlContainer = document.getElementById('stats_url_container');
+    const statsUrlLink = document.getElementById('stats_url');
+
+    function toggleStatsUrl() {
+        if (statsEnabledCheckbox.checked) {
+            const url = `${window.location.origin}/stats/${userData.username}`;
+            statsUrlLink.href = url;
+            statsUrlLink.textContent = url;
+            statsUrlContainer.style.display = 'block';
+        } else {
+            statsUrlContainer.style.display = 'none';
+        }
+    }
+
+    statsEnabledCheckbox.addEventListener('change', toggleStatsUrl);
+    toggleStatsUrl(); // Initial check
+
     if (userData.smtp_from_address) {
         const tipElement = document.getElementById('smtp_from_address_tip');
         tipElement.textContent = `请确保将发件邮箱 (${userData.smtp_from_address}) 添加到您的亚马逊 Kindle 信任邮箱列表中。`;
@@ -110,7 +131,11 @@ window.disable2FA = async function() {
 window.saveUserSettings = async function(event) {
     event.preventDefault();
     const form = event.target;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    data.force_epub_conversion = formData.has('force_epub_conversion');
+    data.stats_enabled = formData.has('stats_enabled');
+    data.stats_public = formData.has('stats_public');
     const response = await fetch('/api/user_settings', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},

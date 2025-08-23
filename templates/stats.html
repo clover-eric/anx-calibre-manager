@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }}的阅读统计{% endblock %}
+
+{% block head_extra %}
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/plugins/Tooltip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/zh-cn.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.css">
+{% endblock %}
+
+{% block content %}
+  <div class="stats-container">
+    <h1 class="my-4">{{ user.username }}的阅读统计</h1>
+
+    <h2 class="my-4">阅读热力图 (最近365天)</h2>
+    <div id="cal-heatmap-container">
+      <div id="cal-heatmap"></div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="book-lists">
+      <div class="book-list-column">
+        <h2>在读书籍</h2>
+        {% for book in reading_books %}
+          <div class="book-row">
+            <div class="cover">
+              <img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
+            </div>
+            <div class="info">
+              <h3>{{ book.title }}</h3>
+              <p class="author">作者: {{ book.author }}</p>
+              <p class="extra-details">
+                评分: {{ book.rating if book.rating > 0 else '未评分' }} <br>
+                总阅读时间: {{ book.formatted_reading_time }}
+              </p>
+              <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+              <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: {{ book.reading_percentage * 100 }}%;" aria-valuenow="{{ book.reading_percentage * 100 }}" aria-valuemin="0" aria-valuemax="100">{{ "%.2f"|format(book.reading_percentage * 100) }}%</div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <p>当前没有在读的书籍。</p>
+        {% endfor %}
+      </div>
+      <div class="book-list-column">
+        <h2>已读籍</h2>
+        {% for book in finished_books %}
+          <div class="book-row">
+            <div class="cover">
+              <img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="Cover for {{ book.title }}">
+            </div>
+            <div class="info">
+              <h3>{{ book.title }}</h3>
+              <p class="author">作者: {{ book.author }}</p>
+              <p class="extra-details">
+                评分: {{ book.rating if book.rating > 0 else '未评分' }} <br>
+                总阅读时间: {{ book.formatted_reading_time }}
+              </p>
+              <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+              <p><strong>已读完!</strong></p>
+            </div>
+          </div>
+        {% else %}
+          <p>还没有读完的书籍。</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      dayjs.locale('zh-cn');
+      const heatmapData = {{ heatmap_data | tojson | safe }};
+      const cal = new CalHeatmap();
+
+      const elevenMonthsAgo = new Date();
+      elevenMonthsAgo.setMonth(elevenMonthsAgo.getMonth() - 11);
+      elevenMonthsAgo.setDate(1);
+
+      cal.paint({
+        itemSelector: '#cal-heatmap',
+        data: {
+          source: heatmapData,
+          x: 'date',
+          y: 'value'
+        },
+        date: {
+          start: elevenMonthsAgo
+        },
+        range: 12,
+        domain: {
+          type: 'month'
+        },
+        subDomain: {
+          type: 'ghDay'
+        }
+      },
+      [
+        [Tooltip, {
+          text: function (date, value, dayjsDate) {
+            const entry = heatmapData.find(d => d.date === dayjsDate.format('YYYY-MM-DD'));
+            return (entry ? entry.title : (dayjsDate.format('YYYY-MM-DD') + ': 无阅读记录'));
+          }
+        }]
+      ]);
+    });
+  </script>
+{% endblock %}

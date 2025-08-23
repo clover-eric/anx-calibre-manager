@@ -49,6 +49,16 @@ def update_schema_if_needed(db):
         create_mcp_tokens_table(cursor)
         db.commit()
 
+    if 'stats_enabled' not in columns:
+        print("Migrating database: adding 'stats_enabled' column to users table.")
+        cursor.execute('ALTER TABLE users ADD COLUMN stats_enabled INTEGER NOT NULL DEFAULT 1')
+        db.commit()
+
+    if 'stats_public' not in columns:
+        print("Migrating database: adding 'stats_public' column to users table.")
+        cursor.execute('ALTER TABLE users ADD COLUMN stats_public INTEGER NOT NULL DEFAULT 0')
+        db.commit()
+
 
 def create_mcp_tokens_table(cursor):
     """创建 mcp_tokens 表的辅助函数"""
@@ -84,7 +94,9 @@ def create_schema():
                     kindle_email TEXT,
                     theme TEXT DEFAULT 'auto',
                     force_epub_conversion INTEGER NOT NULL DEFAULT 0,
-                    kosync_userkey TEXT
+                    kosync_userkey TEXT,
+                    stats_enabled INTEGER NOT NULL DEFAULT 1,
+                    stats_public INTEGER NOT NULL DEFAULT 0
                 );
             ''')
             # MCP Tokens Table

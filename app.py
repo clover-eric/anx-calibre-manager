@@ -96,10 +96,12 @@ def create_app():
     from blueprints.api import api_bp
     from blueprints.mcp import mcp_bp
     from blueprints.koreader import koreader_bp
+    from blueprints.stats import bp as stats_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(mcp_bp)
+    app.register_blueprint(stats_bp)
     app.register_blueprint(koreader_bp)
 
     @app.before_request
