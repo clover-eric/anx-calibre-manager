@@ -788,3 +788,8 @@ def calibre_completions_api():
     filtered_items = [item for item in all_items if query in item.lower()]
     
     return jsonify(filtered_items[:20]) # Return max 20 results
+
+@api_bp.route('/download_koreader_plugin', methods=['GET'])
+def download_koreader_plugin():
+    # The zip file is created in the static directory by the Dockerfile
+    return send_from_directory('static', 'anx-calibre-manager-koreader-plugin.zip', as_attachment=True)

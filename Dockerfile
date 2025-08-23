@@ -13,7 +13,8 @@ RUN apt-get update && \
     libxml2-dev \
     libxslt-dev \
     poppler-utils \
-    fonts-liberation
+    fonts-liberation \
+    zip
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -45,7 +46,8 @@ RUN apt-get update && \
     gosu \
     tini \
     poppler-utils \
-    fonts-liberation && \
+    fonts-liberation \
+    zip && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for the application.
@@ -75,6 +77,9 @@ WORKDIR /home/appuser
 # Copy the virtual environment and application source code from builder stage
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --chown=appuser:appuser . .
+
+# Package the KOReader plugin into a zip file, preserving the top-level directory
+RUN zip -r /home/appuser/static/anx-calibre-manager-koreader-plugin.zip anx-calibre-manager-koreader-plugin.koplugin
 
 # Copy the entrypoint script
 COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh

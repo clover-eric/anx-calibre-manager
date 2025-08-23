@@ -72,6 +72,21 @@ async function populateForms() {
         await fetchUsers();
     }
     await fetchMcpTokens();
+
+    // Setup Koreader WebDAV URL
+    const koreaderWebDavUrlElement = document.getElementById('koreader-webdav-url');
+    if (koreaderWebDavUrlElement) {
+        const webdavUrl = `${window.location.origin}/webdav/${userData.username}/`;
+        koreaderWebDavUrlElement.textContent = webdavUrl;
+        koreaderWebDavUrlElement.addEventListener('click', () => {
+            navigator.clipboard.writeText(webdavUrl).then(() => {
+                alert('WebDAV 地址已复制到剪贴板');
+            }, () => {
+                alert('复制失败');
+            });
+        });
+    }
+
     document.getElementById('settings-loading-overlay').style.display = 'none';
     document.getElementById('userSettings').classList.add('visible');
 }

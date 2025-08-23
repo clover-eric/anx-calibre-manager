@@ -115,7 +115,7 @@
             <p>通过在 URL 中附加 <code>?token=YOUR_TOKEN</code> 参数进行认证。</p>
             <h4>可用工具</h4>
             <ul>
-                <li><strong>search_calibre_books</strong>: 搜索 Calibre 书籍。参数: <code>query</code> (str), <code>limit</code> (int, default 20)</li>
+                <li><strong>search_calibre_books</strong>: 搜索 Calibre 书籍。参数: <code>search_expression</code> (str), <code>limit</code> (int, default 20)</li>
                 <li><strong>get_recent_calibre_books</strong>: 获取最近的 Calibre 书籍。参数: <code>limit</code> (int, default 20)</li>
                 <li><strong>get_calibre_book_details</strong>: 获取 Calibre 书籍详情。参数: <code>book_id</code> (int)</li>
                 <li><strong>get_recent_anx_books</strong>: 获取最近的 Anx 书籍。参数: <code>limit</code> (int, default 20)</li>
@@ -129,14 +129,41 @@
     <!-- Koreader 同步设置 -->
     <div id="koreaderSettings" class="tab-content page-transition">
         <h3>KOReader 同步设置</h3>
-        <p>要将您的 KOReader 设备与此服务器同步，从本项目（https://github.com/ptbsare/anx-calibre-manager）的 `anx-calibre-manager-koreader-plugin.koplugin` 目录中下载所有文件；将整个 `anx-calibre-manager-koreader-plugin.koplugin` 文件夹复制到您的 KOReader 设备的 `koreader/plugins/` 目录下；重启您的 KOReader 应用以加载新插件；在 KOReader 中，进入工具 `下一页` -> `更多工具` -> `ANX Calibre Manager`，然后选择 `自定义同步服务器`配置以下信息登录同步，支持同步阅读进度和上报阅读时间（仅支持epub书籍同步）：</p>
         <div class="mcp-docs">
-            <h4>自定义同步服务器地址</h4>
-            <p><code>{{ request.host_url.rstrip('/') }}/koreader</code></p>
-            <h4>用户名</h4>
-            <p><code>{{ g.user.username }}</code></p>
-            <h4>密码</h4>
-            <p>您的 Anx Calibre Manager 登录密码。</p>
+            <h4>第一步：配置 WebDAV 云存储</h4>
+            <ol>
+                <li>在 KOReader 中，进入 <code>云存储</code> -> <code>添加新的云存储</code>。</li>
+                <li>选择 <code>WebDAV</code>。</li>
+                <li><strong>服务器地址</strong>: 填写下面的地址，并<strong>确保路径以 <code>/</code> 结尾</strong>。
+                    <p><code id="koreader-webdav-url" class="webdav-url" title="点击复制"></code></p>
+                </li>
+                <li><strong>用户名</strong>: <code>{{ g.user.username }}</code></li>
+                <li><strong>密码</strong>: 您的 Anx Calibre Manager 登录密码。</li>
+                <li><strong>文件夹</strong>: <code>/anx/data/file</code></li>
+                <li>点击 <code>连接</code> 并保存。现在您应该可以在 KOReader 的文件浏览器中看到您的 Anx 书库了。</li>
+            </ol>
+
+            <h4>第二步：安装并配置同步插件</h4>
+            <ol>
+                <li>
+                    <strong>下载插件</strong>: 点击下面的按钮下载插件压缩包。
+                    <div style="margin-top: 1rem; margin-bottom: 1rem;">
+                        <button onclick="location.href='{{ url_for('api.download_koreader_plugin') }}'" class="button-primary">下载 KOReader 插件 (.zip)</button>
+                    </div>
+                </li>
+                <li><strong>安装插件</strong>: 解压下载的 <code>.zip</code> 文件，您会得到一个名为 <code>anx-calibre-manager-koreader-plugin.koplugin</code> 的文件夹。将这<strong>整个文件夹</strong>复制到您 KOReader 设备的 <code>koreader/plugins/</code> 目录下。</li>
+                <li><strong>重启 KOReader</strong>: 完全关闭并重新打开 KOReader 应用以加载新插件。</li>
+                <li><strong>配置同步服务器</strong>:
+                    <ul>
+                        <li><strong>重要</strong>: 首先，请通过上一步设置的 WebDAV 打开并开始阅读一本书籍。<strong>只有在阅读界面中</strong>，插件菜单才会出现。</li>
+                        <li>在阅读界面，进入 <code>工具(小齿轮图标)</code> -> <code>下一页</code> -> <code>更多工具</code> -> <code>ANX Calibre Manager</code>。</li>
+                        <li>选择 <code>自定义同步服务器</code>。</li>
+                        <li><strong>自定义同步服务器地址</strong>: <code>{{ request.host_url.rstrip('/') }}/koreader</code></li>
+                        <li>返回上一级菜单，选择 <code>登录</code>，并输入您的 Anx Calibre Manager 用户名和密码。</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>配置完成后，插件将自动或手动同步您的阅读进度。您可以在插件菜单中调整同步频率等设置。</p>
         </div>
     </div>
 
