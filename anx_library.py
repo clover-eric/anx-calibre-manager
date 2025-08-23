@@ -28,6 +28,11 @@ def initialize_anx_user_data(username):
             with closing(sqlite3.connect(dirs["db_path"])) as db:
                 cursor = db.cursor()
                 cursor.executescript(ANX_DB_SCHEMA)
+                current_time = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+                cursor.execute("""
+                    INSERT INTO tb_groups (id, name, parent_id, is_deleted, create_time, update_time)
+                    VALUES (0, 'Root', NULL, 0, ?, ?)
+                """, (current_time, current_time))
                 db.commit()
         
         return True, "用户 Anx 数据目录和数据库已成功初始化。"
