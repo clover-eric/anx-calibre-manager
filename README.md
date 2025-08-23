@@ -19,6 +19,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **MCP Server**: A built-in, compliant Model Context Protocol (MCP) server, allowing AI agents and external tools to interact with your library securely.
 - **User Management**: Simple, built-in user management system.
 - **Easy Deployment**: Deployable as a single Docker container.
+- **Reading Stats**: Automatically generates a personal reading statistics page, featuring a yearly reading heatmap, a list of books currently being read, and a list of finished books. The page can be shared publicly or kept private.
 ## 📸 Screenshots
 
 ![Main Interface](Screen%20Shot%20-%20Main.png)![Settings Page](Screen%20Shot%20-%20Setting.png)![MCP Settings](Screen%20Shot%20-%20MCP.png)
