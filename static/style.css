@@ -621,6 +621,21 @@ textarea {
 #otp-group {
     display: none;
 }
+
+.flash-messages {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.flash {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
 /* --- Setup Page Styles --- */
 .setup-body {
     padding-top: 0;
