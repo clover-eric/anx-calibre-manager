@@ -60,48 +60,64 @@ def get_cfi_path_parts(element: etree._Element) -> (str, str):
 
 
 def resolve_custom_path(root: etree._Element, path: str) -> etree._Element | None:
-    current_element = root
-    parts = path.split('/')[1:]
-    
-    pattern = r"(\w+)\[(\d+)\]"
+    if not path:
+        return root.find('.//body') if root.find('.//body') is not None else root
 
-    for part in parts:
-        if current_element is None:
-            return None
+    try:
+        # Add a '.' to make it a relative XPath query from the current node
+        xpath_query = f".{path}" if path.startswith('/') else f"./{path}"
         
-        match_bracket = re.match(pattern, part)
-        if match_bracket:
-            tag_name, index = match_bracket.group(1), int(match_bracket.group(2)) - 1
+        # The lxml library can handle namespaces, but for simplicity here, we'll assume no namespace or use local-name()
+        # This is a simplified approach. A more robust solution might need namespace mapping.
+        xpath_query = re.sub(r'/(\w+)', r"/*[local-name()='\1']", xpath_query)
+        
+        # The custom path format is like /div[1]/p[2], which is already valid XPath.
+        # We just need to handle the root and ensure it's a relative path.
+        
+        result = root.xpath(xpath_query)
+        
+        if result:
+            return result[0]
         else:
-            tag_name, index = part, 0
-        
-        children = current_element.xpath(f"./*[local-name()='{tag_name}']")
-        
-        if 0 <= index < len(children):
-            current_element = children[index]
-        else:
             return None
-    return current_element
+    except etree.XPathError as e:
+        print(f"XPath error for query '{xpath_query}': {e}")
+        return None
 
 def build_custom_element_path(target_element: etree._Element) -> str:
     path_components = []
     curr = target_element
+    # Traverse up the DOM tree until the parent is <body> or None
     while curr is not None and curr.getparent() is not None and etree.QName(curr.getparent().tag).localname.lower() != 'body':
         parent = curr.getparent()
         tag_name = etree.QName(curr.tag).localname
         siblings_of_same_tag = parent.xpath(f"./*[local-name()='{tag_name}']")
-        index_1_based = siblings_of_same_tag.index(curr) + 1
-        path_components.append(f"{tag_name}[{index_1_based}]")
-        curr = parent
-    if curr is not None and curr.getparent() is not None:
-        parent = curr.getparent()
-        tag_name = etree.QName(curr.tag).localname
-        if etree.QName(parent.tag).localname.lower() == 'body':
-            siblings_of_same_tag = parent.xpath(f"./*[local-name()='{tag_name}']")
+        
+        # Only add index if there is more than one sibling with the same tag name
+        if len(siblings_of_same_tag) > 1:
             index_1_based = siblings_of_same_tag.index(curr) + 1
             path_components.append(f"{tag_name}[{index_1_based}]")
+        else:
+            path_components.append(tag_name)
+        curr = parent
+
+    # Handle the direct child of <body>
+    if curr is not None and curr.getparent() is not None and etree.QName(curr.getparent().tag).localname.lower() == 'body':
+        parent = curr.getparent()
+        tag_name = etree.QName(curr.tag).localname
+        siblings_of_same_tag = parent.xpath(f"./*[local-name()='{tag_name}']")
+        if len(siblings_of_same_tag) > 1:
+            index_1_based = siblings_of_same_tag.index(curr) + 1
+            path_components.append(f"{tag_name}[{index_1_based}]")
+        else:
+            path_components.append(tag_name)
+
     path_components.reverse()
-    if not path_components: return ""
+    
+    if not path_components:
+        return ""
+        
+    # Always prepend with /body/
     return "/body/" + "/".join(path_components)
 
 def resolve_cfi_element_path(root: etree._Element, cfi_path: str) -> etree._Element:
@@ -172,9 +188,21 @@ def generate_custom_pointer_from_cfi(ebook_path: str, cfi_string: str) -> str:
         return f"错误: CFI 必须包含一个 '!' 分隔符。"
     spine_cfi_part, element_cfi_part = parts
 
-    if element_cfi_part.count(',') >= 2:
-        last_comma_index = element_cfi_part.rfind(',')
-        element_cfi_part = element_cfi_part[:last_comma_index]
+    # Handle CFI ranges, e.g., epubcfi(/6/8!/4/6,/122/2/1:359,/132/2/1:23)
+    # We only care about the start of the range.
+    # The format is /common_path,start_path,end_path
+    range_parts = element_cfi_part.split(',')
+    if len(range_parts) == 3:
+        common_path = range_parts[0]
+        start_path = range_parts[1]
+        
+        # Reconstruct the full path for the start of the range
+        if common_path.endswith('/'):
+            common_path = common_path[:-1]
+        if not start_path.startswith('/'):
+            start_path = '/' + start_path
+        
+        element_cfi_part = common_path + start_path
 
     offset = None
     path_part = element_cfi_part
@@ -197,18 +225,45 @@ def generate_custom_pointer_from_cfi(ebook_path: str, cfi_string: str) -> str:
         
         result_path = f"/body/DocFragment[{doc_fragment_index}]{custom_element_path}"
         if offset and offset.isdigit():
-            result_path += f"/text().{offset}"
+            is_text_offset = False
+            last_step_match = re.search(r"/(\d+)(?:\[.*?\])?$", path_part)
+            if last_step_match:
+                last_step_index = int(last_step_match.group(1))
+                # In CFI, odd numbers indicate text nodes, even numbers indicate element nodes.
+                if last_step_index % 2 != 0:
+                    is_text_offset = True
+
+            if is_text_offset:
+                # last_step_index is the CFI step (e.g., 1, 3, 5...)
+                # Convert it back to a 1-based XPath index for text()[]
+                text_node_xpath_index = (last_step_index + 1) // 2
+                if text_node_xpath_index > 1:
+                    result_path += f"/text()[{text_node_xpath_index}].{offset}"
+                else:
+                    result_path += f"/text().{offset}"  # Omit [1] for simplicity
+            else:
+                result_path += f".{offset}"
         return result_path
 
 def generate_cfi_from_custom_pointer(ebook_path: str, custom_pointer: str) -> str:
-    pattern = r"/body/DocFragment\[(\d+)\](.*?)(?:/text\(\)\.(\d+))?$"
+    # This pattern handles both formats:
+    # 1. /body/DocFragment[4]/body/div[3]/p[69]/span/text().23
+    # 2. /body/DocFragment[4]/body/div[1].0
+    pattern = r"/body/DocFragment\[(\d+)\](.*?)(?:/text\(\)(?:\[(\d+)\])?\.(\d+)|\.(\d+))?$"
     
     match = re.search(pattern, custom_pointer)
     
     if not match:
         return f"错误: 在输入中找不到有效的定位符模式: '{custom_pointer}'"
 
-    doc_index_str, element_path, offset = match.groups()
+    doc_index_str, element_path, text_node_index_str, offset_with_text, offset_direct = match.groups()
+    
+    offset_str = offset_with_text if offset_with_text is not None else offset_direct
+    
+    # Clean up element_path if it incorrectly captured part of the offset
+    if offset_direct and element_path.endswith(f".{offset_direct}"):
+         element_path = element_path[:-len(f".{offset_direct}")]
+
     doc_index = int(doc_index_str) - 1
     
     with EbookProcessor(ebook_path) as book:
@@ -217,18 +272,34 @@ def generate_cfi_from_custom_pointer(ebook_path: str, custom_pointer: str) -> st
             return f"错误: DocFragment 索引 [{doc_index + 1}] 超出范围。"
         
         root = etree.fromstring(target_item['content'], etree.XMLParser(recover=True))
+        
         target_element = resolve_custom_path(root, element_path)
         
         if target_element is None:
             return f"错误: 内部路径 '{element_path}' 在文档 '{target_item['href']}' 中无法定位。"
-            
+
         spine_cfi_step = f"/6/{(doc_index * 2) + 2}"
-        
-        if offset:
-            element_cfi_path = get_cfi_element_path(target_element)
-            final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path}:{offset})"
+        element_cfi_path = get_cfi_element_path(target_element)
+
+        if offset_str is not None:
+            offset = int(offset_str)
+            # Case 1: Pointer is to a text node offset, e.g., /text()[2].23
+            if offset_with_text is not None:
+                text_node_cfi_step = 1  # Default to the first text node (/1)
+                if text_node_index_str and text_node_index_str.isdigit():
+                    # Convert 1-based XPath index to CFI odd-numbered step
+                    # e.g., text()[1] -> /1, text()[2] -> /3, etc.
+                    text_node_index = int(text_node_index_str)
+                    text_node_cfi_step = (text_node_index * 2) - 1
+                
+                final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path}/{text_node_cfi_step}:{offset})"
+            # Case 2: Pointer is to an element offset, e.g., div[1].0
+            elif offset_direct is not None:
+                final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path}:{offset})"
+            else:
+                 # Fallback, should not happen if regex is correct
+                 final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path})"
         else:
-            element_cfi_path = get_cfi_element_path(target_element)
             final_cfi = f"epubcfi({spine_cfi_step}!{element_cfi_path})"
             
         return final_cfi
