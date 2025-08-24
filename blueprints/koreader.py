@@ -202,11 +202,17 @@ def update_reading_time():
         if not book:
             return jsonify({'message': 'Document not found.'}), 404
 
-        cursor.execute("""
-            INSERT INTO tb_reading_time (book_id, date, reading_time)
-            VALUES (?, ?, ?)
-            ON CONFLICT(book_id, date) DO UPDATE SET reading_time = reading_time + excluded.reading_time
-        """, (book['id'], date, reading_time))
+        # Check if a record for this book and date already exists
+        cursor.execute("SELECT id, reading_time FROM tb_reading_time WHERE book_id = ? AND date = ?", (book['id'], date))
+        existing_record = cursor.fetchone()
+
+        if existing_record:
+            # If it exists, update it
+            new_reading_time = existing_record['reading_time'] + reading_time
+            cursor.execute("UPDATE tb_reading_time SET reading_time = ? WHERE id = ?", (new_reading_time, existing_record['id']))
+        else:
+            # If not, insert a new record
+            cursor.execute("INSERT INTO tb_reading_time (book_id, date, reading_time) VALUES (?, ?, ?)", (book['id'], date, reading_time))
         db.commit()
 
         return jsonify({'message': 'Reading time updated successfully.'})
