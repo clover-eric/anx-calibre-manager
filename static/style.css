@@ -588,8 +588,8 @@ textarea {
 }
 /* --- Settings Page Styles --- */
 .settings-container { max-width: 960px; margin: 0 auto; position: relative; }
-.tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem; }
-.tab-link { padding: 1rem 1.5rem; cursor: pointer; border-bottom: 3px solid transparent; }
+.tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem; flex-wrap: wrap; }
+.tab-link { padding: 0.75rem 1rem; cursor: pointer; border-bottom: 3px solid transparent; text-align: center; flex-grow: 1; }
 .tab-link.active { border-bottom-color: var(--primary-color); font-weight: 500; }
 .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
 .tab-content.active { display: block; }
