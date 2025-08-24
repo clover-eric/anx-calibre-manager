@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anx-calibre-manager-v6'; // Bump version to force update
+const CACHE_NAME = 'anx-calibre-manager-v7'; // Bump version to force update
 const urlsToCache = [
   '/',
   '/login',
@@ -24,6 +24,7 @@ self.addEventListener('install', event => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+      .then(() => self.skipWaiting()) // Force the waiting service worker to become the active service worker.
   );
 });
 
@@ -98,6 +99,9 @@ self.addEventListener('activate', event => {
           }
         })
       );
+    }).then(() => {
+      console.log('Claiming clients');
+      return self.clients.claim(); // Take control of all pages under this service worker's scope.
     })
   );
 });

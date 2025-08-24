@@ -111,6 +111,21 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').then(registration => {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    
+                    // Listen for the service worker installing a new version.
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New content is available, please refresh.
+                                // For a smoother experience, you might want to show a toast notification
+                                // and allow the user to refresh. For simplicity, we'll just reload.
+                                console.log('New content is available, refreshing...');
+                                window.location.reload();
+                            }
+                        });
+                    });
+
                 }, err => {
                     console.log('ServiceWorker registration failed: ', err);
                 });
