@@ -153,7 +153,7 @@ def anx_cover_public(username, cover_path):
     user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
 
     # Allow access if the user is logged in and accessing their own cover, or if the stats are public
-    is_owner = g.user and g.user.username == username
+    is_owner = g.user and hasattr(g.user, 'username') and g.user.username == username
     if not (user and (user['stats_public'] or is_owner)):
         return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
 
