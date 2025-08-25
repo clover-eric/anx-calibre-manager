@@ -50,7 +50,7 @@
                         <h3>{{ book.title }}</h3>
                         <p class="author">{{ book.authors | join(', ') }}</p>
                         <div class="extra-details">
-                            {% if book.rating is not none and book.rating > 0 %}<span><strong>Rating:</strong> {{ "%.1f" | format(book.rating) }}/5</span><br>{% endif %}
+                            {% if book.rating is not none and book.rating | string | length > 0 and book.rating|float > 0 %}<span><strong>Rating:</strong> {{ "%.1f" | format(book.rating) }}/5</span><br>{% endif %}
                             <span><strong>格式:</strong> {{ book.formats_with_sizes | join(', ') }}</span><br>
                             {% if book.publisher and book.publisher != 'None' %}<span><strong>出版社:</strong> {{ book.publisher }}</span><br>{% endif %}
                             {% if book.pubdate and book.pubdate != 'None' and not book.pubdate.startswith('0101-01') %}<span><strong>出版日期:</strong> {{ book.pubdate.split('T')[0] }}</span><br>{% endif %}
@@ -115,7 +115,7 @@
                         <h3>{{ book.title }}</h3>
                         <p class="author">{{ book.author }}</p>
                         <div class="extra-details">
-                            {% if book.rating is not none and book.rating > 0 %}<span><strong>评分:</strong> {{ "%.1f" | format(book.rating) }}/5</span><br>{% endif %}
+                            {% if book.rating is not none and book.rating | string | length > 0 and book.rating|float > 0 %}<span><strong>评分:</strong> {{ "%.1f" | format(book.rating) }}/5</span><br>{% endif %}
                             {% if book.publisher %}<span><strong>出版社:</strong> {{ book.publisher }}</span><br>{% endif %}
                              <span><strong>阅读进度:</strong> {% if book.reading_percentage is not none %}{{ "%.1f" | format(book.reading_percentage * 100) }}%{% else %}0.0%{% endif %}</span><br>
                              <span><strong>总阅读时长:</strong> {{ book.formatted_reading_time }}</span><br>
