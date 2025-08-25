@@ -1,4 +1,5 @@
 local BookStatusWidget = require("ui/widget/bookstatuswidget")
+local ReaderFooter = require("apps/reader/modules/readerfooter")
 local ConfirmBox = require("ui/widget/confirmbox")
 local Device = require("device")
 local Dispatcher = require("dispatcher")
@@ -77,6 +78,14 @@ function AnxCalibreManagerKoreaderPlugin:init()
         end
 
         return stats
+    end
+
+    ReaderFooter.getAvgTimePerPage = function()
+        local book_stats = self.ui.doc_settings:readSetting("book_stats")
+        if book_stats and book_stats.pages and book_stats.pages > 0 and book_stats.total_time_book then
+            return book_stats.total_time_book / book_stats.pages
+        end
+        return nil
     end
 
     self.push_timestamp = 0
