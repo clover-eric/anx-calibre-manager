@@ -215,9 +215,11 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
     
     if self.settings.auto_sync then
         UIManager:nextTick(function()
-            self:getProgress(true, false)
-            self:getBookDetails()
-            self:updateBookStats()
+            self:getProgress(true, false, function()
+                self:getBookDetails(true, false, function()
+                    self:updateBookStats(true, false)
+                end)
+            end)
         end)
     end
     self.initial_summary = self:copy_summary(self.ui.doc_settings:readSetting("summary"))
@@ -230,7 +232,11 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
     self.last_page = self.ui:getCurrentPage()
 end
 
-function AnxCalibreManagerKoreaderPlugin:updateBookStats()
+function AnxCalibreManagerKoreaderPlugin:updateBookStats(ensure_networking, interactive)
+    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:updateBookStats(ensure_networking, interactive) end) then
+        return
+    end
+
     local AnxCalibreManagerKoreaderPluginClient = require("AnxCalibreManagerKoreaderPluginClient")
     local client = AnxCalibreManagerKoreaderPluginClient:new{
         custom_url = self.settings.custom_server,
@@ -1072,9 +1078,13 @@ function AnxCalibreManagerKoreaderPlugin:onCloseWidget()
     self.periodic_push_task = nil
 end
 
-function AnxCalibreManagerKoreaderPlugin:getBookDetails(next_callback)
+function AnxCalibreManagerKoreaderPlugin:getBookDetails(ensure_networking, interactive, next_callback)
     if not self.settings.username or not self.settings.userkey then
         if next_callback then next_callback() end
+        return
+    end
+
+    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:getBookDetails(ensure_networking, interactive, next_callback) end) then
         return
     end
 
