@@ -135,8 +135,6 @@ The application is configured via environment variables.
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
 | `SMTP_USERNAME` | SMTP username. | `""` |
-
-
 | `SMTP_PASSWORD` | SMTP password. | `""` |
 | `SMTP_ENCRYPTION` | SMTP encryption type (`ssl`, `starttls`, `none`). | `ssl` |
 
