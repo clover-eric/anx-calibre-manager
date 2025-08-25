@@ -142,34 +142,45 @@ The application is configured via environment variables.
 
 ## 📖 KOReader Sync
 
-You can sync your reading progress between your Anx library and KOReader devices.
+You can sync your reading progress and reading time between your Anx library and KOReader devices. The setup involves two main steps: setting up WebDAV to access your books and configuring the sync plugin to handle progress synchronization.
 
-### Plugin Installation
+### Step 1: Configure WebDAV Cloud Storage
 
-1.  **Download the Plugin**: Download all files from the `anx-calibre-manager-koreader-plugin.koplugin` directory in this project.
-2.  **Copy to Device**: Copy the entire `anx-calibre-manager-koreader-plugin.koplugin` folder to the `koreader/plugins/` directory on your KOReader device.
-3.  **Restart KOReader**: Restart your KOReader application to load the new plugin.
+This step allows you to browse and read your Anx library books directly in KOReader.
 
-### How to Use
-
-1.  **Log in** to Anx Calibre Manager.
-2.  Navigate to **Settings -> Koreader Sync Settings**.
-3.  In KOReader, go to Tool Menu `Next page` -> `More tools` -> `ANX Calibre Manager` and select `Custom sync server`.
-4.  Enter the following details:
-    -   **Custom sync server address**: `http://<your_server_address>/koreader` (use the URL shown in the settings page).
+1.  In KOReader, navigate to `Cloud storage` -> `Add new cloud storage`.
+2.  Select `WebDAV`.
+3.  Fill in the details:
+    -   **Server address**: Enter the WebDAV URL shown in the Anx Calibre Manager settings page (`Settings` -> `Koreader Sync Settings`). **Ensure the path ends with a `/`**.
     -   **Username**: Your Anx Calibre Manager username.
-    -   **Password**: Your Anx Calibre Manager password.
-5.  Tap **Login**. KOReader will now be able to sync progress with your Anx library.
+    -   **Password**: Your Anx Calibre Manager login password.
+    -   **Folder**: `/anx/data/file`
+4.  Tap `Connect` and save. You should now be able to see your Anx library in KOReader's file browser.
+
+### Step 2: Install and Configure the Sync Plugin
+
+This plugin sends your reading progress back to the Anx Calibre Manager server.
+
+1.  **Download the Plugin**:
+    -   Log in to Anx Calibre Manager.
+    -   Go to `Settings` -> `Koreader Sync Settings`.
+    -   Click the `Download KOReader Plugin (.zip)` button to get the plugin package.
+2.  **Install the Plugin**:
+    -   Unzip the downloaded file to get a folder named `anx-calibre-manager-koreader-plugin.koplugin`.
+    -   Copy this entire folder to the `koreader/plugins/` directory on your KOReader device.
+3.  **Restart KOReader**: Completely close and reopen the KOReader app to load the new plugin.
+4.  **Configure the Sync Server**:
+    -   **Important**: First, open a book from the WebDAV storage you configured in Step 1. The plugin menu is **only visible in the reading view**.
+    -   In the reading view, go to `Tools (wrench icon)` -> `Next page` -> `More tools` -> `ANX Calibre Manager`.
+    -   Select `Custom sync server`.
+    -   **Custom sync server address**: Enter the sync server URL shown in the Anx Calibre Manager settings page (e.g., `http://<your_server_address>/koreader`).
+    -   Go back to the previous menu, select `Login`, and enter your Anx Calibre Manager username and password.
+
+Once configured, the plugin will automatically or manually sync your reading progress. You can adjust settings like sync frequency in the plugin menu. **Note: Only EPUB book progress is supported.**
 
 ## 🤖 MCP Server
 
 This application includes a JSON-RPC 2.0 compliant MCP (Model Context Protocol) server, allowing external tools and AI agents to interact with your library.
-
-### Plugin Installation
-
-1.  **Download the Plugin**: Download all files from the `anx-calibre-manager-koreader-plugin.koplugin` directory in this project.
-2.  **Copy to Device**: Copy the entire `anx-calibre-manager-koreader-plugin.koplugin` folder to the `koreader/plugins/` directory on your KOReader device.
-3.  **Restart KOReader**: Restart your KOReader application to load the new plugin.
 
 ### How to Use
 
