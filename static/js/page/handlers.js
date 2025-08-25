@@ -4,6 +4,12 @@ import { populateAnxEditForm, populateCalibreEditForm, handleButtonAnimation } f
 function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksData, calibreBooksData, editModal) {
     const formData = new FormData(editBookForm);
     const currentData = Object.fromEntries(formData.entries());
+
+    // If the rating is an empty string, treat it as a null value (e.g., 0) to avoid backend type errors.
+    if (currentData.rating === '') {
+        currentData.rating = '0';
+    }
+
     let url;
     let payload = {};
 
