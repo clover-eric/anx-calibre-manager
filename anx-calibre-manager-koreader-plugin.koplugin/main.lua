@@ -188,6 +188,17 @@ function AnxCalibreManagerKoreaderPlugin:onDispatcherRegisterActions()
     Dispatcher:registerAction("anx-calibre-manager-koreader-plugin_pull_progress", { category="none", event="AnxCalibreManagerKoreaderPluginPullProgress", title=_("Pull progress from other devices"), reader=true, separator=true,})
 end
 
+function AnxCalibreManagerKoreaderPlugin:copy_summary(original)
+    if type(original) ~= "table" then
+        return original
+    end
+    local copy = {}
+    for k, v in pairs(original) do
+        copy[k] = self:copy_summary(v)
+    end
+    return copy
+end
+
 function AnxCalibreManagerKoreaderPlugin:onReaderReady()
     if not self.ui.doc_settings:has("md5_checksum") then
         local file = self.ui.document.file
@@ -209,7 +220,7 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
             self:updateBookStats()
         end)
     end
-    self.initial_summary = self.ui.doc_settings:readSetting("summary")
+    self.initial_summary = self:copy_summary(self.ui.doc_settings:readSetting("summary"))
     -- NOTE: Keep in mind that, on Android, turning on WiFi requires a focus switch, which will trip a Suspend/Resume pair.
     --       NetworkMgr will attempt to hide the damage to avoid a useless pull -> push -> pull dance instead of the single pull requested.
     --       Plus, if wifi_enable_action is set to prompt, that also avoids stacking three prompts on top of each other...
@@ -595,10 +606,11 @@ function AnxCalibreManagerKoreaderPlugin:syncToProgress(progress)
     end
 end
 
-function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
+function AnxCalibreManagerKoreaderPlugin:updateReadingTime(next_callback)
     local now = os.time()
     if self.last_read_timestamp == 0 then
         self.last_read_timestamp = now
+        if next_callback then next_callback() end
         return
     end
 
@@ -606,6 +618,7 @@ function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
     self.last_read_timestamp = now
 
     if read_time < 5 or read_time > 12000 then
+        if next_callback then next_callback() end
         return
     end
 
@@ -627,28 +640,32 @@ function AnxCalibreManagerKoreaderPlugin:updateReadingTime()
         function(ok, body)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] reading time", read_time, "s for", self.ui.document.file)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
+            if next_callback then next_callback() end
         end)
     if not ok then
         if err then logger.dbg("err:", err) end
+        if next_callback then next_callback() end
     end
 end
 
 
-function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, interactive, on_suspend)
+function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, interactive, on_suspend, next_callback)
     if not self.settings.username or not self.settings.userkey then
         if interactive then
             promptLogin()
         end
+        if next_callback then next_callback() end
         return
     end
 
     local now = UIManager:getElapsedTimeSinceBoot()
     if not interactive and now - self.push_timestamp <= API_CALL_DEBOUNCE_DELAY then
         logger.dbg("AnxCalibreManagerKoreaderPlugin: We've already pushed progress less than 25s ago!")
+        if next_callback then next_callback() end
         return
     end
 
-    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:updateProgress(ensure_networking, interactive, on_suspend) end) then
+    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:updateProgress(ensure_networking, interactive, on_suspend, next_callback) end) then
         return
     end
 
@@ -669,23 +686,30 @@ function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, inter
         percentage,
         Device.model,
         self.device_id,
-        function(ok, body)
+        function(status, body)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] progress to", percentage * 100, "% =>", progress, "for", self.ui.document.file)
-            logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: status:", status, "body:", body)
             if interactive then
-                if ok then
+                if status == 200 then
                     UIManager:show(InfoMessage:new{
                         text = _("Progress has been pushed."),
+                        timeout = 3,
+                    })
+                elseif status == 404 then
+                    UIManager:show(InfoMessage:new{
+                        text = _("No progress found for this document."),
                         timeout = 3,
                     })
                 else
                     showSyncError()
                 end
             end
+            if next_callback then next_callback() end
         end)
     if not ok then
         if interactive then showSyncError() end
         if err then logger.dbg("err:", err) end
+        if next_callback then next_callback() end
     else
         -- This is solely for onSuspend's sake, to clear the ghosting left by the "Connected" InfoMessage
         if on_suspend then
@@ -713,21 +737,23 @@ function AnxCalibreManagerKoreaderPlugin:updateProgress(ensure_networking, inter
     self.push_timestamp = now
 end
 
-function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interactive)
+function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interactive, next_callback)
     if not self.settings.username or not self.settings.userkey then
         if interactive then
             promptLogin()
         end
+        if next_callback then next_callback() end
         return
     end
 
     local now = UIManager:getElapsedTimeSinceBoot()
     if not interactive and now - self.pull_timestamp <= API_CALL_DEBOUNCE_DELAY then
         logger.dbg("AnxCalibreManagerKoreaderPlugin: We've already pulled progress less than 25s ago!")
+        if next_callback then next_callback() end
         return
     end
 
-    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:getProgress(ensure_networking, interactive) end) then
+    if ensure_networking and NetworkMgr:willRerunWhenOnline(function() self:getProgress(ensure_networking, interactive, next_callback) end) then
         return
     end
 
@@ -742,23 +768,32 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
         self.settings.username,
         self.settings.userkey,
         doc_digest,
-        function(ok, body)
+        function(status, body)
             logger.dbg("AnxCalibreManagerKoreaderPlugin: [Pull] progress for", self.ui.document.file)
-            logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
-            if not ok or not body then
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: status:", status, "body:", body)
+            if status ~= 200 then
                 if interactive then
-                    showSyncError()
+                    if status == 404 then
+                        UIManager:show(InfoMessage:new{
+                            text = _("No progress found for this document."),
+                            timeout = 3,
+                        })
+                    else
+                        showSyncError()
+                    end
                 end
+                if next_callback then next_callback() end
                 return
             end
 
-            if not body.percentage then
+            if not body or not body.percentage then
                 if interactive then
                     UIManager:show(InfoMessage:new{
                         text = _("No progress found for this document."),
                         timeout = 3,
                     })
                 end
+                if next_callback then next_callback() end
                 return
             end
 
@@ -770,6 +805,7 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
                         timeout = 3,
                     })
                 end
+                if next_callback then next_callback() end
                 return
             end
 
@@ -786,6 +822,7 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
                         timeout = 3,
                     })
                 end
+                if next_callback then next_callback() end
                 return
             end
 
@@ -795,6 +832,7 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
                 -- we always update the progress without further confirmation.
                 self:syncToProgress(body.progress)
                 showSyncedMessage()
+                if next_callback then next_callback() end
                 return
             end
 
@@ -834,10 +872,12 @@ function AnxCalibreManagerKoreaderPlugin:getProgress(ensure_networking, interact
                     })
                 end
             end
+            if next_callback then next_callback() end
         end)
     if not ok then
         if interactive then showSyncError() end
         if err then logger.dbg("err:", err) end
+        if next_callback then next_callback() end
     end
 
     self.pull_timestamp = now
@@ -866,11 +906,14 @@ function AnxCalibreManagerKoreaderPlugin:_onCloseDocument()
     --       (and quite likely ours, too).
     NetworkMgr:goOnlineToRun(function()
         -- Drop the inner willRerunWhenOnline ;).
-        self:updateProgress(false, false)
-        self:updateReadingTime()
-        if summary_changed then
-            self:updateSummary()
+        local function update_summary_if_changed()
+            if summary_changed then
+                self:updateSummary()
+            end
         end
+        self:updateProgress(false, false, false, function()
+            self:updateReadingTime(update_summary_if_changed)
+        end)
     end)
 end
 
@@ -935,12 +978,10 @@ end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginPushProgress()
     self:updateProgress(true, true)
-    self:updateSummary()
 end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginPullProgress()
     self:getProgress(true, true)
-    self:getBookDetails()
 end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginToggleAutoSync(toggle, from_menu)
@@ -1031,8 +1072,9 @@ function AnxCalibreManagerKoreaderPlugin:onCloseWidget()
     self.periodic_push_task = nil
 end
 
-function AnxCalibreManagerKoreaderPlugin:getBookDetails()
+function AnxCalibreManagerKoreaderPlugin:getBookDetails(next_callback)
     if not self.settings.username or not self.settings.userkey then
+        if next_callback then next_callback() end
         return
     end
 
@@ -1055,21 +1097,29 @@ function AnxCalibreManagerKoreaderPlugin:getBookDetails()
                         timeout = 3,
                     })
                 end
+                if next_callback then next_callback() end
                 return
             end
 
-            if not body then return end
+            if not body then
+                if next_callback then next_callback() end
+                return
+            end
 
             local summary = self.ui.doc_settings:readSetting("summary") or {}
-            summary.rating = body.rating
+            if body.rating then
+                summary.rating = body.rating
+            end
             summary.note = body.summary
             if body.reading_percentage and body.reading_percentage >= 1.0 then
                 summary.status = "complete"
             end
             self.ui.doc_settings:saveSetting("summary", summary)
+            if next_callback then next_callback() end
         end)
     if not ok then
         if err then logger.dbg("err:", err) end
+        if next_callback then next_callback() end
     end
 end
 

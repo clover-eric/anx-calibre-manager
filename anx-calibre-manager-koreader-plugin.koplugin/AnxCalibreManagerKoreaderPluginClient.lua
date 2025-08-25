@@ -114,10 +114,10 @@ function AnxCalibreManagerKoreaderPluginClient:update_progress(
             })
         end)
         if ok then
-            callback(res.status == 200, res.body)
+            callback(res.status, res.body)
         else
             logger.dbg("AnxCalibreManagerKoreaderPluginClient:update_progress failure:", res)
-            callback(false, res.body)
+            callback(nil, res)
         end
     end)
     self.client:enable("AsyncHTTP", {thread = co})
@@ -182,10 +182,10 @@ function AnxCalibreManagerKoreaderPluginClient:get_progress(
             }, { document = document })
         end)
         if ok then
-            callback(res.status == 200, res.body)
+            callback(res.status, res.body)
         else
             logger.dbg("AnxCalibreManagerKoreaderPluginClient:get_progress failure:", res)
-            callback(false, res.body)
+            callback(nil, res)
         end
     end)
     self.client:enable("AsyncHTTP", {thread = co})

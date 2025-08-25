@@ -24,7 +24,7 @@
                 "device",
                 "device_id"
             ],
-            "expected_status" : [200, 202, 401]
+            "expected_status" : [200, 202, 401, 404]
         },
         "get_progress" : {
             "path" : "/syncs/progress/:document",
@@ -32,7 +32,7 @@
             "required_params" : [
                 "document"
             ],
-            "expected_status" : [200, 401]
+            "expected_status" : [200, 401, 404]
         },
         "update_reading_time" : {
             "path" : "/syncs/reading_time",
