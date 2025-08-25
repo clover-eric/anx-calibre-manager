@@ -194,4 +194,156 @@ function AnxCalibreManagerKoreaderPluginClient:get_progress(
     socketutil:reset_timeout()
 end
 
+function AnxCalibreManagerKoreaderPluginClient:update_summary(
+        username,
+        password,
+        document,
+        rating,
+        summary,
+        status,
+        callback)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local co = coroutine.create(function()
+        local ok, res = pcall(function()
+            return self.client:update_summary({
+                document = document,
+                rating = rating,
+                summary = summary,
+                status = status,
+            })
+        end)
+        if ok then
+            callback(res.status == 200, res.body)
+        else
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:update_summary failure:", res)
+            callback(false, res.body)
+        end
+    end)
+    self.client:enable("AsyncHTTP", {thread = co})
+    coroutine.resume(co)
+    if UIManager.looper then UIManager:setInputTimeout() end
+    socketutil:reset_timeout()
+end
+
+function AnxCalibreManagerKoreaderPluginClient:get_book_details(
+        username,
+        password,
+        document,
+        callback)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local co = coroutine.create(function()
+        local ok, res = pcall(function()
+            return self.client:get_book_details({
+                document = document,
+            }, { document = document })
+        end)
+        if ok then
+            callback(res.status == 200, res.body)
+        else
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:get_book_details failure:", res)
+            callback(false, res.body)
+        end
+    end)
+    self.client:enable("AsyncHTTP", {thread = co})
+    coroutine.resume(co)
+    if UIManager.looper then UIManager:setInputTimeout() end
+    socketutil:reset_timeout()
+end
+
+function AnxCalibreManagerKoreaderPluginClient:get_book_stats(
+        username,
+        password,
+        document,
+        callback)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local co = coroutine.create(function()
+        local ok, res = pcall(function()
+            return self.client:get_book_stats({
+                document = document,
+            }, { document = document })
+        end)
+        if ok then
+            callback(res.status == 200, res.body)
+        else
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:get_book_stats failure:", res)
+            callback(false, res.body)
+        end
+    end)
+    self.client:enable("AsyncHTTP", {thread = co})
+    coroutine.resume(co)
+    if UIManager.looper then UIManager:setInputTimeout() end
+    socketutil:reset_timeout()
+end
+
+function AnxCalibreManagerKoreaderPluginClient:get_book_stats_sync(username, password, document)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local ok, res = pcall(function()
+        return self.client:get_book_stats({
+            document = document,
+        }, { document = document })
+    end)
+    socketutil:reset_timeout()
+    if ok and res.status == 200 then
+        return true, res.body
+    else
+        if not ok then
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:get_book_stats_sync failure:", res)
+        end
+        return false, res and res.body
+    end
+end
+
+function AnxCalibreManagerKoreaderPluginClient:get_book_details_sync(username, password, document)
+    self.client:reset_middlewares()
+    self.client:enable("Format.JSON")
+    self.client:enable("GinClient")
+    self.client:enable("KOSyncAuth", {
+        username = username,
+        userkey = password,
+    })
+    socketutil:set_timeout(PROGRESS_TIMEOUTS[1], PROGRESS_TIMEOUTS[2])
+    local ok, res = pcall(function()
+        return self.client:get_book_details({
+            document = document,
+        }, { document = document })
+    end)
+    socketutil:reset_timeout()
+    if ok and res.status == 200 then
+        return true, res.body
+    else
+        if not ok then
+            logger.dbg("AnxCalibreManagerKoreaderPluginClient:get_book_details_sync failure:", res)
+        end
+        return false, res and res.body
+    end
+end
+
 return AnxCalibreManagerKoreaderPluginClient

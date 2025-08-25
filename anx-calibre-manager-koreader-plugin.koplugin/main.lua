@@ -1,3 +1,4 @@
+local BookStatusWidget = require("ui/widget/bookstatuswidget")
 local ConfirmBox = require("ui/widget/confirmbox")
 local Device = require("device")
 local Dispatcher = require("dispatcher")
@@ -13,7 +14,7 @@ local logger = require("logger")
 local md5 = require("ffi/sha2").md5
 local random = require("random")
 local time = require("ui/time")
-local util = require("util")
+local util =require("util")
 local T = require("ffi/util").template
 local _ = require("gettext")
 
@@ -36,6 +37,7 @@ local AnxCalibreManagerKoreaderPlugin = WidgetContainer:extend{
     periodic_push_scheduled = nil,
 
     settings = nil,
+    initial_summary = nil,
 }
 
 local SYNC_STRATEGY = {
@@ -64,6 +66,19 @@ AnxCalibreManagerKoreaderPlugin.default_settings = {
 }
 
 function AnxCalibreManagerKoreaderPlugin:init()
+    local plugin_instance = self
+    BookStatusWidget.getStats = function(self_widget)
+        local stats = {}
+        local book_stats = plugin_instance.ui.doc_settings:readSetting("book_stats")
+        if book_stats then
+            stats.days = book_stats.total_days
+            stats.time = book_stats.total_time_book
+            stats.pages = book_stats.pages
+        end
+
+        return stats
+    end
+
     self.push_timestamp = 0
     self.pull_timestamp = 0
     self.page_update_counter = 0
@@ -190,8 +205,11 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
     if self.settings.auto_sync then
         UIManager:nextTick(function()
             self:getProgress(true, false)
+            self:getBookDetails()
+            self:updateBookStats()
         end)
     end
+    self.initial_summary = self.ui.doc_settings:readSetting("summary")
     -- NOTE: Keep in mind that, on Android, turning on WiFi requires a focus switch, which will trip a Suspend/Resume pair.
     --       NetworkMgr will attempt to hide the damage to avoid a useless pull -> push -> pull dance instead of the single pull requested.
     --       Plus, if wifi_enable_action is set to prompt, that also avoids stacking three prompts on top of each other...
@@ -199,6 +217,38 @@ function AnxCalibreManagerKoreaderPlugin:onReaderReady()
     self:onDispatcherRegisterActions()
 
     self.last_page = self.ui:getCurrentPage()
+end
+
+function AnxCalibreManagerKoreaderPlugin:updateBookStats()
+    local AnxCalibreManagerKoreaderPluginClient = require("AnxCalibreManagerKoreaderPluginClient")
+    local client = AnxCalibreManagerKoreaderPluginClient:new{
+        custom_url = self.settings.custom_server,
+        service_spec = self.path .. "/api.json"
+    }
+    local doc_digest = self:getDocumentDigest()
+    if not doc_digest then return end
+
+    client:get_book_stats(
+        self.settings.username,
+        self.settings.userkey,
+        doc_digest,
+        function(ok, body)
+            if ok and body then
+                local book_stats = {}
+                book_stats.total_days = body.total_days
+                book_stats.total_time_book = body.total_time_book
+                
+                local page_count = self.ui.doc_settings:readSetting("doc_pages")
+                local last_percent = self:getLastPercent()
+                if page_count and last_percent then
+                    book_stats.pages = math.floor(page_count * last_percent)
+                else
+                    book_stats.pages = 0
+                end
+                self.ui.doc_settings:saveSetting("book_stats", book_stats)
+            end
+        end
+    )
 end
 
 function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
@@ -250,6 +300,7 @@ function AnxCalibreManagerKoreaderPlugin:addToMainMenu(menu_items)
             self:onAnxCalibreManagerKoreaderPluginToggleAutoSync(nil, true)
         end,
     })
+    
     table.insert(menu_items.anx_calibre_manager.sub_item_table, {
         text_func = function()
             return T(_("Periodically sync every # pages (%1)"), self:getSyncPeriod())
@@ -505,11 +556,16 @@ function AnxCalibreManagerKoreaderPlugin:logout(menu)
 end
 
 function AnxCalibreManagerKoreaderPlugin:getLastPercent()
+    local percent
     if self.ui.document.info.has_pages then
-        return Math.roundPercent(self.ui.paging:getLastPercent())
+        percent = self.ui.paging:getLastPercent()
     else
-        return Math.roundPercent(self.ui.rolling:getLastPercent())
+        percent = self.ui.rolling:getLastPercent()
     end
+    if percent then
+        return Math.roundPercent(percent)
+    end
+    return 0
 end
 
 function AnxCalibreManagerKoreaderPlugin:getLastProgress()
@@ -793,6 +849,17 @@ function AnxCalibreManagerKoreaderPlugin:_onCloseDocument()
     --       and we handle those system focus events via... Suspend & Resume events, so we need to neuter those handlers early.
     self.onResume = nil
     self.onSuspend = nil
+
+    local current_summary = self.ui.doc_settings:readSetting("summary")
+    local summary_changed = false
+    if self.initial_summary and current_summary then
+        if self.initial_summary.rating ~= current_summary.rating or self.initial_summary.note ~= current_summary.note then
+            summary_changed = true
+        end
+    elseif self.initial_summary ~= current_summary then
+        summary_changed = true
+    end
+
     -- NOTE: Because we'll lose the document instance on return, we need to *block* until the connection is actually up here,
     --       we cannot rely on willRerunWhenOnline, because if we're not currently online,
     --       it *will* return early, and that means the actual callback *will* run *after* teardown of the document instance
@@ -801,6 +868,9 @@ function AnxCalibreManagerKoreaderPlugin:_onCloseDocument()
         -- Drop the inner willRerunWhenOnline ;).
         self:updateProgress(false, false)
         self:updateReadingTime()
+        if summary_changed then
+            self:updateSummary()
+        end
     end)
 end
 
@@ -865,10 +935,12 @@ end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginPushProgress()
     self:updateProgress(true, true)
+    self:updateSummary()
 end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginPullProgress()
     self:getProgress(true, true)
+    self:getBookDetails()
 end
 
 function AnxCalibreManagerKoreaderPlugin:onAnxCalibreManagerKoreaderPluginToggleAutoSync(toggle, from_menu)
@@ -920,9 +992,85 @@ function AnxCalibreManagerKoreaderPlugin:registerEvents()
     end
 end
 
+function AnxCalibreManagerKoreaderPlugin:updateSummary()
+    local summary = self.ui.doc_settings:readSetting("summary")
+    if not summary then return end
+
+    local AnxCalibreManagerKoreaderPluginClient = require("AnxCalibreManagerKoreaderPluginClient")
+    local client = AnxCalibreManagerKoreaderPluginClient:new{
+        custom_url = self.settings.custom_server,
+        service_spec = self.path .. "/api.json"
+    }
+    local doc_digest = self:getDocumentDigest()
+
+    local ok, err = pcall(client.update_summary,
+        client,
+        self.settings.username,
+        self.settings.userkey,
+        doc_digest,
+        summary.rating,
+        summary.note,
+        summary.status,
+        function(ok, body)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: [Push] summary for", self.ui.document.file)
+            logger.dbg("AnxCalibreManagerKoreaderPlugin: ok:", ok, "body:", body)
+            if not ok and body and body.message == "Document not found." then
+                UIManager:show(InfoMessage:new{
+                    text = _("This book is not in your AnxCalibreManager library."),
+                    timeout = 3,
+                })
+            end
+        end)
+    if not ok then
+        if err then logger.dbg("err:", err) end
+    end
+end
+
 function AnxCalibreManagerKoreaderPlugin:onCloseWidget()
     UIManager:unschedule(self.periodic_push_task)
     self.periodic_push_task = nil
+end
+
+function AnxCalibreManagerKoreaderPlugin:getBookDetails()
+    if not self.settings.username or not self.settings.userkey then
+        return
+    end
+
+    local AnxCalibreManagerKoreaderPluginClient = require("AnxCalibreManagerKoreaderPluginClient")
+    local client = AnxCalibreManagerKoreaderPluginClient:new{
+        custom_url = self.settings.custom_server,
+        service_spec = self.path .. "/api.json"
+    }
+    local doc_digest = self:getDocumentDigest()
+    local ok, err = pcall(client.get_book_details,
+        client,
+        self.settings.username,
+        self.settings.userkey,
+        doc_digest,
+        function(ok, body)
+            if not ok then
+                if body and body.message == "Document not found." then
+                    UIManager:show(InfoMessage:new{
+                        text = _("This book is not in your AnxCalibreManager library."),
+                        timeout = 3,
+                    })
+                end
+                return
+            end
+
+            if not body then return end
+
+            local summary = self.ui.doc_settings:readSetting("summary") or {}
+            summary.rating = body.rating
+            summary.note = body.summary
+            if body.reading_percentage and body.reading_percentage >= 1.0 then
+                summary.status = "complete"
+            end
+            self.ui.doc_settings:saveSetting("summary", summary)
+        end)
+    if not ok then
+        if err then logger.dbg("err:", err) end
+    end
 end
 
 return AnxCalibreManagerKoreaderPlugin

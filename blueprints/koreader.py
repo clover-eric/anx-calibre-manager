@@ -216,3 +216,101 @@ def update_reading_time():
         db.commit()
 
         return jsonify({'message': 'Reading time updated successfully.'})
+
+@koreader_bp.route('/syncs/summary', methods=['PUT'])
+def update_summary():
+    user = get_user_from_auth_headers()
+    if not user:
+        return jsonify({'message': 'Authentication required.'}), 401
+
+    data = request.get_json()
+    document_digest = data.get('document')
+    rating = data.get('rating')
+    summary = data.get('summary')
+    status = data.get('status')
+
+    if not document_digest:
+        return jsonify({'message': 'Document digest is required.'}), 400
+
+    dirs = get_anx_user_dirs(user['username'])
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return jsonify({'message': 'Anx library not found.'}), 404
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tb_books WHERE file_md5 = ? AND is_deleted = 0", (document_digest,))
+        book = cursor.fetchone()
+
+        if not book:
+            return jsonify({'message': 'Document not found.'}), 404
+
+        if rating is not None:
+            cursor.execute("UPDATE tb_books SET rating = ? WHERE id = ?", (rating, book['id']))
+        
+        if summary is not None:
+            cursor.execute("UPDATE tb_books SET description = ? WHERE id = ?", (summary, book['id']))
+
+        db.commit()
+
+        return jsonify({'message': 'Summary updated successfully.'})
+
+@koreader_bp.route('/syncs/book_details/<string:document>', methods=['GET'])
+def get_book_details(document):
+    user = get_user_from_auth_headers()
+    if not user:
+        return jsonify({'message': 'Authentication required.'}), 401
+
+    dirs = get_anx_user_dirs(user['username'])
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return jsonify({'message': 'Anx library not found.'}), 404
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tb_books WHERE file_md5 = ? AND is_deleted = 0", (document,))
+        book = cursor.fetchone()
+
+        if not book:
+            return jsonify({'message': 'Document not found.'}), 404
+
+        # Fetch reading time records
+        cursor.execute("SELECT date, reading_time FROM tb_reading_time WHERE book_id = ?", (book['id'],))
+        reading_time_records = cursor.fetchall()
+
+        return jsonify({
+            'rating': book['rating'],
+            'summary': book['description'],
+            'reading_percentage': book['reading_percentage'],
+        })
+
+@koreader_bp.route('/syncs/book_stats/<string:document>', methods=['GET'])
+def get_book_stats(document):
+    user = get_user_from_auth_headers()
+    if not user:
+        return jsonify({'message': 'Authentication required.'}), 401
+
+    dirs = get_anx_user_dirs(user['username'])
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return jsonify({'message': 'Anx library not found.'}), 404
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tb_books WHERE file_md5 = ? AND is_deleted = 0", (document,))
+        book = cursor.fetchone()
+
+        if not book:
+            return jsonify({'message': 'Document not found.'}), 404
+
+        # Fetch reading time records
+        cursor.execute("SELECT date, reading_time FROM tb_reading_time WHERE book_id = ?", (book['id'],))
+        reading_time_records = cursor.fetchall()
+
+        total_days = len(reading_time_records)
+        total_time_book = sum(row['reading_time'] for row in reading_time_records)
+
+        return jsonify({
+            'total_days': total_days,
+            'total_time_book': total_time_book,
+        })

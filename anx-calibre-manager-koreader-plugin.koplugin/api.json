@@ -48,6 +48,39 @@
                 "date"
             ],
             "expected_status" : [200, 401]
+        },
+        "update_summary" : {
+            "path" : "/syncs/summary",
+            "method" : "PUT",
+            "required_params" : [
+                "document",
+                "rating",
+                "summary",
+                "status"
+            ],
+            "payload" : [
+                "document",
+                "rating",
+                "summary",
+                "status"
+            ],
+            "expected_status" : [200, 401]
+        },
+        "get_book_details" : {
+            "path" : "/syncs/book_details/:document",
+            "method" : "GET",
+            "required_params" : [
+                "document"
+            ],
+            "expected_status" : [200, 401]
+        },
+        "get_book_stats" : {
+            "path" : "/syncs/book_stats/:document",
+            "method" : "GET",
+            "required_params" : [
+                "document"
+            ],
+            "expected_status" : [200, 401]
         }
     }
 }
