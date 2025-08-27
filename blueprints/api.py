@@ -638,16 +638,74 @@ def upload_to_calibre_api():
                 response.raise_for_status()
                 
                 res_json = response.json()
-                if res_json.get('book_id'):
-                    results.append({'success': True, 'filename': filename, 'message': f"书籍 '{res_json.get('title')}' 已成功上传, ID: {res_json['book_id']}."})
+                if res_json.get("book_id"):
+                    book_id = res_json["book_id"]
+
+                    try:
+                        book_details = get_calibre_book_details(book_id)
+                        if (
+                            book_details
+                            and "user_metadata" in book_details
+                            and "#library" in book_details["user_metadata"]
+                        ):
+                            update_payload = {
+                                "changes": {"#library": f"{g.user.username}上传"}
+                            }
+                            update_url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{book_id}/{library_id}"
+                            update_response = requests.post(
+                                update_url,
+                                json=update_payload,
+                                auth=get_calibre_auth(),
+                            )
+                            update_response.raise_for_status()
+                            logging.info(
+                                f"Successfully updated #library for book {book_id}"
+                            )
+                    except Exception as e:
+                        logging.error(
+                            f"Failed to update #library for book {book_id}: {e}"
+                        )
+                        results.append(
+                            {
+                                "success": True,
+                                "filename": filename,
+                                "message": f"书籍 '{res_json.get('title')}' 上传成功, ID: {book_id} (但更新来源失败)",
+                            }
+                        )
+                        continue
+
+                    results.append(
+                        {
+                            "success": True,
+                            "filename": filename,
+                            "message": f"书籍 '{res_json.get('title')}' 上传成功, ID: {book_id}",
+                        }
+                    )
                 else:
-                    results.append({'success': False, 'filename': filename, 'error': '上传失败，书籍可能已存在。', 'details': res_json.get('duplicates')})
+                    results.append(
+                        {
+                            "success": False,
+                            "filename": filename,
+                            "error": "上传失败，书籍可能已存在。",
+                            "details": res_json.get("duplicates"),
+                        }
+                    )
             except requests.exceptions.HTTPError as e:
-                error_message = f"Calibre 服务器返回错误: {e.response.status_code} - {e.response.text}"
-                results.append({'success': False, 'filename': filename, 'error': error_message})
+                error_message = (
+                    f"Calibre 服务器返回错误: {e.response.status_code} - {e.response.text}"
+                )
+                results.append(
+                    {"success": False, "filename": filename, "error": error_message}
+                )
             except requests.exceptions.RequestException as e:
-                results.append({'success': False, 'filename': filename, 'error': f'连接 Calibre 服务器出错: {e}'})
-    
+                results.append(
+                    {
+                        "success": False,
+                        "filename": filename,
+                        "error": f"连接 Calibre 服务器出错: {e}",
+                    }
+                )
+
     return jsonify(results)
 
 @api_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
