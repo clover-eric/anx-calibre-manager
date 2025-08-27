@@ -709,8 +709,19 @@ def upload_to_calibre_api():
     return jsonify(results)
 
 @api_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
-@maintainer_required_api
 def update_calibre_book_api(book_id):
+    if not g.user.is_maintainer:
+        # If not a maintainer, check if they are the uploader
+        book_details = get_calibre_book_details(book_id)
+        if not book_details:
+            return jsonify({'error': '找不到书籍详情。'}), 404
+
+        library_field = book_details.get('user_metadata', {}).get('#library', {})
+        uploader = library_field.get('#value#', '').removesuffix('上传') if library_field and library_field.get('#value#') else ''
+
+        if uploader != g.user.username:
+            return jsonify({'error': '您没有权限编辑这本书。'}), 403
+
     data = request.get_json()
     
     # Prepare the 'changes' dictionary

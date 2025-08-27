@@ -69,7 +69,9 @@
                         <button class="button" data-action="download-calibre" data-id="{{ book.id }}"><span class="button-text">下载</span></button>
                         <button class="button" data-action="send-kindle" data-id="{{ book.id }}"><span class="button-text">Kindle</span></button>
                         <button class="button button-secondary" data-action="push-to-anx" data-id="{{ book.id }}"><span class="button-text">Anx</span></button>
-                        {% if g.user.is_maintainer %}
+                        {% set library_field = book.get('user_metadata', {}).get('#library', {}) %}
+                        {% set library_owner = library_field.get('#value#', '').removesuffix('上传') if library_field and library_field.get('#value#') else '' %}
+                        {% if g.user.is_maintainer or (library_owner and g.user.username == library_owner) %}
                         <button class="button edit-button" data-action="edit-calibre" data-id="{{ book.id }}"><span class="button-text">编辑</span></button>
                         {% endif %}
                     </div>

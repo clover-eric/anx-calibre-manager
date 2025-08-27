@@ -17,7 +17,12 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Push to Anx**: Send books from your Calibre library directly to your personal Anx-reader device folder.
 - **Integrated WebDAV Server**: Each user gets their own secure WebDAV folder, compatible with Anx-reader and other WebDAV clients.
 - **MCP Server**: A built-in, compliant Model Context Protocol (MCP) server, allowing AI agents and external tools to interact with your library securely.
-- **User Management**: Simple, built-in user management system.
+- **User Management**: Simple, built-in user management system with distinct roles:
+    - **Admin**: Full control over users, global settings, and all books.
+    - **Maintainer**: Can edit all book metadata.
+    - **User**: Can upload books, manage their own WebDAV library, MCP tokens, send books to Kindle, and **edit books they have uploaded**.
+- **User-Editable Uploaded Books**: Regular users can now edit metadata for books they have uploaded. This functionality relies on a Calibre custom column named `#library` (type: `Text, with commas treated as separate tags`). When a user uploads a book, this field is automatically populated with `<username>上传`. Users can then edit any book where `#library` contains their username followed by "上传".
+    - **Recommendation for Docker Users**: To enable this feature, please ensure you have a custom column in your Calibre library named `#library` (case-sensitive) with the type `Text, with commas treated as separate tags`.
 - **Easy Deployment**: Deployable as a single Docker container.
 - **Reading Stats**: Automatically generates a personal reading statistics page, featuring a yearly reading heatmap, a list of books currently being read, and a list of finished books. The page can be shared publicly or kept private.
 ## 📸 Screenshots
