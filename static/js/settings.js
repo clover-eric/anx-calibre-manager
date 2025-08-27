@@ -272,9 +272,9 @@ async function fetchUsers() {
         tr.innerHTML = `
             <td>${user.id}</td>
             <td>${user.username}</td>
-            <td>${user.is_admin ? '是' : '否'}</td>
+            <td>${user.role}</td>
             <td>
-                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', ${user.is_admin})">编辑</button>
+                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', '${user.role}')">编辑</button>
                 <button class="button-danger button-small" onclick="deleteUser(${user.id})">删除</button>
             </td>
         `;
@@ -282,11 +282,11 @@ async function fetchUsers() {
     });
 }
 
-window.editUser = function(id, username, isAdmin) {
+window.editUser = function(id, username, role) {
     document.getElementById('formTitle').textContent = '编辑';
     document.getElementById('user_id').value = id;
     document.getElementById('username').value = username;
-    document.getElementById('is_admin').checked = isAdmin;
+    document.getElementById('role').value = role;
     window.scrollTo(0, 0);
 }
 
@@ -306,7 +306,7 @@ window.handleUserFormSubmit = async function(event) {
     const data = {
         username: form.username.value,
         password: form.password.value,
-        is_admin: form.is_admin.checked
+        role: form.role.value
     };
     
     if (userId) {

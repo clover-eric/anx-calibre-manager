@@ -24,6 +24,14 @@ def update_schema_if_needed(db):
     cursor.execute("PRAGMA table_info(users)")
     columns = [row['name'] for row in cursor.fetchall()]
     
+    if 'role' not in columns and 'is_admin' in columns:
+        print("Migrating database: adding 'role' column and migrating from 'is_admin'.")
+        cursor.execute("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'")
+        cursor.execute("UPDATE users SET role = 'admin' WHERE is_admin = 1")
+        # We can drop the old column if we want, but it's safer to leave it for now.
+        cursor.execute('ALTER TABLE users DROP COLUMN is_admin')
+        db.commit()
+
     if 'kindle_email' not in columns:
         print("Migrating database: adding 'kindle_email' column to users table.")
         cursor.execute('ALTER TABLE users ADD COLUMN kindle_email TEXT')
@@ -97,7 +105,7 @@ def create_schema():
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             username TEXT UNIQUE NOT NULL,
                             password_hash TEXT NOT NULL,
-                            is_admin INTEGER NOT NULL DEFAULT 0,
+                            role TEXT NOT NULL DEFAULT 'user',
                             otp_secret TEXT,
                             send_format_priority TEXT,
                             kindle_email TEXT,

@@ -47,6 +47,15 @@ def admin_required_api(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def maintainer_required_api(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if g.user is None or not g.user.is_maintainer:
+            return jsonify({'error': '需要维护者或管理员权限。'}), 403
+        return f(*args, **kwargs)
+    return decorated_function
+
 def send_email_with_config(to_address, subject, body, config, attachment_content=None, attachment_filename=None):
     import smtplib
     
@@ -133,7 +142,7 @@ def download_anx_book_api(book_id):
 @admin_required_api
 def get_users():
     with closing(database.get_db()) as db:
-        users = db.execute('SELECT id, username, is_admin FROM users').fetchall()
+        users = db.execute('SELECT id, username, role FROM users').fetchall()
         return jsonify([dict(u) for u in users])
 
 @api_bp.route('/users', methods=['POST'])
@@ -142,7 +151,7 @@ def add_user():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    is_admin = data.get('is_admin', False)
+    role = data.get('role', 'user')
     if not username or not password:
         return jsonify({'error': '用户名和密码是必填项。'}), 400
 
@@ -151,8 +160,8 @@ def add_user():
     with closing(database.get_db()) as db:
         try:
             db.execute(
-                "INSERT INTO users (username, password_hash, is_admin, kosync_userkey) VALUES (?, ?, ?, ?)",
-                (username, hashed_pw, is_admin, kosync_userkey)
+                "INSERT INTO users (username, password_hash, role, kosync_userkey) VALUES (?, ?, ?, ?)",
+                (username, hashed_pw, role, kosync_userkey)
             )
             db.commit()
             
@@ -175,7 +184,7 @@ def update_user():
     user_id = data.get('user_id')
     username = data.get('username')
     password = data.get('password')
-    is_admin = data.get('is_admin', False)
+    role = data.get('role', 'user')
 
     if not user_id or not username:
         return jsonify({'error': '用户 ID 和用户名是必填项。'}), 400
@@ -185,13 +194,13 @@ def update_user():
             hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             kosync_userkey = hashlib.md5(password.encode('utf-8')).hexdigest()
             db.execute(
-                'UPDATE users SET username = ?, password_hash = ?, is_admin = ?, kosync_userkey = ? WHERE id = ?',
-                (username, hashed_pw, is_admin, kosync_userkey, user_id)
+                'UPDATE users SET username = ?, password_hash = ?, role = ?, kosync_userkey = ? WHERE id = ?',
+                (username, hashed_pw, role, kosync_userkey, user_id)
             )
         else:
             db.execute(
-                'UPDATE users SET username = ?, is_admin = ? WHERE id = ?',
-                (username, is_admin, user_id)
+                'UPDATE users SET username = ?, role = ? WHERE id = ?',
+                (username, role, user_id)
             )
         db.commit()
         return jsonify({'message': '用户已成功更新。'})
@@ -642,7 +651,7 @@ def upload_to_calibre_api():
     return jsonify(results)
 
 @api_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
-@admin_required_api
+@maintainer_required_api
 def update_calibre_book_api(book_id):
     data = request.get_json()
     
@@ -763,7 +772,7 @@ def get_all_items_for_field(library_id, field):
         return []
 
 @api_bp.route('/calibre/completions', methods=['GET'])
-@admin_required_api
+@maintainer_required_api
 def calibre_completions_api():
     field = request.args.get('field')
     query = request.args.get('query', '').lower()

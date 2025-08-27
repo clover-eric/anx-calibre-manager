@@ -69,7 +69,7 @@
                         <button class="button" data-action="download-calibre" data-id="{{ book.id }}"><span class="button-text">下载</span></button>
                         <button class="button" data-action="send-kindle" data-id="{{ book.id }}"><span class="button-text">Kindle</span></button>
                         <button class="button button-secondary" data-action="push-to-anx" data-id="{{ book.id }}"><span class="button-text">Anx</span></button>
-                        {% if g.user.is_admin %}
+                        {% if g.user.is_maintainer %}
                         <button class="button edit-button" data-action="edit-calibre" data-id="{{ book.id }}"><span class="button-text">编辑</span></button>
                         {% endif %}
                     </div>

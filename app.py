@@ -18,9 +18,13 @@ class User:
         if row:
             for key in row.keys():
                 setattr(self, key, row[key])
+            self.is_admin = (self.role == 'admin')
+            self.is_maintainer = (self.role in ['admin', 'maintainer'])
         else:
             self.id = None
+            self.role = 'user'
             self.is_admin = False
+            self.is_maintainer = False
 
 class AnxDomainController(BaseDomainController):
     def __init__(self, wsgidav_app, config):
