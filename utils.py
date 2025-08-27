@@ -237,6 +237,24 @@ def sanitize_filename(filename):
     """
     return re.sub(r'[\\/*?:"<>|]', '', filename).rstrip()
 
+def safe_title(title):
+    """
+    Sanitizes and truncates a title to a safe length.
+    """
+    sanitized = re.sub(r'[\\/*?:"<>|]', '', title).strip()
+    while len(sanitized.encode('utf-8')) > 195:
+        sanitized = sanitized[:-1]
+    return sanitized
+
+def safe_author(author):
+    """
+    Sanitizes and truncates an author string to a safe length.
+    """
+    sanitized = re.sub(r'[\\/*?:"<>|]', '', author).strip()
+    while len(sanitized.encode('utf-8')) > 45:
+        sanitized = sanitized[:-1]
+    return sanitized
+
 import os
 
 def convert_koreader_progress(direction, epub_path, progress):

@@ -33,7 +33,7 @@ from anx_library import (
 )
 from .main import download_calibre_book, get_calibre_auth, get_calibre_book_details, download_calibre_cover
 from epub_fixer import fix_epub_for_kindle
-from utils import random_english_text, create_calibre_mail, sanitize_filename
+from utils import random_english_text, create_calibre_mail, safe_title, safe_author
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -415,19 +415,17 @@ def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - au
         with open(fixed_epub_path, 'rb') as f:
             content_to_send = f.read()
 
-        # Sanitize title for use in filename
-        title = details.get('title', 'Untitled')
-        safe_title = re.sub(r'[\\/*?:"<>|]', '', title).strip()
+        # Sanitize title and authors for use in filename
+        title = safe_title(details.get('title', 'Untitled'))
         
         if filename_format == 'title':
-            filename_to_send = f"{safe_title}.epub"
+            filename_to_send = f"{title}.epub"
         else: # Default to 'title - author'
-            authors = " & ".join(details.get('authors', []))
-            safe_authors = re.sub(r'[\\/*?:"<>|]', '', authors).strip()
-            if safe_authors:
-                filename_to_send = f"{safe_title} - {safe_authors}.epub"
+            authors = safe_author(" & ".join(details.get('authors', [])))
+            if authors:
+                filename_to_send = f"{title} - {authors}.epub"
             else:
-                filename_to_send = f"{safe_title}.epub"
+                filename_to_send = f"{title}.epub"
 
         return content_to_send, filename_to_send, needs_conversion
 
