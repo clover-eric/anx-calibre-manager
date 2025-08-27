@@ -38,7 +38,7 @@ RUN git clone https://github.com/gryf/ebook-converter.git && \
     pip install .
 
 # Stage 2: Final image - For running the application
-FROM python:3.12-slim-bullseye
+FROM python:3.12-slim-bookworm
 
 # Install gosu for user switching, tini for signal handling, and runtime deps for ebook-converter
 RUN apt-get update && \
