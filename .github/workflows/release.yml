@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to get all history for release notes
+
+      - name: Get previous tag
+        id: get_prev_tag
+        run: |
+          echo "PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)" >> $GITHUB_OUTPUT
+        
+      - name: Generate Koplugin Zip
+        run: |
+          zip -r anx-calibre-manager-koreader-plugin.koplugin.zip ./anx-calibre-manager-koreader-plugin.koplugin -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
+
+      - name: Generate Source Code Zip
+        run: |
+          zip -r anx-calibre-manager-source.zip anx-calibre-manager -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            anx-calibre-manager-koreader-plugin.koplugin.zip
+            anx-calibre-manager-source.zip
+          generate_release_notes: true
+          body_extra: |
+            **Changes since ${{ steps.get_prev_tag.outputs.PREV_TAG }}:**
+            ```
+            ${{ github.event.repository.name }}
