@@ -23,7 +23,7 @@ jobs:
       - name: Update Service Worker Cache Name
         run: |
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          sed -i "s/const CACHE_NAME = 'anx-calibre-manager-datetime';/const CACHE_NAME = 'anx-calibre-manager-${TIMESTAMP}';/" anx-calibre-manager/static/sw.js
+          sed -i "s/const CACHE_NAME = 'anx-calibre-manager-datetime';/const CACHE_NAME = 'anx-calibre-manager-${TIMESTAMP}';/" ./static/sw.js
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
