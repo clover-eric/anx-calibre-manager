@@ -600,24 +600,51 @@ textarea {
 .token-value { font-family: monospace; background: #f5f5f5; padding: 0.2rem 0.5rem; border-radius: 4px; }
 .mcp-docs { background: #f9f9f9; border-left: 4px solid var(--primary-color); padding: 1rem; margin-top: 1rem; }
 .mcp-docs code { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; }
-/* --- Login Page Styles --- */
-.login-body {
+/* --- Login & Setup Page Styles --- */
+.login-body,
+.setup-body {
     padding-top: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    margin: 0;
 }
 
-.login-body .container {
-    flex: 1;
+.login-body .top-nav,
+.setup-body .top-nav,
+.login-body .bottom-nav,
+.setup-body .bottom-nav {
+    display: none; /* Hide nav bars */
+}
+
+.login-body .container,
+.setup-body .container {
+    flex-grow: 1; /* Takes up all available space */
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.login-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 }
+
+.login-body .site-footer,
+.setup-body .site-footer {
+    flex-shrink: 0; /* Prevents the footer from shrinking */
+}
+
+.login-wrapper,
+.setup-wrapper {
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    box-sizing: border-box;
+}
+
 #otp-group {
     display: none;
 }
@@ -635,18 +662,6 @@ textarea {
     color: #004085;
     background-color: #cce5ff;
     border-color: #b8daff;
-}
-/* --- Setup Page Styles --- */
-.setup-body {
-    padding-top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-.setup-wrapper {
-    width: 100%;
-    max-width: 400px;
 }
 /* --- 12. Stats Page Styles --- */
 .stats-container {
