@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 22:37+0800\n"
+"POT-Creation-Date: 2025-08-28 23:55+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -313,6 +313,33 @@ msgstr "编辑图书信息"
 msgid "Save"
 msgstr "保存"
 
+#: templates/login.html:3 templates/login.html:34
+msgid "Login"
+msgstr "登录"
+
+#: templates/login.html:9
+msgid "Login to Anx Calibre Manager"
+msgstr "登录 Anx Calibre Manager"
+
+#: templates/login.html:23 templates/settings.html:30
+#: templates/settings.html:140 templates/settings.html:268
+#: templates/settings.html:295
+msgid "Username"
+msgstr "用户名"
+
+#: templates/login.html:27 templates/settings.html:141
+#: templates/settings.html:272
+msgid "Password"
+msgstr "密码"
+
+#: templates/login.html:31
+msgid "2FA Code"
+msgstr "两步验证码"
+
+#: templates/login.html:32
+msgid "Please enter a 6-digit code"
+msgstr "请输入6位数字验证码"
+
 #: templates/settings.html:16
 msgid "User Settings"
 msgstr "用户设置"
@@ -336,11 +363,6 @@ msgstr "用户管理"
 #: templates/settings.html:28
 msgid "Profile"
 msgstr "个人资料"
-
-#: templates/settings.html:30 templates/settings.html:140
-#: templates/settings.html:268 templates/settings.html:295
-msgid "Username"
-msgstr "用户名"
 
 #: templates/settings.html:34
 msgid "Change Password"
@@ -540,10 +562,6 @@ msgid ""
 "`/`</strong>."
 msgstr "填写以下地址，并<strong>确保路径以 `/` 结尾</strong>。"
 
-#: templates/settings.html:141 templates/settings.html:272
-msgid "Password"
-msgstr "密码"
-
 #: templates/settings.html:141
 msgid "Your Anx Calibre Manager login password."
 msgstr "您的Anx Calibre Manager登录密码。"
@@ -584,7 +602,9 @@ msgid ""
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
 "folder</strong> to the `koreader/plugins/` directory on your KOReader "
 "device."
-msgstr "解压下载的 `.zip` 文件，您将得到一个名为 `anx-calibre-manager-koreader-plugin.koplugin` 的文件夹。将此<strong>整个文件夹</strong>复制到您的 KOReader 设备上的 `koreader/plugins/` 目录中。"
+msgstr ""
+"解压下载的 `.zip` 文件，您将得到一个名为 `anx-calibre-manager-koreader-plugin.koplugin` "
+"的文件夹。将此<strong>整个文件夹</strong>复制到您的 KOReader 设备上的 `koreader/plugins/` 目录中。"
 
 #: templates/settings.html:155
 msgid "Restart KOReader"
@@ -882,3 +902,4 @@ msgstr "已读完！"
 #: templates/stats.html:70
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
+
