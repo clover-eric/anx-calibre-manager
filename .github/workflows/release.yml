@@ -29,7 +29,7 @@ jobs:
           zip -r anx-calibre-manager-source.zip . -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             anx-calibre-manager-koreader-plugin.koplugin.zip
