@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 22:37+0800\n"
+"POT-Creation-Date: 2025-08-28 23:55+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -73,8 +73,9 @@ msgid ""
 "Please make sure to add the sender email address ({email}) to your Amazon"
 " Kindle trusted email list."
 msgstr ""
-"Bitte stellen Sie sicher, dass Sie die Absender-E-Mail-Adresse ({email}) zu "
-"Ihrer Liste vertrauenswürdiger E-Mail-Adressen bei Amazon Kindle hinzufügen."
+"Bitte stellen Sie sicher, dass Sie die Absender-E-Mail-Adresse ({email}) "
+"zu Ihrer Liste vertrauenswürdiger E-Mail-Adressen bei Amazon Kindle "
+"hinzufügen."
 
 #: utils.py:304
 msgid "2FA has been enabled."
@@ -98,7 +99,9 @@ msgstr "Keine Änderungen erkannt."
 
 #: static/js/page/handlers.js:145
 msgid "Are you sure you want to delete this book? This action cannot be undone."
-msgstr "Möchten Sie dieses Buch wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+msgstr ""
+"Möchten Sie dieses Buch wirklich löschen? Diese Aktion kann nicht "
+"rückgängig gemacht werden."
 
 #: static/js/page/handlers.js:194 static/js/page/handlers.js:207
 #, python-format
@@ -127,7 +130,9 @@ msgstr "Alle Bücher erfolgreich hochgeladen!"
 
 #: static/js/page/handlers.js:333
 msgid "Some files failed to upload. Please check the progress details."
-msgstr "Einige Dateien konnten nicht hochgeladen werden. Bitte überprüfen Sie die Fortschrittsdetails."
+msgstr ""
+"Einige Dateien konnten nicht hochgeladen werden. Bitte überprüfen Sie die"
+" Fortschrittsdetails."
 
 #: static/js/page/ui.js:83
 msgid "Success!"
@@ -260,7 +265,10 @@ msgstr "Anx-Bibliothek"
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
-msgstr "Geben Sie die WebDAV-Adresse auf der Einstellungsseite des Anx Readers ein, um zu synchronisieren (Benutzername und Passwort sind Ihre Anmeldeinformationen):"
+msgstr ""
+"Geben Sie die WebDAV-Adresse auf der Einstellungsseite des Anx Readers "
+"ein, um zu synchronisieren (Benutzername und Passwort sind Ihre "
+"Anmeldeinformationen):"
 
 #: templates/index.html:106 templates/settings.html:138
 msgid "Click to copy"
@@ -315,6 +323,33 @@ msgstr "Buchinformationen bearbeiten"
 msgid "Save"
 msgstr "Speichern"
 
+#: templates/login.html:3 templates/login.html:34
+msgid "Login"
+msgstr "Anmelden"
+
+#: templates/login.html:9
+msgid "Login to Anx Calibre Manager"
+msgstr "Anmelden bei Anx Calibre Manager"
+
+#: templates/login.html:23 templates/settings.html:30
+#: templates/settings.html:140 templates/settings.html:268
+#: templates/settings.html:295
+msgid "Username"
+msgstr "Benutzername"
+
+#: templates/login.html:27 templates/settings.html:141
+#: templates/settings.html:272
+msgid "Password"
+msgstr "Passwort"
+
+#: templates/login.html:31
+msgid "2FA Code"
+msgstr "2FA-Code"
+
+#: templates/login.html:32
+msgid "Please enter a 6-digit code"
+msgstr "Bitte geben Sie einen 6-stelligen Code ein"
+
 #: templates/settings.html:16
 msgid "User Settings"
 msgstr "Benutzereinstellungen"
@@ -338,11 +373,6 @@ msgstr "Benutzerverwaltung"
 #: templates/settings.html:28
 msgid "Profile"
 msgstr "Profil"
-
-#: templates/settings.html:30 templates/settings.html:140
-#: templates/settings.html:268 templates/settings.html:295
-msgid "Username"
-msgstr "Benutzername"
 
 #: templates/settings.html:34
 msgid "Change Password"
@@ -389,7 +419,10 @@ msgid ""
 "When downloading or pushing to Kindle / ANX library, available formats "
 "will be searched in this priority order. Use commas to separate, e.g., "
 "epub, mobi, pdf, azw3"
-msgstr "Beim Herunterladen oder Pushen an die Kindle- / ANX-Bibliothek werden verfügbare Formate in dieser Prioritätsreihenfolge durchsucht. Verwenden Sie Kommas zur Trennung, z. B. epub, mobi, pdf, azw3"
+msgstr ""
+"Beim Herunterladen oder Pushen an die Kindle- / ANX-Bibliothek werden "
+"verfügbare Formate in dieser Prioritätsreihenfolge durchsucht. Verwenden "
+"Sie Kommas zur Trennung, z. B. epub, mobi, pdf, azw3"
 
 #: templates/settings.html:61
 msgid "Force EPUB Conversion"
@@ -400,7 +433,10 @@ msgid ""
 "If enabled, will always try to convert the book to an optimized EPUB "
 "format when downloading or pushing to the ANX library, instead of sending"
 " the original format."
-msgstr "Wenn aktiviert, wird immer versucht, das Buch in ein optimiertes EPUB-Format zu konvertieren, wenn es an die ANX-Bibliothek heruntergeladen oder gepusht wird, anstatt das Originalformat zu senden."
+msgstr ""
+"Wenn aktiviert, wird immer versucht, das Buch in ein optimiertes EPUB-"
+"Format zu konvertieren, wenn es an die ANX-Bibliothek heruntergeladen "
+"oder gepusht wird, anstatt das Originalformat zu senden."
 
 #: templates/settings.html:64
 msgid "Statistics Settings"
@@ -422,7 +458,9 @@ msgstr "Statistikseite öffentlich machen"
 msgid ""
 "If enabled, your statistics page will be publicly accessible without "
 "needing to log in."
-msgstr "Wenn aktiviert, ist Ihre Statistikseite öffentlich zugänglich, ohne dass Sie sich anmelden müssen."
+msgstr ""
+"Wenn aktiviert, ist Ihre Statistikseite öffentlich zugänglich, ohne dass "
+"Sie sich anmelden müssen."
 
 #: templates/settings.html:76
 msgid "Your Statistics Page URL"
@@ -464,7 +502,9 @@ msgstr "MCP-API-Token"
 msgid ""
 "You can use these tokens to interact with your library via the MCP "
 "protocol."
-msgstr "Sie können diese Token verwenden, um über das MCP-Protokoll mit Ihrer Bibliothek zu interagieren."
+msgstr ""
+"Sie können diese Token verwenden, um über das MCP-Protokoll mit Ihrer "
+"Bibliothek zu interagieren."
 
 #: templates/settings.html:108
 msgid "Generate New Token"
@@ -480,7 +520,9 @@ msgstr "Authentifizierung"
 
 #: templates/settings.html:115
 msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
-msgstr "Authentifizieren Sie sich, indem Sie den Parameter `?token=YOUR_TOKEN` an die URL anhängen."
+msgstr ""
+"Authentifizieren Sie sich, indem Sie den Parameter `?token=YOUR_TOKEN` an"
+" die URL anhängen."
 
 #: templates/settings.html:116
 msgid "Available Tools"
@@ -490,7 +532,9 @@ msgstr "Verfügbare Werkzeuge"
 msgid ""
 "Search Calibre books. Parameters: `search_expression` (str), `limit` "
 "(int, default 20)"
-msgstr "Calibre-Bücher suchen. Parameter: `search_expression` (str), `limit` (int, Standard 20)"
+msgstr ""
+"Calibre-Bücher suchen. Parameter: `search_expression` (str), `limit` "
+"(int, Standard 20)"
 
 #: templates/settings.html:119
 msgid "Get recent Calibre books. Parameters: `limit` (int, default 20)"
@@ -526,7 +570,9 @@ msgstr "Schritt 1: WebDAV-Cloud-Speicher konfigurieren"
 
 #: templates/settings.html:135
 msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
-msgstr "Gehen Sie in KOReader zu `Cloud-Speicher` -> `Neuen Cloud-Speicher hinzufügen`."
+msgstr ""
+"Gehen Sie in KOReader zu `Cloud-Speicher` -> `Neuen Cloud-Speicher "
+"hinzufügen`."
 
 #: templates/settings.html:136
 msgid "Select `WebDAV`."
@@ -540,11 +586,9 @@ msgstr "Serveradresse"
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
-msgstr "Füllen Sie die unten stehende Adresse aus und <strong>stellen Sie sicher, dass der Pfad mit einem `/` endet</strong>."
-
-#: templates/settings.html:141 templates/settings.html:272
-msgid "Password"
-msgstr "Passwort"
+msgstr ""
+"Füllen Sie die unten stehende Adresse aus und <strong>stellen Sie sicher,"
+" dass der Pfad mit einem `/` endet</strong>."
 
 #: templates/settings.html:141
 msgid "Your Anx Calibre Manager login password."
@@ -558,7 +602,9 @@ msgstr "Ordner"
 msgid ""
 "Click `Connect` and save. You should now be able to see your Anx library "
 "in KOReader's file browser."
-msgstr "Klicken Sie auf `Verbinden` und speichern Sie. Sie sollten nun Ihre Anx-Bibliothek im Dateibrowser von KOReader sehen können."
+msgstr ""
+"Klicken Sie auf `Verbinden` und speichern Sie. Sie sollten nun Ihre Anx-"
+"Bibliothek im Dateibrowser von KOReader sehen können."
 
 #: templates/settings.html:146
 msgid "Step 2: Install and Configure the Sync Plugin"
@@ -570,7 +616,9 @@ msgstr "Plugin herunterladen"
 
 #: templates/settings.html:149
 msgid "Click the button below to download the plugin zip file."
-msgstr "Klicken Sie auf die Schaltfläche unten, um die Plugin-Zip-Datei herunterzuladen."
+msgstr ""
+"Klicken Sie auf die Schaltfläche unten, um die Plugin-Zip-Datei "
+"herunterzuladen."
 
 #: templates/settings.html:151
 msgid "Download KOReader Plugin (.zip)"
@@ -586,7 +634,11 @@ msgid ""
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
 "folder</strong> to the `koreader/plugins/` directory on your KOReader "
 "device."
-msgstr "Entpacken Sie die heruntergeladene `.zip`-Datei, und Sie erhalten einen Ordner mit dem Namen `anx-calibre-manager-koreader-plugin.koplugin`. Kopieren Sie diesen <strong>gesamten Ordner</strong> in das Verzeichnis `koreader/plugins/` auf Ihrem KOReader-Gerät."
+msgstr ""
+"Entpacken Sie die heruntergeladene `.zip`-Datei, und Sie erhalten einen "
+"Ordner mit dem Namen `anx-calibre-manager-koreader-plugin.koplugin`. "
+"Kopieren Sie diesen <strong>gesamten Ordner</strong> in das Verzeichnis "
+"`koreader/plugins/` auf Ihrem KOReader-Gerät."
 
 #: templates/settings.html:155
 msgid "Restart KOReader"
@@ -596,7 +648,9 @@ msgstr "KOReader neu starten"
 msgid ""
 "Completely close and reopen the KOReader application to load the new "
 "plugin."
-msgstr "Schließen Sie die KOReader-Anwendung vollständig und öffnen Sie sie erneut, um das neue Plugin zu laden."
+msgstr ""
+"Schließen Sie die KOReader-Anwendung vollständig und öffnen Sie sie "
+"erneut, um das neue Plugin zu laden."
 
 #: templates/settings.html:156
 msgid "Configure Sync Server"
@@ -611,13 +665,19 @@ msgid ""
 "First, please open and start reading a book via the WebDAV set up in the "
 "previous step. The plugin menu will <strong>only appear in the reading "
 "interface</strong>."
-msgstr "Öffnen und beginnen Sie zunächst mit dem Lesen eines Buches über das im vorherigen Schritt eingerichtete WebDAV. Das Plugin-Menü wird <strong>nur in der Leseoberfläche angezeigt</strong>."
+msgstr ""
+"Öffnen und beginnen Sie zunächst mit dem Lesen eines Buches über das im "
+"vorherigen Schritt eingerichtete WebDAV. Das Plugin-Menü wird <strong>nur"
+" in der Leseoberfläche angezeigt</strong>."
 
 #: templates/settings.html:159
 msgid ""
 "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
 "`More tools` -> `ANX Calibre Manager`."
-msgstr "Gehen Sie in der Leseoberfläche zu `Werkzeuge (Schraubenschlüssel-Symbol)` -> `Nächste Seite` -> `Weitere Werkzeuge` -> `ANX Calibre Manager`."
+msgstr ""
+"Gehen Sie in der Leseoberfläche zu `Werkzeuge (Schraubenschlüssel-"
+"Symbol)` -> `Nächste Seite` -> `Weitere Werkzeuge` -> `ANX Calibre "
+"Manager`."
 
 #: templates/settings.html:160
 msgid "Select `Custom sync server`."
@@ -631,14 +691,19 @@ msgstr "Adresse des benutzerdefinierten Synchronisierungsservers"
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
-msgstr "Kehren Sie zum vorherigen Menü zurück, wählen Sie `Anmelden` und geben Sie Ihren Anx Calibre Manager-Benutzernamen und Ihr Passwort ein."
+msgstr ""
+"Kehren Sie zum vorherigen Menü zurück, wählen Sie `Anmelden` und geben "
+"Sie Ihren Anx Calibre Manager-Benutzernamen und Ihr Passwort ein."
 
 #: templates/settings.html:166
 msgid ""
 "Once configured, the plugin will automatically or manually sync your "
 "reading progress and time. You can adjust settings like sync frequency in"
 " the plugin menu."
-msgstr "Nach der Konfiguration synchronisiert das Plugin Ihren Lesefortschritt und Ihre Lesezeit automatisch oder manuell. Sie können Einstellungen wie die Synchronisierungshäufigkeit im Plugin-Menü anpassen."
+msgstr ""
+"Nach der Konfiguration synchronisiert das Plugin Ihren Lesefortschritt "
+"und Ihre Lesezeit automatisch oder manuell. Sie können Einstellungen wie "
+"die Synchronisierungshäufigkeit im Plugin-Menü anpassen."
 
 #: templates/settings.html:167
 msgid "Note: Only supports epub book synchronization"
@@ -668,7 +733,9 @@ msgstr "Standard-Calibre-Bibliotheks-ID"
 msgid ""
 "The default Calibre library ID for browsing, searching, and uploading "
 "books. Usually 'Calibre_Library'."
-msgstr "Die Standard-Calibre-Bibliotheks-ID zum Durchsuchen, Suchen und Hochladen von Büchern. Normalerweise 'Calibre_Library'."
+msgstr ""
+"Die Standard-Calibre-Bibliotheks-ID zum Durchsuchen, Suchen und Hochladen"
+" von Büchern. Normalerweise 'Calibre_Library'."
 
 #: templates/settings.html:195
 msgid "Allow uploading duplicate books"
@@ -678,7 +745,9 @@ msgstr "Hochladen doppelter Bücher zulassen"
 msgid ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
-msgstr "Wenn aktiviert, fügt Calibre das Buch als neue Kopie hinzu, auch wenn ein Duplikat erkannt wird."
+msgstr ""
+"Wenn aktiviert, fügt Calibre das Buch als neue Kopie hinzu, auch wenn ein"
+" Duplikat erkannt wird."
 
 #: templates/settings.html:198
 msgid "Path Settings"
@@ -692,7 +761,10 @@ msgstr "WebDAV-Stammpfad"
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
-msgstr "Dies ist der Basispfad zum Speichern aller Anx-Benutzerbibliotheken. Benutzerordner werden automatisch unter diesem Pfad erstellt (z. B. /webdav/username)."
+msgstr ""
+"Dies ist der Basispfad zum Speichern aller Anx-Benutzerbibliotheken. "
+"Benutzerordner werden automatisch unter diesem Pfad erstellt (z. B. "
+"/webdav/username)."
 
 #: templates/settings.html:205
 msgid "Default Settings"
@@ -706,7 +778,9 @@ msgstr "Standard-Formatpriorität für neue Benutzer"
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
-msgstr "Standard-Formatpriorität für neue Benutzer, durch Kommas getrennt, z. B. azw3,mobi,epub"
+msgstr ""
+"Standard-Formatpriorität für neue Benutzer, durch Kommas getrennt, z. B. "
+"azw3,mobi,epub"
 
 #: templates/settings.html:212
 msgid "SMTP Settings (for Send to Kindle)"
@@ -748,7 +822,9 @@ msgstr "SSL/TLS"
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
-msgstr "SSL/TLS wird normalerweise für Port 465 verwendet, STARTTLS wird normalerweise für Port 587 verwendet."
+msgstr ""
+"SSL/TLS wird normalerweise für Port 465 verwendet, STARTTLS wird "
+"normalerweise für Port 587 verwendet."
 
 #: templates/settings.html:239
 msgid "Security"
@@ -768,7 +844,9 @@ msgstr "Sitzungslebensdauer (Tage)"
 
 #: templates/settings.html:248
 msgid "The number of days a user's session remains valid after logging in."
-msgstr "Die Anzahl der Tage, die die Sitzung eines Benutzers nach der Anmeldung gültig bleibt."
+msgstr ""
+"Die Anzahl der Tage, die die Sitzung eines Benutzers nach der Anmeldung "
+"gültig bleibt."
 
 #: templates/settings.html:252
 msgid "Test Inbox"
@@ -834,7 +912,9 @@ msgstr "Willkommen beim Anx Calibre Manager"
 msgid ""
 "This is your first time running the application. Please create an "
 "administrator account."
-msgstr "Dies ist das erste Mal, dass Sie die Anwendung ausführen. Bitte erstellen Sie ein Administratorkonto."
+msgstr ""
+"Dies ist das erste Mal, dass Sie die Anwendung ausführen. Bitte erstellen"
+" Sie ein Administratorkonto."
 
 #: templates/setup.html:14
 msgid "Admin Username"
@@ -884,3 +964,4 @@ msgstr "Fertig!"
 #: templates/stats.html:70
 msgid "No finished books yet."
 msgstr "Noch keine Bücher fertig gelesen."
+

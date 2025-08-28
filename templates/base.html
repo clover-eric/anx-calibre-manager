@@ -167,24 +167,31 @@
     });
 
     function changeLanguage(lang) {
-        fetch('/api/user_settings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ language: lang }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                console.error('Failed to change language');
-            }
-        })
-        .catch(error => {
-            console.error('Error changing language:', error);
-        });
+        const isUserLoggedIn = {{ g.user and g.user.id | tojson }};
+        if (isUserLoggedIn) {
+            fetch('/api/user_settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ language: lang }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    console.error('Failed to change language');
+                }
+            })
+            .catch(error => {
+                console.error('Error changing language:', error);
+            });
+        } else {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('lang', lang);
+            window.location.href = currentUrl.toString();
+        }
     }
     </script>
     {% block scripts %}{% endblock %}

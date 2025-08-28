@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 22:37+0800\n"
+"POT-Creation-Date: 2025-08-28 23:55+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -313,6 +313,33 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: templates/login.html:3 templates/login.html:34
+msgid "Login"
+msgstr ""
+
+#: templates/login.html:9
+msgid "Login to Anx Calibre Manager"
+msgstr ""
+
+#: templates/login.html:23 templates/settings.html:30
+#: templates/settings.html:140 templates/settings.html:268
+#: templates/settings.html:295
+msgid "Username"
+msgstr ""
+
+#: templates/login.html:27 templates/settings.html:141
+#: templates/settings.html:272
+msgid "Password"
+msgstr ""
+
+#: templates/login.html:31
+msgid "2FA Code"
+msgstr ""
+
+#: templates/login.html:32
+msgid "Please enter a 6-digit code"
+msgstr ""
+
 #: templates/settings.html:16
 msgid "User Settings"
 msgstr ""
@@ -335,11 +362,6 @@ msgstr ""
 
 #: templates/settings.html:28
 msgid "Profile"
-msgstr ""
-
-#: templates/settings.html:30 templates/settings.html:140
-#: templates/settings.html:268 templates/settings.html:295
-msgid "Username"
 msgstr ""
 
 #: templates/settings.html:34
@@ -538,10 +560,6 @@ msgstr ""
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
-msgstr ""
-
-#: templates/settings.html:141 templates/settings.html:272
-msgid "Password"
 msgstr ""
 
 #: templates/settings.html:141

@@ -53,12 +53,13 @@ def setup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        language = request.form.get('language', 'en')
         if not username or not password:
             flash('用户名和密码不能为空。')
             return render_template('setup.html')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         with closing(database.get_db()) as db:
-            db.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')", (username, hashed_password))
+            db.execute("INSERT INTO users (username, password_hash, role, language) VALUES (?, ?, 'admin', ?)", (username, hashed_password, language))
             db.commit()
         flash('管理员账户已创建，请登录。')
         return redirect(url_for('auth.login'))

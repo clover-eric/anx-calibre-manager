@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}登录 - Anx Calibre Manager{% endblock %}
+{% block title %}{{ _('Login') }} - Anx Calibre Manager{% endblock %}
 
 {% block body_class %}login-body{% endblock %}
 
 {% block content %}
 <div class="login-wrapper">
-    <h2>登录 Anx Calibre Manager</h2>
+    <h2>{{ _('Login to Anx Calibre Manager') }}</h2>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -19,19 +19,20 @@
     {% endwith %}
 
     <form id="loginForm" style="margin-top: 2rem;">
+        <input type="hidden" name="language" id="language-input" value="{{ get_locale() }}">
         <div class="form-group">
-            <label for="username">用户名</label>
+            <label for="username">{{ _('Username') }}</label>
             <input type="text" id="username" name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">密码</label>
+            <label for="password">{{ _('Password') }}</label>
             <input type="password" id="password" name="password" required>
         </div>
         <div class="form-group" id="otp-group">
-            <label for="otp_code">两步验证码</label>
-            <input type="number" id="otp_code" name="otp_code" autocomplete="off" pattern="\d{6}" title="请输入6位数字验证码">
+            <label for="otp_code">{{ _('2FA Code') }}</label>
+            <input type="number" id="otp_code" name="otp_code" autocomplete="off" pattern="\d{6}" title="{{ _('Please enter a 6-digit code') }}">
         </div>
-        <button type="submit" class="button-primary" style="width: 100%;">登录</button>
+        <button type="submit" class="button-primary" style="width: 100%;">{{ _('Login') }}</button>
     </form>
     <div id="error-message" style="color: red; margin-top: 1rem;"></div>
 </div>

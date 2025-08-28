@@ -94,14 +94,17 @@ def create_app():
     app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 
     def get_locale():
-        # The locale selector runs before before_request, so g.user is not available.
-        # We must check the session directly.
+        # 1. Check for language in URL parameters
+        lang = request.args.get('lang')
+        if lang and lang in LANGUAGES:
+            return lang
+        # 2. Check for language in user session
         if 'user_id' in session:
             with closing(database.get_db()) as db:
                 user = db.execute("SELECT language FROM users WHERE id = ?", (session['user_id'],)).fetchone()
                 if user and user['language']:
                     return user['language']
-        # Fallback to browser's preferred language
+        # 3. Fallback to browser's preferred language
         return request.accept_languages.best_match(list(LANGUAGES.keys()))
 
     babel = Babel(app, locale_selector=get_locale)
