@@ -108,14 +108,12 @@ msgid "Please select files to upload."
 msgstr "請選取要上傳的檔案。"
 
 #: static/js/page/handlers.js:259
-#, fuzzy
 msgid "Waiting..."
-msgstr "評分"
+msgstr "等待中..."
 
 #: static/js/page/handlers.js:274
-#, fuzzy
 msgid "Uploading..."
-msgstr "上傳"
+msgstr "上傳中..."
 
 #: static/js/page/handlers.js:288 static/js/page/ui.js:73
 msgid "Processing..."
@@ -127,7 +125,7 @@ msgstr "所有圖書均已成功上傳！"
 
 #: static/js/page/handlers.js:333
 msgid "Some files failed to upload. Please check the progress details."
-msgstr ""
+msgstr "部分檔案上傳失敗。請檢查進度詳情。"
 
 #: static/js/page/ui.js:83
 msgid "Success!"
@@ -135,7 +133,7 @@ msgstr "成功！"
 
 #: templates/base.html:6 templates/base.html:74
 msgid "Anx Calibre Manager"
-msgstr "Anx Calibre 管理器"
+msgstr "Anx Calibre Manager"
 
 #: templates/base.html:77 templates/base.html:102 templates/settings.html:3
 #: templates/settings.html:13
@@ -172,7 +170,7 @@ msgstr "請我喝杯咖啡 ☕"
 
 #: templates/base.html:203
 msgid "Anx Calibre Manager by"
-msgstr "Anx Calibre 管理器由"
+msgstr "Anx Calibre Manager by"
 
 #: templates/index.html:19
 msgid "Home"
@@ -548,7 +546,7 @@ msgstr "密碼"
 
 #: templates/settings.html:141
 msgid "Your Anx Calibre Manager login password."
-msgstr "您的 Anx Calibre 管理器登入密碼。"
+msgstr "您的 Anx Calibre Manager登入密碼。"
 
 #: templates/settings.html:142
 msgid "Folder"
@@ -586,9 +584,7 @@ msgid ""
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
 "folder</strong> to the `koreader/plugins/` directory on your KOReader "
 "device."
-msgstr ""
-"解壓縮下載的 `.zip` 檔案，您會得到一個名為 `anx-calibre-manager-koreader-plugin.koplugin` "
-"的資料夾。將這個<strong>整個資料夾</strong>複製到您 KOReader 裝置上的 `koreader/plugins/` 目錄中。"
+msgstr "解壓縮下載的 `.zip` 檔案，您會得到一個名為 `anx-calibre-manager-koreader-plugin.koplugin` 的資料夾。將這個<strong>整個資料夾</strong>複製到您 KOReader 裝置上的 `koreader/plugins/` 目錄中。"
 
 #: templates/settings.html:155
 msgid "Restart KOReader"
@@ -633,7 +629,7 @@ msgstr "自訂同步伺服器位址"
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
-msgstr "返回上一層選單，選取 `登入`，然後輸入您的 Anx Calibre 管理器使用者名稱和密碼。"
+msgstr "返回上一層選單，選取 `登入`，然後輸入您的 Anx Calibre Manager使用者名稱和密碼。"
 
 #: templates/settings.html:166
 msgid ""
@@ -830,7 +826,7 @@ msgstr "初始設定"
 
 #: templates/setup.html:9
 msgid "Welcome to Anx Calibre Manager"
-msgstr "歡迎使用 Anx Calibre 管理器"
+msgstr "歡迎使用 Anx Calibre Manager"
 
 #: templates/setup.html:10
 msgid ""
@@ -886,4 +882,3 @@ msgstr "已讀完！"
 #: templates/stats.html:70
 msgid "No finished books yet."
 msgstr "還沒有已讀完的書籍。"
-
