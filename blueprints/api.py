@@ -678,7 +678,7 @@ def upload_to_calibre_api():
                             and "#library" in book_details["user_metadata"]
                         ):
                             update_payload = {
-                                "changes": {"#library": f"{g.user.username}上传"}
+                                "changes": {"#library": g.user.username}
                             }
                             update_url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{book_id}/{library_id}"
                             update_response = requests.post(
@@ -746,7 +746,7 @@ def update_calibre_book_api(book_id):
             return jsonify({'error': '找不到书籍详情。'}), 404
 
         library_field = book_details.get('user_metadata', {}).get('#library', {})
-        uploader = library_field.get('#value#', '').removesuffix('上传') if library_field and library_field.get('#value#') else ''
+        uploader = library_field.get('#value#', '') if library_field else ''
 
         if uploader != g.user.username:
             return jsonify({'error': '您没有权限编辑这本书。'}), 403
