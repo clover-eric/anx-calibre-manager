@@ -5,10 +5,18 @@
 
 一个现代化的、移动端优先的 Web 应用，用于管理您的电子书库，可与 Calibre 集成，并为您的 Anx-reader 兼容设备提供个人 WebDAV 服务器。
 
-[Read in English](README.md)
+<p align="center">
+  <strong><a href="README.md">English</a></strong> |
+  <strong><a href="README_zh-Hans.md">简体中文</a></strong> |
+  <strong><a href="README_zh-Hant.md">繁體中文</a></strong> |
+  <strong><a href="README_es.md">Español</a></strong> |
+  <strong><a href="README_fr.md">Français</a></strong> |
+  <strong><a href="README_de.md">Deutsch</a></strong>
+</p>
 
 ## ✨ 功能特性
 
+- **多语言支持**: 完整的国际化支持，界面提供英语、简体中文 (简体中文)、繁体中文 (繁體中文)、西班牙语、法语和德语。
 - **移动端优先界面**: 简洁、响应式的用户界面，专为在手机上轻松使用而设计。
 - **PWA 支持**: 可作为渐进式 Web 应用 (PWA) 安装，提供类似原生应用的体验。
 - **Calibre 集成**: 连接到您现有的 Calibre 服务器，以浏览和搜索您的书库。
@@ -23,7 +31,7 @@
     - **普通用户 (User)**: 可以上传书籍、管理自己的 WebDAV 书库、MCP token、发送书籍到 Kindle，以及**编辑自己上传的书籍**。
 - **用户可编辑自己上传的书籍**: 普通用户现在可以编辑自己上传的书籍的元数据。此功能依赖于 Calibre 中的一个名为 `#library` 的自定义列（类型：`文本，逗号分隔`）。当用户上传书籍时，此字段会自动填充为 `<用户名>上传`。用户可以编辑 `#library` 字段包含其用户名和“上传”字样的任何书籍。
     - **Docker 用户建议**: 为启用此功能，请确保您的 Calibre 书库中有一个名为 `#library` 的自定义列（区分大小写），类型为 `文本，逗号分隔`。
-- **轻松部署**: 可作为单个 Docker 容器进行部署。
+- **轻松部署**: 可作为单个 Docker 容器进行部署，内置了多语言环境支持。
 - **阅读统计**: 自动生成个人阅读统计页面，包含年度阅读热力图、在读书籍和已读书籍列表。页面支持公开或私有分享。
 ## 📸 截图
 

@@ -5,10 +5,18 @@
 
 A modern, mobile-first web application to manage your ebook library, integrating with Calibre and providing a personal WebDAV server for your Anx-reader compatible devices.
 
-[阅读中文版说明](README.zh-CN.md)
+<p align="center">
+  <strong><a href="README.md">English</a></strong> |
+  <strong><a href="README_zh-Hans.md">简体中文</a></strong> |
+  <strong><a href="README_zh-Hant.md">繁體中文</a></strong> |
+  <strong><a href="README_es.md">Español</a></strong> |
+  <strong><a href="README_fr.md">Français</a></strong> |
+  <strong><a href="README_de.md">Deutsch</a></strong>
+</p>
 
 ## ✨ Features
 
+- **Multi-language Support**: Full internationalization support. The interface is available in English, Simplified Chinese (简体中文), Traditional Chinese (繁體中文), Spanish, French, and German.
 - **Mobile-First Interface**: A clean, responsive UI designed for easy use on your phone.
 - **PWA Support**: Installable as a Progressive Web App for a native-like experience.
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
@@ -23,7 +31,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
     - **User**: Can upload books, manage their own WebDAV library, MCP tokens, send books to Kindle, and **edit books they have uploaded**.
 - **User-Editable Uploaded Books**: Regular users can now edit metadata for books they have uploaded. This functionality relies on a Calibre custom column named `#library` (type: `Text, with commas treated as separate tags`). When a user uploads a book, this field is automatically populated with `<username>上传`. Users can then edit any book where `#library` contains their username followed by "上传".
     - **Recommendation for Docker Users**: To enable this feature, please ensure you have a custom column in your Calibre library named `#library` (case-sensitive) with the type `Text, with commas treated as separate tags`.
-- **Easy Deployment**: Deployable as a single Docker container.
+- **Easy Deployment**: Deployable as a single Docker container with built-in multi-language locale support.
 - **Reading Stats**: Automatically generates a personal reading statistics page, featuring a yearly reading heatmap, a list of books currently being read, and a list of finished books. The page can be shared publicly or kept private.
 ## 📸 Screenshots
 
