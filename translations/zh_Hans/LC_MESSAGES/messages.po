@@ -1,0 +1,873 @@
+# Chinese (Simplified) translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-08-28 19:49+0800\n"
+"PO-Revision-Date: 2025-08-28 19:49+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_Hans\n"
+"Language-Team: zh_Hans <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: static/js/settings.js:208 utils.py:291
+msgid "New token has been generated."
+msgstr ""
+
+#: static/js/settings.js:216 utils.py:292
+msgid "Are you sure you want to delete this token?"
+msgstr ""
+
+#: static/js/settings.js:137 utils.py:293
+msgid "Are you sure you want to disable 2FA?"
+msgstr ""
+
+#: static/js/settings.js:254 utils.py:294
+msgid "Please enter a test recipient email address."
+msgstr ""
+
+#: static/js/settings.js:332 utils.py:295
+msgid "Are you sure you want to delete this user?"
+msgstr ""
+
+#: utils.py:296
+msgid "No available tokens."
+msgstr ""
+
+#: utils.py:297
+msgid "Created at"
+msgstr ""
+
+#: templates/index.html:134 utils.py:298
+msgid "Delete"
+msgstr ""
+
+#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+#: utils.py:299
+msgid "Edit"
+msgstr ""
+
+#: static/js/settings.js:296 templates/settings.html:266 utils.py:300
+msgid "Add"
+msgstr ""
+
+#: static/js/settings.js:83 utils.py:301
+msgid "WebDAV address copied to clipboard"
+msgstr ""
+
+#: static/js/settings.js:85 utils.py:302
+msgid "Copy failed"
+msgstr ""
+
+#: static/js/settings.js:55 utils.py:303
+#, python-brace-format
+msgid ""
+"Please make sure to add the sender email address ({email}) to your Amazon"
+" Kindle trusted email list."
+msgstr ""
+
+#: utils.py:304
+msgid "2FA has been enabled."
+msgstr ""
+
+#: utils.py:305
+msgid "2FA is not enabled."
+msgstr ""
+
+#: utils.py:306
+msgid "Enable"
+msgstr ""
+
+#: utils.py:307
+msgid "Disable"
+msgstr ""
+
+#: static/js/page/handlers.js:85
+msgid "No changes detected."
+msgstr ""
+
+#: static/js/page/handlers.js:145
+msgid "Are you sure you want to delete this book? This action cannot be undone."
+msgstr ""
+
+#: static/js/page/handlers.js:194 static/js/page/handlers.js:207
+#, python-format
+msgid "Please enter a valid page number between 1 and %(totalPages)s."
+msgstr ""
+
+#: static/js/page/handlers.js:245
+msgid "Please select files to upload."
+msgstr ""
+
+#: static/js/page/handlers.js:276 static/js/page/ui.js:73
+msgid "Processing..."
+msgstr ""
+
+#: static/js/page/handlers.js:316
+msgid "All books uploaded successfully!"
+msgstr ""
+
+#: static/js/page/ui.js:83
+msgid "Success!"
+msgstr ""
+
+#: templates/base.html:6 templates/base.html:74
+msgid "Anx Calibre Manager"
+msgstr ""
+
+#: templates/base.html:77 templates/base.html:102 templates/settings.html:3
+#: templates/settings.html:13
+msgid "Settings"
+msgstr ""
+
+#: templates/base.html:78
+msgid "Logout"
+msgstr ""
+
+#: templates/base.html:94 templates/index.html:3 templates/index.html:59
+msgid "Library"
+msgstr ""
+
+#: templates/base.html:98 templates/index.html:71
+msgid "Anx"
+msgstr ""
+
+#: templates/base.html:201
+msgid "Having issues or suggestions?"
+msgstr ""
+
+#: templates/base.html:201
+msgid "Submit an issue on GitHub"
+msgstr ""
+
+#: templates/base.html:202
+msgid "Find This Helpful?"
+msgstr ""
+
+#: templates/base.html:202
+msgid "Buy me a Coffee ☕"
+msgstr ""
+
+#: templates/base.html:203
+msgid "Anx Calibre Manager by"
+msgstr ""
+
+#: templates/index.html:19
+msgid "Home"
+msgstr ""
+
+#: templates/index.html:21
+msgid "Search Calibre books..."
+msgstr ""
+
+#: templates/index.html:24 templates/index.html:163
+msgid "Upload"
+msgstr ""
+
+#: templates/index.html:28 templates/index.html:84
+#, python-format
+msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
+msgstr ""
+
+#: templates/index.html:33 templates/index.html:89
+msgid "20/page"
+msgstr ""
+
+#: templates/index.html:34 templates/index.html:90
+msgid "50/page"
+msgstr ""
+
+#: templates/index.html:35 templates/index.html:91
+msgid "100/page"
+msgstr ""
+
+#: templates/index.html:37 templates/index.html:93
+msgid "Previous"
+msgstr ""
+
+#: templates/index.html:39 templates/index.html:95
+msgid "Go"
+msgstr ""
+
+#: templates/index.html:40 templates/index.html:96
+msgid "Next"
+msgstr ""
+
+#: templates/index.html:53 templates/index.html:120 templates/stats.html:38
+#: templates/stats.html:62
+msgid "Rating"
+msgstr ""
+
+#: templates/index.html:54
+msgid "Formats"
+msgstr ""
+
+#: templates/index.html:55 templates/index.html:121
+msgid "Publisher"
+msgstr ""
+
+#: templates/index.html:56
+msgid "Publication Date"
+msgstr ""
+
+#: templates/index.html:63
+msgid "Read Date"
+msgstr ""
+
+#: templates/index.html:65 templates/index.html:128
+msgid "Description"
+msgstr ""
+
+#: templates/index.html:69 templates/index.html:132
+msgid "Download"
+msgstr ""
+
+#: templates/index.html:70
+msgid "Kindle"
+msgstr ""
+
+#: templates/index.html:80
+msgid "No books in Calibre library."
+msgstr ""
+
+#: templates/index.html:103
+msgid "Anx Library"
+msgstr ""
+
+#: templates/index.html:106
+msgid ""
+"Enter the WebDAV address in the Anx Reader settings page to synchronize "
+"(username and password are your login credentials):"
+msgstr ""
+
+#: templates/index.html:106 templates/settings.html:138
+msgid "Click to copy"
+msgstr ""
+
+#: templates/index.html:122
+msgid "Reading Progress"
+msgstr ""
+
+#: templates/index.html:123 templates/stats.html:39 templates/stats.html:63
+msgid "Total Reading Time"
+msgstr ""
+
+#: templates/index.html:124
+msgid "Note Count"
+msgstr ""
+
+#: templates/index.html:125
+msgid "Creation Time"
+msgstr ""
+
+#: templates/index.html:126
+msgid "Update Time"
+msgstr ""
+
+#: templates/index.html:127
+msgid "Producer"
+msgstr ""
+
+#: templates/index.html:139
+msgid "No books in Anx library."
+msgstr ""
+
+#: templates/index.html:151
+msgid "Upload Books"
+msgstr ""
+
+#: templates/index.html:157
+msgid "Select files:"
+msgstr ""
+
+#: templates/index.html:162 templates/index.html:179 templates/settings.html:91
+#: templates/settings.html:286
+msgid "Cancel"
+msgstr ""
+
+#: templates/index.html:172
+msgid "Edit Book Information"
+msgstr ""
+
+#: templates/index.html:180 templates/settings.html:285
+msgid "Save"
+msgstr ""
+
+#: templates/settings.html:16
+msgid "User Settings"
+msgstr ""
+
+#: templates/settings.html:17
+msgid "MCP Settings"
+msgstr ""
+
+#: templates/settings.html:18
+msgid "Koreader Sync Settings"
+msgstr ""
+
+#: templates/settings.html:20
+msgid "Global Settings"
+msgstr ""
+
+#: templates/settings.html:21
+msgid "User Management"
+msgstr ""
+
+#: templates/settings.html:28
+msgid "Profile"
+msgstr ""
+
+#: templates/settings.html:30 templates/settings.html:140
+#: templates/settings.html:268 templates/settings.html:295
+msgid "Username"
+msgstr ""
+
+#: templates/settings.html:34
+msgid "Change Password"
+msgstr ""
+
+#: templates/settings.html:35 templates/settings.html:186
+msgid "Leave blank to keep unchanged"
+msgstr ""
+
+#: templates/settings.html:38
+msgid "Appearance"
+msgstr ""
+
+#: templates/settings.html:40
+msgid "Theme"
+msgstr ""
+
+#: templates/settings.html:42
+msgid "Auto (Follow system)"
+msgstr ""
+
+#: templates/settings.html:43
+msgid "Light Mode"
+msgstr ""
+
+#: templates/settings.html:44
+msgid "Dark Mode"
+msgstr ""
+
+#: templates/settings.html:48
+msgid "Push Settings"
+msgstr ""
+
+#: templates/settings.html:50
+msgid "Kindle Email Address"
+msgstr ""
+
+#: templates/settings.html:55
+msgid "Format Priority"
+msgstr ""
+
+#: templates/settings.html:57
+msgid ""
+"When downloading or pushing to Kindle / ANX library, available formats "
+"will be searched in this priority order. Use commas to separate, e.g., "
+"epub, mobi, pdf, azw3"
+msgstr ""
+
+#: templates/settings.html:61
+msgid "Force EPUB Conversion"
+msgstr ""
+
+#: templates/settings.html:62
+msgid ""
+"If enabled, will always try to convert the book to an optimized EPUB "
+"format when downloading or pushing to the ANX library, instead of sending"
+" the original format."
+msgstr ""
+
+#: templates/settings.html:64
+msgid "Statistics Settings"
+msgstr ""
+
+#: templates/settings.html:67
+msgid "Enable Reading Statistics Page"
+msgstr ""
+
+#: templates/settings.html:68
+msgid "Allows you to view your reading statistics after logging in."
+msgstr ""
+
+#: templates/settings.html:72
+msgid "Make Statistics Page Public"
+msgstr ""
+
+#: templates/settings.html:73
+msgid ""
+"If enabled, your statistics page will be publicly accessible without "
+"needing to log in."
+msgstr ""
+
+#: templates/settings.html:76
+msgid "Your Statistics Page URL"
+msgstr ""
+
+#: templates/settings.html:80
+msgid "Two-Factor Authentication (2FA)"
+msgstr ""
+
+#: templates/settings.html:83
+msgid "Please use your authenticator app to scan this QR code:"
+msgstr ""
+
+#: templates/settings.html:85
+msgid "Or manually enter the key:"
+msgstr ""
+
+#: templates/settings.html:87
+msgid "Verification Code"
+msgstr ""
+
+#: templates/settings.html:88
+msgid "Enter the 6-digit code to complete setup"
+msgstr ""
+
+#: templates/settings.html:90
+msgid "Verify and Enable"
+msgstr ""
+
+#: templates/settings.html:95
+msgid "Save User Settings"
+msgstr ""
+
+#: templates/settings.html:102
+msgid "MCP API Tokens"
+msgstr ""
+
+#: templates/settings.html:103
+msgid ""
+"You can use these tokens to interact with your library via the MCP "
+"protocol."
+msgstr ""
+
+#: templates/settings.html:108
+msgid "Generate New Token"
+msgstr ""
+
+#: templates/settings.html:112
+msgid "MCP Endpoint"
+msgstr ""
+
+#: templates/settings.html:114
+msgid "Authentication"
+msgstr ""
+
+#: templates/settings.html:115
+msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
+msgstr ""
+
+#: templates/settings.html:116
+msgid "Available Tools"
+msgstr ""
+
+#: templates/settings.html:118
+msgid ""
+"Search Calibre books. Parameters: `search_expression` (str), `limit` "
+"(int, default 20)"
+msgstr ""
+
+#: templates/settings.html:119
+msgid "Get recent Calibre books. Parameters: `limit` (int, default 20)"
+msgstr ""
+
+#: templates/settings.html:120
+msgid "Get Calibre book details. Parameters: `book_id` (int)"
+msgstr ""
+
+#: templates/settings.html:121
+msgid "Get recent Anx books. Parameters: `limit` (int, default 20)"
+msgstr ""
+
+#: templates/settings.html:122
+msgid "Get Anx book details. Parameters: `book_id` (int)"
+msgstr ""
+
+#: templates/settings.html:123
+msgid "Push Calibre book to Anx. Parameters: `book_id` (int)"
+msgstr ""
+
+#: templates/settings.html:124
+msgid "Send Calibre book to Kindle. Parameters: `book_id` (int)"
+msgstr ""
+
+#: templates/settings.html:131
+msgid "KOReader Sync Settings"
+msgstr ""
+
+#: templates/settings.html:133
+msgid "Step 1: Configure WebDAV Cloud Storage"
+msgstr ""
+
+#: templates/settings.html:135
+msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
+msgstr ""
+
+#: templates/settings.html:136
+msgid "Select `WebDAV`."
+msgstr ""
+
+#: templates/settings.html:137
+msgid "Server address"
+msgstr ""
+
+#: templates/settings.html:137
+msgid ""
+"Fill in the address below, and <strong>ensure the path ends with a "
+"`/`</strong>."
+msgstr ""
+
+#: templates/settings.html:141 templates/settings.html:272
+msgid "Password"
+msgstr ""
+
+#: templates/settings.html:141
+msgid "Your Anx Calibre Manager login password."
+msgstr ""
+
+#: templates/settings.html:142
+msgid "Folder"
+msgstr ""
+
+#: templates/settings.html:143
+msgid ""
+"Click `Connect` and save. You should now be able to see your Anx library "
+"in KOReader's file browser."
+msgstr ""
+
+#: templates/settings.html:146
+msgid "Step 2: Install and Configure the Sync Plugin"
+msgstr ""
+
+#: templates/settings.html:149
+msgid "Download Plugin"
+msgstr ""
+
+#: templates/settings.html:149
+msgid "Click the button below to download the plugin zip file."
+msgstr ""
+
+#: templates/settings.html:151
+msgid "Download KOReader Plugin (.zip)"
+msgstr ""
+
+#: templates/settings.html:154
+msgid "Install Plugin"
+msgstr ""
+
+#: templates/settings.html:154
+msgid ""
+"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
+"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
+"folder</strong> to the `koreader/plugins/` directory on your KOReader "
+"device."
+msgstr ""
+
+#: templates/settings.html:155
+msgid "Restart KOReader"
+msgstr ""
+
+#: templates/settings.html:155
+msgid ""
+"Completely close and reopen the KOReader application to load the new "
+"plugin."
+msgstr ""
+
+#: templates/settings.html:156
+msgid "Configure Sync Server"
+msgstr ""
+
+#: templates/settings.html:158
+msgid "Important"
+msgstr ""
+
+#: templates/settings.html:158
+msgid ""
+"First, please open and start reading a book via the WebDAV set up in the "
+"previous step. The plugin menu will <strong>only appear in the reading "
+"interface</strong>."
+msgstr ""
+
+#: templates/settings.html:159
+msgid ""
+"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
+"`More tools` -> `ANX Calibre Manager`."
+msgstr ""
+
+#: templates/settings.html:160
+msgid "Select `Custom sync server`."
+msgstr ""
+
+#: templates/settings.html:161
+msgid "Custom sync server address"
+msgstr ""
+
+#: templates/settings.html:162
+msgid ""
+"Return to the previous menu, select `Login`, and enter your Anx Calibre "
+"Manager username and password."
+msgstr ""
+
+#: templates/settings.html:166
+msgid ""
+"Once configured, the plugin will automatically or manually sync your "
+"reading progress and time. You can adjust settings like sync frequency in"
+" the plugin menu."
+msgstr ""
+
+#: templates/settings.html:167
+msgid "Note: Only supports epub book synchronization"
+msgstr ""
+
+#: templates/settings.html:175
+msgid "Calibre Connection"
+msgstr ""
+
+#: templates/settings.html:177
+msgid "Calibre Server URL"
+msgstr ""
+
+#: templates/settings.html:181
+msgid "Calibre Username"
+msgstr ""
+
+#: templates/settings.html:185
+msgid "Calibre Password"
+msgstr ""
+
+#: templates/settings.html:189
+msgid "Default Calibre Library ID"
+msgstr ""
+
+#: templates/settings.html:191
+msgid ""
+"The default Calibre library ID for browsing, searching, and uploading "
+"books. Usually 'Calibre_Library'."
+msgstr ""
+
+#: templates/settings.html:195
+msgid "Allow uploading duplicate books"
+msgstr ""
+
+#: templates/settings.html:196
+msgid ""
+"If enabled, Calibre will add the book as a new copy even if it detects a "
+"duplicate."
+msgstr ""
+
+#: templates/settings.html:198
+msgid "Path Settings"
+msgstr ""
+
+#: templates/settings.html:200
+msgid "WebDAV Root Path"
+msgstr ""
+
+#: templates/settings.html:202
+msgid ""
+"This is the base path for storing all user Anx libraries. User folders "
+"will be automatically created under this path (e.g., /webdav/username)."
+msgstr ""
+
+#: templates/settings.html:205
+msgid "Default Settings"
+msgstr ""
+
+#: templates/settings.html:207
+msgid "Default Format Priority for New Users"
+msgstr ""
+
+#: templates/settings.html:209
+msgid ""
+"Default format priority for new users, separated by commas, e.g., "
+"azw3,mobi,epub"
+msgstr ""
+
+#: templates/settings.html:212
+msgid "SMTP Settings (for Send to Kindle)"
+msgstr ""
+
+#: templates/settings.html:214
+msgid "SMTP Server"
+msgstr ""
+
+#: templates/settings.html:218
+msgid "SMTP Port"
+msgstr ""
+
+#: templates/settings.html:222
+msgid "SMTP Username (usually your email)"
+msgstr ""
+
+#: templates/settings.html:226
+msgid "SMTP Password"
+msgstr ""
+
+#: templates/settings.html:230
+msgid "Encryption Method"
+msgstr ""
+
+#: templates/settings.html:232
+msgid "None"
+msgstr ""
+
+#: templates/settings.html:233
+msgid "STARTTLS"
+msgstr ""
+
+#: templates/settings.html:234
+msgid "SSL/TLS"
+msgstr ""
+
+#: templates/settings.html:236
+msgid ""
+"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
+"587."
+msgstr ""
+
+#: templates/settings.html:239
+msgid "Security"
+msgstr ""
+
+#: templates/settings.html:241
+msgid "Login Failure Lock Threshold"
+msgstr ""
+
+#: templates/settings.html:243
+msgid "Set to 0 to disable this feature."
+msgstr ""
+
+#: templates/settings.html:246
+msgid "Session Lifetime (days)"
+msgstr ""
+
+#: templates/settings.html:248
+msgid "The number of days a user's session remains valid after logging in."
+msgstr ""
+
+#: templates/settings.html:252
+msgid "Test Inbox"
+msgstr ""
+
+#: templates/settings.html:253
+msgid "Enter an email address to receive a test email"
+msgstr ""
+
+#: templates/settings.html:256
+msgid "Send Test Email"
+msgstr ""
+
+#: templates/settings.html:257
+msgid "Save Global Settings"
+msgstr ""
+
+#: templates/settings.html:266
+msgid "New User"
+msgstr ""
+
+#: templates/settings.html:274
+msgid "Leave blank to not change the existing user's password."
+msgstr ""
+
+#: templates/settings.html:277 templates/settings.html:296
+msgid "Role"
+msgstr ""
+
+#: templates/settings.html:279
+msgid "Normal User"
+msgstr ""
+
+#: templates/settings.html:280
+msgid "Calibre Library Maintainer"
+msgstr ""
+
+#: templates/settings.html:281
+msgid "Administrator"
+msgstr ""
+
+#: templates/settings.html:290
+msgid "Existing Users"
+msgstr ""
+
+#: templates/settings.html:294
+msgid "ID"
+msgstr ""
+
+#: templates/settings.html:297
+msgid "Actions"
+msgstr ""
+
+#: templates/setup.html:3
+msgid "Initial Setup"
+msgstr ""
+
+#: templates/setup.html:9
+msgid "Welcome to Anx Calibre Manager"
+msgstr ""
+
+#: templates/setup.html:10
+msgid ""
+"This is your first time running the application. Please create an "
+"administrator account."
+msgstr ""
+
+#: templates/setup.html:14
+msgid "Admin Username"
+msgstr ""
+
+#: templates/setup.html:18
+msgid "Admin Password"
+msgstr ""
+
+#: templates/setup.html:21
+msgid "Create Admin Account"
+msgstr ""
+
+#: templates/stats.html:3 templates/stats.html:17
+#, python-format
+msgid "%(username)s's Reading Statistics"
+msgstr ""
+
+#: templates/stats.html:19
+msgid "Reading Heatmap (Last 365 Days)"
+msgstr ""
+
+#: templates/stats.html:28
+msgid "Reading Books"
+msgstr ""
+
+#: templates/stats.html:36 templates/stats.html:60
+msgid "Author"
+msgstr ""
+
+#: templates/stats.html:38 templates/stats.html:62
+msgid "Not rated"
+msgstr ""
+
+#: templates/stats.html:48
+msgid "No books currently being read."
+msgstr ""
+
+#: templates/stats.html:52
+msgid "Finished Books"
+msgstr ""
+
+#: templates/stats.html:66
+msgid "Finished!"
+msgstr ""
+
+#: templates/stats.html:70
+msgid "No finished books yet."
+msgstr ""
+

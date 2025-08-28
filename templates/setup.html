@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}初始设置 - Anx Calibre Manager{% endblock %}
+{% block title %}{{ _('Initial Setup') }} - Anx Calibre Manager{% endblock %}
 
 {% block body_class %}setup-body{% endblock %}
 
 {% block content %}
 <div class="setup-wrapper">
-    <h2>欢迎使用 Anx Calibre Manager</h2>
-    <p>这是您首次运行，请创建一个管理员账户。</p>
+    <h2>{{ _('Welcome to Anx Calibre Manager') }}</h2>
+    <p>{{ _('This is your first time running the application. Please create an administrator account.') }}</p>
 
     <form method="post" style="margin-top: 2rem;">
         <div class="form-group">
-            <label for="username">管理员用户名</label>
+            <label for="username">{{ _('Admin Username') }}</label>
             <input type="text" id="username" name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">管理员密码</label>
+            <label for="password">{{ _('Admin Password') }}</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit" class="button-primary" style="width: 100%; margin-top: 1rem;">创建管理员账户</button>
+        <button type="submit" class="button-primary" style="width: 100%; margin-top: 1rem;">{{ _('Create Admin Account') }}</button>
     </form>
 </div>
 {% endblock %}

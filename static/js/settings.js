@@ -52,7 +52,7 @@ async function populateForms() {
 
     if (userData.smtp_from_address) {
         const tipElement = document.getElementById('smtp_from_address_tip');
-        tipElement.textContent = `请确保将发件邮箱 (${userData.smtp_from_address}) 添加到您的亚马逊 Kindle 信任邮箱列表中。`;
+        tipElement.textContent = _('Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.').replace('{email}', userData.smtp_from_address);
     }
     update2FAStatus(userData.has_2fa);
     
@@ -80,9 +80,9 @@ async function populateForms() {
         koreaderWebDavUrlElement.textContent = webdavUrl;
         koreaderWebDavUrlElement.addEventListener('click', () => {
             navigator.clipboard.writeText(webdavUrl).then(() => {
-                alert('WebDAV 地址已复制到剪贴板');
+                alert(_('WebDAV address copied to clipboard'));
             }, () => {
-                alert('复制失败');
+                alert(_('Copy failed'));
             });
         });
     }
@@ -94,9 +94,9 @@ async function populateForms() {
 function update2FAStatus(is_enabled) {
     const statusContainer = document.getElementById('2fa_status_container');
     if (is_enabled) {
-        statusContainer.innerHTML = '<p>两步验证已启用。</p><button type="button" class="button-danger" onclick="disable2FA()">禁用</button>';
+        statusContainer.innerHTML = `<p>${_('2FA has been enabled.')}</p><button type="button" class="button-danger" onclick="disable2FA()">${_('Disable')}</button>`;
     } else {
-        statusContainer.innerHTML = '<p>两步验证未启用。</p><button type="button" class="button" onclick="setup2FA()">启用</button>';
+        statusContainer.innerHTML = `<p>${_('2FA is not enabled.')}</p><button type="button" class="button" onclick="setup2FA()">${_('Enable')}</button>`;
     }
 }
 
@@ -134,7 +134,7 @@ window.verify2FA = async function() {
 }
 
 window.disable2FA = async function() {
-    if (!confirm('确定要禁用两步验证吗？')) return;
+    if (!confirm(_('Are you sure you want to disable 2FA?'))) return;
     const response = await fetch('/api/2fa/disable', { method: 'POST' });
     const result = await response.json();
     alert(result.message || result.error);
@@ -184,7 +184,7 @@ async function fetchMcpTokens() {
     const listEl = document.getElementById('mcp-token-list');
     listEl.innerHTML = '';
     if (tokens.length === 0) {
-        listEl.innerHTML = '<p>没有可用的令牌。</p>';
+        listEl.innerHTML = `<p>${_('No available tokens.')}</p>`;
     } else {
         tokens.forEach(token => {
             const item = document.createElement('div');
@@ -192,9 +192,9 @@ async function fetchMcpTokens() {
             item.innerHTML = `
                 <div>
                     <span class="token-value">${token.token}</span>
-                    <small style="display: block; color: #666;">创建于: ${new Date(token.created_at).toLocaleString()}</small>
+                    <small style="display: block; color: #666;">${_('Created at')}: ${new Date(token.created_at).toLocaleString()}</small>
                 </div>
-                <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">删除</button>
+                <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">${_('Delete')}</button>
             `;
             listEl.appendChild(item);
         });
@@ -204,14 +204,16 @@ async function fetchMcpTokens() {
 window.generateMcpToken = async function() {
     const response = await fetch('/api/mcp_tokens', { method: 'POST' });
     const result = await response.json();
-    alert(result.message || result.error);
     if (response.ok) {
+        alert(_('New token has been generated.'));
         await fetchMcpTokens();
+    } else {
+        alert(result.error || 'Failed to generate token.');
     }
 }
 
 window.deleteMcpToken = async function(tokenId) {
-    if (!confirm('确定要删除此令牌吗？')) return;
+    if (!confirm(_('Are you sure you want to delete this token?'))) return;
     const response = await fetch(`/api/mcp_tokens/${tokenId}`, { method: 'DELETE' });
     const result = await response.json();
     alert(result.message || result.error);
@@ -249,7 +251,7 @@ window.testSmtpSettings = async function() {
     };
 
     if (!data.to_address) {
-        alert('请输入一个测试收件箱地址。');
+        alert(_('Please enter a test recipient email address.'));
         return;
     }
 
@@ -274,8 +276,8 @@ async function fetchUsers() {
             <td>${user.username}</td>
             <td>${user.role}</td>
             <td>
-                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', '${user.role}')">编辑</button>
-                <button class="button-danger button-small" onclick="deleteUser(${user.id})">删除</button>
+                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', '${user.role}')">${_('Edit')}</button>
+                <button class="button-danger button-small" onclick="deleteUser(${user.id})">${_('Delete')}</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -283,7 +285,7 @@ async function fetchUsers() {
 }
 
 window.editUser = function(id, username, role) {
-    document.getElementById('formTitle').textContent = '编辑';
+    document.getElementById('formTitle').textContent = _('Edit');
     document.getElementById('user_id').value = id;
     document.getElementById('username').value = username;
     document.getElementById('role').value = role;
@@ -291,7 +293,7 @@ window.editUser = function(id, username, role) {
 }
 
 window.resetUserForm = function() {
-    document.getElementById('formTitle').textContent = '添加';
+    document.getElementById('formTitle').textContent = _('Add');
     document.getElementById('userForm').reset();
     document.getElementById('user_id').value = '';
 }
@@ -327,7 +329,7 @@ window.handleUserFormSubmit = async function(event) {
 }
 
 window.deleteUser = async function(userId) {
-    if (!confirm('确定要删除此用户吗？')) return;
+    if (!confirm(_('Are you sure you want to delete this user?'))) return;
 
     const response = await fetch(`/api/users`, {
         method: 'DELETE',

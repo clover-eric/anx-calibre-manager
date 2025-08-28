@@ -1,7 +1,8 @@
 import logging
 import os
 import bcrypt
-from flask import Flask, g, redirect, url_for, request
+from flask import Flask, g, redirect, url_for, request, session
+from flask_babel import Babel
 from contextlib import closing
 import database
 import config_manager
@@ -44,7 +45,6 @@ class AnxDomainController(BaseDomainController):
         return False # Not implemented
 
     def basic_auth_user(self, realm, user_name, password, environ):
-        """Authenticate user and authorize access to their own directory."""
         db = database.get_db()
         user = db.execute("SELECT password_hash FROM users WHERE username = ?", (user_name,)).fetchone()
         db.close()
@@ -61,9 +61,6 @@ class AnxDomainController(BaseDomainController):
             logging.warning(f"WebDAV auth failed: incorrect password for user '{user_name}'.")
             return False
 
-        # Authorization: Check if the user is accessing their own directory.
-        # The path_info from the environ is relative to the mount point,
-        # so it will be like '/<username>/<path>'
         path_info = environ.get('PATH_INFO', '')
         path_parts = path_info.strip('/').split('/')
         
@@ -72,7 +69,6 @@ class AnxDomainController(BaseDomainController):
             return False
         
         logging.info(f"WebDAV auth successful for user '{user_name}'.")
-        # Create user directory if it doesn't exist
         webdav_root = self.wsgidav_app.config["provider_mapping"]["/"].root_folder_path
         user_dir = os.path.join(webdav_root, user_name)
         if not os.path.exists(user_dir):
@@ -84,11 +80,39 @@ class AnxDomainController(BaseDomainController):
 
 def create_app():
     app = Flask(__name__)
+
+    # --- Babel Configuration ---
+    LANGUAGES = {
+        'en': 'English',
+        'zh_Hans': '简体中文',
+        'zh_Hant': '繁體中文',
+        'es': 'Español',
+        'fr': 'Français',
+        'de': 'Deutsch'
+    }
+    app.config['LANGUAGES'] = LANGUAGES
+    app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+
+    def get_locale():
+        # The locale selector runs before before_request, so g.user is not available.
+        # We must check the session directly.
+        if 'user_id' in session:
+            with closing(database.get_db()) as db:
+                user = db.execute("SELECT language FROM users WHERE id = ?", (session['user_id'],)).fetchone()
+                if user and user['language']:
+                    return user['language']
+        # Fallback to browser's preferred language
+        return request.accept_languages.best_match(list(LANGUAGES.keys()))
+
+    babel = Babel(app, locale_selector=get_locale)
+    # --- End Babel Configuration ---
+
+    from utils import get_js_translations
+    app.jinja_env.globals.update(get_js_translations=get_js_translations)
     
     app.config.from_mapping(config_manager.config)
     app.secret_key = app.config['SECRET_KEY']
     
-    # Set session lifetime from config
     from datetime import timedelta
     session_lifetime_days = app.config.get('SESSION_LIFETIME_DAYS', 7)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=int(session_lifetime_days))
@@ -108,10 +132,18 @@ def create_app():
     app.register_blueprint(stats_bp)
     app.register_blueprint(koreader_bp)
 
+    @app.context_processor
+    def inject_conf_var():
+        import time
+        return dict(
+            available_languages=app.config['LANGUAGES'],
+            get_locale=get_locale,
+            cache_buster=int(time.time())  # Cache buster
+        )
+
     @app.before_request
     def before_request_handler():
         g.user = get_current_user()
-        # Pass the app context to g for the MCP endpoint to use
         g.app = app
         with closing(database.get_db()) as db:
             user_count = db.execute('SELECT COUNT(id) FROM users').fetchone()[0]
@@ -119,14 +151,12 @@ def create_app():
                  return redirect(url_for('auth.setup'))
 
     def get_current_user():
-        from flask import session
         user_row = None
         if 'user_id' in session:
             with closing(database.get_db()) as db:
                 user_row = db.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
         return User(user_row)
 
-    # --- WebDAV Setup (with WsgiDAV) ---
     webdav_root = config_manager.config.get("WEBDAV_ROOT", "/webdav")
     if not os.path.exists(webdav_root):
         os.makedirs(webdav_root)
@@ -149,12 +179,10 @@ def create_app():
         "mount_path": "/webdav",
     }
     dav_app = WsgiDAVApp(config)
-    # Combine the main app and the WebDAV app
     dispatcher = DispatcherMiddleware(app.wsgi_app, {
         '/webdav': dav_app
     })
 
-    # Apply ProxyFix to the combined application to handle headers from the reverse proxy
     app.wsgi_app = ProxyFix(dispatcher, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
     return app

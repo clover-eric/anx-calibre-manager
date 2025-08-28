@@ -47,10 +47,19 @@ RUN apt-get update && \
     tini \
     poppler-utils \
     fonts-liberation \
-    zip && \
+    zip \
+    locales && \
     rm -rf /var/lib/apt/lists/*
 
+# Configure locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen && \
+    sed -i -e 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales
+
 # Set environment variables for the application.
+ENV LANG zh_CN.UTF-8
+ENV LC_ALL zh_CN.UTF-8
 ENV PORT=5000
 ENV GUNICORN_WORKERS=2
 # The following are placeholders and should be set securely at runtime
@@ -77,6 +86,20 @@ WORKDIR /home/appuser
 # Copy the virtual environment and application source code from builder stage
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --chown=appuser:appuser . .
+
+# Extract, initialize all language files, populate English, auto-translate others, and compile.
+RUN . venv/bin/activate && \
+    mkdir -p translations/en/LC_MESSAGES translations/zh_Hans/LC_MESSAGES translations/zh_Hant/LC_MESSAGES translations/es/LC_MESSAGES translations/fr/LC_MESSAGES translations/de/LC_MESSAGES && \
+    pybabel extract -F babel.cfg -o messages.pot . && \
+    pybabel init -i messages.pot -d translations -l en && \
+    pybabel init -i messages.pot -d translations -l zh_Hans && \
+    pybabel init -i messages.pot -d translations -l zh_Hant && \
+    pybabel init -i messages.pot -d translations -l es && \
+    pybabel init -i messages.pot -d translations -l fr && \
+    pybabel init -i messages.pot -d translations -l de && \
+    python populate_en_po.py && \
+    #python auto_translate.py zh_Hans zh_Hant es fr de && \
+    pybabel compile -d translations
 
 # Package the KOReader plugin into a zip file, preserving the top-level directory
 RUN zip -r /home/appuser/static/anx-calibre-manager-koreader-plugin.zip anx-calibre-manager-koreader-plugin.koplugin

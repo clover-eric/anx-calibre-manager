@@ -281,6 +281,32 @@ def convert_koreader_progress(direction, epub_path, progress):
     except Exception as e:
         return None, f"An unexpected error occurred: {e}"
 
+def get_js_translations():
+    """
+    Returns a dictionary of strings to be translated in JavaScript.
+    We import gettext here to make sure it's request-aware.
+    """
+    from flask_babel import gettext as _
+    return {
+        'New token has been generated.': _('New token has been generated.'),
+        'Are you sure you want to delete this token?': _('Are you sure you want to delete this token?'),
+        'Are you sure you want to disable 2FA?': _('Are you sure you want to disable 2FA?'),
+        'Please enter a test recipient email address.': _('Please enter a test recipient email address.'),
+        'Are you sure you want to delete this user?': _('Are you sure you want to delete this user?'),
+        'No available tokens.': _('No available tokens.'),
+        'Created at': _('Created at'),
+        'Delete': _('Delete'),
+        'Edit': _('Edit'),
+        'Add': _('Add'),
+        'WebDAV address copied to clipboard': _('WebDAV address copied to clipboard'),
+        'Copy failed': _('Copy failed'),
+        'Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.': _('Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.'),
+        '2FA has been enabled.': _('2FA has been enabled.'),
+        '2FA is not enabled.': _('2FA is not enabled.'),
+        'Enable': _('Enable'),
+        'Disable': _('Disable'),
+    }
+
 import hashlib
 
 def calculate_koreader_partial_md5(filepath):

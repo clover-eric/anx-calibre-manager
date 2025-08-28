@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}设置 - Anx Calibre Manager{% endblock %}
+{% block title %}{{ _('Settings') }} - Anx Calibre Manager{% endblock %}
 
 {% block head_extra %}
 {% endblock %}
@@ -10,161 +10,161 @@
     <div class="loading-overlay" id="settings-loading-overlay" style="display: flex;">
         <div class="spinner"></div>
     </div>
-    <h2>设置</h2>
+    <h2>{{ _('Settings') }}</h2>
 
     <div class="tabs">
-        <div class="tab-link active" onclick="openTab(event, 'userSettings')">用户设置</div>
-        <div class="tab-link" onclick="openTab(event, 'mcpSettings')">MCP 设置</div>
-        <div class="tab-link" onclick="openTab(event, 'koreaderSettings')">Koreader 同步设置</div>
+        <div class="tab-link active" onclick="openTab(event, 'userSettings')">{{ _('User Settings') }}</div>
+        <div class="tab-link" onclick="openTab(event, 'mcpSettings')">{{ _('MCP Settings') }}</div>
+        <div class="tab-link" onclick="openTab(event, 'koreaderSettings')">{{ _('Koreader Sync Settings') }}</div>
         {% if g.user and g.user.role == 'admin' %}
-        <div class="tab-link" onclick="openTab(event, 'globalSettings')">全局设置</div>
-        <div class="tab-link" onclick="openTab(event, 'userManagement')">用户管理</div>
+        <div class="tab-link" onclick="openTab(event, 'globalSettings')">{{ _('Global Settings') }}</div>
+        <div class="tab-link" onclick="openTab(event, 'userManagement')">{{ _('User Management') }}</div>
         {% endif %}
     </div>
 
     <!-- 用户设置 -->
     <div id="userSettings" class="tab-content page-transition active">
         <form id="userSettingsForm" onsubmit="saveUserSettings(event)">
-            <h3>个人资料</h3>
+            <h3>{{ _('Profile') }}</h3>
             <div class="form-group">
-                <label>用户名</label>
+                <label>{{ _('Username') }}</label>
                 <input type="text" id="username_display" value="{{ g.user.username }}" disabled>
             </div>
             <div class="form-group">
-                <label for="new_password">修改密码</label>
-                <input type="password" id="new_password" name="new_password" placeholder="保持不变则留空">
+                <label for="new_password">{{ _('Change Password') }}</label>
+                <input type="password" id="new_password" name="new_password" placeholder="{{ _('Leave blank to keep unchanged') }}">
             </div>
 
-            <h3>外观</h3>
+            <h3>{{ _('Appearance') }}</h3>
             <div class="form-group">
-                <label for="theme">主题</label>
+                <label for="theme">{{ _('Theme') }}</label>
                 <select id="theme" name="theme">
-                    <option value="auto">自动 (跟随系统)</option>
-                    <option value="light">亮色模式</option>
-                    <option value="dark">暗色模式</option>
+                    <option value="auto">{{ _('Auto (Follow system)') }}</option>
+                    <option value="light">{{ _('Light Mode') }}</option>
+                    <option value="dark">{{ _('Dark Mode') }}</option>
                 </select>
             </div>
 
-            <h3>推送设置</h3>
+            <h3>{{ _('Push Settings') }}</h3>
              <div class="form-group">
-                <label for="kindle_email">Kindle 邮箱地址</label>
+                <label for="kindle_email">{{ _('Kindle Email Address') }}</label>
                 <input type="email" id="kindle_email" name="kindle_email">
                 <small id="smtp_from_address_tip"></small>
             </div>
             <div class="form-group">
-                <label for="send_format_priority">格式优先级</label>
+                <label for="send_format_priority">{{ _('Format Priority') }}</label>
                 <input type="text" id="send_format_priority" name="send_format_priority">
-                <small>下载或推送到 Kindle / ANX书库时，将按此优先顺序查找可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3</small>
+                <small>{{ _('When downloading or pushing to Kindle / ANX library, available formats will be searched in this priority order. Use commas to separate, e.g., epub, mobi, pdf, azw3') }}</small>
             </div>
             <div class="form-group">
                 <input type="checkbox" id="force_epub_conversion" name="force_epub_conversion" value="true" style="width: auto; margin-right: 5px;">
-                <label for="force_epub_conversion" style="display: inline;">强制转换为 EPUB</label></br>
-                <small>如果启用，在下载或推送到ANX书库时，将始终尝试将书籍转换为优化过的 EPUB 格式，而不是发送原始格式。</small>
+                <label for="force_epub_conversion" style="display: inline;">{{ _('Force EPUB Conversion') }}</label></br>
+                <small>{{ _('If enabled, will always try to convert the book to an optimized EPUB format when downloading or pushing to the ANX library, instead of sending the original format.') }}</small>
             </div>
-            <h3>统计设置</h3>
+            <h3>{{ _('Statistics Settings') }}</h3>
             <div class="form-group">
                 <input type="checkbox" id="stats_enabled" name="stats_enabled" value="true" style="width: auto; margin-right: 5px;">
-                <label for="stats_enabled" style="display: inline;">启用阅读统计页面</label></br>
-                <small>允许您登陆后查看您的阅读统计信息。</small>
+                <label for="stats_enabled" style="display: inline;">{{ _('Enable Reading Statistics Page') }}</label></br>
+                <small>{{ _('Allows you to view your reading statistics after logging in.') }}</small>
             </div>
             <div class="form-group">
                 <input type="checkbox" id="stats_public" name="stats_public" value="true" style="width: auto; margin-right: 5px;">
-                <label for="stats_public" style="display: inline;">公开统计页面</label></br>
-                <small>如果启用，您的统计页面将无需登录公开匿名可访问。</small>
+                <label for="stats_public" style="display: inline;">{{ _('Make Statistics Page Public') }}</label></br>
+                <small>{{ _('If enabled, your statistics page will be publicly accessible without needing to log in.') }}</small>
             </div>
             <div id="stats_url_container" style="display: none;" class="mcp-docs">
-                <h4>您的统计页面地址</h4>
+                <h4>{{ _('Your Statistics Page URL') }}</h4>
                 <p><a id="stats_url" href="#" target="_blank"></a></p>
             </div>
             
-            <h3>两步验证 (2FA)</h3>
+            <h3>{{ _('Two-Factor Authentication (2FA)') }}</h3>
             <div id="2fa_status_container"></div>
             <div id="2fa_setup_container" style="display:none;">
-                <p>请使用您的验证器应用扫描此二维码：</p>
+                <p>{{ _('Please use your authenticator app to scan this QR code:') }}</p>
                 <div id="qr_code_container"></div>
-                <p>或者手动输入密钥: <code id="otp_secret_key"></code></p>
+                <p>{{ _('Or manually enter the key:') }} <code id="otp_secret_key"></code></p>
                 <div class="form-group">
-                    <label for="otp_code">验证码</label>
-                    <input type="text" id="otp_code" name="otp_code" placeholder="输入6位数字码以完成设置" autocomplete="off">
+                    <label for="otp_code">{{ _('Verification Code') }}</label>
+                    <input type="text" id="otp_code" name="otp_code" placeholder="{{ _('Enter the 6-digit code to complete setup') }}" autocomplete="off">
                 </div>
-                <button type="button" class="button-primary" onclick="verify2FA()">验证并启用</button>
-                <button type="button" class="button" onclick="cancel2FASetup()">取消</button>
+                <button type="button" class="button-primary" onclick="verify2FA()">{{ _('Verify and Enable') }}</button>
+                <button type="button" class="button" onclick="cancel2FASetup()">{{ _('Cancel') }}</button>
             </div>
 
             <div style="text-align: right; margin-top: 2rem;">
-                <button type="submit" class="button-primary">保存用户设置</button>
+                <button type="submit" class="button-primary">{{ _('Save User Settings') }}</button>
             </div>
         </form>
     </div>
 
     <!-- MCP 设置 -->
     <div id="mcpSettings" class="tab-content page-transition">
-        <h3>MCP API 令牌</h3>
-        <p>您可以使用这些令牌通过 MCP 协议与您的书库进行交互。</p>
+        <h3>{{ _('MCP API Tokens') }}</h3>
+        <p>{{ _('You can use these tokens to interact with your library via the MCP protocol.') }}</p>
         <div id="mcp-token-list">
             <!-- Tokens will be loaded here by JavaScript -->
         </div>
         <div style="text-align: right; margin-top: 1rem;">
-            <button class="button-primary" onclick="generateMcpToken()">生成新令牌</button>
+            <button class="button-primary" onclick="generateMcpToken()">{{ _('Generate New Token') }}</button>
         </div>
 
         <div class="mcp-docs">
-            <h4>MCP 端点</h4>
+            <h4>{{ _('MCP Endpoint') }}</h4>
             <p><code>{{ request.host_url.rstrip('/') }}/mcp?token=YOUR_TOKEN</code></p>
-            <h4>认证</h4>
-            <p>通过在 URL 中附加 <code>?token=YOUR_TOKEN</code> 参数进行认证。</p>
-            <h4>可用工具</h4>
+            <h4>{{ _('Authentication') }}</h4>
+            <p>{{ _('Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL.') }}</p>
+            <h4>{{ _('Available Tools') }}</h4>
             <ul>
-                <li><strong>search_calibre_books</strong>: 搜索 Calibre 书籍。参数: <code>search_expression</code> (str), <code>limit</code> (int, default 20)</li>
-                <li><strong>get_recent_calibre_books</strong>: 获取最近的 Calibre 书籍。参数: <code>limit</code> (int, default 20)</li>
-                <li><strong>get_calibre_book_details</strong>: 获取 Calibre 书籍详情。参数: <code>book_id</code> (int)</li>
-                <li><strong>get_recent_anx_books</strong>: 获取最近的 Anx 书籍。参数: <code>limit</code> (int, default 20)</li>
-                <li><strong>get_anx_book_details</strong>: 获取 Anx 书籍详情。参数: <code>book_id</code> (int)</li>
-                <li><strong>push_calibre_book_to_anx</strong>: 推送 Calibre 书籍到 Anx。参数: <code>book_id</code> (int)</li>
-                <li><strong>send_calibre_book_to_kindle</strong>: 发送 Calibre 书籍到 Kindle。参数: <code>book_id</code> (int)</li>
+                <li><strong>search_calibre_books</strong>: {{ _('Search Calibre books. Parameters: `search_expression` (str), `limit` (int, default 20)') }}</li>
+                <li><strong>get_recent_calibre_books</strong>: {{ _('Get recent Calibre books. Parameters: `limit` (int, default 20)') }}</li>
+                <li><strong>get_calibre_book_details</strong>: {{ _('Get Calibre book details. Parameters: `book_id` (int)') }}</li>
+                <li><strong>get_recent_anx_books</strong>: {{ _('Get recent Anx books. Parameters: `limit` (int, default 20)') }}</li>
+                <li><strong>get_anx_book_details</strong>: {{ _('Get Anx book details. Parameters: `book_id` (int)') }}</li>
+                <li><strong>push_calibre_book_to_anx</strong>: {{ _('Push Calibre book to Anx. Parameters: `book_id` (int)') }}</li>
+                <li><strong>send_calibre_book_to_kindle</strong>: {{ _('Send Calibre book to Kindle. Parameters: `book_id` (int)') }}</li>
             </ul>
         </div>
     </div>
 
     <!-- Koreader 同步设置 -->
     <div id="koreaderSettings" class="tab-content page-transition">
-        <h3>KOReader 同步设置</h3>
+        <h3>{{ _('KOReader Sync Settings') }}</h3>
         <div class="mcp-docs">
-            <h4>第一步：配置 WebDAV 云存储</h4>
+            <h4>{{ _('Step 1: Configure WebDAV Cloud Storage') }}</h4>
             <ol>
-                <li>在 KOReader 中，进入 <code>云存储</code> -> <code>添加新的云存储</code>。</li>
-                <li>选择 <code>WebDAV</code>。</li>
-                <li><strong>服务器地址</strong>: 填写下面的地址，并<strong>确保路径以 <code>/</code> 结尾</strong>。
-                    <p><code id="koreader-webdav-url" class="webdav-url" title="点击复制"></code></p>
+                <li>{{ _('In KOReader, go to `Cloud storage` -> `Add new cloud storage`.') }}</li>
+                <li>{{ _('Select `WebDAV`.') }}</li>
+                <li><strong>{{ _('Server address') }}</strong>: {{ _('Fill in the address below, and <strong>ensure the path ends with a `/`</strong>.') }}
+                    <p><code id="koreader-webdav-url" class="webdav-url" title="{{ _('Click to copy') }}"></code></p>
                 </li>
-                <li><strong>用户名</strong>: <code>{{ g.user.username }}</code></li>
-                <li><strong>密码</strong>: 您的 Anx Calibre Manager 登录密码。</li>
-                <li><strong>文件夹</strong>: <code>/anx/data/file</code></li>
-                <li>点击 <code>连接</code> 并保存。现在您应该可以在 KOReader 的文件浏览器中看到您的 Anx 书库了。</li>
+                <li><strong>{{ _('Username') }}</strong>: <code>{{ g.user.username }}</code></li>
+                <li><strong>{{ _('Password') }}</strong>: {{ _('Your Anx Calibre Manager login password.') }}</li>
+                <li><strong>{{ _('Folder') }}</strong>: <code>/anx/data/file</code></li>
+                <li>{{ _('Click `Connect` and save. You should now be able to see your Anx library in KOReader\'s file browser.') }}</li>
             </ol>
 
-            <h4>第二步：安装并配置同步插件</h4>
+            <h4>{{ _('Step 2: Install and Configure the Sync Plugin') }}</h4>
             <ol>
                 <li>
-                    <strong>下载插件</strong>: 点击下面的按钮下载插件压缩包。
+                    <strong>{{ _('Download Plugin') }}</strong>: {{ _('Click the button below to download the plugin zip file.') }}
                     <div style="margin-top: 1rem; margin-bottom: 1rem;">
-                        <button onclick="location.href='{{ url_for('api.download_koreader_plugin') }}'" class="button-primary">下载 KOReader 插件 (.zip)</button>
+                        <button onclick="location.href='{{ url_for('api.download_koreader_plugin') }}'" class="button-primary">{{ _('Download KOReader Plugin (.zip)') }}</button>
                     </div>
                 </li>
-                <li><strong>安装插件</strong>: 解压下载的 <code>.zip</code> 文件，您会得到一个名为 <code>anx-calibre-manager-koreader-plugin.koplugin</code> 的文件夹。将这<strong>整个文件夹</strong>复制到您 KOReader 设备的 <code>koreader/plugins/</code> 目录下。</li>
-                <li><strong>重启 KOReader</strong>: 完全关闭并重新打开 KOReader 应用以加载新插件。</li>
-                <li><strong>配置同步服务器</strong>:
+                <li><strong>{{ _('Install Plugin') }}</strong>: {{ _('Unzip the downloaded `.zip` file, and you will get a folder named `anx-calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire folder</strong> to the `koreader/plugins/` directory on your KOReader device.') }}</li>
+                <li><strong>{{ _('Restart KOReader') }}</strong>: {{ _('Completely close and reopen the KOReader application to load the new plugin.') }}</li>
+                <li><strong>{{ _('Configure Sync Server') }}</strong>:
                     <ul>
-                        <li><strong>重要</strong>: 首先，请通过上一步设置的 WebDAV 打开并开始阅读一本书籍。<strong>只有在阅读界面中</strong>，插件菜单才会出现。</li>
-                        <li>在阅读界面，进入 <code>工具(扳手图标)</code> -> <code>下一页</code> -> <code>更多工具</code> -> <code>ANX Calibre Manager</code>。</li>
-                        <li>选择 <code>自定义同步服务器</code>。</li>
-                        <li><strong>自定义同步服务器地址</strong>: <code>{{ request.host_url.rstrip('/') }}/koreader</code></li>
-                        <li>返回上一级菜单，选择 <code>登录</code>，并输入您的 Anx Calibre Manager 用户名和密码。</li>
+                        <li><strong>{{ _('Important') }}</strong>: {{ _('First, please open and start reading a book via the WebDAV set up in the previous step. The plugin menu will <strong>only appear in the reading interface</strong>.') }}</li>
+                        <li>{{ _('In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> `More tools` -> `ANX Calibre Manager`.') }}</li>
+                        <li>{{ _('Select `Custom sync server`.') }}</li>
+                        <li><strong>{{ _('Custom sync server address') }}</strong>: <code>{{ request.host_url.rstrip('/') }}/koreader</code></li>
+                        <li>{{ _('Return to the previous menu, select `Login`, and enter your Anx Calibre Manager username and password.') }}</li>
                     </ul>
                 </li>
             </ol>
-            <p>配置完成后，插件将自动或手动同步您的阅读进度和阅读时间。您可以在插件菜单中调整同步频率等设置。</p><br>
-            <p><strong>（注意：只支持epub书籍同步）</strong></p>
+            <p>{{ _('Once configured, the plugin will automatically or manually sync your reading progress and time. You can adjust settings like sync frequency in the plugin menu.') }}</p><br>
+            <p><strong>({{ _('Note: Only supports epub book synchronization') }})</strong></p>
         </div>
     </div>
 
@@ -172,89 +172,89 @@
     {% if g.user and g.user.role == 'admin' %}
     <div id="globalSettings" class="tab-content page-transition">
         <form id="globalSettingsForm" onsubmit="saveGlobalSettings(event)">
-            <h3>Calibre 连接</h3>
+            <h3>{{ _('Calibre Connection') }}</h3>
             <div class="form-group">
-                <label for="CALIBRE_URL">Calibre 服务器 URL</label>
+                <label for="CALIBRE_URL">{{ _('Calibre Server URL') }}</label>
                 <input type="url" id="CALIBRE_URL" name="CALIBRE_URL">
             </div>
             <div class="form-group">
-                <label for="CALIBRE_USERNAME">Calibre 用户名</label>
+                <label for="CALIBRE_USERNAME">{{ _('Calibre Username') }}</label>
                 <input type="text" id="CALIBRE_USERNAME" name="CALIBRE_USERNAME">
             </div>
             <div class="form-group">
-                <label for="CALIBRE_PASSWORD">Calibre 密码</label>
-                <input type="password" id="CALIBRE_PASSWORD" name="CALIBRE_PASSWORD" placeholder="保持不变则留空">
+                <label for="CALIBRE_PASSWORD">{{ _('Calibre Password') }}</label>
+                <input type="password" id="CALIBRE_PASSWORD" name="CALIBRE_PASSWORD" placeholder="{{ _('Leave blank to keep unchanged') }}">
             </div>
             <div class="setting-item">
-                <label for="CALIBRE_DEFAULT_LIBRARY_ID">默认 Calibre 库 ID</label>
+                <label for="CALIBRE_DEFAULT_LIBRARY_ID">{{ _('Default Calibre Library ID') }}</label>
                 <input type="text" id="CALIBRE_DEFAULT_LIBRARY_ID" name="CALIBRE_DEFAULT_LIBRARY_ID" placeholder="Calibre_Library">
-                <small>用于浏览、搜索和上传书籍的默认 Calibre 库 ID。通常是 'Calibre_Library'。</small>
+                <small>{{ _('The default Calibre library ID for browsing, searching, and uploading books. Usually \'Calibre_Library\'.') }}</small>
             </div>
             <div class="form-group">
                 <input type="checkbox" id="CALIBRE_ADD_DUPLICATES" name="CALIBRE_ADD_DUPLICATES" value="true" style="width: auto; margin-right: 5px;">
-                <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">允许上传重复书籍</label></br>
-                <small>如果启用，即使 Calibre 检测到重复的书籍，也会将其添加为新副本。</small>
-            </div>            
-            <h3>路径设置</h3>
+                <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">{{ _('Allow uploading duplicate books') }}</label></br>
+                <small>{{ _('If enabled, Calibre will add the book as a new copy even if it detects a duplicate.') }}</small>
+            </div>
+            <h3>{{ _('Path Settings') }}</h3>
             <div class="form-group">
-                <label for="WEBDAV_ROOT">WebDAV 根路径</label>
+                <label for="WEBDAV_ROOT">{{ _('WebDAV Root Path') }}</label>
                 <input type="text" id="WEBDAV_ROOT" name="WEBDAV_ROOT">
-                <small>这是存放所有用户 Anx 库的基础路径。用户文件夹将自动创建在此路径下 (例如: /webdav/username)。</small>
+                <small>{{ _('This is the base path for storing all user Anx libraries. User folders will be automatically created under this path (e.g., /webdav/username).') }}</small>
             </div>
 
-            <h3>默认设置</h3>
+            <h3>{{ _('Default Settings') }}</h3>
             <div class="form-group">
-                <label for="DEFAULT_FORMAT_PRIORITY">新用户默认格式优先级</label>
+                <label for="DEFAULT_FORMAT_PRIORITY">{{ _('Default Format Priority for New Users') }}</label>
                 <input type="text" id="DEFAULT_FORMAT_PRIORITY" name="DEFAULT_FORMAT_PRIORITY">
-                <small>新用户的默认格式优先级，以逗号分隔，例如：azw3,mobi,epub</small>
+                <small>{{ _('Default format priority for new users, separated by commas, e.g., azw3,mobi,epub') }}</small>
             </div>
 
-            <h3>SMTP 设置 (用于发送到 Kindle)</h3>
+            <h3>{{ _('SMTP Settings (for Send to Kindle)') }}</h3>
             <div class="form-group">
-                <label for="SMTP_SERVER">SMTP 服务器</label>
+                <label for="SMTP_SERVER">{{ _('SMTP Server') }}</label>
                 <input type="text" id="SMTP_SERVER" name="SMTP_SERVER">
             </div>
             <div class="form-group">
-                <label for="SMTP_PORT">SMTP 端口</label>
+                <label for="SMTP_PORT">{{ _('SMTP Port') }}</label>
                 <input type="number" id="SMTP_PORT" name="SMTP_PORT">
             </div>
             <div class="form-group">
-                <label for="SMTP_USERNAME">SMTP 用户名 (通常是您的邮箱)</label>
+                <label for="SMTP_USERNAME">{{ _('SMTP Username (usually your email)') }}</label>
                 <input type="text" id="SMTP_USERNAME" name="SMTP_USERNAME">
             </div>
             <div class="form-group">
-                <label for="SMTP_PASSWORD">SMTP 密码</label>
+                <label for="SMTP_PASSWORD">{{ _('SMTP Password') }}</label>
                 <input type="password" id="SMTP_PASSWORD" name="SMTP_PASSWORD" autocomplete="new-password">
             </div>
             <div class="form-group">
-                <label for="SMTP_ENCRYPTION">加密方式</label>
+                <label for="SMTP_ENCRYPTION">{{ _('Encryption Method') }}</label>
                 <select id="SMTP_ENCRYPTION" name="SMTP_ENCRYPTION">
-                    <option value="none">无加密</option>
-                    <option value="starttls">STARTTLS</option>
-                    <option value="ssl">SSL/TLS</option>
+                    <option value="none">{{ _('None') }}</option>
+                    <option value="starttls">{{ _('STARTTLS') }}</option>
+                    <option value="ssl">{{ _('SSL/TLS') }}</option>
                 </select>
-                <small>SSL/TLS 通常用于端口 465，STARTTLS 通常用于端口 587。</small>
+                <small>{{ _('SSL/TLS is usually used for port 465, STARTTLS is usually used for port 587.') }}</small>
             </div>
 
-            <h3>安全</h3>
+            <h3>{{ _('Security') }}</h3>
             <div class="form-group">
-                <label for="LOGIN_MAX_ATTEMPTS">登录失败锁定阈值</label>
+                <label for="LOGIN_MAX_ATTEMPTS">{{ _('Login Failure Lock Threshold') }}</label>
                 <input type="number" id="LOGIN_MAX_ATTEMPTS" name="LOGIN_MAX_ATTEMPTS" min="0">
-                <small>设置为 0 表示禁用此功能。</small>
+                <small>{{ _('Set to 0 to disable this feature.') }}</small>
             </div>
             <div class="form-group">
-                <label for="SESSION_LIFETIME_DAYS">会话有效期 (天)</label>
+                <label for="SESSION_LIFETIME_DAYS">{{ _('Session Lifetime (days)') }}</label>
                 <input type="number" id="SESSION_LIFETIME_DAYS" name="SESSION_LIFETIME_DAYS" min="1">
-                <small>用户登录后会话保持有效的天数。</small>
+                <small>{{ _('The number of days a user\'s session remains valid after logging in.') }}</small>
             </div>
 
             <div class="form-group">
-                <label for="test_email_address">测试收件箱</label>
-                <input type="email" id="test_email_address" name="test_email_address" placeholder="输入一个邮箱地址以接收测试邮件">
+                <label for="test_email_address">{{ _('Test Inbox') }}</label>
+                <input type="email" id="test_email_address" name="test_email_address" placeholder="{{ _('Enter an email address to receive a test email') }}">
             </div>
             <div style="text-align: right; margin-top: 2rem;">
-                <button type="button" class="button" onclick="testSmtpSettings()">发送测试邮件</button>
-                <button type="submit" class="button-primary">保存全局设置</button>
+                <button type="button" class="button" onclick="testSmtpSettings()">{{ _('Send Test Email') }}</button>
+                <button type="submit" class="button-primary">{{ _('Save Global Settings') }}</button>
             </div>
         </form>
     </div>
@@ -263,38 +263,38 @@
     <div id="userManagement" class="tab-content page-transition">
         <form id="userForm" onsubmit="handleUserFormSubmit(event)" class="form-container" style="margin-bottom: 2rem;">
             <input type="hidden" id="user_id" name="user_id">
-            <h3><span id="formTitle">添加</span>新用户</h3>
+            <h3><span id="formTitle">{{ _('Add') }}</span> {{ _('New User') }}</h3>
             <div class="form-group">
-                <label for="username">用户名</label>
+                <label for="username">{{ _('Username') }}</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="password">密码</label>
+                <label for="password">{{ _('Password') }}</label>
                 <input type="password" id="password" name="password">
-                <small>留空则不修改现有用户密码。</small>
+                <small>{{ _('Leave blank to not change the existing user\'s password.') }}</small>
             </div>
             <div class="form-group">
-                <label for="role">角色</label>
+                <label for="role">{{ _('Role') }}</label>
                 <select id="role" name="role">
-                    <option value="user">普通用户</option>
-                    <option value="maintainer">Calibre书库维护者</option>
-                    <option value="admin">管理员</option>
+                    <option value="user">{{ _('Normal User') }}</option>
+                    <option value="maintainer">{{ _('Calibre Library Maintainer') }}</option>
+                    <option value="admin">{{ _('Administrator') }}</option>
                 </select>
             </div>
             <div style="text-align: right;">
-                <button type="submit" class="button-primary">保存</button>
-                <button type="button" class="button" onclick="resetUserForm()">取消</button>
+                <button type="submit" class="button-primary">{{ _('Save') }}</button>
+                <button type="button" class="button" onclick="resetUserForm()">{{ _('Cancel') }}</button>
             </div>
         </form>
 
-        <h3>现有用户</h3>
+        <h3>{{ _('Existing Users') }}</h3>
         <table id="userTable">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>用户名</th>
-                    <th>角色</th>
-                    <th>操作</th>
+                    <th>{{ _('ID') }}</th>
+                    <th>{{ _('Username') }}</th>
+                    <th>{{ _('Role') }}</th>
+                    <th>{{ _('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>

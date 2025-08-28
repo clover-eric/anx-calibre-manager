@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ user.username }}的阅读统计{% endblock %}
+{% block title %}{{ _('%(username)s\'s Reading Statistics', username=user.username) }}{% endblock %}
 
 {% block head_extra %}
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -14,9 +14,9 @@
 
 {% block content %}
   <div class="stats-container">
-    <h1 class="my-4">{{ user.username }}的阅读统计</h1>
+    <h1 class="my-4">{{ _('%(username)s\'s Reading Statistics', username=user.username) }}</h1>
 
-    <h2 class="my-4">阅读热力图 (最近365天)</h2>
+    <h2 class="my-4">{{ _('Reading Heatmap (Last 365 Days)') }}</h2>
     <div id="cal-heatmap-container">
       <div id="cal-heatmap"></div>
     </div>
@@ -25,7 +25,7 @@
 
     <div class="book-lists">
       <div class="book-list-column">
-        <h2>在读书籍</h2>
+        <h2>{{ _('Reading Books') }}</h2>
         {% for book in reading_books %}
           <div class="book-row">
             <div class="cover">
@@ -33,10 +33,10 @@
             </div>
             <div class="info">
               <h3>{{ book.title }}</h3>
-              <p class="author">作者: {{ book.author }}</p>
+              <p class="author">{{ _('Author') }}: {{ book.author }}</p>
               <p class="extra-details">
-                评分: {{ book.rating if book.rating > 0 else '未评分' }} <br>
-                总阅读时间: {{ book.formatted_reading_time }}
+                {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
+                {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
               <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
               <div class="progress mt-2">
@@ -45,11 +45,11 @@
             </div>
           </div>
         {% else %}
-          <p>当前没有在读的书籍。</p>
+          <p>{{ _('No books currently being read.') }}</p>
         {% endfor %}
       </div>
       <div class="book-list-column">
-        <h2>已读书籍</h2>
+        <h2>{{ _('Finished Books') }}</h2>
         {% for book in finished_books %}
           <div class="book-row">
             <div class="cover">
@@ -57,17 +57,17 @@
             </div>
             <div class="info">
               <h3>{{ book.title }}</h3>
-              <p class="author">作者: {{ book.author }}</p>
+              <p class="author">{{ _('Author') }}: {{ book.author }}</p>
               <p class="extra-details">
-                评分: {{ book.rating if book.rating > 0 else '未评分' }} <br>
-                总阅读时间: {{ book.formatted_reading_time }}
+                {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
+                {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
               <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
-              <p><strong>已读完!</strong></p>
+              <p><strong>{{ _('Finished!') }}</strong></p>
             </div>
           </div>
         {% else %}
-          <p>还没有读完的书籍。</p>
+          <p>{{ _('No finished books yet.') }}</p>
         {% endfor %}
       </div>
     </div>

@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{ g.user.language if g.user and g.user.language else 'zh_Hans' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Anx Calibre Manager{% endblock %}</title>
+    <title>{% block title %}{{ _('Anx Calibre Manager') }}{% endblock %}</title>
 
     <!-- PWA & Mobile Meta -->
     <meta name="theme-color" content="#4A90E2"/>
     <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+
+    <!-- Translations for JS -->
+    <script id="js-translations" type="application/json">{{ get_js_translations() | tojson | safe }}</script>
+    <script>
+        window.translations = JSON.parse(document.getElementById('js-translations').textContent);
+        function _(text) {
+            return window.translations[text] || text;
+        }
+    </script>
 
     <!-- Theme Manager Script -->
     <script>
@@ -53,7 +62,7 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ cache_buster }}">
     {% block head_extra %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -62,11 +71,11 @@
     </div>
     {% if not no_nav %}
     <nav class="top-nav">
-        <a href="{{ url_for('main.index') }}" class="logo">Anx Calibre Manager</a>
+        <a href="{{ url_for('main.index') }}" class="logo">{{ _('Anx Calibre Manager') }}</a>
         {% if g.user and g.user.id %}
         <div class="nav-links">
-            <a href="{{ url_for('main.settings_page') }}" class="button">设置</a>
-            <a href="{{ url_for('auth.logout') }}" class="button button-danger">登出</a>
+            <a href="{{ url_for('main.settings_page') }}" class="button">{{ _('Settings') }}</a>
+            <a href="{{ url_for('auth.logout') }}" class="button button-danger">{{ _('Logout') }}</a>
         </div>
         {% endif %}
     </nav>
@@ -82,15 +91,15 @@
     <div class="bottom-nav">
         <a href="{{ url_for('main.index') }}?view=calibre" class="nav-button" id="nav-home">
             <i class="fas fa-book icon"></i>
-            <span>书库</span>
+            <span>{{ _('Library') }}</span>
         </a>
         <a href="{{ url_for('main.index') }}?view=anx" class="nav-button" id="nav-anx-mobile-view">
              <i class="fas fa-feather-alt icon"></i>
-            <span>Anx</span>
+            <span>{{ _('Anx') }}</span>
         </a>
         <a href="{{ url_for('main.settings_page') }}" class="nav-button" id="nav-settings">
             <i class="fas fa-cog icon"></i>
-            <span>设置</span>
+            <span>{{ _('Settings') }}</span>
         </a>
     </div>
     {% endif %}
@@ -156,12 +165,42 @@
             button.addEventListener('click', handleNavClick);
         });
     });
+
+    function changeLanguage(lang) {
+        fetch('/api/user_settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ language: lang }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                console.error('Failed to change language');
+            }
+        })
+        .catch(error => {
+            console.error('Error changing language:', error);
+        });
+    }
     </script>
     {% block scripts %}{% endblock %}
     <footer class="site-footer">
-        <p>Having issues or suggestions? <a href="https://github.com/ptbsare/anx-calibre-manager/issues" target="_blank" rel="noopener noreferrer">Submit an issue on GitHub</a>.</p>
-        <p>Find This Helpful? <a href="https://ptbsare.org/about/" target="_blank" rel="noopener noreferrer">Buy me a Coffee ☕</a></p>
-        <p>Anx Calibre Manager by <a href="https://github.com/ptbsare" target="_blank" rel="noopener noreferrer">ptbsare</a></p>
+        <div class="language-selector">
+            <i class="fas fa-globe"></i>
+            <select id="language-select" onchange="changeLanguage(this.value)">
+                {% set current_lang = get_locale() %}
+                {% for lang, name in available_languages.items() %}
+                    <option value="{{ lang }}" {% if lang == current_lang %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <p>{{ _('Having issues or suggestions?') }} <a href="https://github.com/ptbsare/anx-calibre-manager/issues" target="_blank" rel="noopener noreferrer">{{ _('Submit an issue on GitHub') }}</a>.</p>
+        <p>{{ _('Find This Helpful?') }} <a href="https://ptbsare.org/about/" target="_blank" rel="noopener noreferrer">{{ _('Buy me a Coffee ☕') }}</a></p>
+        <p>{{ _('Anx Calibre Manager by') }} <a href="https://github.com/ptbsare" target="_blank" rel="noopener noreferrer">ptbsare</a></p>
     </footer>
 </body>
 </html>

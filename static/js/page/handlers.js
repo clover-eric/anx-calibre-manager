@@ -82,7 +82,7 @@ function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksDat
     
     const changeKeys = Object.keys(payload);
     if (changeKeys.length === 0 || (changeKeys.length === 1 && changeKeys[0] === 'id')) {
-         alert('没有检测到任何更改。');
+         alert(_('No changes detected.'));
          return;
     }
 
@@ -142,7 +142,7 @@ export function setupEventHandlers(
                 break;
             }
             case 'delete-anx':
-                if (confirm('确定要删除这本书吗？此操作不可恢复。')) {
+                if (confirm(_('Are you sure you want to delete this book? This action cannot be undone.'))) {
                     fetch_with_token(`/api/delete_anx_book/${id}`, { method: 'DELETE' })
                         .then(res => res.json()).then(data => {
                             alert(data.message || data.error);
@@ -191,7 +191,7 @@ export function setupEventHandlers(
                     url.searchParams.set('page', page);
                     showLoaderAndNavigate(url.href, calibreLoader);
                 } else {
-                    alert(`请输入一个介于 1 和 ${totalPages} 之间的有效页码。`);
+                    alert(_('Please enter a valid page number between 1 and %(totalPages)s.').replace('%(totalPages)s', totalPages));
                 }
                 break;
             }
@@ -204,7 +204,7 @@ export function setupEventHandlers(
                     url.searchParams.set('page', page);
                     showLoaderAndNavigate(url.href, calibreLoader);
                 } else {
-                    alert(`请输入一个介于 1 和 ${totalPages} 之间的有效页码。`);
+                    alert(_('Please enter a valid page number between 1 and %(totalPages)s.').replace('%(totalPages)s', totalPages));
                 }
                 break;
             }
@@ -242,7 +242,7 @@ export function setupEventHandlers(
         progressContainer.innerHTML = ''; // Clear previous results
 
         if (files.length === 0) {
-            alert('请选择要上传的文件。');
+            alert(_('Please select files to upload.'));
             return;
         }
 
@@ -273,7 +273,7 @@ export function setupEventHandlers(
                         const percentComplete = (event.loaded / event.total) * 100;
                         progressBar.value = percentComplete;
                         if (percentComplete >= 100) {
-                            progressLabel.textContent = '处理中...';
+                            progressLabel.textContent = _('Processing...');
                         } else {
                             progressLabel.textContent = Math.round(percentComplete) + '%';
                         }
@@ -294,14 +294,14 @@ export function setupEventHandlers(
                             resolve(false);
                         }
                     } else {
-                        progressLabel.textContent = `❌ 上传失败: ${xhr.statusText}`;
+                        progressLabel.textContent = `❌ ${_('Upload failed')}: ${xhr.statusText}`;
                         progressWrapper.classList.add('error');
                         reject(new Error(xhr.statusText));
                     }
                 };
 
                 xhr.onerror = function() {
-                    progressLabel.textContent = '❌ 网络错误。';
+                    progressLabel.textContent = `❌ ${_('Network Error')}.`;
                     progressWrapper.classList.add('error');
                     reject(new Error("Network Error"));
                 };
@@ -313,7 +313,7 @@ export function setupEventHandlers(
         Promise.all(uploadPromises).then(results => {
             if (results.every(r => r === true)) {
                 setTimeout(() => {
-                    alert('所有书籍上传成功！');
+                    alert(_('All books uploaded successfully!'));
                     location.reload();
                 }, 1000);
             }

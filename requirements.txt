@@ -8,3 +8,6 @@ requests==2.32.4
 Werkzeug==3.0.6
 ebooklib==0.19
 lxml==6.0.0
+Flask-Babel
+polib
+googletrans==4.0.2
