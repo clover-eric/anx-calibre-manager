@@ -26,7 +26,7 @@ jobs:
 
       - name: Generate Source Code Zip
         run: |
-          zip -r anx-calibre-manager-source.zip anx-calibre-manager -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
+          zip -r anx-calibre-manager-source.zip . -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
