@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 19:49+0800\n"
+"POT-Creation-Date: 2025-08-28 22:37+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -69,7 +69,9 @@ msgstr "複製失敗"
 
 #: static/js/settings.js:55 utils.py:303
 #, python-brace-format
-msgid "Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list."
+msgid ""
+"Please make sure to add the sender email address ({email}) to your Amazon"
+" Kindle trusted email list."
 msgstr "請確保將寄件人電子郵件地址 ({email}) 新增至您的 Amazon Kindle 受信任電子郵件清單。"
 
 #: utils.py:304
@@ -105,13 +107,27 @@ msgstr "請輸入介於 1 和 %(totalPages)s 之間的有效頁碼。"
 msgid "Please select files to upload."
 msgstr "請選取要上傳的檔案。"
 
-#: static/js/page/handlers.js:276 static/js/page/ui.js:73
+#: static/js/page/handlers.js:259
+#, fuzzy
+msgid "Waiting..."
+msgstr "評分"
+
+#: static/js/page/handlers.js:274
+#, fuzzy
+msgid "Uploading..."
+msgstr "上傳"
+
+#: static/js/page/handlers.js:288 static/js/page/ui.js:73
 msgid "Processing..."
 msgstr "處理中..."
 
-#: static/js/page/handlers.js:316
+#: static/js/page/handlers.js:331
 msgid "All books uploaded successfully!"
 msgstr "所有圖書均已成功上傳！"
+
+#: static/js/page/handlers.js:333
+msgid "Some files failed to upload. Please check the progress details."
+msgstr ""
 
 #: static/js/page/ui.js:83
 msgid "Success!"
@@ -241,7 +257,9 @@ msgid "Anx Library"
 msgstr "Anx 書庫"
 
 #: templates/index.html:106
-msgid "Enter the WebDAV address in the Anx Reader settings page to synchronize (username and password are your login credentials):"
+msgid ""
+"Enter the WebDAV address in the Anx Reader settings page to synchronize "
+"(username and password are your login credentials):"
 msgstr "請在 Anx 閱讀器設定頁面輸入 WebDAV 位址以進行同步（使用者名稱和密碼是您的登入憑證）："
 
 #: templates/index.html:106 templates/settings.html:138
@@ -367,7 +385,10 @@ msgid "Format Priority"
 msgstr "格式優先級"
 
 #: templates/settings.html:57
-msgid "When downloading or pushing to Kindle / ANX library, available formats will be searched in this priority order. Use commas to separate, e.g., epub, mobi, pdf, azw3"
+msgid ""
+"When downloading or pushing to Kindle / ANX library, available formats "
+"will be searched in this priority order. Use commas to separate, e.g., "
+"epub, mobi, pdf, azw3"
 msgstr "當下載或推送到 Kindle / ANX 書庫時，將按此優先級順序搜尋可用格式。請使用逗號分隔，例如：epub, mobi, pdf, azw3"
 
 #: templates/settings.html:61
@@ -375,7 +396,10 @@ msgid "Force EPUB Conversion"
 msgstr "強制轉換為 EPUB"
 
 #: templates/settings.html:62
-msgid "If enabled, will always try to convert the book to an optimized EPUB format when downloading or pushing to the ANX library, instead of sending the original format."
+msgid ""
+"If enabled, will always try to convert the book to an optimized EPUB "
+"format when downloading or pushing to the ANX library, instead of sending"
+" the original format."
 msgstr "如果啟用，在下載或推送到 ANX 書庫時，將始終嘗試將圖書轉換為最佳化的 EPUB 格式，而不是傳送原始格式。"
 
 #: templates/settings.html:64
@@ -395,7 +419,9 @@ msgid "Make Statistics Page Public"
 msgstr "將統計頁面設為公開"
 
 #: templates/settings.html:73
-msgid "If enabled, your statistics page will be publicly accessible without needing to log in."
+msgid ""
+"If enabled, your statistics page will be publicly accessible without "
+"needing to log in."
 msgstr "如果啟用，您的統計頁面將無需登入即可公開存取。"
 
 #: templates/settings.html:76
@@ -435,7 +461,9 @@ msgid "MCP API Tokens"
 msgstr "MCP API 權杖"
 
 #: templates/settings.html:103
-msgid "You can use these tokens to interact with your library via the MCP protocol."
+msgid ""
+"You can use these tokens to interact with your library via the MCP "
+"protocol."
 msgstr "您可以使用這些權杖透過 MCP 協定與您的書庫進行互動。"
 
 #: templates/settings.html:108
@@ -459,7 +487,9 @@ msgid "Available Tools"
 msgstr "可用工具"
 
 #: templates/settings.html:118
-msgid "Search Calibre books. Parameters: `search_expression` (str), `limit` (int, default 20)"
+msgid ""
+"Search Calibre books. Parameters: `search_expression` (str), `limit` "
+"(int, default 20)"
 msgstr "搜尋 Calibre 圖書。參數：`search_expression` (字串)，`limit` (整數，預設 20)"
 
 #: templates/settings.html:119
@@ -507,7 +537,9 @@ msgid "Server address"
 msgstr "伺服器位址"
 
 #: templates/settings.html:137
-msgid "Fill in the address below, and <strong>ensure the path ends with a `/`</strong>."
+msgid ""
+"Fill in the address below, and <strong>ensure the path ends with a "
+"`/`</strong>."
 msgstr "填寫以下位址，並<strong>確保路徑以 `/` 結尾</strong>。"
 
 #: templates/settings.html:141 templates/settings.html:272
@@ -523,7 +555,9 @@ msgid "Folder"
 msgstr "資料夾"
 
 #: templates/settings.html:143
-msgid "Click `Connect` and save. You should now be able to see your Anx library in KOReader's file browser."
+msgid ""
+"Click `Connect` and save. You should now be able to see your Anx library "
+"in KOReader's file browser."
 msgstr "點擊 `連線` 並儲存。您現在應該可以在 KOReader 的檔案瀏覽器中看到您的 Anx 書庫。"
 
 #: templates/settings.html:146
@@ -547,15 +581,23 @@ msgid "Install Plugin"
 msgstr "安裝外掛程式"
 
 #: templates/settings.html:154
-msgid "Unzip the downloaded `.zip` file, and you will get a folder named `anx-calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire folder</strong> to the `koreader/plugins/` directory on your KOReader device."
-msgstr "解壓縮下載的 `.zip` 檔案，您會得到一個名為 `anx-calibre-manager-koreader-plugin.koplugin` 的資料夾。將這個<strong>整個資料夾</strong>複製到您 KOReader 裝置上的 `koreader/plugins/` 目錄中。"
+msgid ""
+"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
+"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
+"folder</strong> to the `koreader/plugins/` directory on your KOReader "
+"device."
+msgstr ""
+"解壓縮下載的 `.zip` 檔案，您會得到一個名為 `anx-calibre-manager-koreader-plugin.koplugin` "
+"的資料夾。將這個<strong>整個資料夾</strong>複製到您 KOReader 裝置上的 `koreader/plugins/` 目錄中。"
 
 #: templates/settings.html:155
 msgid "Restart KOReader"
 msgstr "重新啟動 KOReader"
 
 #: templates/settings.html:155
-msgid "Completely close and reopen the KOReader application to load the new plugin."
+msgid ""
+"Completely close and reopen the KOReader application to load the new "
+"plugin."
 msgstr "完全關閉並重新開啟 KOReader 應用程式以載入新的外掛程式。"
 
 #: templates/settings.html:156
@@ -567,11 +609,16 @@ msgid "Important"
 msgstr "重要提示"
 
 #: templates/settings.html:158
-msgid "First, please open and start reading a book via the WebDAV set up in the previous step. The plugin menu will <strong>only appear in the reading interface</strong>."
+msgid ""
+"First, please open and start reading a book via the WebDAV set up in the "
+"previous step. The plugin menu will <strong>only appear in the reading "
+"interface</strong>."
 msgstr "首先，請透過上一步設定的 WebDAV 開啟並開始閱讀一本書。外掛程式選單將<strong>僅在閱讀介面中出現</strong>。"
 
 #: templates/settings.html:159
-msgid "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> `More tools` -> `ANX Calibre Manager`."
+msgid ""
+"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
+"`More tools` -> `ANX Calibre Manager`."
 msgstr "在閱讀介面中，前往 `工具（扳手圖示）` -> `下一頁` -> `更多工具` -> `ANX Calibre Manager`。"
 
 #: templates/settings.html:160
@@ -583,11 +630,16 @@ msgid "Custom sync server address"
 msgstr "自訂同步伺服器位址"
 
 #: templates/settings.html:162
-msgid "Return to the previous menu, select `Login`, and enter your Anx Calibre Manager username and password."
+msgid ""
+"Return to the previous menu, select `Login`, and enter your Anx Calibre "
+"Manager username and password."
 msgstr "返回上一層選單，選取 `登入`，然後輸入您的 Anx Calibre 管理器使用者名稱和密碼。"
 
 #: templates/settings.html:166
-msgid "Once configured, the plugin will automatically or manually sync your reading progress and time. You can adjust settings like sync frequency in the plugin menu."
+msgid ""
+"Once configured, the plugin will automatically or manually sync your "
+"reading progress and time. You can adjust settings like sync frequency in"
+" the plugin menu."
 msgstr "設定完成後，外掛程式將自動或手動同步您的閱讀進度和時間。您可以在外掛程式選單中調整同步頻率等設定。"
 
 #: templates/settings.html:167
@@ -615,7 +667,9 @@ msgid "Default Calibre Library ID"
 msgstr "預設 Calibre 書庫 ID"
 
 #: templates/settings.html:191
-msgid "The default Calibre library ID for browsing, searching, and uploading books. Usually 'Calibre_Library'."
+msgid ""
+"The default Calibre library ID for browsing, searching, and uploading "
+"books. Usually 'Calibre_Library'."
 msgstr "用於瀏覽、搜尋和上傳圖書的預設 Calibre 書庫 ID。通常是 'Calibre_Library'。"
 
 #: templates/settings.html:195
@@ -623,7 +677,9 @@ msgid "Allow uploading duplicate books"
 msgstr "允許上傳重複的圖書"
 
 #: templates/settings.html:196
-msgid "If enabled, Calibre will add the book as a new copy even if it detects a duplicate."
+msgid ""
+"If enabled, Calibre will add the book as a new copy even if it detects a "
+"duplicate."
 msgstr "如果啟用，即使 Calibre 偵測到重複項，也會將該書新增為新的副本。"
 
 #: templates/settings.html:198
@@ -635,7 +691,9 @@ msgid "WebDAV Root Path"
 msgstr "WebDAV 根路徑"
 
 #: templates/settings.html:202
-msgid "This is the base path for storing all user Anx libraries. User folders will be automatically created under this path (e.g., /webdav/username)."
+msgid ""
+"This is the base path for storing all user Anx libraries. User folders "
+"will be automatically created under this path (e.g., /webdav/username)."
 msgstr "這是儲存所有使用者 Anx 書庫的基礎路徑。使用者資料夾將在此路徑下自動建立（例如，/webdav/username）。"
 
 #: templates/settings.html:205
@@ -647,7 +705,9 @@ msgid "Default Format Priority for New Users"
 msgstr "新使用者的預設格式優先級"
 
 #: templates/settings.html:209
-msgid "Default format priority for new users, separated by commas, e.g., azw3,mobi,epub"
+msgid ""
+"Default format priority for new users, separated by commas, e.g., "
+"azw3,mobi,epub"
 msgstr "新使用者的預設格式優先級，用逗號分隔，例如：azw3,mobi,epub"
 
 #: templates/settings.html:212
@@ -687,7 +747,9 @@ msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
 #: templates/settings.html:236
-msgid "SSL/TLS is usually used for port 465, STARTTLS is usually used for port 587."
+msgid ""
+"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
+"587."
 msgstr "SSL/TLS 通常用於連接埠 465，STARTTLS 通常用於連接埠 587。"
 
 #: templates/settings.html:239
@@ -771,7 +833,9 @@ msgid "Welcome to Anx Calibre Manager"
 msgstr "歡迎使用 Anx Calibre 管理器"
 
 #: templates/setup.html:10
-msgid "This is your first time running the application. Please create an administrator account."
+msgid ""
+"This is your first time running the application. Please create an "
+"administrator account."
 msgstr "這是您第一次執行該應用程式。請建立一個管理員帳戶。"
 
 #: templates/setup.html:14
@@ -822,3 +886,4 @@ msgstr "已讀完！"
 #: templates/stats.html:70
 msgid "No finished books yet."
 msgstr "還沒有已讀完的書籍。"
+

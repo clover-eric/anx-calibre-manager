@@ -235,9 +235,9 @@ export function setupEventHandlers(
         }
     });
 
-    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        const files = document.getElementById('book-upload-input').files;
+        const files = Array.from(document.getElementById('book-upload-input').files);
         const progressContainer = document.getElementById('upload-progress-container');
         progressContainer.innerHTML = ''; // Clear previous results
 
@@ -246,24 +246,36 @@ export function setupEventHandlers(
             return;
         }
 
-        const uploadPromises = Array.from(files).map(file => {
-            return new Promise((resolve, reject) => {
+        // --- Step 1: Create all UI elements first ---
+        const progressElements = files.map(file => {
+            const progressWrapper = document.createElement('div');
+            progressWrapper.className = 'progress-wrapper';
+            const fileNameSpan = document.createElement('span');
+            fileNameSpan.textContent = file.name;
+            const progressBar = document.createElement('progress');
+            progressBar.max = 100;
+            progressBar.value = 0;
+            const progressLabel = document.createElement('span');
+            progressLabel.textContent = _('Waiting...'); // Set initial state to Waiting
+            progressWrapper.appendChild(fileNameSpan);
+            progressWrapper.appendChild(progressBar);
+            progressWrapper.appendChild(progressLabel);
+            progressContainer.appendChild(progressWrapper);
+            return { wrapper: progressWrapper, bar: progressBar, label: progressLabel };
+        });
+
+        // --- Step 2: Process files sequentially ---
+        let all_successful = true;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const { wrapper, bar, label } = progressElements[i];
+            
+            label.textContent = _('Uploading...'); // Update status before starting
+
+            const success = await new Promise((resolve) => {
                 const formData = new FormData();
                 formData.append('books', file);
-
-                const progressWrapper = document.createElement('div');
-                progressWrapper.className = 'progress-wrapper';
-                const fileNameSpan = document.createElement('span');
-                fileNameSpan.textContent = file.name;
-                const progressBar = document.createElement('progress');
-                progressBar.max = 100;
-                progressBar.value = 0;
-                const progressLabel = document.createElement('span');
-                progressLabel.textContent = '0%';
-                progressWrapper.appendChild(fileNameSpan);
-                progressWrapper.appendChild(progressBar);
-                progressWrapper.appendChild(progressLabel);
-                progressContainer.appendChild(progressWrapper);
 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', "/api/upload_to_calibre", true);
@@ -271,11 +283,11 @@ export function setupEventHandlers(
                 xhr.upload.onprogress = function(event) {
                     if (event.lengthComputable) {
                         const percentComplete = (event.loaded / event.total) * 100;
-                        progressBar.value = percentComplete;
+                        bar.value = percentComplete;
                         if (percentComplete >= 100) {
-                            progressLabel.textContent = _('Processing...');
+                            label.textContent = _('Processing...');
                         } else {
-                            progressLabel.textContent = Math.round(percentComplete) + '%';
+                            label.textContent = Math.round(percentComplete) + '%';
                         }
                     }
                 };
@@ -285,41 +297,46 @@ export function setupEventHandlers(
                         const results = JSON.parse(xhr.responseText);
                         const result = results[0];
                         if (result.success) {
-                            progressLabel.textContent = '✅ ' + result.message;
-                            progressWrapper.classList.add('success');
+                            label.textContent = '✅ ' + result.message;
+                            wrapper.classList.add('success');
                             resolve(true);
                         } else {
-                            progressLabel.textContent = '❌ ' + result.error;
-                            progressWrapper.classList.add('error');
+                            label.textContent = '❌ ' + result.error;
+                            wrapper.classList.add('error');
                             resolve(false);
                         }
                     } else {
-                        progressLabel.textContent = `❌ ${_('Upload failed')}: ${xhr.statusText}`;
-                        progressWrapper.classList.add('error');
-                        reject(new Error(xhr.statusText));
+                        label.textContent = `❌ ${_('Upload failed')}: ${xhr.statusText}`;
+                        wrapper.classList.add('error');
+                        resolve(false);
                     }
                 };
 
                 xhr.onerror = function() {
-                    progressLabel.textContent = `❌ ${_('Network Error')}.`;
-                    progressWrapper.classList.add('error');
-                    reject(new Error("Network Error"));
+                    label.textContent = `❌ ${_('Network Error')}.`;
+                    wrapper.classList.add('error');
+                    resolve(false);
                 };
 
                 xhr.send(formData);
             });
-        });
 
-        Promise.all(uploadPromises).then(results => {
-            if (results.every(r => r === true)) {
-                setTimeout(() => {
-                    alert(_('All books uploaded successfully!'));
-                    location.reload();
-                }, 1000);
+            if (!success) {
+                all_successful = false;
             }
-        }).catch(error => {
-            console.error("An error occurred during upload:", error);
-        });
+        }
+
+        // --- Step 3: Final notification ---
+        if (all_successful) {
+            alert(_('All books uploaded successfully!'));
+        } else {
+            alert(_('Some files failed to upload. Please check the progress details.'));
+        }
+        
+        // Reload the page after user confirms the alert, regardless of success or failure
+        setTimeout(() => {
+            location.reload();
+        }, 500);
     });
 
     document.querySelector('.search-form').addEventListener('submit', function(e) {

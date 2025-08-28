@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 19:49+0800\n"
+"POT-Creation-Date: 2025-08-28 22:37+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -107,12 +107,24 @@ msgstr ""
 msgid "Please select files to upload."
 msgstr ""
 
-#: static/js/page/handlers.js:276 static/js/page/ui.js:73
+#: static/js/page/handlers.js:259
+msgid "Waiting..."
+msgstr ""
+
+#: static/js/page/handlers.js:274
+msgid "Uploading..."
+msgstr ""
+
+#: static/js/page/handlers.js:288 static/js/page/ui.js:73
 msgid "Processing..."
 msgstr ""
 
-#: static/js/page/handlers.js:316
+#: static/js/page/handlers.js:331
 msgid "All books uploaded successfully!"
+msgstr ""
+
+#: static/js/page/handlers.js:333
+msgid "Some files failed to upload. Please check the progress details."
 msgstr ""
 
 #: static/js/page/ui.js:83

@@ -89,14 +89,14 @@ COPY --chown=appuser:appuser . .
 
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
 RUN . venv/bin/activate && \
-    mkdir -p translations/en/LC_MESSAGES translations/zh_Hans/LC_MESSAGES translations/zh_Hant/LC_MESSAGES translations/es/LC_MESSAGES translations/fr/LC_MESSAGES translations/de/LC_MESSAGES && \
-    pybabel extract -F babel.cfg -o messages.pot . && \
-    pybabel init -i messages.pot -d translations -l en && \
-    pybabel init -i messages.pot -d translations -l zh_Hans && \
-    pybabel init -i messages.pot -d translations -l zh_Hant && \
-    pybabel init -i messages.pot -d translations -l es && \
-    pybabel init -i messages.pot -d translations -l fr && \
-    pybabel init -i messages.pot -d translations -l de && \
+    #mkdir -p translations/en/LC_MESSAGES translations/zh_Hans/LC_MESSAGES translations/zh_Hant/LC_MESSAGES translations/es/LC_MESSAGES translations/fr/LC_MESSAGES translations/de/LC_MESSAGES && \
+    #pybabel extract -F babel.cfg -o messages.pot . && \
+    #pybabel init -i messages.pot -d translations -l en && \
+    #pybabel init -i messages.pot -d translations -l zh_Hans && \
+    #pybabel init -i messages.pot -d translations -l zh_Hant && \
+    #pybabel init -i messages.pot -d translations -l es && \
+    #pybabel init -i messages.pot -d translations -l fr && \
+    #pybabel init -i messages.pot -d translations -l de && \
     python populate_en_po.py && \
     #python auto_translate.py zh_Hans zh_Hant es fr de && \
     pybabel compile -d translations
@@ -123,4 +123,4 @@ ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 # Define the default command
 # The --pid flag tells Gunicorn to write its master process ID to a file.
 # This allows us to send signals (like SIGHUP for reloading) to it.
-CMD gunicorn --bind 0.0.0.0:$PORT --workers ${GUNICORN_WORKERS} --pid /tmp/gunicorn.pid "app:create_app()"
+CMD gunicorn --bind 0.0.0.0:$PORT --workers ${GUNICORN_WORKERS} --timeout 180 --pid /tmp/gunicorn.pid "app:create_app()"
