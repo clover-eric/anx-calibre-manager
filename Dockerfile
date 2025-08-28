@@ -1,5 +1,5 @@
 # Stage 1: Builder - To build dependencies
-FROM python:3.12-slim-bullseye AS builder
+FROM python:3.12-slim-bookworm AS builder
 
 # Set the working directory
 WORKDIR /app
