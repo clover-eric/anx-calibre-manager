@@ -41,9 +41,10 @@ def login():
 
 @auth_bp.route('/logout')
 def logout():
+    lang = session.get('language')
     session.clear()
     flash('您已成功登出。')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.login', lang=lang))
 
 @auth_bp.route('/setup', methods=['GET', 'POST'])
 def setup():
@@ -59,7 +60,7 @@ def setup():
             return render_template('setup.html')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         with closing(database.get_db()) as db:
-            db.execute("INSERT INTO users (username, password_hash, role, language) VALUES (?, ?, 'admin', ?)", (username, hashed_password, language))
+            db.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')", (username, hashed_password))
             db.commit()
         flash('管理员账户已创建，请登录。')
         return redirect(url_for('auth.login'))

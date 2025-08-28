@@ -97,14 +97,19 @@ def create_app():
         # 1. Check for language in URL parameters
         lang = request.args.get('lang')
         if lang and lang in LANGUAGES:
+            session['language'] = lang
             return lang
-        # 2. Check for language in user session
+        # 2. Check for language in session
+        if 'language' in session:
+            return session['language']
+        # 3. Check for language in user settings
         if 'user_id' in session:
             with closing(database.get_db()) as db:
                 user = db.execute("SELECT language FROM users WHERE id = ?", (session['user_id'],)).fetchone()
                 if user and user['language']:
+                    session['language'] = user['language']
                     return user['language']
-        # 3. Fallback to browser's preferred language
+        # 4. Fallback to browser's preferred language
         return request.accept_languages.best_match(list(LANGUAGES.keys()))
 
     babel = Babel(app, locale_selector=get_locale)
