@@ -35,7 +35,8 @@ jobs:
             anx-calibre-manager-koreader-plugin.koplugin.zip
             anx-calibre-manager-source.zip
           generate_release_notes: true
-          body_extra: |
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
             **Changes since ${{ steps.get_prev_tag.outputs.PREV_TAG }}:**
             ```
             ${{ github.event.repository.name }}
