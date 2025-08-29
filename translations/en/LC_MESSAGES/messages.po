@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-29 21:27+0800\n"
+"POT-Creation-Date: 2025-08-29 22:05+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -35,31 +35,31 @@ msgstr "WebDAV address copied to clipboard"
 msgid "Copy failed"
 msgstr "Copy failed"
 
-#: static/js/settings.js:137
+#: static/js/settings.js:141
 msgid "Are you sure you want to disable 2FA?"
 msgstr "Are you sure you want to disable 2FA?"
 
-#: static/js/settings.js:208
+#: static/js/settings.js:212
 msgid "New token has been generated."
 msgstr "New token has been generated."
 
-#: static/js/settings.js:216
+#: static/js/settings.js:220
 msgid "Are you sure you want to delete this token?"
 msgstr ""
 
-#: static/js/settings.js:254
+#: static/js/settings.js:258
 msgid "Please enter a test recipient email address."
 msgstr ""
 
-#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+#: static/js/settings.js:292 templates/index.html:75 templates/index.html:133
 msgid "Edit"
 msgstr ""
 
-#: static/js/settings.js:296 templates/settings.html:266
+#: static/js/settings.js:300 templates/settings.html:266
 msgid "Add"
 msgstr ""
 
-#: static/js/settings.js:332
+#: static/js/settings.js:336
 msgid "Are you sure you want to delete this user?"
 msgstr ""
 
@@ -919,21 +919,27 @@ msgstr ""
 msgid "No finished books yet."
 msgstr ""
 
-#~ msgid "No available tokens."
-#~ msgstr ""
+#: static/js/settings.js:187
+msgid "No available tokens."
+msgstr "No available tokens."
 
-#~ msgid "Created at"
-#~ msgstr ""
+#: static/js/settings.js:195
+msgid "Created at"
+msgstr "Created at"
 
-#~ msgid "2FA has been enabled."
-#~ msgstr ""
+#: static/js/settings.js:97
+msgid "2FA has been enabled."
+msgstr "Two-factor authentication has been enabled."
 
-#~ msgid "2FA is not enabled."
-#~ msgstr ""
+#: static/js/settings.js:99
+msgid "2FA is not enabled."
+msgstr "Two-factor authentication is not enabled."
 
-#~ msgid "Enable"
-#~ msgstr ""
+#: static/js/settings.js:99
+msgid "Enable"
+msgstr "Enable"
 
-#~ msgid "Disable"
-#~ msgstr ""
+#: static/js/settings.js:97
+msgid "Disable"
+msgstr "Disable"
 

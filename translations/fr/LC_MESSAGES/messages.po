@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-29 21:27+0800\n"
+"POT-Creation-Date: 2025-08-29 22:05+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -35,31 +35,31 @@ msgstr "Adresse WebDAV copiée dans le presse-papiers"
 msgid "Copy failed"
 msgstr "La copie a échoué"
 
-#: static/js/settings.js:137
+#: static/js/settings.js:141
 msgid "Are you sure you want to disable 2FA?"
 msgstr "Êtes-vous sûr de vouloir désactiver l'A2F ?"
 
-#: static/js/settings.js:208
+#: static/js/settings.js:212
 msgid "New token has been generated."
 msgstr "Un nouveau jeton a été généré."
 
-#: static/js/settings.js:216
+#: static/js/settings.js:220
 msgid "Are you sure you want to delete this token?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce jeton ?"
 
-#: static/js/settings.js:254
+#: static/js/settings.js:258
 msgid "Please enter a test recipient email address."
 msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
 
-#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+#: static/js/settings.js:292 templates/index.html:75 templates/index.html:133
 msgid "Edit"
 msgstr "Modifier"
 
-#: static/js/settings.js:296 templates/settings.html:266
+#: static/js/settings.js:300 templates/settings.html:266
 msgid "Add"
 msgstr "Ajouter"
 
-#: static/js/settings.js:332
+#: static/js/settings.js:336
 msgid "Are you sure you want to delete this user?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
 
@@ -988,21 +988,27 @@ msgstr "Terminé !"
 msgid "No finished books yet."
 msgstr "Aucun livre terminé pour le moment."
 
-#~ msgid "No available tokens."
-#~ msgstr "Aucun jeton disponible."
+#: static/js/settings.js:187
+msgid "No available tokens."
+msgstr "Aucun jeton disponible."
 
-#~ msgid "Created at"
-#~ msgstr "Créé le"
+#: static/js/settings.js:195
+msgid "Created at"
+msgstr "Créé le"
 
-#~ msgid "2FA has been enabled."
-#~ msgstr "L'A2F a été activée."
+#: static/js/settings.js:97
+msgid "2FA has been enabled."
+msgstr "L'authentification à deux facteurs a été activée."
 
-#~ msgid "2FA is not enabled."
-#~ msgstr "L'A2F n'est pas activée."
+#: static/js/settings.js:99
+msgid "2FA is not enabled."
+msgstr "L'authentification à deux facteurs n'est pas activée."
 
-#~ msgid "Enable"
-#~ msgstr "Activer"
+#: static/js/settings.js:99
+msgid "Enable"
+msgstr "Activer"
 
-#~ msgid "Disable"
-#~ msgstr "Désactiver"
+#: static/js/settings.js:97
+msgid "Disable"
+msgstr "Désactiver"
 

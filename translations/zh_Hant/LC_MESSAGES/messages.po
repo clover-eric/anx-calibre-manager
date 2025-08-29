@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-29 21:27+0800\n"
+"POT-Creation-Date: 2025-08-29 22:05+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -33,31 +33,31 @@ msgstr "WebDAV 位址已複製到剪貼簿"
 msgid "Copy failed"
 msgstr "複製失敗"
 
-#: static/js/settings.js:137
+#: static/js/settings.js:141
 msgid "Are you sure you want to disable 2FA?"
 msgstr "您確定要停用兩步驟驗證（2FA）嗎？"
 
-#: static/js/settings.js:208
+#: static/js/settings.js:212
 msgid "New token has been generated."
 msgstr "新權杖已產生。"
 
-#: static/js/settings.js:216
+#: static/js/settings.js:220
 msgid "Are you sure you want to delete this token?"
 msgstr "您確定要刪除此權杖嗎？"
 
-#: static/js/settings.js:254
+#: static/js/settings.js:258
 msgid "Please enter a test recipient email address."
 msgstr "請輸入測試收件人的電子郵件地址。"
 
-#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+#: static/js/settings.js:292 templates/index.html:75 templates/index.html:133
 msgid "Edit"
 msgstr "編輯"
 
-#: static/js/settings.js:296 templates/settings.html:266
+#: static/js/settings.js:300 templates/settings.html:266
 msgid "Add"
 msgstr "新增"
 
-#: static/js/settings.js:332
+#: static/js/settings.js:336
 msgid "Are you sure you want to delete this user?"
 msgstr "您確定要刪除此使用者嗎？"
 
@@ -917,21 +917,27 @@ msgstr "已讀完！"
 msgid "No finished books yet."
 msgstr "還沒有已讀完的書籍。"
 
-#~ msgid "No available tokens."
-#~ msgstr "沒有可用的權杖。"
+#: static/js/settings.js:187
+msgid "No available tokens."
+msgstr "沒有可用的權杖。"
 
-#~ msgid "Created at"
-#~ msgstr "建立於"
+#: static/js/settings.js:195
+msgid "Created at"
+msgstr "建立於"
 
-#~ msgid "2FA has been enabled."
-#~ msgstr "兩步驟驗證（2FA）已啟用。"
+#: static/js/settings.js:97
+msgid "2FA has been enabled."
+msgstr "雙因素驗證已啟用。"
 
-#~ msgid "2FA is not enabled."
-#~ msgstr "兩步驟驗證（2FA）未啟用。"
+#: static/js/settings.js:99
+msgid "2FA is not enabled."
+msgstr "雙因素驗證未啟用。"
 
-#~ msgid "Enable"
-#~ msgstr "啟用"
+#: static/js/settings.js:99
+msgid "Enable"
+msgstr "啟用"
 
-#~ msgid "Disable"
-#~ msgstr "停用"
+#: static/js/settings.js:97
+msgid "Disable"
+msgstr "停用"
 

@@ -94,9 +94,13 @@ async function populateForms() {
 function update2FAStatus(is_enabled) {
     const statusContainer = document.getElementById('2fa_status_container');
     if (is_enabled) {
-        statusContainer.innerHTML = `<p>${_('2FA has been enabled.')}</p><button type="button" class="button-danger" onclick="disable2FA()">${_('Disable')}</button>`;
+        const enabledText = _('2FA has been enabled.');
+        const disableText = _('Disable');
+        statusContainer.innerHTML = `<p>${enabledText}</p><button type="button" class="button-danger" onclick="disable2FA()">${disableText}</button>`;
     } else {
-        statusContainer.innerHTML = `<p>${_('2FA is not enabled.')}</p><button type="button" class="button" onclick="setup2FA()">${_('Enable')}</button>`;
+        const notEnabledText = _('2FA is not enabled.');
+        const enableText = _('Enable');
+        statusContainer.innerHTML = `<p>${notEnabledText}</p><button type="button" class="button" onclick="setup2FA()">${enableText}</button>`;
     }
 }
 

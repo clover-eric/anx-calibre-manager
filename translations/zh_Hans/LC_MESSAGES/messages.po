@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-29 21:27+0800\n"
+"POT-Creation-Date: 2025-08-29 22:05+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -33,31 +33,31 @@ msgstr "WebDAV 地址已复制到剪贴板"
 msgid "Copy failed"
 msgstr "复制失败"
 
-#: static/js/settings.js:137
+#: static/js/settings.js:141
 msgid "Are you sure you want to disable 2FA?"
 msgstr "你确定要禁用两步验证吗？"
 
-#: static/js/settings.js:208
+#: static/js/settings.js:212
 msgid "New token has been generated."
 msgstr "新令牌已生成。"
 
-#: static/js/settings.js:216
+#: static/js/settings.js:220
 msgid "Are you sure you want to delete this token?"
 msgstr "你确定要删除这个令牌吗？"
 
-#: static/js/settings.js:254
+#: static/js/settings.js:258
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+#: static/js/settings.js:292 templates/index.html:75 templates/index.html:133
 msgid "Edit"
 msgstr "编辑"
 
-#: static/js/settings.js:296 templates/settings.html:266
+#: static/js/settings.js:300 templates/settings.html:266
 msgid "Add"
 msgstr "添加"
 
-#: static/js/settings.js:332
+#: static/js/settings.js:336
 msgid "Are you sure you want to delete this user?"
 msgstr "你确定要删除这个用户吗？"
 
@@ -917,41 +917,27 @@ msgstr "已读完！"
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
 
-#: static/js/page/ui.js:37
-msgid "Metadata updates for Calibre books are asynchronous and may take a moment to apply."
-msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间才能生效。"
+#: static/js/settings.js:187
+msgid "No available tokens."
+msgstr "没有可用的令牌。"
 
-#: static/js/page/ui.js:48
-msgid "Authors (comma-separated)"
-msgstr "作者（逗号分隔）"
+#: static/js/settings.js:195
+msgid "Created at"
+msgstr "创建于"
 
-#: static/js/page/ui.js:53
-msgid "Library (custom field #library)"
-msgstr "书库（自定义字段 #library）"
+#: static/js/settings.js:97
+msgid "2FA has been enabled."
+msgstr "两步验证已启用。"
 
-#: static/js/page/ui.js:54
-msgid "Read Date (custom field #readdate)"
-msgstr "阅读日期（自定义字段 #readdate）"
+#: static/js/settings.js:99
+msgid "2FA is not enabled."
+msgstr "两步验证未启用。"
 
-#: static/js/page/ui.js:52
-msgid "Tags (comma-separated)"
-msgstr "标签（逗号分隔）"
+#: static/js/settings.js:99
+msgid "Enable"
+msgstr "启用"
 
-#~ msgid "No available tokens."
-#~ msgstr "没有可用的令牌。"
-
-#~ msgid "Created at"
-#~ msgstr "创建于"
-
-#~ msgid "2FA has been enabled."
-#~ msgstr "两步验证已启用。"
-
-#~ msgid "2FA is not enabled."
-#~ msgstr "两步验证未启用。"
-
-#~ msgid "Enable"
-#~ msgstr "启用"
-
-#~ msgid "Disable"
-#~ msgstr "禁用"
+#: static/js/settings.js:97
+msgid "Disable"
+msgstr "禁用"
 
