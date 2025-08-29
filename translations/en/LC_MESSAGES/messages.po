@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-28 23:55+0800\n"
+"POT-Creation-Date: 2025-08-29 21:27+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,76 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: static/js/settings.js:208 utils.py:291
-msgid "New token has been generated."
-msgstr ""
-
-#: static/js/settings.js:216 utils.py:292
-msgid "Are you sure you want to delete this token?"
-msgstr ""
-
-#: static/js/settings.js:137 utils.py:293
-msgid "Are you sure you want to disable 2FA?"
-msgstr ""
-
-#: static/js/settings.js:254 utils.py:294
-msgid "Please enter a test recipient email address."
-msgstr ""
-
-#: static/js/settings.js:332 utils.py:295
-msgid "Are you sure you want to delete this user?"
-msgstr ""
-
-#: utils.py:296
-msgid "No available tokens."
-msgstr ""
-
-#: utils.py:297
-msgid "Created at"
-msgstr ""
-
-#: templates/index.html:134 utils.py:298
-msgid "Delete"
-msgstr ""
-
-#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
-#: utils.py:299
-msgid "Edit"
-msgstr ""
-
-#: static/js/settings.js:296 templates/settings.html:266 utils.py:300
-msgid "Add"
-msgstr ""
-
-#: static/js/settings.js:83 utils.py:301
-msgid "WebDAV address copied to clipboard"
-msgstr ""
-
-#: static/js/settings.js:85 utils.py:302
-msgid "Copy failed"
-msgstr ""
-
-#: static/js/settings.js:55 utils.py:303
+#: static/js/settings.js:55
 #, python-brace-format
 msgid ""
 "Please make sure to add the sender email address ({email}) to your Amazon"
 " Kindle trusted email list."
 msgstr ""
+"Please make sure to add the sender email address ({email}) to your Amazon"
+" Kindle trusted email list."
 
-#: utils.py:304
-msgid "2FA has been enabled."
+#: static/js/settings.js:83
+msgid "WebDAV address copied to clipboard"
+msgstr "WebDAV address copied to clipboard"
+
+#: static/js/settings.js:85
+msgid "Copy failed"
+msgstr "Copy failed"
+
+#: static/js/settings.js:137
+msgid "Are you sure you want to disable 2FA?"
+msgstr "Are you sure you want to disable 2FA?"
+
+#: static/js/settings.js:208
+msgid "New token has been generated."
+msgstr "New token has been generated."
+
+#: static/js/settings.js:216
+msgid "Are you sure you want to delete this token?"
 msgstr ""
 
-#: utils.py:305
-msgid "2FA is not enabled."
+#: static/js/settings.js:254
+msgid "Please enter a test recipient email address."
 msgstr ""
 
-#: utils.py:306
-msgid "Enable"
+#: static/js/settings.js:288 templates/index.html:75 templates/index.html:133
+msgid "Edit"
 msgstr ""
 
-#: utils.py:307
-msgid "Disable"
+#: static/js/settings.js:296 templates/settings.html:266
+msgid "Add"
+msgstr ""
+
+#: static/js/settings.js:332
+msgid "Are you sure you want to delete this user?"
 msgstr ""
 
 #: static/js/page/handlers.js:85
@@ -115,7 +88,7 @@ msgstr ""
 msgid "Uploading..."
 msgstr ""
 
-#: static/js/page/handlers.js:288 static/js/page/ui.js:73
+#: static/js/page/handlers.js:288 static/js/page/ui.js:94
 msgid "Processing..."
 msgstr ""
 
@@ -127,9 +100,66 @@ msgstr ""
 msgid "Some files failed to upload. Please check the progress details."
 msgstr ""
 
-#: static/js/page/ui.js:83
-msgid "Success!"
+#: static/js/page/ui.js:10 static/js/page/ui.js:47
+msgid "Title"
+msgstr "Title"
+
+#: static/js/page/ui.js:11 templates/stats.html:36 templates/stats.html:60
+msgid "Author"
+msgstr "Author"
+
+#: static/js/page/ui.js:12 static/js/page/ui.js:51
+msgid "Rating (0-5)"
+msgstr "Rating (0-5)"
+
+#: static/js/page/ui.js:13
+msgid "Reading Progress (%)"
+msgstr "Reading Progress (%)"
+
+#: static/js/page/ui.js:14 static/js/page/ui.js:55 templates/index.html:65
+#: templates/index.html:128
+msgid "Description"
+msgstr "Description"
+
+#: static/js/page/ui.js:45
+msgid "Note"
+msgstr "Note"
+
+#: static/js/page/ui.js:46
+msgid ""
+"Metadata updates for Calibre books are asynchronous and may take a moment"
+" to apply."
 msgstr ""
+"Metadata updates for Calibre books are asynchronous and may take a moment"
+" to apply."
+
+#: static/js/page/ui.js:48
+msgid "Authors (comma-separated)"
+msgstr "Authors (comma-separated)"
+
+#: static/js/page/ui.js:49 templates/index.html:55 templates/index.html:121
+msgid "Publisher"
+msgstr "Publisher"
+
+#: static/js/page/ui.js:50 templates/index.html:56
+msgid "Publication Date"
+msgstr "Publication Date"
+
+#: static/js/page/ui.js:52
+msgid "Tags (comma-separated)"
+msgstr "Tags (comma-separated)"
+
+#: static/js/page/ui.js:53
+msgid "Library (custom field #library)"
+msgstr "Library (custom field #library)"
+
+#: static/js/page/ui.js:54
+msgid "Read Date (custom field #readdate)"
+msgstr "Read Date (custom field #readdate)"
+
+#: static/js/page/ui.js:104
+msgid "Success!"
+msgstr "Success!"
 
 #: templates/base.html:6 templates/base.html:74
 msgid "Anx Calibre Manager"
@@ -152,23 +182,23 @@ msgstr ""
 msgid "Anx"
 msgstr ""
 
-#: templates/base.html:201
+#: templates/base.html:208
 msgid "Having issues or suggestions?"
 msgstr ""
 
-#: templates/base.html:201
+#: templates/base.html:208
 msgid "Submit an issue on GitHub"
 msgstr ""
 
-#: templates/base.html:202
+#: templates/base.html:209
 msgid "Find This Helpful?"
 msgstr ""
 
-#: templates/base.html:202
+#: templates/base.html:209
 msgid "Buy me a Coffee ☕"
 msgstr ""
 
-#: templates/base.html:203
+#: templates/base.html:210
 msgid "Anx Calibre Manager by"
 msgstr ""
 
@@ -222,20 +252,8 @@ msgstr ""
 msgid "Formats"
 msgstr ""
 
-#: templates/index.html:55 templates/index.html:121
-msgid "Publisher"
-msgstr ""
-
-#: templates/index.html:56
-msgid "Publication Date"
-msgstr ""
-
 #: templates/index.html:63
 msgid "Read Date"
-msgstr ""
-
-#: templates/index.html:65 templates/index.html:128
-msgid "Description"
 msgstr ""
 
 #: templates/index.html:69 templates/index.html:132
@@ -288,6 +306,10 @@ msgstr ""
 msgid "Producer"
 msgstr ""
 
+#: templates/index.html:134
+msgid "Delete"
+msgstr ""
+
 #: templates/index.html:139
 msgid "No books in Anx library."
 msgstr ""
@@ -313,7 +335,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: templates/login.html:3 templates/login.html:34
+#: templates/login.html:3 templates/login.html:35
 msgid "Login"
 msgstr ""
 
@@ -321,22 +343,22 @@ msgstr ""
 msgid "Login to Anx Calibre Manager"
 msgstr ""
 
-#: templates/login.html:23 templates/settings.html:30
+#: templates/login.html:24 templates/settings.html:30
 #: templates/settings.html:140 templates/settings.html:268
 #: templates/settings.html:295
 msgid "Username"
 msgstr ""
 
-#: templates/login.html:27 templates/settings.html:141
+#: templates/login.html:28 templates/settings.html:141
 #: templates/settings.html:272
 msgid "Password"
 msgstr ""
 
-#: templates/login.html:31
+#: templates/login.html:32
 msgid "2FA Code"
 msgstr ""
 
-#: templates/login.html:32
+#: templates/login.html:33
 msgid "Please enter a 6-digit code"
 msgstr ""
 
@@ -877,10 +899,6 @@ msgstr ""
 msgid "Reading Books"
 msgstr ""
 
-#: templates/stats.html:36 templates/stats.html:60
-msgid "Author"
-msgstr ""
-
 #: templates/stats.html:38 templates/stats.html:62
 msgid "Not rated"
 msgstr ""
@@ -900,4 +918,22 @@ msgstr ""
 #: templates/stats.html:70
 msgid "No finished books yet."
 msgstr ""
+
+#~ msgid "No available tokens."
+#~ msgstr ""
+
+#~ msgid "Created at"
+#~ msgstr ""
+
+#~ msgid "2FA has been enabled."
+#~ msgstr ""
+
+#~ msgid "2FA is not enabled."
+#~ msgstr ""
+
+#~ msgid "Enable"
+#~ msgstr ""
+
+#~ msgid "Disable"
+#~ msgstr ""
 

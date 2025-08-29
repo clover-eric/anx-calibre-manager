@@ -280,6 +280,10 @@ def user_settings_api():
                 params.append(g.user.id)
                 db.execute(query, tuple(params))
                 db.commit()
+                
+                # 如果更新了语言设置，同步更新session中的语言
+                if 'language' in data:
+                    session['language'] = data['language']
 
         return jsonify({'success': True, 'message': '用户设置已更新。'})
     else: # GET
