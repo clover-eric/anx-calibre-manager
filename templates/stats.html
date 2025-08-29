@@ -82,8 +82,9 @@
       const cal = new CalHeatmap();
 
       const elevenMonthsAgo = new Date();
-      elevenMonthsAgo.setMonth(elevenMonthsAgo.getMonth() - 11);
-      elevenMonthsAgo.setDate(1);
+      // 使用UTC时间与后端保持一致
+      elevenMonthsAgo.setUTCMonth(elevenMonthsAgo.getUTCMonth() - 11);
+      elevenMonthsAgo.setUTCDate(1);
 
       cal.paint({
         itemSelector: '#cal-heatmap',
