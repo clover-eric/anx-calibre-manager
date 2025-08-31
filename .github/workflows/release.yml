@@ -30,15 +30,63 @@ jobs:
         run: |
           zip -r anx-calibre-manager-source.zip . -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
 
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          # Get commits since last tag
+          PREV_TAG="${{ steps.get_prev_tag.outputs.PREV_TAG }}"
+          if [ -z "$PREV_TAG" ]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+          
+          # Generate categorized release notes
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+          echo "## 🚀 新功能 (Features)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^feat" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 🐛 修复 (Bug Fixes)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^fix" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 📚 文档 (Documentation)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^docs" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## ⚡ 性能优化 (Performance)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^perf" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 🔧 维护 (Maintenance)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^chore\|^build\|^ci" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 💄 样式 (Styles)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^style" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## ♻️ 重构 (Refactoring)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^refactor" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 🧪 测试 (Tests)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --grep="^test" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "## 其他变更 (Other Changes)" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" ${PREV_TAG}..HEAD --invert-grep --grep="^feat\|^fix\|^docs\|^perf\|^chore\|^build\|^ci\|^style\|^refactor\|^test" >> $GITHUB_OUTPUT || true
+          echo "" >> $GITHUB_OUTPUT
+          
+          echo "---" >> $GITHUB_OUTPUT
+          echo "**完整变更日志**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             anx-calibre-manager-koreader-plugin.koplugin.zip
             anx-calibre-manager-source.zip
-          generate_release_notes: true
+          generate_release_notes: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            **Changes since ${{ steps.get_prev_tag.outputs.PREV_TAG }}:**
-            ```
-            ${{ github.event.repository.name }}
+          body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
