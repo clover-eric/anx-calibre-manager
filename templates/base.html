@@ -6,10 +6,22 @@
     <title>{% block title %}{{ _('Anx Calibre Manager') }}{% endblock %}</title>
 
     <!-- PWA & Mobile Meta -->
-    <meta name="theme-color" content="#4A90E2"/>
+    {% if g.user and g.user.theme %}
+        {% if g.user.theme == 'dark' %}
+            <meta name="theme-color" content="#1f1f1f"/>
+        {% elif g.user.theme == 'light' %}
+            <meta name="theme-color" content="#4A90E2"/>
+        {% else %}
+            <!-- auto 模式：使用 CSS 媒体查询动态设置 -->
+            <meta name="theme-color" content="#4A90E2" media="(prefers-color-scheme: light)"/>
+            <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)"/>
+        {% endif %}
+    {% else %}
+        <meta name="theme-color" content="#4A90E2"/>
+    {% endif %}
     <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+    <link rel="manifest" href="{{ url_for('main.dynamic_manifest') }}">
 
     <!-- Translations for JS -->
     <script id="js-translations" type="application/json">{{ get_js_translations() | tojson | safe }}</script>

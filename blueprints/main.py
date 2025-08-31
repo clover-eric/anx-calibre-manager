@@ -122,6 +122,63 @@ def index():
 def service_worker():
     return send_from_directory('static', 'sw.js')
 
+@main_bp.route('/manifest.webmanifest')
+def dynamic_manifest():
+    """动态生成 PWA manifest，根据用户主题设置调整背景色"""
+    from flask import jsonify
+    
+    # 基础 manifest 配置
+    manifest = {
+        "name": "Anx Calibre Manager",
+        "short_name": "AnxCalibre",
+        "description": "A web-based manager for your Calibre and Anx ebook libraries.",
+        "start_url": "/",
+        "display": "standalone",
+        "theme_color": "#4A90E2",
+        "icons": [
+            {
+                "src": "/static/logo.png",
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any maskable"
+            },
+            {
+                "src": "/static/logo.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }
+        ]
+    }
+    
+    # 根据用户主题设置调整背景色
+    if g.user and hasattr(g.user, 'theme'):
+        user_theme = g.user.theme or 'auto'
+        
+        if user_theme == 'dark':
+            manifest["background_color"] = "#121212"
+        elif user_theme == 'light':
+            manifest["background_color"] = "#ffffff"
+        else:  # auto - 根据系统偏好检测
+            # 检查请求头中的 Sec-CH-Prefers-Color-Scheme 或其他暗色模式指示
+            prefers_dark = False
+            
+            # 检查 Accept 头中是否包含暗色模式偏好的指示
+            accept_header = request.headers.get('Accept', '')
+            user_agent = request.headers.get('User-Agent', '').lower()
+            
+            # 简单的启发式检测：如果是夜间时间或者有暗色模式的指示
+            # 由于无法直接检测系统主题，我们采用保守策略
+            # 对于 auto 模式，默认使用暗色背景，因为这样在夜间模式下体验更好
+            manifest["background_color"] = "#121212"
+    else:
+        # 未登录用户使用默认亮色背景
+        manifest["background_color"] = "#ffffff"
+    
+    response = jsonify(manifest)
+    response.headers['Content-Type'] = 'application/manifest+json'
+    return response
+
 @main_bp.route('/settings')
 @login_required
 def settings_page():
