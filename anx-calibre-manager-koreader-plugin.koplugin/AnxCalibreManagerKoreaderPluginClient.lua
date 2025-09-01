@@ -2,8 +2,8 @@ local UIManager = require("ui/uimanager")
 local logger = require("logger")
 local socketutil = require("socketutil")
 
--- Push/Pull
-local PROGRESS_TIMEOUTS = { 2,  5 }
+-- Push/Pull - 增加timeout时间以适应远程服务器
+local PROGRESS_TIMEOUTS = { 5, 7 }
 -- Login/Register
 local AUTH_TIMEOUTS     = { 5, 10 }
 
