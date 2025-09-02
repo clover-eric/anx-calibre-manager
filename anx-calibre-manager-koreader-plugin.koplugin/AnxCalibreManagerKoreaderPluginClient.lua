@@ -3,9 +3,9 @@ local logger = require("logger")
 local socketutil = require("socketutil")
 
 -- Push/Pull - 增加timeout时间以适应远程服务器
-local PROGRESS_TIMEOUTS = { 5, 7 }
+local PROGRESS_TIMEOUTS = { 7, 10 }
 -- Login/Register
-local AUTH_TIMEOUTS     = { 5, 10 }
+local AUTH_TIMEOUTS     = { 7, 10 }
 
 local AnxCalibreManagerKoreaderPluginClient = {
     service_spec = nil,
