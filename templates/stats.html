@@ -113,5 +113,12 @@
         }]
       ]);
     });
+
+    window.onload = function() {
+      var height = document.body.scrollHeight;
+      window.parent.postMessage({
+        frameHeight: height
+      }, '*');
+    };
   </script>
 {% endblock %}
