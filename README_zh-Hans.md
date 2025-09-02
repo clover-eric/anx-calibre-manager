@@ -35,7 +35,31 @@
 - **阅读统计**: 自动生成个人阅读统计页面，包含年度阅读热力图、在读书籍和已读书籍列表。页面支持公开或私有分享。
 ## 📸 截图
 
-![主界面](Screen%20Shot%20-%20Main.png)![设置页面](Screen%20Shot%20-%20Setting.png)![MCP 设置](Screen%20Shot%20-%20MCP.png)![Koreader页面](Screen%20Shot%20-%20Koreader.png)![统计页面](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>主界面</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>设置页面</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| MCP 聊天 | MCP 设置 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Koreader 书籍状态 | Koreader 同步 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Koreader 设置 | Koreader WebDAV |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>统计页面</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 部署
 

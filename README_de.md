@@ -36,7 +36,31 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
 
 ## 📸 Screenshots
 
-![Hauptoberfläche](Screen%20Shot%20-%20Main.png)![Einstellungsseite](Screen%20Shot%20-%20Setting.png)![MCP-Einstellungen](Screen%20Shot%20-%20MCP.png)![Koreader-Seite](Screen%20Shot%20-%20Koreader.png)![Statistik-Seite](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>Hauptoberfläche</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>Einstellungsseite</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| MCP-Chat | MCP-Einstellungen |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Koreader-Buchstatus | Koreader-Synchronisierung |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Koreader-Einstellungen | Koreader-WebDAV |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>Statistik-Seite</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 Bereitstellung
 

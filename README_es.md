@@ -36,7 +36,31 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
 
 ## 📸 Capturas de Pantalla
 
-![Interfaz Principal](Screen%20Shot%20-%20Main.png)![Página de Configuración](Screen%20Shot%20-%20Setting.png)![Configuración de MCP](Screen%20Shot%20-%20MCP.png)![Página de Koreader](Screen%20Shot%20-%20Koreader.png)![Página de Estadísticas](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>Interfaz Principal</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>Página de Configuración</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| Chat de MCP | Configuración de MCP |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Estado del Libro de Koreader | Sincronización de Koreader |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Configuración de Koreader | WebDAV de Koreader |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>Página de Estadísticas</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 Despliegue
 

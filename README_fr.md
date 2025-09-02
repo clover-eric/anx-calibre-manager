@@ -36,7 +36,31 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
 
 ## 📸 Captures d'écran
 
-![Interface Principale](Screen%20Shot%20-%20Main.png)![Page des Paramètres](Screen%20Shot%20-%20Setting.png)![Paramètres MCP](Screen%20Shot%20-%20MCP.png)![Page Koreader](Screen%20Shot%20-%20Koreader.png)![Page des Statistiques](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>Interface Principale</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>Page des Paramètres</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| Chat MCP | Paramètres MCP |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Statut du Livre Koreader | Synchronisation Koreader |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Paramètres Koreader | WebDAV Koreader |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>Page des Statistiques</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 Déploiement
 

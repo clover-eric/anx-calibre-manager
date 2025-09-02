@@ -35,7 +35,31 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Reading Stats**: Automatically generates a personal reading statistics page, featuring a yearly reading heatmap, a list of books currently being read, and a list of finished books. The page can be shared publicly or kept private.
 ## 📸 Screenshots
 
-![Main Interface](Screen%20Shot%20-%20Main.png)![Settings Page](Screen%20Shot%20-%20Setting.png)![MCP Settings](Screen%20Shot%20-%20MCP.png)![Koreader Page](Screen%20Shot%20-%20Koreader.png)![Stats Page](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>Main Interface</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>Settings Page</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| MCP Chat | MCP Settings |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Koreader Book Status | Koreader Sync |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Koreader Settings | Koreader WebDAV |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>Stats Page</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 Deployment
 

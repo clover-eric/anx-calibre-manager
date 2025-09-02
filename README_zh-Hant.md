@@ -36,7 +36,31 @@
 
 ## 📸 截圖
 
-![主介面](Screen%20Shot%20-%20Main.png)![設定頁面](Screen%20Shot%20-%20Setting.png)![MCP 設定](Screen%20Shot%20-%20MCP.png)![Koreader頁面](Screen%20Shot%20-%20Koreader.png)![統計頁面](Screen%20Shot%20-%20Stats.png)
+<p align="center">
+  <em>主介面</em><br>
+  <img src="screenshots/Screen Shot - MainPage.png">
+</p>
+<p align="center">
+  <em>設定頁面</em><br>
+  <img src="screenshots/Screen Shot - SettingPage.png">
+</p>
+
+| MCP 聊天 | MCP 設定 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+
+| Koreader 書籍狀態 | Koreader 同步 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderBookStatus.jpg" width="400"/> | <img src="screenshots/Screen Shot - KoreaderSync.jpg" width="400"/> |
+
+| Koreader 設定 | Koreader WebDAV |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - KoreaderSetting.png" width="750"/> | <img src="screenshots/Screen Shot - KoreaderWebdav.jpg" width="250"/> |
+
+<p align="center">
+  <em>統計頁面</em><br>
+  <img src="screenshots/Screen Shot - StatsPage.png">
+</p>
 
 ## 🚀 部署
 
