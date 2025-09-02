@@ -115,7 +115,9 @@
     });
 
     window.onload = function() {
-      var height = document.body.scrollHeight;
+      var body = document.body;
+      var style = window.getComputedStyle(body);
+      var height = body.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom);
       window.parent.postMessage({
         frameHeight: height
       }, '*');
