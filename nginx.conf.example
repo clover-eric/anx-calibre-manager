@@ -1,0 +1,95 @@
+# This is an example Nginx configuration to handle multiple proxy layers
+# (e.g., CDN -> Nginx -> Application) and correctly generate redirect URLs.
+
+# Place the following 'map' blocks inside your main 'http' block in nginx.conf,
+# outside of any 'server' blocks.
+
+# Map 1: Sets a default forwarded port based on the request scheme (http/https).
+map $scheme $final_forwarded_port {
+    http    80;
+    https   443;
+}
+
+# Map 2: Overrides the default port if the original Host header already contains one.
+map $http_host $final_forwarded_port_override {
+    # This regex matches a host that includes a port number (e.g., "example.example.org:33888")
+    # and captures the port number into the '$port' variable.
+    ~*^[^:]+:(?<port>\d+)$   $port;
+}
+
+
+server {
+    listen 33888 ssl;
+    listen [::]:33888 ssl;
+    http2 on;
+
+    server_name example.example.org;
+
+    error_page 497 https://$host:$server_port$request_uri;
+
+    client_max_body_size 1000M;
+
+    access_log off;
+
+    # SSL
+    ssl_certificate /cert/example.example.org_ecc/fullchain.cer;
+    ssl_certificate_key /cert/example.example.org_ecc/example.example.org.key;
+    ssl_trusted_certificate /cert/example.example.org_ecc/example.example.org.cer;
+
+    # reverse proxy
+    location / {
+        proxy_pass http://your_host:5000/;
+        proxy_http_version  1.1;
+        proxy_cache_bypass  $http_upgrade;
+        
+        proxy_set_header Upgrade            $http_upgrade;
+        proxy_set_header Connection         "upgrade";
+        proxy_set_header Host               $http_host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto  $scheme;
+        proxy_set_header X-Forwarded-Host   $host;
+        
+        # --- Smart Port Forwarding Logic ---
+        # 1. Set a variable '$port_to_forward' to the default scheme port (80 or 443).
+        set $port_to_forward $final_forwarded_port;
+        # 2. If the original Host header contained a port, the override variable will have a value.
+        if ($final_forwarded_port_override) {
+            # 3. If so, use the port from the Host header instead of the default.
+            set $port_to_forward $final_forwarded_port_override;
+        }
+        # 4. Set the final header that the application will see.
+        proxy_set_header X-Forwarded-Port   $port_to_forward;
+        # --- End of Logic ---
+
+        proxy_set_header Origin https://$host;
+
+        # Buffering settings for SSE
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 86400s; # Keep connection open for a long time
+        proxy_send_timeout 86400s;
+        proxy_connect_timeout 75s;
+
+        # Required for SSE event stream
+        proxy_set_header Connection '';
+        proxy_set_header X-Accel-Buffering no;
+        chunked_transfer_encoding on;
+        proxy_request_buffering off;
+
+        tcp_nodelay on;
+    }
+
+    # security headers
+    #add_header X-Frame-Options "SAMEORIGIN" always;
+    #add_header X-XSS-Protection "1; mode=block" always;
+    #add_header X-Content-Type-Options "nosniff" always;
+    #add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    #add_header Content-Security-Policy "media-src default-src * data:blob: 'unsafe-eval' 'unsafe-inline'" always;
+    #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    
+    # . files
+    #location ~ /\.(?!well-known) {
+    #   deny all;
+    #}
+}
