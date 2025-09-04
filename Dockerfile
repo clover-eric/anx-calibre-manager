@@ -23,9 +23,9 @@ WORKDIR /home/appuser
 # Create a virtual environment for building ebook-converter
 RUN python -m venv /home/appuser/build_venv
 
-# Install pyinstaller and build ebook-converter
-RUN /home/appuser/build_venv/bin/pip install pyinstaller git+https://github.com/gryf/ebook-converter.git && \
-    /home/appuser/build_venv/bin/pyinstaller --onefile --name ebook-converter --add-data /home/appuser/build_venv/lib/python3.12/site-packages/ebook_converter/data:ebook_converter/data /home/appuser/build_venv/bin/ebook-converter
+# Install lxml and html5-parser from source first, then ebook-converter
+RUN /home/appuser/build_venv/bin/pip install --no-binary lxml lxml html5-parser && \
+    /home/appuser/build_venv/bin/pip install git+https://github.com/gryf/ebook-converter.git
 
 # Create and activate a virtual environment for the app
 RUN python -m venv /home/appuser/venv
@@ -86,9 +86,9 @@ RUN useradd --uid 1001 --create-home appuser && \
 # Set working directory
 WORKDIR /home/appuser
 
-# Copy the application virtual environment and the compiled ebook-converter binary
+# Copy the virtual environments from builder stage
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
-COPY --from=builder --chown=appuser:appuser /home/appuser/dist/ebook-converter /usr/local/bin/ebook-converter
+COPY --from=builder --chown=appuser:appuser /home/appuser/build_venv ./build_venv
 COPY --chown=appuser:appuser . .
 
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
@@ -112,8 +112,8 @@ RUN zip -r /home/appuser/static/anx-calibre-manager-koreader-plugin.zip anx-cali
 COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Activate the virtual environment
-ENV PATH="/home/appuser/venv/bin:$PATH"
+# Activate both virtual environments - build_venv first for ebook-converter
+ENV PATH="/home/appuser/build_venv/bin:/home/appuser/venv/bin:$PATH"
 
 # Expose the port the app runs on
 EXPOSE $PORT
