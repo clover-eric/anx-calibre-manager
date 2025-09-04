@@ -20,7 +20,12 @@ RUN apt-get update && \
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
 
-# Create and activate a virtual environment
+# Create a virtual environment for ebook-converter
+RUN python -m venv /home/appuser/ebook_converter_venv
+# Install ebook-converter in its own venv
+RUN /home/appuser/ebook_converter_venv/bin/pip install git+https://github.com/gryf/ebook-converter.git
+
+# Create and activate a virtual environment for the app
 RUN python -m venv /home/appuser/venv
 ENV PATH="/home/appuser/venv/bin:$PATH"
 
@@ -28,15 +33,9 @@ ENV PATH="/home/appuser/venv/bin:$PATH"
 COPY --chown=appuser:appuser requirements.txt .
 
 # Upgrade pip and setuptools, then install dependencies
-RUN pip install --upgrade pip setuptools && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir --no-binary lxml lxml && \
-    pip install gunicorn
-
-# Install ebook-converter
-RUN git clone https://github.com/gryf/ebook-converter.git && \
-    cd ebook-converter && \
-    pip install .
+RUN /home/appuser/venv/bin/pip install --upgrade pip setuptools && \
+    /home/appuser/venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    /home/appuser/venv/bin/pip install gunicorn
 
 # Stage 2: Final image - For running the application
 FROM python:3.12-slim-bookworm
@@ -87,6 +86,7 @@ WORKDIR /home/appuser
 
 # Copy the virtual environment and application source code from builder stage
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
+COPY --from=builder --chown=appuser:appuser /home/appuser/ebook_converter_venv ./ebook_converter_venv
 COPY --chown=appuser:appuser . .
 
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
@@ -111,7 +111,7 @@ COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Activate the virtual environment
-ENV PATH="/home/appuser/venv/bin:$PATH"
+ENV PATH="/home/appuser/ebook_converter_venv/bin:/home/appuser/venv/bin:$PATH"
 
 # Expose the port the app runs on
 EXPOSE $PORT
