@@ -173,16 +173,39 @@ def _extract_content_from_epub(epub_path, chapter_number):
     
     content = target_item.get_content().decode('utf-8', 'ignore')
     try:
-        doc = html.fromstring(content)
-        etree.strip_elements(doc, 'script', 'style')
-        text_content = '\n'.join(line.strip() for line in doc.text_content().split('\n') if line.strip())
-    except:
-        text_content = content
+        # Parse the HTML content from bytes, as it's more robust
+        parser = etree.HTMLParser()
+        doc = etree.fromstring(target_item.get_content(), parser)
+        
+        # Find the body element, supporting namespaced XHTML
+        body = doc.find('{http://www.w3.org/1999/xhtml}body')
+        if body is None:
+            body = doc.find('.//body')
+
+        if body is not None:
+            # Strip script and style tags to remove noise
+            etree.strip_elements(body, 'script', 'style')
+            
+            # Join the string representation of all children of the body tag
+            # This extracts the *inner* HTML of the body.
+            inner_html_parts = [
+                etree.tostring(child, encoding='unicode')
+                for child in body.iterchildren()
+            ]
+            cleaned_content = "".join(inner_html_parts).strip()
+        else:
+            # If no body tag, fall back to a simpler text extraction
+            etree.strip_elements(doc, 'script', 'style')
+            cleaned_content = '\n'.join(line.strip() for line in doc.text_content().split('\n') if line.strip())
+
+    except Exception:
+        # If parsing fails, decode and return the raw content as a last resort
+        cleaned_content = target_item.get_content().decode('utf-8', 'ignore')
         
     return {
         "chapter_title": chapter_title,
         "chapter_href": chapter_href,
-        "content": text_content
+        "content": cleaned_content
     }
 
 def push_calibre_book_to_anx(book_id: int):
