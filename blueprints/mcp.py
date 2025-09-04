@@ -55,7 +55,7 @@ def format_calibre_book_data_for_mcp(book_data):
     if not book_data:
         return None
 
-    book_id = book_data.get('id')
+    book_id = book_data.get('application_id') or book_data.get('id')
     if book_id is None:
         return None
 
@@ -564,6 +564,9 @@ def mcp_endpoint():
             tool_function = tool_info['function']
             
             if tool_name == 'get_anx_book_details':
+                # Convert 'id' parameter to 'book_id' and add username
+                if 'id' in arguments:
+                    arguments['book_id'] = arguments.pop('id')
                 arguments['username'] = g.user['username']
 
             try:
