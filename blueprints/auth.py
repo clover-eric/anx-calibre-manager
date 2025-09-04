@@ -60,7 +60,7 @@ def setup():
             return render_template('setup.html')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         with closing(database.get_db()) as db:
-            db.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')", (username, hashed_password))
+            db.execute("INSERT INTO users (username, password_hash, role, force_epub_conversion) VALUES (?, ?, 'admin', 1)", (username, hashed_password))
             db.commit()
         flash('管理员账户已创建，请登录。')
         return redirect(url_for('auth.login'))

@@ -44,7 +44,7 @@ def update_schema_if_needed(db):
 
     if 'force_epub_conversion' not in columns:
         print("Migrating database: adding 'force_epub_conversion' column to users table.")
-        cursor.execute('ALTER TABLE users ADD COLUMN force_epub_conversion INTEGER NOT NULL DEFAULT 0')
+        cursor.execute('ALTER TABLE users ADD COLUMN force_epub_conversion INTEGER NOT NULL DEFAULT 1')
         db.commit()
 
     if 'kosync_userkey' not in columns:
@@ -115,7 +115,7 @@ def create_schema():
                             send_format_priority TEXT,
                             kindle_email TEXT,
                             theme TEXT DEFAULT 'auto',
-                            force_epub_conversion INTEGER NOT NULL DEFAULT 0,
+                            force_epub_conversion INTEGER NOT NULL DEFAULT 1,
                             kosync_userkey TEXT,
                             stats_enabled INTEGER NOT NULL DEFAULT 1,
                             stats_public INTEGER NOT NULL DEFAULT 0,
