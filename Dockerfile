@@ -52,6 +52,7 @@ RUN apt-get update && \
     fonts-liberation \
     zip \
     locales \
+    libxslt1.1 \
     libxml2 && \
     rm -rf /var/lib/apt/lists/*
 
