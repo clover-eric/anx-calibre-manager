@@ -188,7 +188,8 @@ async function fetchMcpTokens() {
     const listEl = document.getElementById('mcp-token-list');
     listEl.innerHTML = '';
     if (tokens.length === 0) {
-        listEl.innerHTML = `<p>${_('No available tokens.')}</p>`;
+        const noTokensMessage = _('No available tokens.');
+        listEl.innerHTML = `<p>${noTokensMessage}</p>`;
     } else {
         tokens.forEach(token => {
             const item = document.createElement('div');
@@ -212,7 +213,7 @@ window.generateMcpToken = async function() {
         alert(_('New token has been generated.'));
         await fetchMcpTokens();
     } else {
-        alert(result.error || 'Failed to generate token.');
+        alert(result.error || _('Failed to generate token.'));
     }
 }
 
