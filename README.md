@@ -252,10 +252,10 @@ You can get a list of all available tools by calling the `tools/list` method. Th
 -   `get_anx_book_details`: Get details for a specific Anx book.
 -   `push_calibre_book_to_anx`: Push a Calibre book to the Anx library.
 -   `send_calibre_book_to_kindle`: Send a Calibre book to Kindle.
--   `get_calibre_epub_table_of_contents`: Get the table of contents for a Calibre book. Auto-converts to EPUB if necessary.
--   `get_calibre_epub_chapter_content`: Get the full content of a specific chapter from a Calibre book. Auto-converts to EPUB if necessary.
--   `get_anx_epub_table_of_contents`: Get the table of contents for an Anx library book. Auto-converts to EPUB if necessary.
--   `get_anx_epub_chapter_content`: Get the full content of a specific chapter from an Anx library book. Auto-converts to EPUB if necessary.
+-   `get_calibre_epub_table_of_contents`: Get the table of contents for a Calibre book.
+-   `get_calibre_epub_chapter_content`: Get the full content of a specific chapter from a Calibre book.
+-   `get_anx_epub_table_of_contents`: Get the table of contents for an Anx library book.
+-   `get_anx_epub_chapter_content`: Get the full content of a specific chapter from an Anx library book.
 
 ## 💻 Development
 
