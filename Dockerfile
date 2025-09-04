@@ -25,7 +25,7 @@ RUN python -m venv /home/appuser/build_venv
 
 # Install pyinstaller and build ebook-converter
 RUN /home/appuser/build_venv/bin/pip install pyinstaller git+https://github.com/gryf/ebook-converter.git && \
-    /home/appuser/build_venv/bin/pyinstaller --onefile --name ebook-converter /home/appuser/build_venv/bin/ebook-converter
+    /home/appuser/build_venv/bin/pyinstaller --onefile --name ebook-converter --add-data /home/appuser/build_venv/lib/python3.12/site-packages/ebook_converter/data:ebook_converter/data /home/appuser/build_venv/bin/ebook-converter
 
 # Create and activate a virtual environment for the app
 RUN python -m venv /home/appuser/venv
