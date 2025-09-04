@@ -20,10 +20,12 @@ RUN apt-get update && \
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
 
-# Create a virtual environment for ebook-converter
-RUN python -m venv /home/appuser/ebook_converter_venv
-# Install ebook-converter in its own venv
-RUN /home/appuser/ebook_converter_venv/bin/pip install git+https://github.com/gryf/ebook-converter.git
+# Create a virtual environment for building ebook-converter
+RUN python -m venv /home/appuser/build_venv
+
+# Install pyinstaller and build ebook-converter
+RUN /home/appuser/build_venv/bin/pip install pyinstaller git+https://github.com/gryf/ebook-converter.git && \
+    /home/appuser/build_venv/bin/pyinstaller --onefile --name ebook-converter /home/appuser/build_venv/bin/ebook-converter
 
 # Create and activate a virtual environment for the app
 RUN python -m venv /home/appuser/venv
@@ -84,9 +86,9 @@ RUN useradd --uid 1001 --create-home appuser && \
 # Set working directory
 WORKDIR /home/appuser
 
-# Copy the virtual environment and application source code from builder stage
+# Copy the application virtual environment and the compiled ebook-converter binary
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
-COPY --from=builder --chown=appuser:appuser /home/appuser/ebook_converter_venv ./ebook_converter_venv
+COPY --from=builder --chown=appuser:appuser /home/appuser/dist/ebook-converter /usr/local/bin/ebook-converter
 COPY --chown=appuser:appuser . .
 
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
@@ -111,7 +113,7 @@ COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Activate the virtual environment
-ENV PATH="/home/appuser/ebook_converter_venv/bin:/home/appuser/venv/bin:$PATH"
+ENV PATH="/home/appuser/venv/bin:$PATH"
 
 # Expose the port the app runs on
 EXPOSE $PORT
