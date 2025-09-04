@@ -61,7 +61,7 @@ def format_calibre_book_data_for_mcp(book_data):
 
     # Define the fields that are useful for a person reading the output.
     return {
-        'id': book_id,
+        'book_id': book_id,
         'title': book_data.get('title', 'N/A'),
         'authors': book_data.get('authors', []),
         'tags': book_data.get('tags', []),
@@ -217,13 +217,13 @@ def send_calibre_book_to_kindle(book_id: int):
     # The logic function expects a dictionary.
     return _send_to_kindle_logic(dict(g.user), book_id)
 
-def _get_processed_epub_for_anx_book(book_id: int, username: str):
+def _get_processed_epub_for_anx_book(id: int, username: str):
     """
     Core logic to get a processed EPUB for an Anx book.
     It handles converting (if necessary) and fixing the EPUB from a local file path.
     Returns a tuple: (content, filename, needs_conversion_flag) or (None, None, None) on error.
     """
-    book_details = get_anx_book_details(username, book_id)
+    book_details = get_anx_book_details(username, id)
     if not book_details:
         return None, "BOOK_NOT_FOUND", False
 
@@ -351,12 +351,12 @@ def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
         if temp_epub_path and os.path.exists(temp_epub_path):
             os.unlink(temp_epub_path)
 
-def get_anx_epub_table_of_contents(book_id: int):
+def get_anx_epub_table_of_contents(id: int):
     """
     获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表（包含章节序号和标题）。
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
-    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(book_id, g.user['username'])
+    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(id, g.user['username'])
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -371,9 +371,9 @@ def get_anx_epub_table_of_contents(book_id: int):
         
         toc_items = _extract_toc_from_epub(temp_epub_path)
         
-        book_details = get_anx_book_details(g.user['username'], book_id)
+        book_details = get_anx_book_details(g.user['username'], id)
         return {
-            "book_id": book_id,
+            "id": id,
             "book_title": book_details.get('title', '') if book_details else 'N/A',
             "total_chapters": len(toc_items),
             "chapters": toc_items
@@ -384,12 +384,12 @@ def get_anx_epub_table_of_contents(book_id: int):
         if temp_epub_path and os.path.exists(temp_epub_path):
             os.unlink(temp_epub_path)
 
-def get_anx_epub_chapter_content(book_id: int, chapter_number: int):
+def get_anx_epub_chapter_content(id: int, chapter_number: int):
     """
     获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
-    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(book_id, g.user['username'])
+    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(id, g.user['username'])
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -406,9 +406,9 @@ def get_anx_epub_chapter_content(book_id: int, chapter_number: int):
         if "error" in content_result:
             return content_result
         
-        book_details = get_anx_book_details(g.user['username'], book_id)
+        book_details = get_anx_book_details(g.user['username'], id)
         return {
-            "book_id": book_id,
+            "id": id,
             "book_title": book_details.get('title', '') if book_details else 'N/A',
             "chapter_number": chapter_number,
             **content_result
@@ -451,7 +451,7 @@ TOOLS = {
     },
     'get_anx_book_details': {
         'function': get_anx_book_details,
-        'params': {'book_id': int},
+        'params': {'id': int},
         'description': '获取指定 ID 的 Anx 书籍（正在看的书库）的详细信息。'
     },
     'push_calibre_book_to_anx': {
@@ -476,12 +476,12 @@ TOOLS = {
     },
     'get_anx_epub_table_of_contents': {
         'function': get_anx_epub_table_of_contents,
-        'params': {'book_id': int},
+        'params': {'id': int},
         'description': '获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。'
     },
     'get_anx_epub_chapter_content': {
         'function': get_anx_epub_chapter_content,
-        'params': {'book_id': int, 'chapter_number': int},
+        'params': {'id': int, 'chapter_number': int},
         'description': '获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
     }
 }
