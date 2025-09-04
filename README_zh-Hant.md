@@ -253,6 +253,10 @@
 -   `get_anx_book_details`: 取得 Anx 書籍詳情。
 -   `push_calibre_book_to_anx`: 推送 Calibre 書籍到 Anx。
 -   `send_calibre_book_to_kindle`: 傳送 Calibre 書籍到 Kindle。
+-   `get_calibre_epub_table_of_contents`: 獲取 Calibre 書籍的目錄。
+-   `get_calibre_epub_chapter_content`: 獲取 Calibre 書籍指定章節的完整內容。
+-   `get_anx_epub_table_of_contents`: 獲取 Anx 書庫中書籍的目錄。
+-   `get_anx_epub_chapter_content`: 獲取 Anx 書庫中書籍指定章節的完整內容。
 
 ## 💻 開發
 

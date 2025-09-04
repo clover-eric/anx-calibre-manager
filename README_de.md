@@ -253,6 +253,10 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
 -   `get_anx_book_details`: Holen Sie sich Details zu einem bestimmten Anx-Buch.
 -   `push_calibre_book_to_anx`: Schieben Sie ein Calibre-Buch in die Anx-Bibliothek.
 -   `send_calibre_book_to_kindle`: Senden Sie ein Calibre-Buch an Kindle.
+-   `get_calibre_epub_table_of_contents`: Ruft das Inhaltsverzeichnis für ein Calibre-Buch ab.
+-   `get_calibre_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Calibre-Buch ab.
+-   `get_anx_epub_table_of_contents`: Ruft das Inhaltsverzeichnis für ein Buch aus der Anx-Bibliothek ab.
+-   `get_anx_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Buch der Anx-Bibliothek ab.
 
 ## 💻 Entwicklung
 

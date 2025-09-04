@@ -253,6 +253,10 @@ Puedes obtener una lista de todas las herramientas disponibles llamando al méto
 -   `get_anx_book_details`: Obtiene detalles de un libro específico de Anx.
 -   `push_calibre_book_to_anx`: Envía un libro de Calibre a la biblioteca Anx.
 -   `send_calibre_book_to_kindle`: Envía un libro de Calibre a Kindle.
+-   `get_calibre_epub_table_of_contents`: Obtiene la tabla de contenidos de un libro de Calibre.
+-   `get_calibre_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de Calibre.
+-   `get_anx_epub_table_of_contents`: Obtiene la tabla de contenidos de un libro de la biblioteca Anx.
+-   `get_anx_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de la biblioteca Anx.
 
 ## 💻 Desarrollo
 
