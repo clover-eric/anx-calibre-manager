@@ -1,14 +1,19 @@
 import functools
 import json
+import os
+import requests
 from flask import Blueprint, request, jsonify, g
 from contextlib import closing
 import database
+import config_manager
+from ebooklib import epub
+from lxml import etree, html
 
 # Import necessary functions from other modules
 from .main import get_calibre_books
 # Rename the original function to avoid conflicts
 from .main import get_calibre_book_details as get_raw_calibre_book_details
-from .api import _push_calibre_to_anx_logic, _send_to_kindle_logic
+from .api import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
 from anx_library import get_anx_books, get_anx_book_details
 
 mcp_bp = Blueprint('mcp', __name__, url_prefix='/mcp')
@@ -87,6 +92,95 @@ def get_recent_anx_books(limit: int = 20):
     books = get_anx_books(g.user['username'])
     return books[:limit]
 
+# --- EPUB Parsing Helpers ---
+
+def _extract_toc_from_epub(epub_path):
+    """Extracts the table of contents from an EPUB file."""
+    book = epub.read_epub(epub_path)
+    toc_items = []
+    
+    if hasattr(book, 'toc') and book.toc:
+        chapter_num = 1
+        for item in book.toc:
+            if isinstance(item, tuple):
+                section, children = item
+                if hasattr(section, 'title') and hasattr(section, 'href'):
+                    toc_items.append({"chapter_number": chapter_num, "title": section.title, "href": section.href})
+                    chapter_num += 1
+                for child in children:
+                    if hasattr(child, 'title') and hasattr(child, 'href'):
+                        toc_items.append({"chapter_number": chapter_num, "title": f"  {child.title}", "href": child.href})
+                        chapter_num += 1
+            else:
+                if hasattr(item, 'title') and hasattr(item, 'href'):
+                    toc_items.append({"chapter_number": chapter_num, "title": item.title, "href": item.href})
+                    chapter_num += 1
+    
+    if not toc_items:
+        chapter_num = 1
+        for item_id, _ in book.spine:
+            item = book.get_item_with_id(item_id)
+            if item and item.get_type() == epub.ITEM_DOCUMENT:
+                title = os.path.splitext(os.path.basename(item.get_name()))[0]
+                toc_items.append({"chapter_number": chapter_num, "title": title, "href": item.get_name()})
+                chapter_num += 1
+    return toc_items
+
+def _extract_content_from_epub(epub_path, chapter_number):
+    """Extracts the content of a specific chapter from an EPUB file."""
+    book = epub.read_epub(epub_path)
+    
+    chapter_items = []
+    if hasattr(book, 'toc') and book.toc:
+        for item in book.toc:
+            if isinstance(item, tuple):
+                section, children = item
+                if hasattr(section, 'title') and hasattr(section, 'href'):
+                    chapter_items.append((section.title, section.href))
+                for child in children:
+                    if hasattr(child, 'title') and hasattr(child, 'href'):
+                        chapter_items.append((child.title, child.href))
+            else:
+                if hasattr(item, 'title') and hasattr(item, 'href'):
+                    chapter_items.append((item.title, item.href))
+    
+    if not chapter_items:
+        for item_id, _ in book.spine:
+            item = book.get_item_with_id(item_id)
+            if item and item.get_type() == epub.ITEM_DOCUMENT:
+                title = os.path.splitext(os.path.basename(item.get_name()))[0]
+                chapter_items.append((title, item.get_name()))
+    
+    if not (1 <= chapter_number <= len(chapter_items)):
+        return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(chapter_items)}"}
+    
+    chapter_title, chapter_href = chapter_items[chapter_number - 1]
+    clean_href = chapter_href.split('#')[0]
+    
+    target_item = book.get_item_with_href(clean_href)
+    if not target_item:
+        for item in book.get_items():
+            if item.get_name() == clean_href:
+                target_item = item
+                break
+    
+    if not target_item:
+        return {"error": f"无法找到章节文件: {clean_href}"}
+    
+    content = target_item.get_content().decode('utf-8', 'ignore')
+    try:
+        doc = html.fromstring(content)
+        etree.strip_elements(doc, 'script', 'style')
+        text_content = '\n'.join(line.strip() for line in doc.text_content().split('\n') if line.strip())
+    except:
+        text_content = content
+        
+    return {
+        "chapter_title": chapter_title,
+        "chapter_href": chapter_href,
+        "content": text_content
+    }
+
 def push_calibre_book_to_anx(book_id: int):
     # The logic function expects a dictionary. g.user is a sqlite3.Row, which is dict-like.
     # To be safe and explicit, we convert it to a standard dict.
@@ -95,6 +189,146 @@ def push_calibre_book_to_anx(book_id: int):
 def send_calibre_book_to_kindle(book_id: int):
     # The logic function expects a dictionary.
     return _send_to_kindle_logic(dict(g.user), book_id)
+
+def get_calibre_epub_table_of_contents(book_id: int):
+    """
+    获取指定 Calibre 书籍的 EPUB 目录章节列表（包含章节序号和标题）。
+    如果书籍不是 EPUB 格式，会尝试自动转换。
+    """
+    user_dict = dict(g.user)
+    epub_content, epub_filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+
+    if epub_filename == 'CONVERTER_NOT_FOUND':
+        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
+    if not epub_content:
+        return {'error': '无法获取或处理书籍的 EPUB 文件。'}
+
+    import tempfile
+    temp_epub_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
+            temp_file.write(epub_content)
+            temp_epub_path = temp_file.name
+        
+        toc_items = _extract_toc_from_epub(temp_epub_path)
+        
+        book_details = get_raw_calibre_book_details(book_id)
+        return {
+            "id": book_id,
+            "book_title": book_details.get('title', '') if book_details else 'N/A',
+            "total_chapters": len(toc_items),
+            "chapters": toc_items
+        }
+    except Exception as e:
+        return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
+    finally:
+        if temp_epub_path and os.path.exists(temp_epub_path):
+            os.unlink(temp_epub_path)
+
+def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
+    """
+    获取指定 Calibre 书籍的指定章节完整内容。
+    如果书籍不是 EPUB 格式，会尝试自动转换。
+    """
+    user_dict = dict(g.user)
+    epub_content, epub_filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+
+    if epub_filename == 'CONVERTER_NOT_FOUND':
+        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
+    if not epub_content:
+        return {'error': '无法获取或处理书籍的 EPUB 文件。'}
+
+    import tempfile
+    temp_epub_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
+            temp_file.write(epub_content)
+            temp_epub_path = temp_file.name
+        
+        content_result = _extract_content_from_epub(temp_epub_path, chapter_number)
+        if "error" in content_result:
+            return content_result
+        
+        book_details = get_raw_calibre_book_details(book_id)
+        return {
+            "id": book_id,
+            "book_title": book_details.get('title', '') if book_details else 'N/A',
+            "chapter_number": chapter_number,
+            **content_result
+        }
+    except Exception as e:
+        return {"error": f"获取章节内容时出错: {str(e)}"}
+    finally:
+        if temp_epub_path and os.path.exists(temp_epub_path):
+            os.unlink(temp_epub_path)
+
+def get_anx_epub_table_of_contents(book_id: int):
+    """
+    获取指定 Anx 书库（正在看的书库）中书籍的 EPUB 目录章节列表（包含章节序号和标题）。
+    仅支持 EPUB 格式的电子书。
+    """
+    book_details = get_anx_book_details(g.user['username'], book_id)
+    if not book_details:
+        return {"error": f"未找到 ID 为 {book_id} 的书籍"}
+    
+    file_path = book_details.get('file_path', '')
+    if not file_path or not file_path.lower().endswith('.epub'):
+        return {"error": "书籍文件路径不存在或不是 EPUB 格式。"}
+    
+    try:
+        from anx_library import get_anx_user_dirs
+        dirs = get_anx_user_dirs(g.user['username'])
+        if not dirs: return {"error": "无法获取用户目录"}
+        
+        full_file_path = os.path.join(dirs['base'], 'data', file_path)
+        if not os.path.exists(full_file_path):
+            return {"error": f"EPUB 文件不存在: {full_file_path}"}
+        
+        toc_items = _extract_toc_from_epub(full_file_path)
+        
+        return {
+            "id": book_id,
+            "book_title": book_details.get('title', ''),
+            "total_chapters": len(toc_items),
+            "chapters": toc_items
+        }
+    except Exception as e:
+        return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
+
+def get_anx_epub_chapter_content(book_id: int, chapter_number: int):
+    """
+    获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。
+    仅支持 EPUB 格式的电子书。
+    """
+    book_details = get_anx_book_details(g.user['username'], book_id)
+    if not book_details:
+        return {"error": f"未找到 ID 为 {book_id} 的书籍"}
+
+    file_path = book_details.get('file_path', '')
+    if not file_path or not file_path.lower().endswith('.epub'):
+        return {"error": "书籍文件路径不存在或不是 EPUB 格式。"}
+
+    try:
+        from anx_library import get_anx_user_dirs
+        dirs = get_anx_user_dirs(g.user['username'])
+        if not dirs: return {"error": "无法获取用户目录"}
+
+        full_file_path = os.path.join(dirs['base'], 'data', file_path)
+        if not os.path.exists(full_file_path):
+            return {"error": f"EPUB 文件不存在: {full_file_path}"}
+
+        content_result = _extract_content_from_epub(full_file_path, chapter_number)
+        if "error" in content_result:
+            return content_result
+
+        return {
+            "id": book_id,
+            "book_title": book_details.get('title', ''),
+            "chapter_number": chapter_number,
+            **content_result
+        }
+    except Exception as e:
+        return {"error": f"获取章节内容时出错: {str(e)}"}
 
 # --- Main MCP Endpoint ---
 
@@ -124,22 +358,42 @@ TOOLS = {
     'get_recent_anx_books': {
         'function': get_recent_anx_books,
         'params': {'limit': int},
-        'description': '获取当前用户的 Anx 书库中最近的书籍列表。'
+        'description': '获取当前用户的 Anx 书库（正在看的书库）中最近的书籍列表。'
     },
     'get_anx_book_details': {
         'function': get_anx_book_details,
         'params': {'book_id': int},
-        'description': '获取指定 ID 的 Anx 书籍的详细信息。'
+        'description': '获取指定 ID 的 Anx 书籍（正在看的书库）的详细信息。'
     },
     'push_calibre_book_to_anx': {
         'function': push_calibre_book_to_anx,
         'params': {'book_id': int},
-        'description': '将指定的 Calibre 书籍推送到当前用户的 Anx 书库。'
+        'description': '将指定的 Calibre 书籍推送到当前用户的 Anx 书库（正在看的书库）。'
     },
     'send_calibre_book_to_kindle': {
         'function': send_calibre_book_to_kindle,
         'params': {'book_id': int},
         'description': '将指定的 Calibre 书籍发送到当前用户配置的 Kindle 邮箱。'
+    },
+    'get_calibre_epub_table_of_contents': {
+        'function': get_calibre_epub_table_of_contents,
+        'params': {'book_id': int},
+        'description': '获取指定 Calibre 书籍的 EPUB 目录章节列表（包含章节序号和标题）。仅支持 EPUB 格式。'
+    },
+    'get_calibre_epub_chapter_content': {
+        'function': get_calibre_epub_chapter_content,
+        'params': {'book_id': int, 'chapter_number': int},
+        'description': '获取指定 Calibre 书籍的指定章节完整内容。仅支持 EPUB 格式。'
+    },
+    'get_anx_epub_table_of_contents': {
+        'function': get_anx_epub_table_of_contents,
+        'params': {'book_id': int},
+        'description': '获取指定 Anx 书库（正在看的书库）中书籍的 EPUB 目录章节列表。仅支持 EPUB 格式。'
+    },
+    'get_anx_epub_chapter_content': {
+        'function': get_anx_epub_chapter_content,
+        'params': {'book_id': int, 'chapter_number': int},
+        'description': '获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。仅支持 EPUB 格式。'
     }
 }
 
