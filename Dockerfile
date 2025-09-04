@@ -13,6 +13,7 @@ RUN apt-get update && \
     libxml2-dev \
     libxslt-dev \
     poppler-utils \
+    zlib1g-dev \
     fonts-liberation \
     zip
 
