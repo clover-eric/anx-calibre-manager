@@ -30,6 +30,7 @@ COPY --chown=appuser:appuser requirements.txt .
 # Upgrade pip and setuptools, then install dependencies
 RUN pip install --upgrade pip setuptools && \
     pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir --no-binary lxml lxml && \
     pip install gunicorn
 
 # Install ebook-converter
@@ -48,7 +49,8 @@ RUN apt-get update && \
     poppler-utils \
     fonts-liberation \
     zip \
-    locales && \
+    locales \
+    libxml2 && \
     rm -rf /var/lib/apt/lists/*
 
 # Configure locales

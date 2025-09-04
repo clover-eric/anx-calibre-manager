@@ -7,7 +7,7 @@ qrcode[pil]==7.4.2
 requests==2.32.4
 Werkzeug==3.0.6
 ebooklib==0.19
-lxml==6.0.0
-Flask-Babel
-polib
+lxml==6.0.1
+Flask-Babel=4.0.0
+polib=1.2.0
 googletrans==4.0.2
