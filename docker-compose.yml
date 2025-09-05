@@ -18,6 +18,7 @@ services:
       - CALIBRE_PASSWORD=your_calibre_password
       - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library
       - CALIBRE_ADD_DUPLICATES=false
+      - REQUIRE_INVITE_CODE=true # 默认需要邀请码注册，设置为 false 则禁用
       - SMTP_SERVER=
       - SMTP_PORT=587
       - SMTP_USERNAME=

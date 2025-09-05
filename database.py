@@ -59,6 +59,13 @@ def update_schema_if_needed(db):
         create_mcp_tokens_table(cursor)
         db.commit()
 
+    # 检查 invite_codes 表是否存在
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='invite_codes'")
+    if cursor.fetchone() is None:
+        print("Migrating database: creating 'invite_codes' table.")
+        create_invite_codes_table(cursor)
+        db.commit()
+
     if 'stats_enabled' not in columns:
         print("Migrating database: adding 'stats_enabled' column to users table.")
         cursor.execute('ALTER TABLE users ADD COLUMN stats_enabled INTEGER NOT NULL DEFAULT 1')
@@ -84,6 +91,25 @@ def create_mcp_tokens_table(cursor):
             token TEXT UNIQUE NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        );
+    ''')
+
+def create_invite_codes_table(cursor):
+    """创建邀请码表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE invite_codes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT UNIQUE NOT NULL,
+            created_by INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            used_at TIMESTAMP NULL,
+            used_by INTEGER NULL,
+            expires_at TIMESTAMP NULL,
+            max_uses INTEGER DEFAULT 1,
+            current_uses INTEGER DEFAULT 0,
+            is_active INTEGER DEFAULT 1,
+            FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE CASCADE,
+            FOREIGN KEY (used_by) REFERENCES users (id) ON DELETE SET NULL
         );
     ''')
 
@@ -124,6 +150,7 @@ def create_schema():
                     ''')
                     # MCP Tokens Table
                     create_mcp_tokens_table(cursor)
+                    create_invite_codes_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

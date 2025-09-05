@@ -29,6 +29,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
     - **Admin**: Full control over users, global settings, and all books.
     - **Maintainer**: Can edit all book metadata.
     - **User**: Can upload books, manage their own WebDAV library, MCP tokens, send books to Kindle, and **edit books they have uploaded**.
+- **Invite-Only Registration**: Admins can generate invite codes to control user registration. This feature is enabled by default to prevent unauthorized sign-ups.
 - **User-Editable Uploaded Books**: Regular users can now edit metadata for books they have uploaded. This functionality relies on a Calibre custom column named `#library` (type: `Text, with commas treated as separate tags`). When a user uploads a book, their username is automatically saved to this field. Users can then edit any book where they are listed as the owner in the `#library` field.
     - **Recommendation for Docker Users**: To enable this feature, please ensure you have a custom column in your Calibre library named `#library` (case-sensitive) with the type `Text, with commas treated as separate tags`.
 - **Easy Deployment**: Deployable as a single Docker container with built-in multi-language locale support.
@@ -169,6 +170,7 @@ The application is configured via environment variables.
 | `CALIBRE_PASSWORD` | Password for your Calibre server. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | The default Calibre library ID for browsing, searching, and uploading books. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Whether to allow uploading duplicate books. | `false` |
+| `REQUIRE_INVITE_CODE` | Whether to require an invite code for registration. | `true` |
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
 | `SMTP_USERNAME` | SMTP username. | `""` |

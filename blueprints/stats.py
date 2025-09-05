@@ -4,6 +4,7 @@ import os
 from flask import (
     Blueprint, render_template, g, abort
 )
+from flask_babel import gettext as _
 from contextlib import closing
 import database
 from anx_library import get_anx_user_dirs
@@ -12,12 +13,12 @@ bp = Blueprint('stats', __name__, url_prefix='/stats')
 
 def format_reading_time(seconds):
     if not seconds or seconds == 0:
-        return "0分钟"
+        return _("0 minutes")
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
     if hours > 0:
-        return f"{int(hours)}小时 {int(minutes)}分钟"
-    return f"{int(minutes)}分钟"
+        return _("%(hours)s hours %(minutes)s minutes", hours=int(hours), minutes=int(minutes))
+    return _("%(minutes)s minutes", minutes=int(minutes))
 
 @bp.route('/<username>')
 def user_stats(username):
@@ -30,14 +31,14 @@ def user_stats(username):
     is_owner = g.user and g.user.id == user['id']
 
     if not user['stats_enabled']:
-        return "This user has disabled their stats page.", 403
+        return _("This user has disabled their stats page."), 403
 
     if not user['stats_public'] and not is_owner:
-        return "This user's stats page is private.", 403
+        return _("This user's stats page is private."), 403
 
     dirs = get_anx_user_dirs(user['username'])
     if not dirs or not os.path.exists(dirs["db_path"]):
-        return "Anx library not found for this user.", 404
+        return _("Anx library not found for this user."), 404
 
     with closing(sqlite3.connect(dirs["db_path"])) as user_db:
         user_db.row_factory = sqlite3.Row

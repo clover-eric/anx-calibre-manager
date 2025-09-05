@@ -29,6 +29,7 @@
     - **管理员 (Admin)**: 对用户、全局设置和所有书籍拥有完全控制权。
     - **维护者 (Maintainer)**: 可以编辑所有书籍元数据。
     - **普通用户 (User)**: 可以上传书籍、管理自己的 WebDAV 书库、MCP token、发送书籍到 Kindle，以及**编辑自己上传的书籍**。
+- **仅限邀请注册**: 管理员可以生成邀请码来控制用户注册。此功能默认启用，以防止未经授权的注册。
 - **用户可编辑自己上传的书籍**: 普通用户现在可以编辑自己上传的书籍的元数据。此功能依赖于 Calibre 中的一个名为 `#library` 的自定义列（类型：`文本，逗号分隔`）。当用户上传书籍时，他们的用户名会自动保存到该字段。用户可以编辑 `#library` 字段中记录的、由自己上传的任何书籍。
     - **Docker 用户建议**: 为启用此功能，请确保您的 Calibre 书库中有一个名为 `#library` 的自定义列（区分大小写），类型为 `文本，逗号分隔`。
 - **轻松部署**: 可作为单个 Docker 容器进行部署，内置了多语言环境支持。
@@ -169,6 +170,7 @@
 | `CALIBRE_PASSWORD` | 您的 Calibre 服务器的密码。 | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | 用于浏览、搜索和上传书籍的默认 Calibre 库 ID。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允许上传重复的书籍。 | `false` |
+| `REQUIRE_INVITE_CODE` | 注册时是否需要邀请码。 | `true` |
 | `SMTP_SERVER` | 用于发送邮件 (例如，推送到 Kindle) 的 SMTP 服务器。 | `""` |
 | `SMTP_PORT` | SMTP 端口。 | `587` |
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |

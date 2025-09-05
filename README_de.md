@@ -29,6 +29,7 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
     - **Admin**: Volle Kontrolle über Benutzer, globale Einstellungen und alle Bücher.
     - **Maintainer**: Kann alle Buchmetadaten bearbeiten.
     - **Benutzer**: Kann Bücher hochladen, seine eigene WebDAV-Bibliothek, MCP-Token verwalten, Bücher an Kindle senden und **von ihm hochgeladene Bücher bearbeiten**.
+- **Registrierung nur mit Einladung**: Administratoren können Einladungscodes generieren, um die Benutzerregistrierung zu steuern. Diese Funktion ist standardmäßig aktiviert, um unbefugte Anmeldungen zu verhindern.
 - **Vom Benutzer bearbeitbare hochgeladene Bücher**: Reguläre Benutzer können jetzt Metadaten für von ihnen hochgeladene Bücher bearbeiten. Diese Funktionalität basiert auf einer benutzerdefinierten Spalte in Calibre namens `#library` (Typ: `Text, wobei Kommas als separate Tags behandelt werden`). Wenn ein Benutzer ein Buch hochlädt, wird sein Benutzername automatisch in diesem Feld gespeichert. Benutzer können dann jedes Buch bearbeiten, bei dem sie im Feld `#library` als Eigentümer aufgeführt sind.
     - **Empfehlung für Docker-Benutzer**: Um diese Funktion zu aktivieren, stellen Sie bitte sicher, dass Sie in Ihrer Calibre-Bibliothek eine benutzerdefinierte Spalte namens `#library` (Groß-/Kleinschreibung beachten) vom Typ `Text, wobei Kommas als separate Tags behandelt werden` haben.
 - **Einfache Bereitstellung**: Als einzelner Docker-Container mit integrierter mehrsprachiger Locale-Unterstützung bereitstellbar.
@@ -170,6 +171,7 @@ Die Anwendung wird über Umgebungsvariablen konfiguriert.
 | `CALIBRE_PASSWORD` | Passwort für Ihren Calibre-Server. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | Die Standard-Calibre-Bibliotheks-ID zum Durchsuchen, Suchen und Hochladen von Büchern. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Ob das Hochladen doppelter Bücher erlaubt ist. | `false` |
+| `REQUIRE_INVITE_CODE` | Ob für die Registrierung ein Einladungscode erforderlich ist. | `true` |
 | `SMTP_SERVER` | SMTP-Server zum Senden von E-Mails (z.B. für Kindle). | `""` |
 | `SMTP_PORT` | SMTP-Port. | `587` |
 | `SMTP_USERNAME` | SMTP-Benutzername. | `""` |

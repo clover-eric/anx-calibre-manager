@@ -29,6 +29,7 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
     - **Admin**: Contrôle total sur les utilisateurs, les paramètres globaux et tous les livres.
     - **Mainteneur**: Peut modifier les métadonnées de tous les livres.
     - **Utilisateur**: Peut téléverser des livres, gérer sa propre bibliothèque WebDAV, ses jetons MCP, envoyer des livres à Kindle et **modifier les livres qu'il a téléversés**.
+- **Inscription sur Invitation Uniquement**: Les administrateurs peuvent générer des codes d'invitation pour contrôler l'inscription des utilisateurs. Cette fonctionnalité est activée par défaut pour empêcher les inscriptions non autorisées.
 - **Livres Téléversés Modifiables par l'Utilisateur**: Les utilisateurs réguliers peuvent désormais modifier les métadonnées des livres qu'ils ont téléversés. Cette fonctionnalité repose sur une colonne personnalisée de Calibre nommée `#library` (type : `Texte, avec les virgules traitées comme des balises distinctes`). Lorsqu'un utilisateur téléverse un livre, son nom d'utilisateur est automatiquement enregistré dans ce champ. Les utilisateurs peuvent alors modifier tout livre où ils sont listés comme propriétaires dans le champ `#library`.
     - **Recommandation pour les Utilisateurs de Docker**: Pour activer cette fonctionnalité, veuillez vous assurer que vous avez une colonne personnalisée dans votre bibliothèque Calibre nommée `#library` (sensible à la casse) de type `Texte, avec les virgules traitées comme des balises distinctes`.
 - **Déploiement Facile**: Déployable en tant que conteneur Docker unique avec prise en charge des locales multilingues intégrée.
@@ -170,6 +171,7 @@ L'application est configurée via des variables d'environnement.
 | `CALIBRE_PASSWORD` | Mot de passe pour votre serveur Calibre. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | L'ID de la bibliothèque Calibre par défaut pour la navigation, la recherche et le téléversement de livres. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Autoriser le téléversement de livres en double. | `false` |
+| `REQUIRE_INVITE_CODE` | Exiger un code d'invitation pour l'inscription. | `true` |
 | `SMTP_SERVER` | Serveur SMTP pour l'envoi d'e-mails (ex: pour Kindle). | `""` |
 | `SMTP_PORT` | Port SMTP. | `587` |
 | `SMTP_USERNAME` | Nom d'utilisateur SMTP. | `""` |

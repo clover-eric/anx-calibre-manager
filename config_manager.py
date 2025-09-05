@@ -36,6 +36,9 @@ DEFAULT_CONFIG = {
     'SMTP_USERNAME': {'env': 'SMTP_USERNAME', 'default': ''},
     'SMTP_PASSWORD': {'env': 'SMTP_PASSWORD', 'default': ''},
     'SMTP_ENCRYPTION': {'env': 'SMTP_ENCRYPTION', 'default': 'ssl'}, # 'ssl', 'starttls', or 'none'
+
+    # Registration settings
+    'REQUIRE_INVITE_CODE': {'env': 'REQUIRE_INVITE_CODE', 'default': True},
 }
 
 # Initialize config as a dictionary first to avoid NameError during initial load
@@ -70,6 +73,9 @@ def load_config():
                     loaded_config[key] = int(val)
                 except (ValueError, TypeError):
                     loaded_config[key] = values['default']
+            elif key in ['REQUIRE_INVITE_CODE']:
+                # Handle boolean values from environment variables
+                loaded_config[key] = val.lower() in ('true', '1', 'yes', 'on')
             else:
                 loaded_config[key] = val
         # Priority 3: Default values

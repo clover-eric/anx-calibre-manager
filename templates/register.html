@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Register') }} - Anx Calibre Manager{% endblock %}
+
+{% block body_class %}login-body{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    <h2>{{ _('Register for Anx Calibre Manager') }}</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form id="registerForm" style="margin-top: 2rem;">
+        <input type="hidden" name="language" id="language-input" value="{{ get_locale() }}">
+        
+        {% if require_invite_code %}
+        <div class="form-group">
+            <label for="invite_code">{{ _('Invite Code') }} <span class="required">*</span></label>
+            <input type="text" id="invite_code" name="invite_code" required>
+            <small class="form-help">{{ _('Please enter the invite code provided by an administrator') }}</small>
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="username">{{ _('Username') }} <span class="required">*</span></label>
+            <input type="text" id="username" name="username" required minlength="3" maxlength="50">
+            <small class="form-help">{{ _('3-50 characters, letters, numbers, and underscores allowed') }}</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">{{ _('Password') }} <span class="required">*</span></label>
+            <input type="password" id="password" name="password" required minlength="6">
+            <small class="form-help">{{ _('At least 6 characters') }}</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm_password">{{ _('Confirm Password') }} <span class="required">*</span></label>
+            <input type="password" id="confirm_password" name="confirm_password" required minlength="6">
+        </div>
+        
+        <div class="form-group">
+            <label for="language_select">{{ _('Language') }}</label>
+            <select id="language_select" name="language">
+                {% for code, name in available_languages.items() %}
+                    <option value="{{ code }}" {% if code == get_locale() %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit" class="button-primary" style="width: 100%;">{{ _('Register') }}</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <p>{{ _('Already have an account?') }} <a href="{{ url_for('auth.login') }}">{{ _('Login here') }}</a></p>
+    </div>
+    
+    <div id="error-message" style="color: red; margin-top: 1rem;"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}

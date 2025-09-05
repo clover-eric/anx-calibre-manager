@@ -29,6 +29,7 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
     - **Administrador**: Control total sobre usuarios, configuraciones globales y todos los libros.
     - **Mantenedor**: Puede editar los metadatos de todos los libros.
     - **Usuario**: Puede subir libros, gestionar su propia biblioteca WebDAV, tokens MCP, enviar libros a Kindle y **editar los libros que ha subido**.
+- **Registro solo por Invitación**: Los administradores pueden generar códigos de invitación para controlar el registro de usuarios. Esta función está habilitada por defecto para evitar registros no autorizados.
 - **Libros Subidos Editables por el Usuario**: Los usuarios regulares ahora pueden editar los metadatos de los libros que han subido. Esta funcionalidad se basa en una columna personalizada de Calibre llamada `#library` (tipo: `Texto, con comas tratadas como etiquetas separadas`). Cuando un usuario sube un libro, su nombre de usuario se guarda automáticamente en este campo. Los usuarios pueden editar cualquier libro en el que figuren como propietarios en el campo `#library`.
     - **Recomendación para Usuarios de Docker**: Para habilitar esta función, asegúrate de tener una columna personalizada en tu biblioteca de Calibre llamada `#library` (sensible a mayúsculas y minúsculas) con el tipo `Texto, con comas tratadas como etiquetas separadas`.
 - **Despliegue Fácil**: Desplegable como un único contenedor de Docker con soporte de localización multilingüe incorporado.
@@ -170,6 +171,7 @@ La aplicación se configura a través de variables de entorno.
 | `CALIBRE_PASSWORD` | Contraseña para tu servidor Calibre. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | El ID de la biblioteca de Calibre predeterminada para navegar, buscar y subir libros. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Si se permite subir libros duplicados. | `false` |
+| `REQUIRE_INVITE_CODE` | Si se requiere un código de invitación para el registro. | `true` |
 | `SMTP_SERVER` | Servidor SMTP para enviar correos electrónicos (ej., para Kindle). | `""` |
 | `SMTP_PORT` | Puerto SMTP. | `587` |
 | `SMTP_USERNAME` | Nombre de usuario SMTP. | `""` |

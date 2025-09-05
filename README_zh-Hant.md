@@ -29,6 +29,7 @@
     - **管理員 (Admin)**: 對使用者、全域設定和所有書籍擁有完全控制權。
     - **維護者 (Maintainer)**: 可以編輯所有書籍元資料。
     - **普通使用者 (User)**: 可以上傳書籍、管理自己的 WebDAV 書庫、MCP token、傳送書籍到 Kindle，以及**編輯自己上傳的書籍**。
+- **僅限邀請註冊**: 管理員可以產生邀請碼來控制使用者註冊。此功能預設啟用，以防止未經授權的註冊。
 - **使用者可編輯自己上傳的書籍**: 普通使用者現在可以編輯自己上傳的書籍的元資料。此功能依賴於 Calibre 中的一個名為 `#library` 的自訂欄位（類型：`文字，逗號分隔`）。當使用者上傳書籍時，他們的使用者名稱會自動儲存到該欄位。使用者可以編輯 `#library` 欄位中記錄的、由自己上傳的任何書籍。
     - **Docker 使用者建議**: 為啟用此功能，請確保您的 Calibre 書庫中有一個名為 `#library` 的自訂欄位（區分大小寫），類型為 `文字，逗號分隔`。
 - **輕鬆部署**: 可作為單一 Docker 容器進行部署，內建了多語言環境支援。
@@ -170,6 +171,7 @@
 | `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。 | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | 用於瀏覽、搜尋和上傳書籍的預設 Calibre 庫 ID。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允許上傳重複的書籍。 | `false` |
+| `REQUIRE_INVITE_CODE` | 註冊時是否需要邀請碼。 | `true` |
 | `SMTP_SERVER` | 用於傳送郵件 (例如，推送到 Kindle) 的 SMTP 伺服器。 | `""` |
 | `SMTP_PORT` | SMTP 埠號。 | `587` |
 | `SMTP_USERNAME` | SMTP 使用者名稱。 | `""` |

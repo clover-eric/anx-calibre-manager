@@ -15,6 +15,7 @@ import tempfile
 import mimetypes
 import hashlib
 from flask import Blueprint, request, jsonify, g, session, send_file, send_from_directory
+from flask_babel import gettext as _
 from contextlib import closing
 from werkzeug.utils import secure_filename
 import sqlite3
@@ -43,7 +44,7 @@ def admin_required_api(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None or not g.user.is_admin:
-            return jsonify({'error': '需要管理员权限。'}), 403
+            return jsonify({'error': _('Administrator permission required.')}), 403
         return f(*args, **kwargs)
     return decorated_function
 
@@ -52,7 +53,7 @@ def maintainer_required_api(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None or not g.user.is_maintainer:
-            return jsonify({'error': '需要维护者或管理员权限。'}), 403
+            return jsonify({'error': _('Maintainer or administrator permission required.')}), 403
         return f(*args, **kwargs)
     return decorated_function
 
@@ -63,7 +64,7 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
     
     if not all([config.get('SMTP_SERVER'), config.get('SMTP_PORT'), config.get('SMTP_USERNAME')]):
         logging.error("SMTP settings are incomplete.")
-        return False, "SMTP 未完全配置。"
+        return False, _("SMTP is not fully configured.")
         
     from_address = config['SMTP_USERNAME']
     
@@ -110,16 +111,16 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
         server.send_message(msg, from_address, [to_address])
         logging.info("Email sent successfully.")
         server.quit()
-        return True, "邮件发送成功。"
+        return True, _("Email sent successfully.")
     except Exception as e:
         logging.error(f"Failed to send email: {e}", exc_info=True)
-        return False, f"邮件发送失败: {e}"
+        return False, _("Failed to send email: %(error)s", error=e)
 
 @api_bp.route('/download_anx_book/<int:book_id>', methods=['GET'])
 def download_anx_book_api(book_id):
     dirs = get_anx_user_dirs(g.user.username)
     if not dirs or not os.path.exists(dirs["db_path"]):
-        return jsonify({'error': 'Anx 数据库未找到。'}), 404
+        return jsonify({'error': _('Anx database not found.')}), 404
         
     try:
         with closing(sqlite3.connect(dirs["db_path"])) as db:
@@ -128,14 +129,14 @@ def download_anx_book_api(book_id):
             cursor.execute("SELECT file_path FROM tb_books WHERE id = ?", (book_id,))
             book_row = cursor.fetchone()
             if not book_row or not book_row['file_path']:
-                return jsonify({'error': f'未找到 ID 为 {book_id} 的书籍文件。'}), 404
+                return jsonify({'error': _('Book file with ID %(book_id)s not found.', book_id=book_id)}), 404
             
             data_dir = dirs["workspace"]
             return send_from_directory(data_dir, book_row['file_path'], as_attachment=True)
             
     except Exception as e:
         print(f"Error downloading anx book {book_id} for user {g.user.username}: {e}")
-        return jsonify({'error': f'下载书籍时出错: {e}'}), 500
+        return jsonify({'error': _('Error downloading book: %(error)s', error=e)}), 500
 
 
 @api_bp.route('/users', methods=['GET'])
@@ -153,7 +154,7 @@ def add_user():
     password = data.get('password')
     role = data.get('role', 'user')
     if not username or not password:
-        return jsonify({'error': '用户名和密码是必填项。'}), 400
+        return jsonify({'error': _('Username and password are required.')}), 400
 
     hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     kosync_userkey = hashlib.md5(password.encode('utf-8')).hexdigest()
@@ -170,11 +171,11 @@ def add_user():
             if not success:
                 # Log the error, but don't fail the whole request since the user was created.
                 logging.error(f"Failed to initialize Anx data for new user {username}: {message}")
-                return jsonify({'message': f'用户已成功添加，但初始化 Anx 目录失败: {message}'}), 201
+                return jsonify({'message': _('User added successfully, but failed to initialize Anx directory: %(message)s', message=message)}), 201
 
-            return jsonify({'message': '用户已成功添加并初始化。'}), 201
+            return jsonify({'message': _('User added and initialized successfully.')}), 201
         except database.sqlite3.IntegrityError:
-            return jsonify({'error': '用户名已存在。'}), 409
+            return jsonify({'error': _('Username already exists.')}), 409
 
 
 @api_bp.route('/users', methods=['PUT'])
@@ -187,7 +188,7 @@ def update_user():
     role = data.get('role', 'user')
 
     if not user_id or not username:
-        return jsonify({'error': '用户 ID 和用户名是必填项。'}), 400
+        return jsonify({'error': _('User ID and username are required.')}), 400
 
     with closing(database.get_db()) as db:
         if password:
@@ -203,7 +204,7 @@ def update_user():
                 (username, role, user_id)
             )
         db.commit()
-        return jsonify({'message': '用户已成功更新。'})
+        return jsonify({'message': _('User updated successfully.')})
 
 @api_bp.route('/users', methods=['DELETE'])
 @admin_required_api
@@ -211,7 +212,7 @@ def delete_user():
     data = request.get_json()
     user_id = data.get('user_id')
     if not user_id:
-        return jsonify({'error': '用户 ID 是必填项。'}), 400
+        return jsonify({'error': _('User ID is required.')}), 400
 
     with closing(database.get_db()) as db:
         # First, get the username to delete their data directory
@@ -227,12 +228,12 @@ def delete_user():
                 except Exception as e:
                     logging.error(f"Failed to delete WebDAV directory for user {username}: {e}")
                     # Don't block DB deletion, but return an error message
-                    return jsonify({'error': f'删除用户数据目录时出错: {e}'}), 500
+                    return jsonify({'error': _('Error deleting user data directory: %(error)s', error=e)}), 500
         
         # Now, delete the user from the database
         db.execute('DELETE FROM users WHERE id = ?', (user_id,))
         db.commit()
-        return jsonify({'message': '用户及其数据已成功删除。'})
+        return jsonify({'message': _('User and their data have been successfully deleted.')})
 
 
 @api_bp.route('/user_settings', methods=['GET', 'POST'])
@@ -285,7 +286,7 @@ def user_settings_api():
                 if 'language' in data:
                     session['language'] = data['language']
 
-        return jsonify({'success': True, 'message': '用户设置已更新。'})
+        return jsonify({'success': True, 'message': _('User settings updated.')})
     else: # GET
         priority_str = g.user.send_format_priority
         if priority_str:
@@ -314,7 +315,7 @@ def global_settings_api():
         # Handle checkbox boolean value
         data['CALIBRE_ADD_DUPLICATES'] = data.get('CALIBRE_ADD_DUPLICATES') == 'true'
         config_manager.save_config(data)
-        return jsonify({'message': '全局设置已更新。'})
+        return jsonify({'message': _('Global settings updated.')})
     else: # GET
         return jsonify(config_manager.config)
 
@@ -324,7 +325,7 @@ def test_smtp_api():
     data = request.get_json()
     to_address = data.get('to_address')
     if not to_address:
-        return jsonify({'error': '测试收件箱地址是必填项。'}), 400
+        return jsonify({'error': _('Test recipient email address is required.')}), 400
     
     test_config = {
         'SMTP_SERVER': data.get('SMTP_SERVER'),
@@ -340,13 +341,13 @@ def test_smtp_api():
     success, message = send_email_with_config(to_address, subject, body, test_config)
     
     if success:
-        return jsonify({'message': f"测试邮件已成功发送到 {to_address}。"})
+        return jsonify({'message': _("Test email successfully sent to %(email)s.", email=to_address)})
     else:
-        return jsonify({'error': f"发送测试邮件失败: {message}"}), 500
+        return jsonify({'error': _("Failed to send test email: %(message)s", message=message)}), 500
 
 @api_bp.route('/2fa/setup', methods=['POST'])
 def setup_2fa():
-    if g.user.otp_secret: return jsonify({'error': '2FA 已启用。'}), 400
+    if g.user.otp_secret: return jsonify({'error': _('2FA is already enabled.')}), 400
     secret = pyotp.random_base32()
     session['2fa_secret_pending'] = secret
     uri = pyotp.totp.TOTP(secret).provisioning_uri(name=g.user.username, issuer_name='AnxCalibreManager')
@@ -360,22 +361,22 @@ def setup_2fa():
 def verify_2fa():
     otp_code = request.json.get('otp_code')
     secret = session.get('2fa_secret_pending')
-    if not secret: return jsonify({'error': '未找到待处理的 2FA 设置请求。'}), 400
+    if not secret: return jsonify({'error': _('No pending 2FA setup request found.')}), 400
     if pyotp.TOTP(secret).verify(otp_code):
         with closing(database.get_db()) as db:
             db.execute('UPDATE users SET otp_secret = ? WHERE id = ?', (secret, g.user.id))
             db.commit()
         session.pop('2fa_secret_pending', None)
-        return jsonify({'message': '2FA 已成功启用！'})
+        return jsonify({'message': _('2FA has been successfully enabled!')})
     else:
-        return jsonify({'error': '验证码错误。'}), 400
+        return jsonify({'error': _('Incorrect verification code.')}), 400
 
 @api_bp.route('/2fa/disable', methods=['POST'])
 def disable_2fa():
     with closing(database.get_db()) as db:
         db.execute('UPDATE users SET otp_secret = NULL WHERE id = ?', (g.user.id,))
         db.commit()
-    return jsonify({'message': '2FA 已禁用。'})
+    return jsonify({'message': _('2FA has been disabled.')})
 
 def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - author'):
     """
@@ -485,16 +486,16 @@ def download_book_api(book_id):
         content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
         
         if filename == 'CONVERTER_NOT_FOUND':
-            return jsonify({'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}), 412
+            return jsonify({'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing in the current environment.')}), 412
         if content and filename:
             return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
         else:
-            return jsonify({'error': '无法处理或转换书籍。'}), 500
+            return jsonify({'error': _('Unable to process or convert the book.')}), 500
     else:
         # Original logic
         details = get_calibre_book_details(book_id)
         if not details:
-            return jsonify({'error': '找不到书籍详情。'}), 404
+            return jsonify({'error': _('Book details not found.')}), 404
 
         available_formats = [f.lower() for f in details.get('formats', [])]
         priority = json.loads(g.user.send_format_priority or '[]')
@@ -505,27 +506,27 @@ def download_book_api(book_id):
             if available_formats:
                 format_to_download = available_formats[0]
             else:
-                return jsonify({'error': '该书籍没有任何可用格式。'}), 400
+                return jsonify({'error': _('This book has no available formats.')}), 400
 
         content, filename = download_calibre_book(book_id, format_to_download)
         if content:
             return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
         
-        return jsonify({'error': '无法下载书籍。'}), 404
+        return jsonify({'error': _('Unable to download the book.')}), 404
 
 def _send_to_kindle_logic(user_dict, book_id):
     """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
     if not user_dict.get('kindle_email'):
-        return {'success': False, 'error': '请先在用户设置中配置您的 Kindle 邮箱。'}
+        return {'success': False, 'error': _('Please configure your Kindle email in user settings first.')}
 
     # Kindle always requires a processed EPUB
     content_to_send, filename_to_send, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, filename_format='title')
 
     if filename_to_send == 'CONVERTER_NOT_FOUND':
-        return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。请将其安装到系统 PATH 中。', 'code': 'CONVERTER_NOT_FOUND'}
+        return {'success': False, 'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing. Please install it in the system PATH.'), 'code': 'CONVERTER_NOT_FOUND'}
     
     if not content_to_send:
-        return {'success': False, 'error': '无法获取或处理书籍的 EPUB 文件。'}
+        return {'success': False, 'error': _('Unable to get or process the EPUB file for the book.')}
 
     # Per Calibre's logic for Kindle, use random English text for subject and body
     subject = random_english_text(min_words_per_sentence=3, max_words_per_sentence=9, max_num_sentences=1).rstrip('.')
@@ -570,31 +571,31 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
         logging.info(f"Force EPUB conversion is ON for user {user_dict['username']} for book {book_id} push to Anx.")
         content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
         if filename == 'CONVERTER_NOT_FOUND':
-            return {'success': False, 'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
+            return {'success': False, 'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing.')}
         book_content, book_filename = content, filename
     else:
         # Original logic
         details = get_calibre_book_details(book_id)
         if not details:
-            return {'success': False, 'error': '找不到书籍详情。'}
+            return {'success': False, 'error': _('Book details not found.')}
         available_formats = [f.lower() for f in details.get('formats', [])]
         priority_str = user_dict.get('send_format_priority') or '[]'
         priority = json.loads(priority_str)
         format_to_push = next((f for f in priority if f.lower() in available_formats), available_formats[0] if available_formats else None)
 
         if not format_to_push:
-            return {'success': False, 'error': '未找到可推送的格式。'}
+            return {'success': False, 'error': _('No pushable format found.')}
         
         book_content, book_filename = download_calibre_book(book_id, format_to_push)
 
     if not book_content:
-        return {'success': False, 'error': '下载或处理书籍时出错。'}
+        return {'success': False, 'error': _('Error downloading or processing the book.')}
 
     cover_content, _ = download_calibre_cover(book_id)
 
     dirs = get_anx_user_dirs(user_dict['username'])
     if not dirs:
-        return {'success': False, 'error': '用户目录未配置。'}
+        return {'success': False, 'error': _('User directory not configured.')}
 
     import_dir = dirs["import"]
     os.makedirs(import_dir, exist_ok=True)
@@ -614,9 +615,10 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
     
     return {
         'success': True,
-        'message': f"书籍 '{book_filename}' 推送完成。 "
-                   f"已处理: {result.get('processed', 0)}, "
-                   f"已跳过: {result.get('skipped', 0)}."
+        'message': _("Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: %(skipped)s.",
+                     filename=book_filename,
+                     processed=result.get('processed', 0),
+                     skipped=result.get('skipped', 0))
     }
 
 @api_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
@@ -637,11 +639,11 @@ def push_to_anx_api(book_id):
 @api_bp.route('/upload_to_calibre', methods=['POST'])
 def upload_to_calibre_api():
     if 'books' not in request.files:
-        return jsonify({'error': '没有文件部分。'}), 400
+        return jsonify({'error': _('No file part.')}), 400
     
     files = request.files.getlist('books')
     if not files or files[0].filename == '':
-        return jsonify({'error': '没有选择文件。'}), 400
+        return jsonify({'error': _('No selected file.')}), 400
 
     results = []
     for file in files:
@@ -702,7 +704,7 @@ def upload_to_calibre_api():
                             {
                                 "success": True,
                                 "filename": filename,
-                                "message": f"书籍 '{res_json.get('title')}' 上传成功, ID: {book_id} (但更新来源失败)",
+                                "message": _("Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to update source).", title=res_json.get('title'), book_id=book_id),
                             }
                         )
                         continue
@@ -711,7 +713,7 @@ def upload_to_calibre_api():
                         {
                             "success": True,
                             "filename": filename,
-                            "message": f"书籍 '{res_json.get('title')}' 上传成功, ID: {book_id}",
+                            "message": _("Book '%(title)s' uploaded successfully, ID: %(book_id)s.", title=res_json.get('title'), book_id=book_id),
                         }
                     )
                 else:
@@ -719,13 +721,13 @@ def upload_to_calibre_api():
                         {
                             "success": False,
                             "filename": filename,
-                            "error": "上传失败，书籍可能已存在。",
+                            "error": _("Upload failed, book may already exist."),
                             "details": res_json.get("duplicates"),
                         }
                     )
             except requests.exceptions.HTTPError as e:
                 error_message = (
-                    f"Calibre 服务器返回错误: {e.response.status_code} - {e.response.text}"
+                    _("Calibre server returned an error: %(code)s - %(text)s", code=e.response.status_code, text=e.response.text)
                 )
                 results.append(
                     {"success": False, "filename": filename, "error": error_message}
@@ -735,7 +737,7 @@ def upload_to_calibre_api():
                     {
                         "success": False,
                         "filename": filename,
-                        "error": f"连接 Calibre 服务器出错: {e}",
+                        "error": _("Error connecting to Calibre server: %(error)s", error=e),
                     }
                 )
 
@@ -747,13 +749,13 @@ def update_calibre_book_api(book_id):
         # If not a maintainer, check if they are the uploader
         book_details = get_calibre_book_details(book_id)
         if not book_details:
-            return jsonify({'error': '找不到书籍详情。'}), 404
+            return jsonify({'error': _('Book details not found.')}), 404
 
         library_field = book_details.get('user_metadata', {}).get('#library', {})
         uploader = library_field.get('#value#', '') if library_field else ''
 
         if uploader != g.user.username:
-            return jsonify({'error': '您没有权限编辑这本书。'}), 403
+            return jsonify({'error': _('You do not have permission to edit this book.')}), 403
 
     data = request.get_json()
     
@@ -784,7 +786,7 @@ def update_calibre_book_api(book_id):
             changes[date_field] = UNDEFINED_DATE_ISO
 
     if not changes:
-        return jsonify({'error': '没有提供任何要更新的字段。'}), 400
+        return jsonify({'error': _('No fields provided to update.')}), 400
 
     payload = {'changes': changes}
     
@@ -799,23 +801,23 @@ def update_calibre_book_api(book_id):
             result = response.json()
             # The cdb endpoint returns the updated metadata for the book
             if str(book_id) in result:
-                return jsonify({'message': '元数据更新成功。', 'updated_metadata': result[str(book_id)]})
+                return jsonify({'message': _('Metadata updated successfully.'), 'updated_metadata': result[str(book_id)]})
             else:
-                 return jsonify({'error': 'Calibre 返回了未知响应。', 'details': result}), 500
+                 return jsonify({'error': _('Calibre returned an unknown response.'), 'details': result}), 500
         except json.JSONDecodeError:
-            return jsonify({'error': f'Calibre 返回了无效的 JSON 响应: {response.text}'}), 500
+            return jsonify({'error': _('Calibre returned an invalid JSON response: %(text)s', text=response.text)}), 500
                 
     except requests.exceptions.HTTPError as e:
-        return jsonify({'error': f'连接 Calibre 服务器出错: {e.response.status_code} {e.response.reason}', 'details': e.response.text}), 500
+        return jsonify({'error': _('Error connecting to Calibre server: %(code)s %(reason)s', code=e.response.status_code, reason=e.response.reason), 'details': e.response.text}), 500
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': f'连接 Calibre 服务器出错: {e}'}), 500
+        return jsonify({'error': _('Error connecting to Calibre server: %(error)s', error=e)}), 500
 
 @api_bp.route('/edit_anx_metadata', methods=['POST'])
 def edit_anx_metadata_api():
     data = request.get_json()
     book_id = data.pop('id', None)
     if not book_id:
-        return jsonify({'error': '缺少书籍 ID。'}), 400
+        return jsonify({'error': _('Missing book ID.')}), 400
 
     success, message = update_anx_book_metadata(g.user.username, book_id, data)
 
@@ -845,7 +847,7 @@ def create_mcp_token():
     with closing(database.get_db()) as db:
         db.execute('INSERT INTO mcp_tokens (user_id, token) VALUES (?, ?)', (g.user.id, new_token))
         db.commit()
-    return jsonify({'message': '新令牌已生成。', 'token': new_token})
+    return jsonify({'message': _('New token generated.'), 'token': new_token})
 
 @api_bp.route('/mcp_tokens/<int:token_id>', methods=['DELETE'])
 def delete_mcp_token(token_id):
@@ -853,7 +855,7 @@ def delete_mcp_token(token_id):
         # Ensure the token belongs to the current user before deleting
         db.execute('DELETE FROM mcp_tokens WHERE id = ? AND user_id = ?', (token_id, g.user.id))
         db.commit()
-    return jsonify({'message': '令牌已删除。'})
+    return jsonify({'message': _('Token deleted.')})
 
 
 # --- Completions API ---
@@ -880,11 +882,11 @@ def calibre_completions_api():
     query = request.args.get('query', '').lower()
     
     if not field:
-        return jsonify({'error': 'Field parameter is required.'}), 400
+        return jsonify({'error': _('Field parameter is required.')}), 400
 
     supported_fields = ['authors', 'publisher', 'tags', '#library']
     if field not in supported_fields:
-        return jsonify({'error': f"Completions not supported for field: {field}"}), 400
+        return jsonify({'error': _("Completions not supported for field: %(field)s", field=field)}), 400
 
     library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
     

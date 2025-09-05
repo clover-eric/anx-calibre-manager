@@ -69,7 +69,10 @@ async function populateForms() {
                 }
             }
         }
+        
         await fetchUsers();
+        // 加载邀请码管理
+        await loadInviteCodes();
     }
     await fetchMcpTokens();
 
@@ -356,3 +359,114 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchUsers();
     }
 });
+
+// 邀请码管理函数
+async function loadInviteCodes() {
+    if (!isAdmin) return;
+    
+    try {
+        const response = await fetch('/admin/invite-codes');
+        if (response.ok) {
+            const codes = await response.json();
+            const tbody = document.querySelector('#inviteCodeTable tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            codes.forEach(code => {
+                const row = document.createElement('tr');
+                const statusText = code.is_active ? _('Active') : _('Disabled');
+                const expiresAt = code.expires_at ? new Date(code.expires_at).toLocaleString() : _('Never expires');
+                const createdAt = new Date(code.created_at).toLocaleString();
+                
+                row.innerHTML = `
+                    <td><code>${code.code}</code></td>
+                    <td>${code.max_uses}</td>
+                    <td>${code.current_uses}</td>
+                    <td>${code.created_by || _('Unknown')}</td>
+                    <td>${createdAt}</td>
+                    <td>${expiresAt}</td>
+                    <td>${statusText}</td>
+                    <td>
+                        <button class="button-small" onclick="toggleInviteCode(${code.id})">${code.is_active ? _('Disable') : _('Enable')}</button>
+                        <button class="button-small button-danger" onclick="deleteInviteCode(${code.id})">${_('Delete')}</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading invite codes:', error);
+    }
+}
+
+window.generateInviteCode = async function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {
+        action: 'create',
+        custom_code: formData.get('custom_code') || '',
+        max_uses: formData.get('max_uses'),
+        expires_hours: formData.get('expires_hours') || null
+    };
+    
+    try {
+        const response = await fetch('/admin/invite-codes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        if (response.ok && result.success) {
+            alert(_('Invite code generated successfully: {code}').replace('{code}', result.code));
+            await loadInviteCodes();
+            event.target.reset();
+        } else {
+            alert(_('Failed to generate: {error}').replace('{error}', result.error || _('Unknown error')));
+        }
+    } catch (error) {
+        alert(_('An error occurred while generating the invite code.'));
+    }
+}
+
+window.toggleInviteCode = async function(codeId) {
+    try {
+        const response = await fetch('/admin/invite-codes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'toggle', code_id: codeId })
+        });
+        
+        if (response.ok) {
+            await loadInviteCodes();
+        } else {
+            const error = await response.json();
+            alert(_('Operation failed: {error}').replace('{error}', error.error || _('Unknown error')));
+        }
+    } catch (error) {
+        alert(_('Operation failed'));
+    }
+}
+
+window.deleteInviteCode = async function(codeId) {
+    if (!confirm(_('Are you sure you want to delete this invite code?'))) return;
+    
+    try {
+        const response = await fetch('/admin/invite-codes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', code_id: codeId })
+        });
+        
+        if (response.ok) {
+            await loadInviteCodes();
+        } else {
+            const error = await response.json();
+            alert(_('Delete failed: {error}').replace('{error}', error.error || _('Unknown error')));
+        }
+    } catch (error) {
+        alert(_('Delete failed'));
+    }
+}
+
+// 邀请码加载已经在 populateForms 函数中处理

@@ -4,6 +4,7 @@ import requests
 import io
 import os
 from flask import Blueprint, render_template, request, g, redirect, url_for, send_from_directory, send_file
+from flask_babel import gettext as _
 from requests.auth import HTTPDigestAuth
 from functools import wraps
 import json
@@ -91,12 +92,12 @@ def get_calibre_books(search_query="", page=1, page_size=20):
 
 def format_reading_time(seconds):
     if not seconds or seconds == 0:
-        return "0分钟"
+        return _("0 minutes")
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
     if hours > 0:
-        return f"{int(hours)}小时 {int(minutes)}分钟"
-    return f"{int(minutes)}分钟"
+        return _("%(hours)s hours %(minutes)s minutes", hours=int(hours), minutes=int(minutes))
+    return _("%(minutes)s minutes", minutes=int(minutes))
 
 @main_bp.route('/')
 @login_required
