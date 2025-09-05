@@ -70,7 +70,7 @@ def send_email_with_config(to_address, subject, body, config, attachment_content
     
     attachment_type = None
     if attachment_filename:
-        attachment_type, _ = mimetypes.guess_type(attachment_filename)
+        attachment_type, _unused = mimetypes.guess_type(attachment_filename)
         if attachment_type is None:
             # Fallback for unknown types
             attachment_type = 'application/octet-stream'
@@ -569,7 +569,7 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
 
     if user_dict.get('force_epub_conversion'):
         logging.info(f"Force EPUB conversion is ON for user {user_dict['username']} for book {book_id} push to Anx.")
-        content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+        content, filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
         if filename == 'CONVERTER_NOT_FOUND':
             return {'success': False, 'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing.')}
         book_content, book_filename = content, filename
@@ -591,7 +591,7 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
     if not book_content:
         return {'success': False, 'error': _('Error downloading or processing the book.')}
 
-    cover_content, _ = download_calibre_cover(book_id)
+    cover_content, _unused = download_calibre_cover(book_id)
 
     dirs = get_anx_user_dirs(user_dict['username'])
     if not dirs:
@@ -605,7 +605,7 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
         f.write(book_content)
 
     if cover_content:
-        base_name, _ = os.path.splitext(book_filename)
+        base_name, _unused = os.path.splitext(book_filename)
         cover_filename = f"{base_name}.jpg"
         cover_file_path = os.path.join(import_dir, cover_filename)
         with open(cover_file_path, 'wb') as f:

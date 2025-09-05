@@ -188,7 +188,7 @@ def settings_page():
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required
 def calibre_cover(book_id):
-    cover_content, _ = download_calibre_cover(book_id)
+    cover_content, _unused = download_calibre_cover(book_id)
     if cover_content:
         return send_file(io.BytesIO(cover_content), mimetype='image/jpeg')
     return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
