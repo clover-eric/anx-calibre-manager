@@ -181,6 +181,11 @@ def dynamic_manifest():
 def settings_page():
     return render_template('settings.html')
 
+@main_bp.route('/reader/<book_type>/<int:book_id>')
+@login_required
+def reader_page(book_type, book_id):
+    return render_template('reader.html', book_type=book_type, book_id=book_id)
+
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required
 def calibre_cover(book_id):

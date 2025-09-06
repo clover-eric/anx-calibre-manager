@@ -19,6 +19,7 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
 - **Support Multilingue**: Prise en charge complète de l'internationalisation. L'interface est disponible en anglais, chinois simplifié (简体中文), chinois traditionnel (繁體中文), espagnol, français et allemand.
 - **Interface Axée sur le Mobile**: Une interface utilisateur propre et réactive conçue pour une utilisation facile sur votre téléphone.
 - **Support PWA**: Installable en tant qu'application web progressive pour une expérience similaire à une application native.
+- **Visionneuse de livres dans le navigateur**: Prévisualisez les livres électroniques directement dans votre navigateur. Comprend une fonction de synthèse vocale (TTS).
 - **Intégration Calibre**: Se connecte à votre serveur Calibre existant pour parcourir et rechercher votre bibliothèque.
 - **Synchronisation KOReader**: Synchronisez votre progression de lecture et votre temps de lecture avec les appareils KOReader.
 - **Envoi Intelligent vers Kindle**: Gère automatiquement les formats lors de l'envoi vers votre Kindle. Si un EPUB existe, il est envoyé directement. Sinon, l'application **convertit le meilleur format disponible en EPUB** selon vos préférences avant de l'envoyer, garantissant une compatibilité optimale.

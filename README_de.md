@@ -19,6 +19,7 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
 - **Mehrsprachige Unterstützung**: Vollständige Internationalisierungsunterstützung. Die Benutzeroberfläche ist auf Englisch, vereinfachtem Chinesisch (简体中文), traditionellem Chinesisch (繁體中文), Spanisch, Französisch und Deutsch verfügbar.
 - **Mobil-orientierte Benutzeroberfläche**: Eine saubere, responsive Benutzeroberfläche, die für eine einfache Bedienung auf Ihrem Telefon konzipiert ist.
 - **PWA-Unterstützung**: Als Progressive Web App installierbar für ein nativ-ähnliches Erlebnis.
+- **In-Browser-Buchvorschau**: Vorschau von E-Books direkt in Ihrem Browser. Bietet Text-zu-Sprache (TTS).
 - **Calibre-Integration**: Verbindet sich mit Ihrem vorhandenen Calibre-Server, um Ihre Bibliothek zu durchsuchen und zu durchsuchen.
 - **KOReader-Synchronisierung**: Synchronisieren Sie Ihren Lesefortschritt und Ihre Lesezeit mit KOReader-Geräten.
 - **Intelligentes Senden an Kindle**: Behandelt automatisch Formate beim Senden an Ihren Kindle. Wenn ein EPUB vorhanden ist, wird es direkt gesendet. Wenn nicht, konvertiert die App **das beste verfügbare Format in EPUB** basierend auf Ihren Vorlieben, bevor sie es sendet, um eine optimale Kompatibilität zu gewährleisten.

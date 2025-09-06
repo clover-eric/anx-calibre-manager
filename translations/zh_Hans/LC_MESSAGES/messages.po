@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-05 21:06+0800\n"
+"POT-Creation-Date: 2025-09-06 18:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -18,359 +18,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/api.py:47
-msgid "Administrator permission required."
-msgstr "需要管理员权限。"
-
-#: blueprints/api.py:56
-msgid "Maintainer or administrator permission required."
-msgstr "需要维护者或管理员权限。"
-
-#: blueprints/api.py:67
-msgid "SMTP is not fully configured."
-msgstr "SMTP 未完全配置。"
-
-#: blueprints/api.py:114
-msgid "Email sent successfully."
-msgstr "邮件发送成功。"
-
-#: blueprints/api.py:117
-#, python-format
-msgid "Failed to send email: %(error)s"
-msgstr "发送邮件失败：%(error)s"
-
-#: blueprints/api.py:123
-msgid "Anx database not found."
-msgstr "未找到 Anx 数据库。"
-
-#: blueprints/api.py:132
-#, python-format
-msgid "Book file with ID %(book_id)s not found."
-msgstr "未找到 ID 为 %(book_id)s 的图书文件。"
-
-#: blueprints/api.py:139
-#, python-format
-msgid "Error downloading book: %(error)s"
-msgstr "下载图书时出错：%(error)s"
-
-#: blueprints/api.py:157
-msgid "Username and password are required."
-msgstr "用户名和密码是必需的。"
-
-#: blueprints/api.py:174
-#, python-format
-msgid ""
-"User added successfully, but failed to initialize Anx directory: "
-"%(message)s"
-msgstr "用户添加成功，但初始化 Anx 目录失败：%(message)s"
-
-#: blueprints/api.py:176
-msgid "User added and initialized successfully."
-msgstr "用户添加并初始化成功。"
-
-#: blueprints/api.py:178
-msgid "Username already exists."
-msgstr "用户名已存在。"
-
-#: blueprints/api.py:191
-msgid "User ID and username are required."
-msgstr "用户 ID 和用户名是必需的。"
-
-#: blueprints/api.py:207
-msgid "User updated successfully."
-msgstr "用户更新成功。"
-
-#: blueprints/api.py:215
-msgid "User ID is required."
-msgstr "用户 ID 是必需的。"
-
-#: blueprints/api.py:231
-#, python-format
-msgid "Error deleting user data directory: %(error)s"
-msgstr "删除用户数据目录时出错：%(error)s"
-
-#: blueprints/api.py:236
-msgid "User and their data have been successfully deleted."
-msgstr "用户及其数据已成功删除。"
-
-#: blueprints/api.py:289
-msgid "User settings updated."
-msgstr "用户设置已更新。"
-
-#: blueprints/api.py:318
-msgid "Global settings updated."
-msgstr "全局设置已更新。"
-
-#: blueprints/api.py:328
-msgid "Test recipient email address is required."
-msgstr "测试收件人电子邮件地址是必需的。"
-
-#: blueprints/api.py:344
-#, python-format
-msgid "Test email successfully sent to %(email)s."
-msgstr "测试邮件已成功发送至 %(email)s。"
-
-#: blueprints/api.py:346
-#, python-format
-msgid "Failed to send test email: %(message)s"
-msgstr "发送测试邮件失败：%(message)s"
-
-#: blueprints/api.py:350
-msgid "2FA is already enabled."
-msgstr "两步验证已启用。"
-
-#: blueprints/api.py:364
-msgid "No pending 2FA setup request found."
-msgstr "未找到待处理的两步验证设置请求。"
-
-#: blueprints/api.py:370
-msgid "2FA has been successfully enabled!"
-msgstr "两步验证已成功启用！"
-
-#: blueprints/api.py:372
-msgid "Incorrect verification code."
-msgstr "验证码不正确。"
-
-#: blueprints/api.py:379
-msgid "2FA has been disabled."
-msgstr "两步验证已禁用。"
-
-#: blueprints/api.py:489
-msgid ""
-"This book needs to be converted to EPUB, but the `ebook-converter` tool "
-"is missing in the current environment."
-msgstr "这本书需要转换为 EPUB，但当前环境中缺少 `ebook-converter` 工具。"
-
-#: blueprints/api.py:493
-msgid "Unable to process or convert the book."
-msgstr "无法处理或转换该图书。"
-
-#: blueprints/api.py:498 blueprints/api.py:580 blueprints/api.py:752
-msgid "Book details not found."
-msgstr "未找到图书详情。"
-
-#: blueprints/api.py:509
-msgid "This book has no available formats."
-msgstr "该图书没有可用的格式。"
-
-#: blueprints/api.py:515
-msgid "Unable to download the book."
-msgstr "无法下载该图书。"
-
-#: blueprints/api.py:520
-msgid "Please configure your Kindle email in user settings first."
-msgstr "请先在用户设置中配置您的 Kindle 邮箱。"
-
-#: blueprints/api.py:526
-msgid ""
-"This book needs to be converted to EPUB, but the `ebook-converter` tool "
-"is missing. Please install it in the system PATH."
-msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。请在系统 PATH 中安装它。"
-
-#: blueprints/api.py:529
-msgid "Unable to get or process the EPUB file for the book."
-msgstr "无法获取或处理该图书的 EPUB 文件。"
-
-#: blueprints/api.py:574
-msgid ""
-"This book needs to be converted to EPUB, but the `ebook-converter` tool "
-"is missing."
-msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。"
-
-#: blueprints/api.py:587
-msgid "No pushable format found."
-msgstr "未找到可推送的格式。"
-
-#: blueprints/api.py:592
-msgid "Error downloading or processing the book."
-msgstr "下载或处理图书时出错。"
-
-#: blueprints/api.py:598
-msgid "User directory not configured."
-msgstr "用户目录未配置。"
-
-#: blueprints/api.py:618
-#, python-format
-msgid ""
-"Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
-"%(skipped)s."
-msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过：%(skipped)s。"
-
-#: blueprints/api.py:642
-msgid "No file part."
-msgstr "无文件部分。"
-
-#: blueprints/api.py:646
-msgid "No selected file."
-msgstr "未选择文件。"
-
-#: blueprints/api.py:707
-#, python-format
-msgid ""
-"Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
-"update source)."
-msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s（但更新来源失败）。"
-
-#: blueprints/api.py:716
-#, python-format
-msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
-msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s。"
-
-#: blueprints/api.py:724
-msgid "Upload failed, book may already exist."
-msgstr "上传失败，图书可能已存在。"
-
-#: blueprints/api.py:730
-#, python-format
-msgid "Calibre server returned an error: %(code)s - %(text)s"
-msgstr "Calibre 服务器返回错误：%(code)s - %(text)s"
-
-#: blueprints/api.py:740 blueprints/api.py:813
-#, python-format
-msgid "Error connecting to Calibre server: %(error)s"
-msgstr "连接 Calibre 服务器时出错：%(error)s"
-
-#: blueprints/api.py:758
-msgid "You do not have permission to edit this book."
-msgstr "您无权编辑此图书。"
-
-#: blueprints/api.py:789
-msgid "No fields provided to update."
-msgstr "未提供要更新的字段。"
-
-#: blueprints/api.py:804
-msgid "Metadata updated successfully."
-msgstr "元数据更新成功。"
-
-#: blueprints/api.py:806
-msgid "Calibre returned an unknown response."
-msgstr "Calibre 返回未知响应。"
-
-#: blueprints/api.py:808
-#, python-format
-msgid "Calibre returned an invalid JSON response: %(text)s"
-msgstr "Calibre 返回了无效的 JSON 响应：%(text)s"
-
-#: blueprints/api.py:811
-#, python-format
-msgid "Error connecting to Calibre server: %(code)s %(reason)s"
-msgstr "连接 Calibre 服务器时出错：%(code)s %(reason)s"
-
-#: blueprints/api.py:820
-msgid "Missing book ID."
-msgstr "缺少图书 ID。"
-
-#: blueprints/api.py:850
-msgid "New token generated."
-msgstr "已生成新令牌。"
-
-#: blueprints/api.py:858
-msgid "Token deleted."
-msgstr "令牌已删除。"
-
-#: blueprints/api.py:885
-msgid "Field parameter is required."
-msgstr "字段参数是必需的。"
-
-#: blueprints/api.py:889
-#, python-format
-msgid "Completions not supported for field: %(field)s"
-msgstr "不支持字段 %(field)s 的补全。"
-
-#: blueprints/auth.py:33
+#: blueprints/auth.py:31
 msgid "Session invalid, please login again."
 msgstr "会话无效，请重新登录。"
 
-#: blueprints/auth.py:37
+#: blueprints/auth.py:35
 msgid "Two-factor authentication code is incorrect."
 msgstr "双因素身份验证代码不正确。"
 
-#: blueprints/auth.py:45
+#: blueprints/auth.py:43
 msgid "Username or password is incorrect."
 msgstr "用户名或密码不正确。"
 
-#: blueprints/auth.py:52
+#: blueprints/auth.py:50
 msgid "You have been logged out successfully."
 msgstr "您已成功注销。"
 
-#: blueprints/auth.py:65
+#: blueprints/auth.py:63
 msgid "Username and password cannot be empty."
 msgstr "用户名和密码不能为空。"
 
-#: blueprints/auth.py:71
+#: blueprints/auth.py:69
 msgid "Administrator account has been created, please login."
 msgstr "管理员帐户已创建，请登录。"
 
-#: blueprints/auth.py:93
+#: blueprints/auth.py:91
 msgid "Username and password cannot be empty"
 msgstr "用户名和密码不能为空"
 
-#: blueprints/auth.py:96 static/js/register.js:25
+#: blueprints/auth.py:94 static/js/register.js:25
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
 msgstr "用户名只能包含字母、数字和下划线，长度为 3-50 个字符"
 
-#: blueprints/auth.py:99 static/js/register.js:19
+#: blueprints/auth.py:97 static/js/register.js:19
 msgid "Password must be at least 6 characters"
 msgstr "密码必须至少为 6 个字符"
 
-#: blueprints/auth.py:104
+#: blueprints/auth.py:102
 msgid "Username already exists"
 msgstr "用户名已存在"
 
-#: blueprints/auth.py:108
+#: blueprints/auth.py:106
 msgid "Please enter invite code"
 msgstr "请输入邀请码"
 
-#: blueprints/auth.py:117
+#: blueprints/auth.py:115
 msgid "Invite code is invalid"
 msgstr "邀请码无效"
 
-#: blueprints/auth.py:120
+#: blueprints/auth.py:118
 msgid "Invite code has reached usage limit"
 msgstr "邀请码已达到使用上限"
 
-#: blueprints/auth.py:125
+#: blueprints/auth.py:123
 msgid "Invite code has expired"
 msgstr "邀请码已过期"
 
-#: blueprints/auth.py:156 static/js/register.js:47
+#: blueprints/auth.py:154 static/js/register.js:47
 msgid "Registration successful! Please login."
 msgstr "注册成功！请登录。"
 
-#: blueprints/auth.py:162
+#: blueprints/auth.py:160
 msgid "An error occurred during registration"
 msgstr "注册过程中发生错误"
 
-#: blueprints/auth.py:174
-msgid "Insufficient permissions"
-msgstr "权限不足"
-
-#: blueprints/auth.py:193
-msgid ""
-"Custom invite code can only contain uppercase letters and numbers, 4-20 "
-"characters long"
-msgstr "自定义邀请码只能包含大写字母和数字，长度为 4-20 个字符"
-
-#: blueprints/auth.py:197
-msgid "Invite code already exists"
-msgstr "邀请码已存在"
-
-#: blueprints/auth.py:231 static/js/settings.js:447
-msgid "Operation failed"
-msgstr "操作失败"
-
-#: blueprints/main.py:95 blueprints/stats.py:16
+#: blueprints/main.py:91 blueprints/stats.py:16
 msgid "0 minutes"
 msgstr "0 分钟"
 
-#: blueprints/main.py:99 blueprints/stats.py:20
+#: blueprints/main.py:95 blueprints/stats.py:20
 #, python-format
 msgid "%(hours)s hours %(minutes)s minutes"
 msgstr "%(hours)s 小时 %(minutes)s 分钟"
 
-#: blueprints/main.py:100 blueprints/stats.py:21
+#: blueprints/main.py:96 blueprints/stats.py:21
 #, python-format
 msgid "%(minutes)s minutes"
 msgstr "%(minutes)s 分钟"
@@ -386,6 +109,285 @@ msgstr "该用户的统计页面是私密的。"
 #: blueprints/stats.py:41
 msgid "Anx library not found for this user."
 msgstr "未找到该用户的 Anx 书库。"
+
+#: blueprints/api/auth_2fa.py:15
+msgid "2FA is already enabled."
+msgstr "两步验证已启用。"
+
+#: blueprints/api/auth_2fa.py:30
+msgid "No pending 2FA setup request found."
+msgstr "未找到待处理的两步验证设置请求。"
+
+#: blueprints/api/auth_2fa.py:36
+msgid "2FA has been successfully enabled!"
+msgstr "两步验证已成功启用！"
+
+#: blueprints/api/auth_2fa.py:38
+msgid "Incorrect verification code."
+msgstr "验证码不正确。"
+
+#: blueprints/api/auth_2fa.py:45
+msgid "2FA has been disabled."
+msgstr "两步验证已禁用。"
+
+#: blueprints/api/books.py:30
+msgid "Anx database not found."
+msgstr "未找到 Anx 数据库。"
+
+#: blueprints/api/books.py:39
+#, python-format
+msgid "Book file with ID %(book_id)s not found."
+msgstr "未找到 ID 为 %(book_id)s 的图书文件。"
+
+#: blueprints/api/books.py:46
+#, python-format
+msgid "Error downloading book: %(error)s"
+msgstr "下载图书时出错：%(error)s"
+
+#: blueprints/api/books.py:154
+msgid ""
+"This book needs to be converted to EPUB, but the `ebook-converter` tool "
+"is missing in the current environment."
+msgstr "这本书需要转换为 EPUB，但当前环境中缺少 `ebook-converter` 工具。"
+
+#: blueprints/api/books.py:158
+msgid "Unable to process or convert the book."
+msgstr "无法处理或转换该图书。"
+
+#: blueprints/api/books.py:163 blueprints/api/books.py:245
+#: blueprints/api/calibre.py:139
+msgid "Book details not found."
+msgstr "未找到图书详情。"
+
+#: blueprints/api/books.py:174
+msgid "This book has no available formats."
+msgstr "该图书没有可用的格式。"
+
+#: blueprints/api/books.py:180
+msgid "Unable to download the book."
+msgstr "无法下载该图书。"
+
+#: blueprints/api/books.py:185
+msgid "Please configure your Kindle email in user settings first."
+msgstr "请先在用户设置中配置您的 Kindle 邮箱。"
+
+#: blueprints/api/books.py:191
+msgid ""
+"This book needs to be converted to EPUB, but the `ebook-converter` tool "
+"is missing. Please install it in the system PATH."
+msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。请在系统 PATH 中安装它。"
+
+#: blueprints/api/books.py:194
+msgid "Unable to get or process the EPUB file for the book."
+msgstr "无法获取或处理该图书的 EPUB 文件。"
+
+#: blueprints/api/books.py:239
+msgid ""
+"This book needs to be converted to EPUB, but the `ebook-converter` tool "
+"is missing."
+msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。"
+
+#: blueprints/api/books.py:252
+msgid "No pushable format found."
+msgstr "未找到可推送的格式。"
+
+#: blueprints/api/books.py:257
+msgid "Error downloading or processing the book."
+msgstr "下载或处理图书时出错。"
+
+#: blueprints/api/books.py:263
+msgid "User directory not configured."
+msgstr "用户目录未配置。"
+
+#: blueprints/api/books.py:283
+#, python-format
+msgid ""
+"Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
+"%(skipped)s."
+msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过：%(skipped)s。"
+
+#: blueprints/api/books.py:308
+msgid "Missing book ID."
+msgstr "缺少图书 ID。"
+
+#: blueprints/api/calibre.py:22
+msgid "Maintainer or administrator permission required."
+msgstr "需要维护者或管理员权限。"
+
+#: blueprints/api/calibre.py:29
+msgid "No file part."
+msgstr "无文件部分。"
+
+#: blueprints/api/calibre.py:33
+msgid "No selected file."
+msgstr "未选择文件。"
+
+#: blueprints/api/calibre.py:94
+#, python-format
+msgid ""
+"Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
+"update source)."
+msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s（但更新来源失败）。"
+
+#: blueprints/api/calibre.py:103
+#, python-format
+msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
+msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s。"
+
+#: blueprints/api/calibre.py:111
+msgid "Upload failed, book may already exist."
+msgstr "上传失败，图书可能已存在。"
+
+#: blueprints/api/calibre.py:117
+#, python-format
+msgid "Calibre server returned an error: %(code)s - %(text)s"
+msgstr "Calibre 服务器返回错误：%(code)s - %(text)s"
+
+#: blueprints/api/calibre.py:127 blueprints/api/calibre.py:200
+#, python-format
+msgid "Error connecting to Calibre server: %(error)s"
+msgstr "连接 Calibre 服务器时出错：%(error)s"
+
+#: blueprints/api/calibre.py:145
+msgid "You do not have permission to edit this book."
+msgstr "您无权编辑此图书。"
+
+#: blueprints/api/calibre.py:176
+msgid "No fields provided to update."
+msgstr "未提供要更新的字段。"
+
+#: blueprints/api/calibre.py:191
+msgid "Metadata updated successfully."
+msgstr "元数据更新成功。"
+
+#: blueprints/api/calibre.py:193
+msgid "Calibre returned an unknown response."
+msgstr "Calibre 返回未知响应。"
+
+#: blueprints/api/calibre.py:195
+#, python-format
+msgid "Calibre returned an invalid JSON response: %(text)s"
+msgstr "Calibre 返回了无效的 JSON 响应：%(text)s"
+
+#: blueprints/api/calibre.py:198
+#, python-format
+msgid "Error connecting to Calibre server: %(code)s %(reason)s"
+msgstr "连接 Calibre 服务器时出错：%(code)s %(reason)s"
+
+#: blueprints/api/calibre.py:226
+msgid "Field parameter is required."
+msgstr "字段参数是必需的。"
+
+#: blueprints/api/calibre.py:230
+#, python-format
+msgid "Completions not supported for field: %(field)s"
+msgstr "不支持字段 %(field)s 的补全。"
+
+#: blueprints/api/email_service.py:17 blueprints/api/settings.py:18
+#: blueprints/api/users.py:20
+msgid "Administrator permission required."
+msgstr "需要管理员权限。"
+
+#: blueprints/api/email_service.py:29
+msgid "SMTP is not fully configured."
+msgstr "SMTP 未完全配置。"
+
+#: blueprints/api/email_service.py:76
+msgid "Email sent successfully."
+msgstr "邮件发送成功。"
+
+#: blueprints/api/email_service.py:79
+#, python-format
+msgid "Failed to send email: %(error)s"
+msgstr "发送邮件失败：%(error)s"
+
+#: blueprints/api/email_service.py:87
+msgid "Test recipient email address is required."
+msgstr "测试收件人电子邮件地址是必需的。"
+
+#: blueprints/api/email_service.py:103
+#, python-format
+msgid "Test email successfully sent to %(email)s."
+msgstr "测试邮件已成功发送至 %(email)s。"
+
+#: blueprints/api/email_service.py:105
+#, python-format
+msgid "Failed to send test email: %(message)s"
+msgstr "发送测试邮件失败：%(message)s"
+
+#: blueprints/api/invite.py:20
+msgid "Insufficient permissions"
+msgstr "权限不足"
+
+#: blueprints/api/invite.py:39
+msgid ""
+"Custom invite code can only contain uppercase letters and numbers, 4-20 "
+"characters long"
+msgstr "自定义邀请码只能包含大写字母和数字，长度为 4-20 个字符"
+
+#: blueprints/api/invite.py:43
+msgid "Invite code already exists"
+msgstr "邀请码已存在"
+
+#: blueprints/api/invite.py:77 static/js/settings.js:447
+msgid "Operation failed"
+msgstr "操作失败"
+
+#: blueprints/api/settings.py:72
+msgid "User settings updated."
+msgstr "用户设置已更新。"
+
+#: blueprints/api/settings.py:101
+msgid "Global settings updated."
+msgstr "全局设置已更新。"
+
+#: blueprints/api/tokens.py:22
+msgid "New token generated."
+msgstr "已生成新令牌。"
+
+#: blueprints/api/tokens.py:30
+msgid "Token deleted."
+msgstr "令牌已删除。"
+
+#: blueprints/api/users.py:39
+msgid "Username and password are required."
+msgstr "用户名和密码是必需的。"
+
+#: blueprints/api/users.py:56
+#, python-format
+msgid ""
+"User added successfully, but failed to initialize Anx directory: "
+"%(message)s"
+msgstr "用户添加成功，但初始化 Anx 目录失败：%(message)s"
+
+#: blueprints/api/users.py:58
+msgid "User added and initialized successfully."
+msgstr "用户添加并初始化成功。"
+
+#: blueprints/api/users.py:60
+msgid "Username already exists."
+msgstr "用户名已存在。"
+
+#: blueprints/api/users.py:73
+msgid "User ID and username are required."
+msgstr "用户 ID 和用户名是必需的。"
+
+#: blueprints/api/users.py:89
+msgid "User updated successfully."
+msgstr "用户更新成功。"
+
+#: blueprints/api/users.py:97
+msgid "User ID is required."
+msgstr "用户 ID 是必需的。"
+
+#: blueprints/api/users.py:113
+#, python-format
+msgid "Error deleting user data directory: %(error)s"
+msgstr "删除用户数据目录时出错：%(error)s"
+
+#: blueprints/api/users.py:118
+msgid "User and their data have been successfully deleted."
+msgstr "用户及其数据已成功删除。"
 
 #: static/js/register.js:14 static/js/register.js:64 static/js/register.js:74
 msgid "Password confirmation does not match"
@@ -454,7 +456,7 @@ msgstr "你确定要删除这个令牌吗？"
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings.js:296 templates/index.html:75 templates/index.html:133
+#: static/js/settings.js:296 templates/index.html:80 templates/index.html:143
 msgid "Edit"
 msgstr "编辑"
 
@@ -568,8 +570,8 @@ msgstr "评分 (0-5)"
 msgid "Reading Progress (%)"
 msgstr "阅读进度 (%)"
 
-#: static/js/page/ui.js:14 static/js/page/ui.js:55 templates/index.html:65
-#: templates/index.html:128
+#: static/js/page/ui.js:14 static/js/page/ui.js:55 templates/index.html:70
+#: templates/index.html:138
 msgid "Description"
 msgstr "描述"
 
@@ -587,11 +589,11 @@ msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间�
 msgid "Authors (comma-separated)"
 msgstr "作者（逗号分隔）"
 
-#: static/js/page/ui.js:49 templates/index.html:55 templates/index.html:121
+#: static/js/page/ui.js:49 templates/index.html:60 templates/index.html:131
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/ui.js:50 templates/index.html:56
+#: static/js/page/ui.js:50 templates/index.html:61
 msgid "Publication Date"
 msgstr "出版日期"
 
@@ -624,11 +626,11 @@ msgstr "设置"
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:59
+#: templates/base.html:106 templates/index.html:3 templates/index.html:64
 msgid "Library"
 msgstr "书库"
 
-#: templates/base.html:110 templates/index.html:71
+#: templates/base.html:110 templates/index.html:76
 msgid "Anx"
 msgstr "Anx"
 
@@ -660,128 +662,128 @@ msgstr "主页"
 msgid "Search Calibre books..."
 msgstr "搜索 Calibre 图书..."
 
-#: templates/index.html:24 templates/index.html:163
+#: templates/index.html:24 templates/index.html:173
 msgid "Upload"
 msgstr "上传"
 
-#: templates/index.html:28 templates/index.html:84
+#: templates/index.html:28 templates/index.html:89
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "共 %(total_books)s 本书 (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:33 templates/index.html:89
+#: templates/index.html:33 templates/index.html:94
 msgid "20/page"
 msgstr "20/页"
 
-#: templates/index.html:34 templates/index.html:90
+#: templates/index.html:34 templates/index.html:95
 msgid "50/page"
 msgstr "50/页"
 
-#: templates/index.html:35 templates/index.html:91
+#: templates/index.html:35 templates/index.html:96
 msgid "100/page"
 msgstr "100/页"
 
-#: templates/index.html:37 templates/index.html:93
+#: templates/index.html:37 templates/index.html:98
 msgid "Previous"
 msgstr "上一页"
 
-#: templates/index.html:39 templates/index.html:95
+#: templates/index.html:39 templates/index.html:100
 msgid "Go"
 msgstr "前往"
 
-#: templates/index.html:40 templates/index.html:96
+#: templates/index.html:40 templates/index.html:101
 msgid "Next"
 msgstr "下一页"
 
-#: templates/index.html:53 templates/index.html:120 templates/stats.html:38
+#: templates/index.html:58 templates/index.html:130 templates/stats.html:38
 #: templates/stats.html:62
 msgid "Rating"
 msgstr "评分"
 
-#: templates/index.html:54
+#: templates/index.html:59
 msgid "Formats"
 msgstr "格式"
 
-#: templates/index.html:63
+#: templates/index.html:68
 msgid "Read Date"
 msgstr "阅读日期"
 
-#: templates/index.html:69 templates/index.html:132
+#: templates/index.html:74 templates/index.html:142
 msgid "Download"
 msgstr "下载"
 
-#: templates/index.html:70
+#: templates/index.html:75
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:80
+#: templates/index.html:85
 msgid "No books in Calibre library."
 msgstr "Calibre 书库中没有图书。"
 
-#: templates/index.html:103
+#: templates/index.html:108
 msgid "Anx Library"
 msgstr "Anx书库"
 
-#: templates/index.html:106
+#: templates/index.html:111
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:106 templates/settings.html:143
+#: templates/index.html:111 templates/settings.html:143
 msgid "Click to copy"
 msgstr "点击复制"
 
-#: templates/index.html:122
+#: templates/index.html:132
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: templates/index.html:123 templates/stats.html:39 templates/stats.html:63
+#: templates/index.html:133 templates/stats.html:39 templates/stats.html:63
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
-#: templates/index.html:124
+#: templates/index.html:134
 msgid "Note Count"
 msgstr "笔记数量"
 
-#: templates/index.html:125
+#: templates/index.html:135
 msgid "Creation Time"
 msgstr "创建时间"
 
-#: templates/index.html:126
+#: templates/index.html:136
 msgid "Update Time"
 msgstr "更新时间"
 
-#: templates/index.html:127
+#: templates/index.html:137
 msgid "Producer"
 msgstr "制作者"
 
-#: templates/index.html:134
+#: templates/index.html:144
 msgid "Delete"
 msgstr "删除"
 
-#: templates/index.html:139
+#: templates/index.html:149
 msgid "No books in Anx library."
 msgstr "Anx书库中没有图书。"
 
-#: templates/index.html:151
+#: templates/index.html:161
 msgid "Upload Books"
 msgstr "上传图书"
 
-#: templates/index.html:157
+#: templates/index.html:167
 msgid "Select files:"
 msgstr "选择文件："
 
-#: templates/index.html:162 templates/index.html:179 templates/settings.html:92
+#: templates/index.html:172 templates/index.html:189 templates/settings.html:92
 #: templates/settings.html:291
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:172
+#: templates/index.html:182
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:180 templates/settings.html:290
+#: templates/index.html:190 templates/settings.html:290
 msgid "Save"
 msgstr "保存"
 
@@ -819,6 +821,26 @@ msgstr "没有帐户？"
 #: templates/login.html:39
 msgid "Register here"
 msgstr "在此注册"
+
+#: templates/reader.html:6
+msgid "Book Reader"
+msgstr "图书阅读器"
+
+#: templates/reader.html:72
+msgid "TTS Settings"
+msgstr "TTS 设置"
+
+#: templates/reader.html:74
+msgid "Rate"
+msgstr "语速"
+
+#: templates/reader.html:79
+msgid "Pitch"
+msgstr "音高"
+
+#: templates/reader.html:84
+msgid "Voice"
+msgstr "声音"
 
 #: templates/register.html:3 templates/register.html:58
 msgid "Register"

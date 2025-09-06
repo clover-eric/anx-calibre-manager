@@ -19,6 +19,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Multi-language Support**: Full internationalization support. The interface is available in English, Simplified Chinese (简体中文), Traditional Chinese (繁體中文), Spanish, French, and German.
 - **Mobile-First Interface**: A clean, responsive UI designed for easy use on your phone.
 - **PWA Support**: Installable as a Progressive Web App for a native-like experience.
+- **In-Browser Book Previewer**: Preview E-Book directly in your browser. Features Text-to-Speech (TTS).
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
 - **KOReader Sync**: Sync your reading progress and reading time with KOReader devices.
 - **Smart Send to Kindle**: Automatically handles formats when sending to your Kindle. If an EPUB exists, it's sent directly. If not, the app **converts the best available format to EPUB** based on your preferences before sending, ensuring optimal compatibility.

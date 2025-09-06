@@ -43,9 +43,14 @@
             <div class="book-list" id="calibre-book-list">
                 {% for book in calibre_books %}
                 <div class="book-row" data-book-id="{{ book.id }}">
-                    <div class="cover">
-                        <img src="{{ url_for('main.calibre_cover', book_id=book.id) }}" alt="{{ book.title }}">
-                    </div>
+                    <a href="{{ url_for('main.reader_page', book_type='calibre', book_id=book.id) }}" target="_blank" class="cover-link">
+                        <div class="cover">
+                            <img src="{{ url_for('main.calibre_cover', book_id=book.id) }}" alt="{{ book.title }}">
+                            <div class="preview-overlay">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </a>
                     <div class="info">
                         <h3>{{ book.title }}</h3>
                         <p class="author">{{ book.authors | join(', ') }}</p>
@@ -109,10 +114,15 @@
                 {% for book in anx_books %}
             
                 <div class="book-row" data-book-id="{{ book.id }}">
-                    <div class="cover">
-                        {% if book.cover_path %}<img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="{{ book.title }}">
-                        {% else %}<img src="https://via.placeholder.com/100x150.png?text=No+Cover" alt="No Cover">{% endif %}
-                    </div>
+                    <a href="{{ url_for('main.reader_page', book_type='anx', book_id=book.id) }}" target="_blank" class="cover-link">
+                        <div class="cover">
+                            {% if book.cover_path %}<img src="{{ url_for('main.anx_cover', cover_path=book.cover_path) }}" alt="{{ book.title }}">
+                            {% else %}<img src="https://via.placeholder.com/100x150.png?text=No+Cover" alt="No Cover">{% endif %}
+                            <div class="preview-overlay">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </a>
                     <div class="info">
                         <h3>{{ book.title }}</h3>
                         <p class="author">{{ book.author }}</p>

@@ -19,6 +19,7 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
 - **Soporte Multilingüe**: Soporte completo de internacionalización. La interfaz está disponible en inglés, chino simplificado (简体中文), chino tradicional (繁體中文), español, francés y alemán.
 - **Interfaz Orientada a Móviles**: Una interfaz de usuario limpia y adaptable diseñada para un uso fácil en tu teléfono.
 - **Soporte PWA**: Se puede instalar como una Aplicación Web Progresiva para una experiencia similar a la nativa.
+- **Visualizador de libros en el navegador**: Previsualiza libros electrónicos directamente en tu navegador. Incluye función de texto a voz (TTS).
 - **Integración con Calibre**: Se conecta a tu servidor Calibre existente para navegar y buscar en tu biblioteca.
 - **Sincronización con KOReader**: Sincroniza tu progreso de lectura y tiempo de lectura con dispositivos KOReader.
 - **Envío Inteligente a Kindle**: Maneja automáticamente los formatos al enviar a tu Kindle. Si existe un EPUB, se envía directamente. Si no, la aplicación **convierte el mejor formato disponible a EPUB** según tus preferencias antes de enviarlo, asegurando una compatibilidad óptima.

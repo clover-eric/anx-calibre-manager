@@ -851,3 +851,28 @@ textarea {
     color: var(--text-color);
     font-size: 0.9em;
 }
+.cover-link {
+    position: relative;
+    display: block;
+}
+.cover-link .preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px; /* Match cover image radius */
+}
+.cover-link:hover .preview-overlay {
+    opacity: 1;
+}
+.preview-overlay i {
+    font-size: 2.5rem;
+}
