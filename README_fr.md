@@ -292,4 +292,4 @@ Les contributions, les problèmes et les demandes de fonctionnalités sont les b
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT.
+Ce projet est sous licence GPLv3.

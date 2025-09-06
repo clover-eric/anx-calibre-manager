@@ -292,4 +292,4 @@ Beiträge, Probleme und Funktionswünsche sind willkommen! Schauen Sie sich gern
 
 ## 📄 Lizenz
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert.
+Dieses Projekt ist unter der GPLv3-Lizenz lizenziert.

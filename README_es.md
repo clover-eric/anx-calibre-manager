@@ -292,4 +292,4 @@ Puedes obtener una lista de todas las herramientas disponibles llamando al méto
 
 ## 📄 Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT.
+Este proyecto está licenciado bajo la Licencia GPLv3.
