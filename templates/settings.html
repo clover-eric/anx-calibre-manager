@@ -153,7 +153,7 @@
                 <li>
                     <strong>{{ _('Download Plugin') }}</strong>: {{ _('Click the button below to download the plugin zip file.') }}
                     <div style="margin-top: 1rem; margin-bottom: 1rem;">
-                        <button onclick="location.href='{{ url_for('api.download_koreader_plugin') }}'" class="button-primary">{{ _('Download KOReader Plugin (.zip)') }}</button>
+                        <button onclick="location.href='{{ url_for('calibre.download_koreader_plugin') }}'" class="button-primary">{{ _('Download KOReader Plugin (.zip)') }}</button>
                     </div>
                 </li>
                 <li><strong>{{ _('Install Plugin') }}</strong>: {{ _('Unzip the downloaded `.zip` file, and you will get a folder named `anx-calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire folder</strong> to the `koreader/plugins/` directory on your KOReader device.') }}</li>

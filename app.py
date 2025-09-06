@@ -1,7 +1,11 @@
 import logging
 import os
+import sys
 import bcrypt
 from flask import Flask, g, redirect, url_for, request, session
+
+# Add the project root to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from flask_babel import Babel
 from contextlib import closing
 import database
@@ -115,7 +119,7 @@ def create_app():
     babel = Babel(app, locale_selector=get_locale)
     # --- End Babel Configuration ---
 
-    from utils import get_js_translations
+    from utils.translations import get_js_translations
     app.jinja_env.globals.update(get_js_translations=get_js_translations)
     
     app.config.from_mapping(config_manager.config)
@@ -129,16 +133,36 @@ def create_app():
 
     from blueprints.main import main_bp
     from blueprints.auth import auth_bp
-    from blueprints.api import api_bp
     from blueprints.mcp import mcp_bp
     from blueprints.koreader import koreader_bp
     from blueprints.stats import bp as stats_bp
+    
+    # Import new modular blueprints
+    from blueprints.api.users import users_bp
+    from blueprints.api.settings import settings_bp
+    from blueprints.api.email_service import email_bp
+    from blueprints.api.books import books_bp
+    from blueprints.api.calibre import calibre_bp
+    from blueprints.api.tokens import tokens_bp
+    from blueprints.api.auth_2fa import auth_2fa_bp
+    from blueprints.api.invite import invite_bp
+    
+    # Register all blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
-    app.register_blueprint(api_bp)
     app.register_blueprint(mcp_bp)
     app.register_blueprint(stats_bp)
     app.register_blueprint(koreader_bp)
+    
+    # Register new modular blueprints
+    app.register_blueprint(users_bp)
+    app.register_blueprint(settings_bp)
+    app.register_blueprint(email_bp)
+    app.register_blueprint(books_bp)
+    app.register_blueprint(calibre_bp)
+    app.register_blueprint(tokens_bp)
+    app.register_blueprint(auth_2fa_bp)
+    app.register_blueprint(invite_bp)
 
     @app.context_processor
     def inject_conf_var():

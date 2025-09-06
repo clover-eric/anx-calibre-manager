@@ -16,8 +16,8 @@ from epub_fixer import fix_epub_for_kindle
 # Import necessary functions from other modules
 from .main import get_calibre_books
 # Rename the original function to avoid conflicts
-from .main import get_calibre_book_details as get_raw_calibre_book_details
-from .api import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
+from .api.calibre import get_calibre_book_details as get_raw_calibre_book_details
+from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
 from anx_library import get_anx_books, get_anx_book_details
 
 mcp_bp = Blueprint('mcp', __name__, url_prefix='/mcp')

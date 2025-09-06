@@ -365,7 +365,7 @@ async function loadInviteCodes() {
     if (!isAdmin) return;
     
     try {
-        const response = await fetch('/admin/invite-codes');
+        const response = await fetch('/api/admin/invite-codes');
         if (response.ok) {
             const codes = await response.json();
             const tbody = document.querySelector('#inviteCodeTable tbody');
@@ -410,7 +410,7 @@ window.generateInviteCode = async function(event) {
     };
     
     try {
-        const response = await fetch('/admin/invite-codes', {
+        const response = await fetch('/api/admin/invite-codes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -431,7 +431,7 @@ window.generateInviteCode = async function(event) {
 
 window.toggleInviteCode = async function(codeId) {
     try {
-        const response = await fetch('/admin/invite-codes', {
+        const response = await fetch('/api/admin/invite-codes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'toggle', code_id: codeId })
@@ -452,7 +452,7 @@ window.deleteInviteCode = async function(codeId) {
     if (!confirm(_('Are you sure you want to delete this invite code?'))) return;
     
     try {
-        const response = await fetch('/admin/invite-codes', {
+        const response = await fetch('/api/admin/invite-codes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'delete', code_id: codeId })

@@ -12,7 +12,9 @@ import json
 import config_manager
 from database import get_db
 from anx_library import get_anx_books
-from utils import safe_title, safe_author
+from utils.text import safe_title, safe_author
+from utils.auth import get_calibre_auth
+from blueprints.api.calibre import download_calibre_cover
 
 main_bp = Blueprint('main', __name__)
 
@@ -23,12 +25,6 @@ def login_required(f):
             return redirect(url_for('auth.login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
-
-def get_calibre_auth():
-    config = config_manager.config
-    if config.get('CALIBRE_USERNAME') and config.get('CALIBRE_PASSWORD'):
-        return HTTPDigestAuth(config['CALIBRE_USERNAME'], config['CALIBRE_PASSWORD'])
-    return None
 
 def get_calibre_books(search_query="", page=1, page_size=20):
     config = config_manager.config
@@ -226,46 +222,3 @@ def anx_cover_public(username, cover_path):
         return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")
 
     return send_from_directory(full_data_dir, cover_path)
-# --- Helper Functions (for use in API blueprint) ---
-
-def get_calibre_book_details(book_id):
-    config = config_manager.config
-    try:
-        response = requests.get(f"{config['CALIBRE_URL']}/ajax/book/{book_id}?fields=all", auth=get_calibre_auth())
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error getting book details for {book_id}: {e}")
-        return None
-
-def download_calibre_cover(book_id):
-    config = config_manager.config
-    url = f"{config['CALIBRE_URL']}/get/cover/{book_id}"
-    try:
-        response = requests.get(url, auth=get_calibre_auth(), stream=True)
-        response.raise_for_status()
-        # Assume JPG, which is Calibre's default for covers
-        return response.content, "cover.jpg"
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching cover for book {book_id}: {e}")
-        return None, None
-
-def download_calibre_book(book_id, download_format='mobi'):
-    details = get_calibre_book_details(book_id)
-    if not details: return None, None
-    title = safe_title(details.get('title', 'Unknown Title'))
-    authors = safe_author(" & ".join(details.get('authors', ['Unknown Author'])))
-    if authors:
-        filename = f"{title} - {authors}.{download_format}"
-    else:
-        filename = f"{title}.{download_format}"
-    
-    config = config_manager.config
-    try:
-        url = f"{config['CALIBRE_URL']}/get/{download_format.lower()}/{book_id}"
-        response = requests.get(url, auth=get_calibre_auth(), stream=True)
-        response.raise_for_status()
-        return response.content, filename
-    except requests.exceptions.RequestException as e:
-        print(f"Error downloading book {book_id} in format {download_format} from URL {url}: {e}")
-        return None, None

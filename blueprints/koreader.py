@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify, g
 from contextlib import closing
 import database
 from anx_library import get_anx_user_dirs
-from utils import convert_koreader_progress
+from utils.koreader import convert_koreader_progress
 import os
 import json
 from datetime import datetime
