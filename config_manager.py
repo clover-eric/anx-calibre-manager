@@ -18,6 +18,7 @@ DEFAULT_CONFIG = {
     'CALIBRE_URL': {'env': 'CALIBRE_URL', 'default': 'http://localhost:8081'},
     'CALIBRE_USERNAME': {'env': 'CALIBRE_USERNAME', 'default': ''},
     'CALIBRE_PASSWORD': {'env': 'CALIBRE_PASSWORD', 'default': ''},
+    'CALIBRE_ADD_DUPLICATES': {'env': 'CALIBRE_ADD_DUPLICATES', 'default': False},
     
     # Global application security settings
     'SECRET_KEY': {'env': 'SECRET_KEY', 'default': ''}, # Will be generated on first load
@@ -42,101 +43,117 @@ DEFAULT_CONFIG = {
 }
 
 # Initialize config as a dictionary first to avoid NameError during initial load
-config = {}
+class ConfigManager:
+    def __init__(self):
+        self._config = {}
+        self.load_config()
 
-def load_config():
-    """
-    Loads the global configuration.
-    Priority: Config file > Environment variables > Default values
-    """
-    os.makedirs(CONFIG_DIR, exist_ok=True)
+    def load_config(self):
+        """
+        Loads the global configuration.
+        Priority: Config file > Environment variables > Default values
+        """
+        os.makedirs(CONFIG_DIR, exist_ok=True)
 
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                config_from_file = json.load(f)
-        except (json.JSONDecodeError, IOError):
-            config_from_file = {}
-    else:
-        config_from_file = {}
-
-    loaded_config = {}
-    for key, values in DEFAULT_CONFIG.items():
-        # Priority 1: Config file
-        if key in config_from_file:
-            loaded_config[key] = config_from_file[key]
-        # Priority 2: Environment variables
-        elif os.environ.get(values['env']):
-            val = os.environ.get(values['env'])
-            if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT']:
-                try:
-                    loaded_config[key] = int(val)
-                except (ValueError, TypeError):
-                    loaded_config[key] = values['default']
-            elif key in ['REQUIRE_INVITE_CODE']:
-                # Handle boolean values from environment variables
-                loaded_config[key] = val.lower() in ('true', '1', 'yes', 'on')
-            else:
-                loaded_config[key] = val
-        # Priority 3: Default values
-        else:
-            loaded_config[key] = values['default']
-            
-    # Ensure SECRET_KEY always exists and is valid
-    if not loaded_config.get('SECRET_KEY'):
-        loaded_config['SECRET_KEY'] = os.urandom(24).hex()
-        # Save immediately to persist the key
-        save_config({'SECRET_KEY': loaded_config['SECRET_KEY']})
-
-    return loaded_config
-
-def save_config(new_config):
-    """
-    Saves the global configuration to a file and triggers a reload of Gunicorn workers.
-    """
-    os.makedirs(CONFIG_DIR, exist_ok=True)
-    
-    current_config = {}
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                current_config = json.load(f)
-        except (json.JSONDecodeError, IOError):
-            pass
-
-    for key, value in new_config.items():
-        if key in DEFAULT_CONFIG:
-            # Skip empty password fields to avoid clearing them
-            if key in ['CALIBRE_PASSWORD', 'SMTP_PASSWORD'] and not value:
-                continue
-
-            if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT'] and value is not None:
-                try:
-                    current_config[key] = int(value)
-                except (ValueError, TypeError):
-                    pass
-            elif key == 'SMTP_ENCRYPTION':
-                current_config[key] = value.lower() if value in ['ssl', 'tls', 'none'] else 'tls'
-            else:
-                current_config[key] = value
-
-    try:
-        with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
-            json.dump(current_config, f, indent=4, ensure_ascii=False)
-        
-        # Signal Gunicorn to reload workers gracefully
-        if os.path.exists(GUNICORN_PID_FILE):
+        if os.path.exists(CONFIG_FILE):
             try:
-                with open(GUNICORN_PID_FILE, 'r') as f:
-                    pid = int(f.read().strip())
-                logging.info(f"Found Gunicorn PID {pid}. Sending SIGHUP to reload workers.")
-                os.kill(pid, signal.SIGHUP)
-            except (IOError, ValueError, ProcessLookupError) as e:
-                logging.warning(f"Could not signal Gunicorn to reload: {e}")
+                with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                    config_from_file = json.load(f)
+            except (json.JSONDecodeError, IOError):
+                config_from_file = {}
+        else:
+            config_from_file = {}
+
+        loaded_config = {}
+        for key, values in DEFAULT_CONFIG.items():
+            # Priority 1: Config file
+            if key in config_from_file:
+                loaded_config[key] = config_from_file[key]
+            # Priority 2: Environment variables
+            elif os.environ.get(values['env']):
+                val = os.environ.get(values['env'])
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT']:
+                    try:
+                        loaded_config[key] = int(val)
+                    except (ValueError, TypeError):
+                        loaded_config[key] = values['default']
+                elif key in ['REQUIRE_INVITE_CODE']:
+                    # Handle boolean values from environment variables
+                    loaded_config[key] = val.lower() in ('true', '1', 'yes', 'on')
+                else:
+                    loaded_config[key] = val
+            # Priority 3: Default values
+            else:
+                loaded_config[key] = values['default']
+                
+        # Ensure SECRET_KEY always exists and is valid
+        if not loaded_config.get('SECRET_KEY'):
+            loaded_config['SECRET_KEY'] = os.urandom(24).hex()
+            # Save immediately to persist the key
+            self.save_config({'SECRET_KEY': loaded_config['SECRET_KEY']})
         
-        return True, "Global configuration saved successfully. Workers are reloading."
-    except IOError as e:
-        return False, f"Failed to save config file: {e}"
+        self._config = loaded_config
+
+    def get(self, key, default=None):
+        self.load_config()
+        return self._config.get(key, default)
+
+    def __getitem__(self, key):
+        self.load_config()
+        return self._config[key]
+
+    def get_all(self):
+        """Returns a copy of the entire configuration dictionary."""
+        self.load_config()
+        return self._config.copy()
+
+    def save_config(self, new_config):
+        """
+        Saves the global configuration to a file and triggers a reload of Gunicorn workers.
+        """
+        os.makedirs(CONFIG_DIR, exist_ok=True)
+        
+        current_config = {}
+        if os.path.exists(CONFIG_FILE):
+            try:
+                with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                    current_config = json.load(f)
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        for key, value in new_config.items():
+            if key in DEFAULT_CONFIG:
+                # Skip empty password fields to avoid clearing them
+                if key in ['CALIBRE_PASSWORD', 'SMTP_PASSWORD'] and not value:
+                    continue
+
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT'] and value is not None:
+                    try:
+                        current_config[key] = int(value)
+                    except (ValueError, TypeError):
+                        pass
+                elif key == 'SMTP_ENCRYPTION':
+                    current_config[key] = value.lower() if value in ['ssl', 'tls', 'none'] else 'tls'
+                else:
+                    current_config[key] = value
+
+        try:
+            with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+                json.dump(current_config, f, indent=4, ensure_ascii=False)
+            
+            # Signal Gunicorn to reload workers gracefully
+            if os.path.exists(GUNICORN_PID_FILE):
+                try:
+                    with open(GUNICORN_PID_FILE, 'r') as f:
+                        pid = int(f.read().strip())
+                    logging.info(f"Found Gunicorn PID {pid}. Sending SIGHUP to reload workers.")
+                    os.kill(pid, signal.SIGHUP)
+                except (IOError, ValueError, ProcessLookupError) as e:
+                    logging.warning(f"Could not signal Gunicorn to reload: {e}")
+            
+            return True, "Global configuration saved successfully. Workers are reloading."
+        except IOError as e:
+            return False, f"Failed to save config file: {e}"
 
 # Load the configuration when the module is loaded
-config.update(load_config())
+config = ConfigManager()
