@@ -16,9 +16,9 @@ services:
       - CALIBRE_URL=http://your-calibre-server-ip:8080
       - CALIBRE_USERNAME=your_calibre_username
       - CALIBRE_PASSWORD=your_calibre_password
-      - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library
-      - CALIBRE_ADD_DUPLICATES=false
-      - REQUIRE_INVITE_CODE=true # 默认需要邀请码注册，设置为 false 则禁用
+      - CALIBRE_DEFAULT_LIBRARY_ID=Calibre_Library # 可选：Calibre 默认书库 ID
+      - CALIBRE_ADD_DUPLICATES=false # 可选：是否允许上传重复书籍
+      - REQUIRE_INVITE_CODE=true # 可选：默认需要邀请码注册，设置为 false 则禁用
       - SMTP_SERVER=
       - SMTP_PORT=587
       - SMTP_USERNAME=
