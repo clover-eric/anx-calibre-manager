@@ -40,6 +40,9 @@ RUN /home/appuser/venv/bin/pip install --upgrade pip setuptools && \
     /home/appuser/venv/bin/pip install --no-cache-dir -r requirements.txt && \
     /home/appuser/venv/bin/pip install gunicorn
 
+# Clone foliate-js repository
+RUN git clone https://github.com/johnfactotum/foliate-js.git /home/appuser/foliate-js
+
 # Stage 2: Final image - For running the application
 FROM python:3.12-slim-bookworm
 
@@ -94,9 +97,8 @@ WORKDIR /home/appuser
 COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --from=builder --chown=appuser:appuser /home/appuser/build_venv ./build_venv
 COPY --chown=appuser:appuser . .
+COPY --from=builder --chown=appuser:appuser /home/appuser/foliate-js /home/appuser/static/js/foliate
 
-# Clone foliate-js into the static directory
-RUN git clone https://github.com/johnfactotum/foliate-js.git /home/appuser/static/js/foliate
 
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
 RUN . venv/bin/activate && \
