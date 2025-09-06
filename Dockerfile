@@ -95,6 +95,9 @@ COPY --from=builder --chown=appuser:appuser /home/appuser/venv ./venv
 COPY --from=builder --chown=appuser:appuser /home/appuser/build_venv ./build_venv
 COPY --chown=appuser:appuser . .
 
+# Clone foliate-js into the static directory
+RUN git clone https://github.com/johnfactotum/foliate-js.git /home/appuser/static/js/foliate
+
 # Extract, initialize all language files, populate English, auto-translate others, and compile.
 RUN . venv/bin/activate && \
     #mkdir -p translations/en/LC_MESSAGES translations/zh_Hans/LC_MESSAGES translations/zh_Hant/LC_MESSAGES translations/es/LC_MESSAGES translations/fr/LC_MESSAGES translations/de/LC_MESSAGES && \

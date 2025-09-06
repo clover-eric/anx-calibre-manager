@@ -48,5 +48,5 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && format('ghcr.io/{0}:{1}', github.repository, github.ref_name) || '' }}
-          #cache-from: type=gha
+          cache-from: type=gha
           cache-to: type=gha,mode=max
