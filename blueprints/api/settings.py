@@ -97,7 +97,7 @@ def global_settings_api():
         data = request.get_json()
         # Handle checkbox boolean value
         data['CALIBRE_ADD_DUPLICATES'] = data.get('CALIBRE_ADD_DUPLICATES') == 'true'
-        config_manager.save_config(data)
+        config_manager.config.save_config(data)
         return jsonify({'message': _('Global settings updated.')})
     else: # GET
-        return jsonify(config_manager.config)
+        return jsonify(config_manager.config.get_all())

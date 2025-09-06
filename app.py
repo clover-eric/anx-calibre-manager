@@ -122,7 +122,7 @@ def create_app():
     from utils.translations import get_js_translations
     app.jinja_env.globals.update(get_js_translations=get_js_translations)
     
-    app.config.from_mapping(config_manager.config)
+    app.config.from_mapping(config_manager.config.get_all())
     app.secret_key = app.config['SECRET_KEY']
     
     from datetime import timedelta
