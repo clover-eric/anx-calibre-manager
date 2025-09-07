@@ -227,6 +227,28 @@ This application includes a JSON-RPC 2.0 compliant MCP (Model Context Protocol) 
 3.  **Authentication**: Authenticate by appending your token as a query parameter to the URL, e.g., `http://.../mcp?token=YOUR_TOKEN`.
 4.  **Send Requests**: Send `POST` requests to this endpoint with a body compliant with the JSON-RPC 2.0 format.
 
+### Prompt Examples
+
+Here are a few examples of natural language prompts you could use with an AI agent that has access to these tools. The agent would intelligently call one or more tools to fulfill your request.
+
+- **Simple & Advanced Search**:
+  - > "Find books about Python programming."
+  - > "Search for science fiction books by Isaac Asimov published after 1950."
+
+- **Book Management**:
+  - > "What are the 5 most recently added books? Send the first one to my Kindle."
+  - > "Push the book 'Dune' to my Anx reader."
+
+- **Content Interaction & Summarization**:
+  - > "Show me the table of contents for the book 'Foundation'."
+  - > "Fetch the first chapter of 'Foundation' and give me a summary."
+  - > "Based on the chapter 'The Psychohistorians' from the book 'Foundation', what are the main ideas of psychohistory?"
+
+- **Reading Statistics & Progress**:
+  - > "How many books have I read this year?"
+  - > "What's my reading progress on 'Dune'?"
+  - > "Who is the author of 'Project Hail Mary' and how long have I been reading it?"
+
 ### Available Tools
 
 You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:

@@ -228,6 +228,28 @@ Diese Anwendung enthält einen JSON-RPC 2.0-kompatiblen MCP (Model Context Proto
 3.  **Authentifizierung**: Authentifizieren Sie sich, indem Sie Ihr Token als Abfrageparameter an die URL anhängen, z.B. `http://.../mcp?token=IHR_TOKEN`.
 4.  **Anfragen senden**: Senden Sie `POST`-Anfragen an diesen Endpunkt mit einem Body, der dem JSON-RPC 2.0-Format entspricht.
 
+### Beispiel-Prompts
+
+Hier sind einige Beispiele für natürlichsprachige Prompts, die Sie mit einem KI-Agenten verwenden könnten, der Zugriff auf diese Werkzeuge hat. Der Agent würde intelligent ein oder mehrere Werkzeuge aufrufen, um Ihre Anfrage zu erfüllen.
+
+- **Einfache & Erweiterte Suche**:
+  - > "Finde Bücher über Python-Programmierung."
+  - > "Suche nach Science-Fiction-Büchern von Isaac Asimov, die nach 1950 veröffentlicht wurden."
+
+- **Buchverwaltung**:
+  - > "Was sind die 5 zuletzt hinzugefügten Bücher? Sende das erste an meinen Kindle."
+  - > "Schiebe das Buch 'Dune' auf meinen Anx-Reader."
+
+- **Inhaltsinteraktion & Zusammenfassung**:
+  - > "Zeig mir das Inhaltsverzeichnis für das Buch 'Foundation'."
+  - > "Hole das erste Kapitel von 'Foundation' und gib mir eine Zusammenfassung."
+  - > "Was sind die Hauptideen der Psychohistorie, basierend auf dem Kapitel 'Die Psychohistoriker' aus dem Buch 'Foundation'?"
+
+- **Lesestatistiken & Fortschritt**:
+  - > "Wie viele Bücher habe ich dieses Jahr gelesen?"
+  - > "Wie ist mein Lesefortschritt bei 'Dune'?"
+  - > "Wer ist der Autor von 'Project Hail Mary' und wie lange lese ich es schon?"
+
 ### Verfügbare Werkzeuge
 
 Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Methode `tools/list` aufrufen. Die derzeit unterstützten Werkzeuge sind:

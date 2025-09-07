@@ -228,6 +228,28 @@ Esta aplicación incluye un servidor MCP (Protocolo de Contexto de Modelo) compa
 3.  **Autenticación**: Autentícate añadiendo tu token como un parámetro de consulta a la URL, ej., `http://.../mcp?token=TU_TOKEN`.
 4.  **Enviar Solicitudes**: Envía solicitudes `POST` a este endpoint con un cuerpo que cumpla con el formato JSON-RPC 2.0.
 
+### Ejemplos de Prompts
+
+Aquí tienes algunos ejemplos de prompts en lenguaje natural que podrías usar con un agente de IA que tenga acceso a estas herramientas. El agente llamaría de forma inteligente a una o más herramientas para satisfacer tu solicitud.
+
+- **Búsqueda Simple y Avanzada**:
+  - > "Encuentra libros sobre programación en Python."
+  - > "Busca libros de ciencia ficción de Isaac Asimov publicados después de 1950."
+
+- **Gestión de Libros**:
+  - > "¿Cuáles son los 5 libros añadidos más recientemente? Envía el primero a mi Kindle."
+  - > "Empuja el libro 'Dune' a mi lector Anx."
+
+- **Interacción y Resumen de Contenido**:
+  - > "Muéstrame la tabla de contenidos del libro 'Fundación'."
+  - > "Obtén el primer capítulo de 'Fundación' y dame un resumen."
+  - > "Basado en el capítulo 'Los Psicohistoriadores' del libro 'Fundación', ¿cuáles son las ideas principales de la psicohistoria?"
+
+- **Estadísticas y Progreso de Lectura**:
+  - > "¿Cuántos libros he leído este año?"
+  - > "¿Cuál es mi progreso de lectura en 'Dune'?"
+  - > "¿Quién es el autor de 'Proyecto Hail Mary' y cuánto tiempo llevo leyéndolo?"
+
 ### Herramientas Disponibles
 
 Puedes obtener una lista de todas las herramientas disponibles llamando al método `tools/list`. Las herramientas actualmente soportadas son:

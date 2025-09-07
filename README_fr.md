@@ -228,6 +228,28 @@ Cette application inclut un serveur MCP (Model Context Protocol) compatible JSON
 3.  **Authentification**: Authentifiez-vous en ajoutant votre jeton en tant que paramètre de requête à l'URL, ex: `http://.../mcp?token=VOTRE_JETON`.
 4.  **Envoyer des Requêtes**: Envoyez des requêtes `POST` à cet endpoint avec un corps conforme au format JSON-RPC 2.0.
 
+### Exemples de Prompts
+
+Voici quelques exemples de prompts en langage naturel que vous pourriez utiliser avec un agent IA ayant accès à ces outils. L'agent appellerait intelligemment un ou plusieurs outils pour répondre à votre demande.
+
+- **Recherche Simple et Avancée**:
+  - > "Trouver des livres sur la programmation en Python."
+  - > "Rechercher des livres de science-fiction d'Isaac Asimov publiés après 1950."
+
+- **Gestion de Livres**:
+  - > "Quels sont les 5 derniers livres ajoutés ? Envoyez le premier à mon Kindle."
+  - > "Pousser le livre 'Dune' sur mon lecteur Anx."
+
+- **Interaction et Résumé de Contenu**:
+  - > "Montre-moi la table des matières du livre 'Fondation'."
+  - > "Récupère le premier chapitre de 'Fondation' et fais-moi un résumé."
+  - > "D'après le chapitre 'Les Psychohistoriens' du livre 'Fondation', quelles sont les idées principales de la psychohistoire ?"
+
+- **Statistiques et Progression de Lecture**:
+  - > "Combien de livres ai-je lus cette année ?"
+  - > "Quelle est ma progression de lecture sur 'Dune' ?"
+  - > "Qui est l'auteur de 'Project Hail Mary' et depuis combien de temps le lis-je ?"
+
 ### Outils Disponibles
 
 Vous pouvez obtenir une liste de tous les outils disponibles en appelant la méthode `tools/list`. Les outils actuellement pris en charge sont :
