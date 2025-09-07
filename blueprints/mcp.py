@@ -80,11 +80,11 @@ def search_calibre_books(search_expression: str, limit: int = 20):
     根据一个搜索表达式在 Calibre 书库中搜索书籍。
     该函数直接使用 Calibre 强大的搜索查询语言。
     """
-    books, _ = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
+    books, _unused = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_recent_calibre_books(limit: int = 20):
-    books, _ = get_calibre_books(page=1, page_size=limit)
+    books, _unused = get_calibre_books(page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_calibre_book_details(book_id: int):
@@ -253,7 +253,7 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
             if not shutil.which('ebook-converter'):
                 return None, "CONVERTER_NOT_FOUND", False
 
-            base_name, _ = os.path.splitext(os.path.basename(full_file_path))
+            base_name, _unused = os.path.splitext(os.path.basename(full_file_path))
             epub_filename = f"{base_name}.epub"
             dest_path = os.path.join(temp_dir, epub_filename)
 
@@ -285,7 +285,7 @@ def get_calibre_epub_table_of_contents(book_id: int):
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
     user_dict = dict(g.user)
-    epub_content, epub_filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -320,7 +320,7 @@ def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
     user_dict = dict(g.user)
-    epub_content, epub_filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -356,7 +356,7 @@ def get_anx_epub_table_of_contents(id: int):
     获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表（包含章节序号和标题）。
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
-    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(id, g.user['username'])
+    epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -389,7 +389,7 @@ def get_anx_epub_chapter_content(id: int, chapter_number: int):
     获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。
     如果书籍不是 EPUB 格式，会尝试自动转换。
     """
-    epub_content, epub_filename, _ = _get_processed_epub_for_anx_book(id, g.user['username'])
+    epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}

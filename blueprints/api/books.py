@@ -148,7 +148,7 @@ def download_book_api(book_id):
             'send_format_priority': g.user.send_format_priority,
             'force_epub_conversion': g.user.force_epub_conversion
         }
-        content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+        content, filename, needs_conversion = _get_processed_epub_for_book(book_id, user_dict)
         
         if filename == 'CONVERTER_NOT_FOUND':
             return jsonify({'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing in the current environment.')}), 412
