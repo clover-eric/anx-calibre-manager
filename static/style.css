@@ -876,3 +876,41 @@ textarea {
 .preview-overlay i {
     font-size: 2.5rem;
 }
+
+/* --- 16. MCP Prompt Examples --- */
+.prompt-examples-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.prompt-card {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.prompt-card h5 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.prompt-item {
+    margin-bottom: 0.5rem;
+}
+
+.prompt-item p {
+    margin: 0;
+    font-style: italic;
+    color: var(--secondary-color);
+    font-size: 0.9em;
+}
+
+.dark-mode .prompt-card {
+    background-color: #2c2c2c;
+}

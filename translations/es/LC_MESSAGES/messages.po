@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-06 18:54+0800\n"
+"POT-Creation-Date: 2025-09-07 17:14+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -483,7 +483,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Editar"
 
-#: static/js/settings.js:304 templates/settings.html:271
+#: static/js/settings.js:304 templates/settings.html:318
 msgid "Add"
 msgstr "Añadir"
 
@@ -762,7 +762,7 @@ msgstr ""
 "sincronizar (el nombre de usuario y la contraseña son tus credenciales de"
 " acceso):"
 
-#: templates/index.html:111 templates/settings.html:143
+#: templates/index.html:111 templates/settings.html:190
 msgid "Click to copy"
 msgstr "Haz clic para copiar"
 
@@ -807,7 +807,7 @@ msgid "Select files:"
 msgstr "Seleccionar archivos:"
 
 #: templates/index.html:172 templates/index.html:189 templates/settings.html:92
-#: templates/settings.html:291
+#: templates/settings.html:338
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -815,7 +815,7 @@ msgstr "Cancelar"
 msgid "Edit Book Information"
 msgstr "Editar información del libro"
 
-#: templates/index.html:190 templates/settings.html:290
+#: templates/index.html:190 templates/settings.html:337
 msgid "Save"
 msgstr "Guardar"
 
@@ -828,13 +828,13 @@ msgid "Login to Anx Calibre Manager"
 msgstr "Iniciar sesión en Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:145
-#: templates/settings.html:273 templates/settings.html:300
+#: templates/settings.html:31 templates/settings.html:192
+#: templates/settings.html:320 templates/settings.html:347
 msgid "Username"
 msgstr "Nombre de usuario"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:146 templates/settings.html:277
+#: templates/settings.html:193 templates/settings.html:324
 msgid "Password"
 msgstr "Contraseña"
 
@@ -858,19 +858,19 @@ msgstr "Regístrate aquí"
 msgid "Book Reader"
 msgstr "Lector de libros"
 
-#: templates/reader.html:72
+#: templates/reader.html:71
 msgid "TTS Settings"
 msgstr "Ajustes de TTS"
 
-#: templates/reader.html:74
+#: templates/reader.html:73
 msgid "Rate"
 msgstr "Velocidad"
 
-#: templates/reader.html:79
+#: templates/reader.html:78
 msgid "Pitch"
 msgstr "Tono"
 
-#: templates/reader.html:84
+#: templates/reader.html:83
 msgid "Voice"
 msgstr "Voz"
 
@@ -948,7 +948,7 @@ msgstr "Perfil"
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
-#: templates/settings.html:36 templates/settings.html:191
+#: templates/settings.html:36 templates/settings.html:238
 msgid "Leave blank to keep unchanged"
 msgstr "Dejar en blanco para no cambiar"
 
@@ -1095,10 +1095,90 @@ msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
 msgstr "Autentifícate añadiendo el parámetro `?token=TU_TOKEN` a la URL."
 
 #: templates/settings.html:117
+msgid "Prompt Examples"
+msgstr "Ejemplos de Prompts"
+
+#: templates/settings.html:118
+msgid ""
+"Here are some examples of natural language prompts you can use with an AI"
+" agent. The agent will intelligently call one or more tools to fulfill "
+"your request."
+msgstr ""
+"Aquí tienes algunos ejemplos de prompts en lenguaje natural que podrías usar"
+" con un agente de IA. El agente llamaría de forma inteligente a una o más "
+"herramientas para satisfacer tu solicitud."
+
+#: templates/settings.html:121
+msgid "Simple & Advanced Search"
+msgstr "Búsqueda Simple y Avanzada"
+
+#: templates/settings.html:123
+msgid "Find books about Python programming."
+msgstr "Encuentra libros sobre programación en Python."
+
+#: templates/settings.html:126
+msgid "Search for science fiction books by Isaac Asimov published after 1950."
+msgstr "Busca libros de ciencia ficción de Isaac Asimov publicados después de 1950."
+
+#: templates/settings.html:130
+msgid "Book Management"
+msgstr "Gestión de Libros"
+
+#: templates/settings.html:132
+msgid ""
+"What are the 5 most recently added books? Send the first one to my Kindle."
+msgstr ""
+"¿Cuáles son los 5 libros añadidos más recientemente? Envía el primero a mi "
+"Kindle."
+
+#: templates/settings.html:135
+msgid "Push the book 'Dune' to my Anx reader."
+msgstr "Empuja el libro 'Dune' a mi lector Anx."
+
+#: templates/settings.html:139
+msgid "Content Interaction & Summarization"
+msgstr "Interacción y Resumen de Contenido"
+
+#: templates/settings.html:141
+msgid "Show me the table of contents for the book 'Foundation'."
+msgstr "Muéstrame la tabla de contenidos del libro 'Fundación'."
+
+#: templates/settings.html:144
+msgid "Fetch the first chapter of 'Foundation' and give me a summary."
+msgstr "Obtén el primer capítulo de 'Fundación' y dame un resumen."
+
+#: templates/settings.html:147
+msgid ""
+"Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
+"what are the main ideas of psychohistory?"
+msgstr ""
+"Basado en el capítulo 'Los Psicohistoriadores' del libro 'Fundación', "
+"¿cuáles son las ideas principales de la psicohistoria?"
+
+#: templates/settings.html:151
+msgid "Reading Statistics & Progress"
+msgstr "Estadísticas y Progreso de Lectura"
+
+#: templates/settings.html:153
+msgid "How many books have I read this year?"
+msgstr "¿Cuántos libros he leído este año?"
+
+#: templates/settings.html:156
+msgid "What's my reading progress on 'Dune'?"
+msgstr "¿Cuál es mi progreso de lectura en 'Dune'?"
+
+#: templates/settings.html:159
+msgid ""
+"Who is the author of 'Project Hail Mary' and how long have I been reading"
+" it?"
+msgstr ""
+"¿Quién es el autor de 'Proyecto Hail Mary' y cuánto tiempo llevo leyéndolo?"
+
+#: templates/settings.html:164
 msgid "Available Tools"
 msgstr "Herramientas disponibles"
 
-#: templates/settings.html:119
+#: templates/settings.html:166
 msgid ""
 "Search Calibre books. Parameters: `search_expression` (str), `limit` "
 "(int, default 20)"
@@ -1106,39 +1186,39 @@ msgstr ""
 "Buscar libros en Calibre. Parámetros: `search_expression` (str), `limit` "
 "(int, por defecto 20)"
 
-#: templates/settings.html:120
+#: templates/settings.html:167
 msgid "Get recent Calibre books. Parameters: `limit` (int, default 20)"
 msgstr ""
 "Obtener libros recientes de Calibre. Parámetros: `limit` (int, por "
 "defecto 20)"
 
-#: templates/settings.html:121
+#: templates/settings.html:168
 msgid "Get Calibre book details. Parameters: `book_id` (int)"
 msgstr "Obtener detalles de un libro de Calibre. Parámetros: `book_id` (int)"
 
-#: templates/settings.html:122
+#: templates/settings.html:169
 msgid "Get recent Anx books. Parameters: `limit` (int, default 20)"
 msgstr "Obtener libros recientes de Anx. Parámetros: `limit` (int, por defecto 20)"
 
-#: templates/settings.html:123
+#: templates/settings.html:170
 msgid "Get Anx book details. Parameters: `book_id` (int)"
 msgstr "Obtener detalles de un libro de Anx. Parámetros: `book_id` (int)"
 
-#: templates/settings.html:124
+#: templates/settings.html:171
 msgid "Push Calibre book to Anx. Parameters: `book_id` (int)"
 msgstr "Enviar libro de Calibre a Anx. Parámetros: `book_id` (int)"
 
-#: templates/settings.html:125
+#: templates/settings.html:172
 msgid "Send Calibre book to Kindle. Parameters: `book_id` (int)"
 msgstr "Enviar libro de Calibre a Kindle. Parámetros: `book_id` (int)"
 
-#: templates/settings.html:126
+#: templates/settings.html:173
 msgid "Get table of contents for a Calibre book. Params: `book_id` (int)"
 msgstr ""
 "Obtener tabla de contenidos de un libro de Calibre. Parámetros: `book_id`"
 " (int)"
 
-#: templates/settings.html:127
+#: templates/settings.html:174
 msgid ""
 "Get chapter content for a Calibre book. Params: `book_id` (int), "
 "`chapter_number` (int)"
@@ -1146,13 +1226,13 @@ msgstr ""
 "Obtener contenido del capítulo de un libro de Calibre. Parámetros: "
 "`book_id` (int), `chapter_number` (int)"
 
-#: templates/settings.html:128
+#: templates/settings.html:175
 msgid "Get table of contents for an Anx book. Params: `book_id` (int)"
 msgstr ""
 "Obtener tabla de contenidos de un libro de Anx. Parámetros: `book_id` "
 "(int)"
 
-#: templates/settings.html:129
+#: templates/settings.html:176
 msgid ""
 "Get chapter content for an Anx book. Params: `book_id` (int), "
 "`chapter_number` (int)"
@@ -1160,29 +1240,29 @@ msgstr ""
 "Obtener contenido del capítulo de un libro de Anx. Parámetros: `book_id` "
 "(int), `chapter_number` (int)"
 
-#: templates/settings.html:136
+#: templates/settings.html:183
 msgid "KOReader Sync Settings"
 msgstr "Ajustes de sincronización de KOReader"
 
-#: templates/settings.html:138
+#: templates/settings.html:185
 msgid "Step 1: Configure WebDAV Cloud Storage"
 msgstr "Paso 1: Configurar el almacenamiento en la nube WebDAV"
 
-#: templates/settings.html:140
+#: templates/settings.html:187
 msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
 msgstr ""
 "En KOReader, ve a `Almacenamiento en la nube` -> `Añadir nuevo "
 "almacenamiento en la nube`."
 
-#: templates/settings.html:141
+#: templates/settings.html:188
 msgid "Select `WebDAV`."
 msgstr "Selecciona `WebDAV`."
 
-#: templates/settings.html:142
+#: templates/settings.html:189
 msgid "Server address"
 msgstr "Dirección del servidor"
 
-#: templates/settings.html:142
+#: templates/settings.html:189
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
@@ -1190,15 +1270,15 @@ msgstr ""
 "Rellena la dirección de abajo y <strong>asegúrate de que la ruta termine "
 "con una `/`</strong>."
 
-#: templates/settings.html:146
+#: templates/settings.html:193
 msgid "Your Anx Calibre Manager login password."
 msgstr "Tu contraseña de inicio de sesión de Anx Calibre Manager."
 
-#: templates/settings.html:147
+#: templates/settings.html:194
 msgid "Folder"
 msgstr "Carpeta"
 
-#: templates/settings.html:148
+#: templates/settings.html:195
 msgid ""
 "Click `Connect` and save. You should now be able to see your Anx library "
 "in KOReader's file browser."
@@ -1206,27 +1286,27 @@ msgstr ""
 "Haz clic en `Conectar` y guarda. Ahora deberías poder ver tu biblioteca "
 "de Anx en el explorador de archivos de KOReader."
 
-#: templates/settings.html:151
+#: templates/settings.html:198
 msgid "Step 2: Install and Configure the Sync Plugin"
 msgstr "Paso 2: Instalar y configurar el plugin de sincronización"
 
-#: templates/settings.html:154
+#: templates/settings.html:201
 msgid "Download Plugin"
 msgstr "Descargar plugin"
 
-#: templates/settings.html:154
+#: templates/settings.html:201
 msgid "Click the button below to download the plugin zip file."
 msgstr "Haz clic en el botón de abajo para descargar el archivo zip del plugin."
 
-#: templates/settings.html:156
+#: templates/settings.html:203
 msgid "Download KOReader Plugin (.zip)"
 msgstr "Descargar plugin de KOReader (.zip)"
 
-#: templates/settings.html:159
+#: templates/settings.html:206
 msgid "Install Plugin"
 msgstr "Instalar plugin"
 
-#: templates/settings.html:159
+#: templates/settings.html:206
 msgid ""
 "Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
@@ -1238,11 +1318,11 @@ msgstr ""
 "<strong>carpeta completa</strong> al directorio `koreader/plugins/` de tu"
 " dispositivo KOReader."
 
-#: templates/settings.html:160
+#: templates/settings.html:207
 msgid "Restart KOReader"
 msgstr "Reiniciar KOReader"
 
-#: templates/settings.html:160
+#: templates/settings.html:207
 msgid ""
 "Completely close and reopen the KOReader application to load the new "
 "plugin."
@@ -1250,15 +1330,15 @@ msgstr ""
 "Cierra y vuelve a abrir completamente la aplicación KOReader para cargar "
 "el nuevo plugin."
 
-#: templates/settings.html:161
+#: templates/settings.html:208
 msgid "Configure Sync Server"
 msgstr "Configurar servidor de sincronización"
 
-#: templates/settings.html:163
+#: templates/settings.html:210
 msgid "Important"
 msgstr "Importante"
 
-#: templates/settings.html:163
+#: templates/settings.html:210
 msgid ""
 "First, please open and start reading a book via the WebDAV set up in the "
 "previous step. The plugin menu will <strong>only appear in the reading "
@@ -1268,7 +1348,7 @@ msgstr ""
 "en el paso anterior. El menú del plugin <strong>solo aparecerá en la "
 "interfaz de lectura</strong>."
 
-#: templates/settings.html:164
+#: templates/settings.html:211
 msgid ""
 "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
 "`More tools` -> `ANX Calibre Manager`."
@@ -1276,15 +1356,15 @@ msgstr ""
 "En la interfaz de lectura, ve a `Herramientas (icono de llave inglesa)` "
 "-> `Página siguiente` -> `Más herramientas` -> `ANX Calibre Manager`."
 
-#: templates/settings.html:165
+#: templates/settings.html:212
 msgid "Select `Custom sync server`."
 msgstr "Selecciona `Servidor de sincronización personalizado`."
 
-#: templates/settings.html:166
+#: templates/settings.html:213
 msgid "Custom sync server address"
 msgstr "Dirección del servidor de sincronización personalizado"
 
-#: templates/settings.html:167
+#: templates/settings.html:214
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
@@ -1292,7 +1372,7 @@ msgstr ""
 "Vuelve al menú anterior, selecciona `Iniciar sesión` e introduce tu "
 "nombre de usuario y contraseña de Anx Calibre Manager."
 
-#: templates/settings.html:171
+#: templates/settings.html:218
 msgid ""
 "Once configured, the plugin will automatically or manually sync your "
 "reading progress and time. You can adjust settings like sync frequency in"
@@ -1302,31 +1382,31 @@ msgstr ""
 "progreso y tiempo de lectura. Puedes ajustar la configuración, como la "
 "frecuencia de sincronización, en el menú del plugin."
 
-#: templates/settings.html:172
+#: templates/settings.html:219
 msgid "Note: Only supports epub book synchronization"
 msgstr "Nota: Solo admite la sincronización de libros epub"
 
-#: templates/settings.html:180
+#: templates/settings.html:227
 msgid "Calibre Connection"
 msgstr "Conexión con Calibre"
 
-#: templates/settings.html:182
+#: templates/settings.html:229
 msgid "Calibre Server URL"
 msgstr "URL del servidor de Calibre"
 
-#: templates/settings.html:186
+#: templates/settings.html:233
 msgid "Calibre Username"
 msgstr "Nombre de usuario de Calibre"
 
-#: templates/settings.html:190
+#: templates/settings.html:237
 msgid "Calibre Password"
 msgstr "Contraseña de Calibre"
 
-#: templates/settings.html:194
+#: templates/settings.html:241
 msgid "Default Calibre Library ID"
 msgstr "ID de biblioteca de Calibre por defecto"
 
-#: templates/settings.html:196
+#: templates/settings.html:243
 msgid ""
 "The default Calibre library ID for browsing, searching, and uploading "
 "books. Usually 'Calibre_Library'."
@@ -1334,11 +1414,11 @@ msgstr ""
 "El ID de biblioteca de Calibre por defecto para navegar, buscar y subir "
 "libros. Normalmente 'Calibre_Library'."
 
-#: templates/settings.html:200
+#: templates/settings.html:247
 msgid "Allow uploading duplicate books"
 msgstr "Permitir subir libros duplicados"
 
-#: templates/settings.html:201
+#: templates/settings.html:248
 msgid ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
@@ -1346,15 +1426,15 @@ msgstr ""
 "Si está activado, Calibre añadirá el libro como una nueva copia aunque "
 "detecte un duplicado."
 
-#: templates/settings.html:203
+#: templates/settings.html:250
 msgid "Path Settings"
 msgstr "Ajustes de ruta"
 
-#: templates/settings.html:205
+#: templates/settings.html:252
 msgid "WebDAV Root Path"
 msgstr "Ruta raíz de WebDAV"
 
-#: templates/settings.html:207
+#: templates/settings.html:254
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
@@ -1363,15 +1443,15 @@ msgstr ""
 "usuarios. Las carpetas de los usuarios se crearán automáticamente en esta"
 " ruta (por ejemplo, /webdav/nombredeusuario)."
 
-#: templates/settings.html:210
+#: templates/settings.html:257
 msgid "Default Settings"
 msgstr "Ajustes por defecto"
 
-#: templates/settings.html:212
+#: templates/settings.html:259
 msgid "Default Format Priority for New Users"
 msgstr "Prioridad de formato por defecto para nuevos usuarios"
 
-#: templates/settings.html:214
+#: templates/settings.html:261
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
@@ -1379,43 +1459,43 @@ msgstr ""
 "Prioridad de formato por defecto para nuevos usuarios, separada por "
 "comas, por ejemplo, azw3,mobi,epub"
 
-#: templates/settings.html:217
+#: templates/settings.html:264
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "Ajustes de SMTP (para enviar a Kindle)"
 
-#: templates/settings.html:219
+#: templates/settings.html:266
 msgid "SMTP Server"
 msgstr "Servidor SMTP"
 
-#: templates/settings.html:223
+#: templates/settings.html:270
 msgid "SMTP Port"
 msgstr "Puerto SMTP"
 
-#: templates/settings.html:227
+#: templates/settings.html:274
 msgid "SMTP Username (usually your email)"
 msgstr "Nombre de usuario SMTP (normalmente tu correo electrónico)"
 
-#: templates/settings.html:231
+#: templates/settings.html:278
 msgid "SMTP Password"
 msgstr "Contraseña SMTP"
 
-#: templates/settings.html:235
+#: templates/settings.html:282
 msgid "Encryption Method"
 msgstr "Método de cifrado"
 
-#: templates/settings.html:237
+#: templates/settings.html:284
 msgid "None"
 msgstr "Ninguno"
 
-#: templates/settings.html:238
+#: templates/settings.html:285
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:239
+#: templates/settings.html:286
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:241
+#: templates/settings.html:288
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
@@ -1423,95 +1503,95 @@ msgstr ""
 "SSL/TLS se suele usar para el puerto 465, STARTTLS se suele usar para el "
 "puerto 587."
 
-#: templates/settings.html:244
+#: templates/settings.html:291
 msgid "Security"
 msgstr "Seguridad"
 
-#: templates/settings.html:246
+#: templates/settings.html:293
 msgid "Login Failure Lock Threshold"
 msgstr "Umbral de bloqueo por fallo de inicio de sesión"
 
-#: templates/settings.html:248
+#: templates/settings.html:295
 msgid "Set to 0 to disable this feature."
 msgstr "Establecer en 0 para desactivar esta función."
 
-#: templates/settings.html:251
+#: templates/settings.html:298
 msgid "Session Lifetime (days)"
 msgstr "Duración de la sesión (días)"
 
-#: templates/settings.html:253
+#: templates/settings.html:300
 msgid "The number of days a user's session remains valid after logging in."
 msgstr ""
 "El número de días que la sesión de un usuario permanece válida después de"
 " iniciar sesión."
 
-#: templates/settings.html:257
+#: templates/settings.html:304
 msgid "Test Inbox"
 msgstr "Bandeja de entrada de prueba"
 
-#: templates/settings.html:258
+#: templates/settings.html:305
 msgid "Enter an email address to receive a test email"
 msgstr ""
 "Introduce una dirección de correo electrónico para recibir un correo de "
 "prueba"
 
-#: templates/settings.html:261
+#: templates/settings.html:308
 msgid "Send Test Email"
 msgstr "Enviar correo de prueba"
 
-#: templates/settings.html:262
+#: templates/settings.html:309
 msgid "Save Global Settings"
 msgstr "Guardar ajustes globales"
 
-#: templates/settings.html:271
+#: templates/settings.html:318
 msgid "New User"
 msgstr "Nuevo usuario"
 
-#: templates/settings.html:279
+#: templates/settings.html:326
 msgid "Leave blank to not change the existing user's password."
 msgstr "Dejar en blanco para no cambiar la contraseña del usuario existente."
 
-#: templates/settings.html:282 templates/settings.html:301
+#: templates/settings.html:329 templates/settings.html:348
 msgid "Role"
 msgstr "Rol"
 
-#: templates/settings.html:284
+#: templates/settings.html:331
 msgid "Normal User"
 msgstr "Usuario normal"
 
-#: templates/settings.html:285
+#: templates/settings.html:332
 msgid "Calibre Library Maintainer"
 msgstr "Mantenedor de la biblioteca de Calibre"
 
-#: templates/settings.html:286
+#: templates/settings.html:333
 msgid "Administrator"
 msgstr "Administrador"
 
-#: templates/settings.html:295
+#: templates/settings.html:342
 msgid "Existing Users"
 msgstr "Usuarios existentes"
 
-#: templates/settings.html:299
+#: templates/settings.html:346
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:302 templates/settings.html:346
+#: templates/settings.html:349 templates/settings.html:393
 msgid "Actions"
 msgstr "Acciones"
 
-#: templates/settings.html:314
+#: templates/settings.html:361
 msgid "Generate New Invite Code"
 msgstr "Generar nuevo código de invitación"
 
-#: templates/settings.html:316
+#: templates/settings.html:363
 msgid "Custom Invite Code"
 msgstr "Código de invitación personalizado"
 
-#: templates/settings.html:317
+#: templates/settings.html:364
 msgid "Leave blank to auto-generate"
 msgstr "Dejar en blanco para autogenerar"
 
-#: templates/settings.html:318
+#: templates/settings.html:365
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
@@ -1519,61 +1599,61 @@ msgstr ""
 "Código de invitación personalizado (opcional). Si se deja en blanco, se "
 "generará un código aleatorio."
 
-#: templates/settings.html:321
+#: templates/settings.html:368
 msgid "Maximum Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:323
+#: templates/settings.html:370
 msgid "How many times this invite code can be used"
 msgstr "Cuántas veces se puede usar este código de invitación"
 
-#: templates/settings.html:326
+#: templates/settings.html:373
 msgid "Expires After (Hours)"
 msgstr "Expira después de (horas)"
 
-#: templates/settings.html:327
+#: templates/settings.html:374
 msgid "Leave blank for no expiration"
 msgstr "Dejar en blanco para que no caduque"
 
-#: templates/settings.html:328
+#: templates/settings.html:375
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr ""
 "Número de horas después de las cuales caducará este código de invitación "
 "(opcional)"
 
-#: templates/settings.html:331
+#: templates/settings.html:378
 msgid "Generate Invite Code"
 msgstr "Generar código de invitación"
 
-#: templates/settings.html:335
+#: templates/settings.html:382
 msgid "Existing Invite Codes"
 msgstr "Códigos de invitación existentes"
 
-#: templates/settings.html:339
+#: templates/settings.html:386
 msgid "Code"
 msgstr "Código"
 
-#: templates/settings.html:340
+#: templates/settings.html:387
 msgid "Max Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:341
+#: templates/settings.html:388
 msgid "Current Uses"
 msgstr "Usos actuales"
 
-#: templates/settings.html:342
+#: templates/settings.html:389
 msgid "Created By"
 msgstr "Creado por"
 
-#: templates/settings.html:343
+#: templates/settings.html:390
 msgid "Created At"
 msgstr "Creado el"
 
-#: templates/settings.html:344
+#: templates/settings.html:391
 msgid "Expires At"
 msgstr "Expira el"
 
-#: templates/settings.html:345
+#: templates/settings.html:392
 msgid "Status"
 msgstr "Estado"
 

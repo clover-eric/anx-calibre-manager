@@ -114,6 +114,53 @@
             <p><code>{{ request.host_url.rstrip('/') }}/mcp?token=YOUR_TOKEN</code></p>
             <h4>{{ _('Authentication') }}</h4>
             <p>{{ _('Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL.') }}</p>
+            <h4>{{ _('Prompt Examples') }}</h4>
+            <p>{{ _('Here are some examples of natural language prompts you can use with an AI agent. The agent will intelligently call one or more tools to fulfill your request.') }}</p>
+            <div class="prompt-examples-container">
+                <div class="prompt-card">
+                    <h5>{{ _('Simple & Advanced Search') }}</h5>
+                    <div class="prompt-item">
+                        <p>"{{ _('Find books about Python programming.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Search for science fiction books by Isaac Asimov published after 1950.') }}"</p>
+                    </div>
+                </div>
+                <div class="prompt-card">
+                    <h5>{{ _('Book Management') }}</h5>
+                    <div class="prompt-item">
+                        <p>"{{ _('What are the 5 most recently added books? Send the first one to my Kindle.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Push the book \'Dune\' to my Anx reader.') }}"</p>
+                    </div>
+                </div>
+                <div class="prompt-card">
+                    <h5>{{ _('Content Interaction & Summarization') }}</h5>
+                    <div class="prompt-item">
+                        <p>"{{ _('Show me the table of contents for the book \'Foundation\'.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Fetch the first chapter of \'Foundation\' and give me a summary.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Based on the chapter \'The Psychohistorians\' from the book \'Foundation\', what are the main ideas of psychohistory?') }}"</p>
+                    </div>
+                </div>
+                <div class="prompt-card">
+                    <h5>{{ _('Reading Statistics & Progress') }}</h5>
+                    <div class="prompt-item">
+                        <p>"{{ _('How many books have I read this year?') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('What\'s my reading progress on \'Dune\'?') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Who is the author of \'Project Hail Mary\' and how long have I been reading it?') }}"</p>
+                    </div>
+                </div>
+            </div>
+
             <h4>{{ _('Available Tools') }}</h4>
             <ul>
                 <li><strong>search_calibre_books</strong>: {{ _('Search Calibre books. Parameters: `search_expression` (str), `limit` (int, default 20)') }}</li>
