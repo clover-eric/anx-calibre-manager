@@ -38,7 +38,41 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loadingOverlay) loadingOverlay.classList.add('hidden');
     }
 
-    // Show loading initially
+    // Theme setup
+    const getCSS = ({ spacing = 1.4, justify = true, hyphenate = true } = {}) => `
+        @namespace epub "http://www.idpf.org/2007/ops";
+        html {
+            color-scheme: light dark;
+        }
+        @media (prefers-color-scheme: dark) {
+            a:link {
+                color: lightblue;
+            }
+        }
+        p, li, blockquote, dd {
+            line-height: ${spacing};
+            text-align: ${justify ? 'justify' : 'start'};
+            hyphens: ${hyphenate ? 'auto' : 'manual'};
+        }
+    `;
+
+    async function applyTheme() {
+        try {
+            const response = await fetch('/api/user_settings');
+            if (!response.ok) {
+                throw new Error('Failed to fetch user settings');
+            }
+            const settings = await response.json();
+            const theme = settings.theme || 'auto';
+            document.documentElement.setAttribute('data-theme', theme);
+        } catch (error) {
+            console.error('Error applying theme:', error);
+            // Fallback to auto theme
+            document.documentElement.setAttribute('data-theme', 'auto');
+        }
+    }
+
+    applyTheme();
     showLoading();
 
 
@@ -116,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await view.open(bookFile);
 
             if (view.renderer) {
+                view.renderer.setStyles?.(getCSS());
                 view.renderer.next();
                 setupUI(view);
                 setupTTS(); // Setup TTS after the book is loaded
