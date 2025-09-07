@@ -26,10 +26,6 @@ jobs:
         run: |
           zip -r anx-calibre-manager-koreader-plugin.koplugin.zip ./anx-calibre-manager-koreader-plugin.koplugin -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
 
-      - name: Generate Source Code Zip
-        run: |
-          zip -r anx-calibre-manager-source.zip . -x "*.git*" -x "*.venv*" -x "*.DS_Store*"
-
       - name: Generate Release Notes
         id: release_notes
         run: |
@@ -86,7 +82,6 @@ jobs:
         with:
           files: |
             anx-calibre-manager-koreader-plugin.koplugin.zip
-            anx-calibre-manager-source.zip
           generate_release_notes: false
           token: ${{ secrets.GITHUB_TOKEN }}
           body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
