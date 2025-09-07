@@ -3,6 +3,7 @@ import { createTOCView } from './foliate/ui/tree.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const readerContainer = document.getElementById('reader-container');
+    const loadingOverlay = document.getElementById('loading-overlay');
     const urlPath = window.location.pathname;
     const pathParts = urlPath.split('/');
 
@@ -27,6 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const ttsPitch = document.getElementById('tts-pitch');
     const ttsPitchLabel = document.getElementById('tts-pitch-label');
     const ttsVoice = document.getElementById('tts-voice');
+
+    // Helper functions for loading animation
+    function showLoading() {
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+    }
+
+    function hideLoading() {
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
+    }
+
+    // Show loading initially
+    showLoading();
 
 
     let view; // To hold the foliate-view instance
@@ -73,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadBook(url) {
+        // The loading spinner is already visible, just proceed with loading
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -92,8 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const bookBlob = await response.blob();
             const bookFile = new File([bookBlob], filename, { type: bookBlob.type });
 
+            const existingView = readerContainer.querySelector('foliate-view');
+            if (existingView) {
+                readerContainer.removeChild(existingView);
+            }
             view = document.createElement('foliate-view');
-            readerContainer.innerHTML = '';
             readerContainer.appendChild(view);
 
             await view.open(bookFile);
@@ -102,12 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 view.renderer.next();
                 setupUI(view);
                 setupTTS(); // Setup TTS after the book is loaded
+                hideLoading(); // Hide loading animation after book is loaded
             } else {
+                hideLoading(); // Hide loading animation even on error
                 showError('Failed to initialize book renderer.');
             }
         } catch (error) {
             console.error('Error loading book:', error);
             showError(`Error loading book: ${error.message}`);
+            hideLoading(); // Hide loading on error
         }
     }
 

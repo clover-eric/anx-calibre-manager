@@ -16,10 +16,6 @@
             background-color: var(--background-color, #fff);
             color: var(--text-color, #000);
         }
-        #reader-container {
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body>
@@ -52,6 +48,9 @@
     </div>
 
     <div id="reader-container">
+        <div id="loading-overlay">
+            <div class="loading-spinner"></div>
+        </div>
         <!-- foliate-view will be inserted here -->
     </div>
 
