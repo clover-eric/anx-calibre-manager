@@ -169,6 +169,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupUI(viewInstance) {
         const book = viewInstance.book;
 
+        // ANX-CALIBRE-MANAGER DARK MODE PATCH (Event-based)
+        viewInstance.renderer.addEventListener('load', (event) => {
+            const iframeDoc = event.detail.doc;
+            if (!iframeDoc) return;
+
+            const theme = document.documentElement.getAttribute('data-theme') || 'auto';
+            iframeDoc.documentElement.setAttribute('data-theme', theme);
+
+            const styleId = 'anx-dark-mode-patch';
+            if (iframeDoc.getElementById(styleId)) return;
+
+            const style = iframeDoc.createElement('style');
+            style.id = styleId;
+            style.textContent = `
+                [data-theme="dark"] * {
+                    background-color: #333333 !important;
+                    color: #e0e0e0 !important;
+                }
+                [data-theme="dark"] a {
+                    color: lightblue !important;
+                }
+            `;
+            iframeDoc.head.appendChild(style);
+        });
+        // END PATCH
+
         // 1. Setup Book Info (Title, Author, Cover)
         const title = formatLanguageMap(book.metadata?.title) || 'Untitled';
         const author = formatContributor(book.metadata?.author) || 'Unknown Author';
