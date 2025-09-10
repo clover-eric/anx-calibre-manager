@@ -98,6 +98,9 @@ def create_app():
     app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 
     def get_locale():
+        # 0. Check for language in g object (for logout flash message)
+        if hasattr(g, 'language') and g.language in LANGUAGES:
+            return g.language
         # 1. Check for language in URL parameters
         lang = request.args.get('lang')
         if lang and lang in LANGUAGES:

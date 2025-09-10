@@ -1,7 +1,7 @@
 import bcrypt
 import re
 from datetime import datetime
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, g, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, g, jsonify, current_app
 from flask_babel import gettext as _
 from contextlib import closing
 import database
@@ -45,9 +45,21 @@ def login():
 
 @auth_bp.route('/logout')
 def logout():
-    lang = session.get('language')
-    session.clear()
+    lang = session.get('language', 'zh_Hans')
+    g.language = lang  # Set language in g for the current request
+    
+    # Flash the message, which adds it to the session
     flash(_('You have been logged out successfully.'))
+    
+    # Preserve the flashed messages
+    flashed_messages = session.get('_flashes', [])
+    
+    # Clear the rest of the session
+    session.clear()
+    
+    # Restore the flashed messages
+    session['_flashes'] = flashed_messages
+    
     return redirect(url_for('auth.login', lang=lang))
 
 @auth_bp.route('/setup', methods=['GET', 'POST'])
