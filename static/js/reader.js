@@ -174,8 +174,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const iframeDoc = event.detail.doc;
             if (!iframeDoc) return;
 
-            const theme = document.documentElement.getAttribute('data-theme') || 'auto';
-            iframeDoc.documentElement.setAttribute('data-theme', theme);
+            const themeSetting = document.documentElement.getAttribute('data-theme') || 'auto';
+            const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            const effectiveTheme = (themeSetting === 'dark' || (themeSetting === 'auto' && systemIsDark))
+                ? 'dark'
+                : 'light';
+
+            iframeDoc.documentElement.setAttribute('data-theme', effectiveTheme);
 
             const styleId = 'anx-dark-mode-patch';
             if (iframeDoc.getElementById(styleId)) return;
