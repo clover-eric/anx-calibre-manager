@@ -1,0 +1,51 @@
+.toolbar {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 100; /* Increased z-index */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px; /* Reduced height */
+    padding: 4px; /* Reduced padding */
+    transition: opacity 250ms ease;
+    background: var(--toolbar-bg);
+}
+.toolbar button {
+    padding: 12px;
+    border-radius: 6px;
+    background: none;
+    border: 0;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+.toolbar button:hover {
+    background: rgba(0, 0, 0, .1);
+}
+#header-bar {
+    top: 0;
+}
+#nav-bar {
+    bottom: 0;
+}
+.progress-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0 12px;
+}
+#progress-slider {
+    flex-grow: 1;
+}
+#progress-label {
+    min-width: 50px;
+    text-align: right;
+}
+.title-container {
+    flex-grow: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

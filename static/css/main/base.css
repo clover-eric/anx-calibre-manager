@@ -1,0 +1,8 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding-top: 80px; /* Space for fixed top nav */
+    padding-bottom: 80px; /* Space for fixed bottom nav on mobile */
+}

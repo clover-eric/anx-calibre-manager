@@ -1,0 +1,99 @@
+.button, button, .button-link {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #f8f9fa;
+    color: var(--text-color);
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 500;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+.button:hover, button:hover, .button-link:hover {
+    background-color: #e9ecef;
+}
+
+.button-primary { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.button-primary:hover { background-color: var(--primary-color-dark); border-color: var(--primary-color-dark); }
+.button-secondary { background-color: var(--secondary-color); color: #fff; border-color: var(--secondary-color); }
+.button-secondary:hover { background-color: #5a6268; border-color: #5a6268; }
+.button-danger { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
+.button-danger:hover { background-color: #c82333; border-color: #c82333; }
+.edit-button { background-color: var(--warning-color); color: #212529; border-color: var(--warning-color); }
+.edit-button:hover { background-color: #e0a800; border-color: #e0a800; color: #212529; }
+
+.dark-mode .edit-button {
+    background-color: #495057; /* A slightly lighter gray */
+    color: #ced4da;
+    border-color: #495057;
+}
+.dark-mode .edit-button:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+    color: #fff;
+}
+
+/* --- Button Width Overrides --- */
+.book-row .actions .button {
+    width: 100%;
+}
+
+.library-header button,
+.top-nav .nav-links .button,
+.modal-footer button,
+.pagination-controls .button, .pagination-controls .button-link {
+    width: auto;
+    flex-shrink: 0;
+}
+
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+input[type="text"], 
+input[type="password"], 
+input[type="number"], 
+input[type="email"], 
+input[type="url"], 
+input[type="date"],
+select, 
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.search-form input {
+    width: 100%;
+}
+
+.pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.pagination-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.pagination-controls .page-jump-input {
+    width: 60px;
+    text-align: center;
+}

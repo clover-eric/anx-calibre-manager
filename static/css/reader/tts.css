@@ -1,0 +1,49 @@
+#tts-settings {
+    padding: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+#tts-settings h3 {
+    margin-top: 0;
+}
+.tts-setting-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.tts-setting-row label {
+    flex-basis: 50px;
+}
+.tts-setting-row input[type="range"] {
+    flex-grow: 1;
+}
+.tts-setting-row span {
+    min-width: 30px;
+    text-align: right;
+}
+#tts-voice {
+    width: 100%;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+.popover {
+    display: none;
+    position: absolute;
+    z-index: 101; /* Increased z-index to be above toolbar */
+    top: 50px;
+    right: 10px;
+    width: 300px;
+    background: var(--popover-bg);
+    border: 1px solid var(--popover-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+.popover.show {
+    display: block;
+}
+#tts-settings-popover h3 {
+    margin-top: 0;
+    font-size: 1rem;
+}

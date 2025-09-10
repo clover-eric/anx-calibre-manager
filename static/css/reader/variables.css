@@ -1,0 +1,37 @@
+:root {
+    --background-color: #fff;
+    --text-color: #000;
+    --toolbar-bg: rgba(0,0,0,0.1);
+    --active-bg: rgba(0, 0, 0, .05);
+    --popover-bg: #fff;
+    --popover-border: rgba(0,0,0,0.1);
+    --sidebar-bg: #fff;
+    --sidebar-border: rgba(0, 0, 0, .1);
+    --dimming-bg: rgba(0, 0, 0, .2);
+}
+
+[data-theme="dark"] {
+    --background-color: #333333; /* A balanced dark grey */
+    --text-color: #e0e0e0;
+    --toolbar-bg: rgba(255,255,255,0.1);
+    --active-bg: rgba(255, 255, 255, .1);
+    --popover-bg: #2c2c2c;
+    --popover-border: rgba(255,255,255,0.1);
+    --sidebar-bg: #1e1e1e;
+    --sidebar-border: rgba(255, 255, 255, .1);
+    --dimming-bg: rgba(0, 0, 0, .5);
+}
+
+[data-theme="auto"] {
+    @media (prefers-color-scheme: dark) {
+        --background-color: #333333; /* A balanced dark grey */
+        --text-color: #e0e0e0;
+        --toolbar-bg: rgba(255,255,255,0.1);
+        --active-bg: rgba(255, 255, 255, .1);
+        --popover-bg: #2c2c2c;
+        --popover-border: rgba(255,255,255,0.1);
+        --sidebar-bg: #1e1e1e;
+        --sidebar-border: rgba(255, 255, 255, .1);
+        --dimming-bg: rgba(0, 0, 0, .5);
+    }
+}
