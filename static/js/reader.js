@@ -196,6 +196,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 [data-theme="dark"] a {
                     color: lightblue !important;
                 }
+                [data-theme="light"] * {
+                    background-color: #ffffff !important;
+                    color: #000000 !important;
+                }
+                [data-theme="light"] a {
+                    color: #0000ee !important;
+                }
             `;
             iframeDoc.head.appendChild(style);
         });
