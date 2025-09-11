@@ -35,37 +35,37 @@
     <!-- Theme Manager Script -->
     <script>
         (function() {
-            const theme = localStorage.getItem('theme') || 'auto';
-            
-            function applyTheme(themeValue) {
-                if (themeValue === 'dark') {
-                    document.documentElement.classList.add('dark-mode');
-                } else if (themeValue === 'light') {
-                    document.documentElement.classList.remove('dark-mode');
-                } else { // auto
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        document.documentElement.classList.add('dark-mode');
-                    } else {
-                        document.documentElement.classList.remove('dark-mode');
-                    }
-                }
+            const userTheme = '{{ g.user.theme if g.user and g.user.theme else "" }}';
+            const savedTheme = userTheme || localStorage.getItem('theme') || 'auto';
+
+            // If the user has a theme set on the server, make sure localStorage is in sync.
+            if (userTheme && userTheme !== localStorage.getItem('theme')) {
+                localStorage.setItem('theme', userTheme);
             }
 
-            applyTheme(theme);
+            function applyTheme(themeValue) {
+                const isAuto = themeValue === 'auto';
+                const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const effectiveTheme = isAuto ? (systemIsDark ? 'dark' : 'light') : themeValue;
 
-            // This script runs in the head, so we need to wait for the body to exist
-            // to pass the theme preference to it for other scripts to potentially use.
+                if (effectiveTheme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark-mode');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+                // Store the raw preference (could be 'auto') for other scripts
+                document.documentElement.dataset.themePreference = themeValue;
+            }
+
+            applyTheme(savedTheme);
+
             document.addEventListener('DOMContentLoaded', () => {
-                document.body.dataset.theme = theme;
-                
-                // Also, listen for changes in system theme if in auto mode
-                if (theme === 'auto') {
-                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                        if (e.matches) {
-                            document.documentElement.classList.add('dark-mode');
-                        } else {
-                            document.documentElement.classList.remove('dark-mode');
-                        }
+                // Listen for changes in system theme only if in auto mode
+                if (savedTheme === 'auto') {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                        applyTheme('auto');
                     });
                 }
             });
