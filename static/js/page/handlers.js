@@ -45,9 +45,14 @@ function pollAudiobookStatus(taskId, button, originalText) {
 }
 
 function initializeAudiobookButtons() {
-    const audiobookButtons = document.querySelectorAll('[data-action="generate-audiobook"]');
-    audiobookButtons.forEach(button => {
-        const bookId = button.dataset.id;
+    // By deferring execution to the next event loop cycle with setTimeout,
+    // we ensure that the DOMContentLoaded event has fired and translations have been initialized
+    // in index.js before this code runs. This prevents a race condition where
+    // fast API responses could update the button text before the translation map is ready.
+    setTimeout(() => {
+        const audiobookButtons = document.querySelectorAll('[data-action="generate-audiobook"]');
+        audiobookButtons.forEach(button => {
+            const bookId = button.dataset.id;
         const library = button.dataset.library;
         const buttonText = button.querySelector('.button-text');
         const originalText = buttonText.textContent;
@@ -73,7 +78,8 @@ function initializeAudiobookButtons() {
                 // Don't alert the user on load, just log it. It might be a network blip.
                 console.error(`[Audiobook Status] Failed to fetch status for book ${bookId}. Error:`, error);
             });
-    });
+        });
+    }, 0);
 }
 
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 00:24+0800\n"
+"POT-Creation-Date: 2025-09-22 01:59+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -110,96 +110,45 @@ msgstr "该用户的统计页面是私密的。"
 msgid "Anx library not found for this user."
 msgstr "未找到该用户的 Anx 书库。"
 
-#: blueprints/api/audiobook.py:99 blueprints/api/audiobook.py:246
+#: blueprints/api/audiobook.py:100 blueprints/api/audiobook.py:226
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' 或 'library' 参数缺失"
 
-#: blueprints/api/audiobook.py:108
+#: blueprints/api/audiobook.py:109
 msgid "A task for this book is already in progress."
 msgstr "本书的有声书生成任务已在进行中。"
 
-#: blueprints/api/audiobook.py:113
-msgid "Task queued"
-msgstr "任务已加入队列"
-
-#: blueprints/api/audiobook.py:123
-msgid "Starting audiobook generation..."
-msgstr "开始生成有声书..."
-
-#: blueprints/api/audiobook.py:124
-msgid "Parsing EPUB file..."
-msgstr "正在解析 EPUB 文件..."
-
-#: blueprints/api/audiobook.py:125
-#, python-format
-msgid "Processing: Chapter %(index)d/%(total)d"
-msgstr "正在处理章节：%(index)d/%(total)d"
-
-#: blueprints/api/audiobook.py:126
-msgid "Merging audio files..."
-msgstr "正在合并音频文件..."
-
-#: blueprints/api/audiobook.py:127
-msgid "Writing book metadata..."
-msgstr "正在写入书籍元数据..."
-
-#: blueprints/api/audiobook.py:128
-msgid "Cleaning up temporary files..."
-msgstr "正在清理临时文件..."
-
-#: blueprints/api/audiobook.py:129
-msgid "Audiobook generated successfully!"
-msgstr "有声书生成成功！"
-
-#: blueprints/api/audiobook.py:130
-msgid "Could not extract any chapters from the EPUB file."
-msgstr "无法从 EPUB 文件中提取任何章节。"
-
-#: blueprints/api/audiobook.py:131
-msgid "All chapters are empty or could not be converted to audio."
-msgstr "所有章节均为空或无法转换为音频。"
-
-#: blueprints/api/audiobook.py:132
-#, python-format
-msgid "An unknown error occurred: %(error)s"
-msgstr "发生未知错误：%(error)s"
-
-#: blueprints/api/audiobook.py:139
-#, python-format
-msgid "FFmpeg error: %(error)s"
-msgstr "FFmpeg 错误：%(error)s"
-
-#: blueprints/api/audiobook.py:191
+#: blueprints/api/audiobook.py:171
 msgid "Invalid 'library' type"
 msgstr "无效的 'library' 类型"
 
-#: blueprints/api/audiobook.py:219
+#: blueprints/api/audiobook.py:199 static/js/page/translations.js:56
 #, python-format
 msgid "File error: %(error)s"
 msgstr "文件错误：%(error)s"
 
-#: blueprints/api/audiobook.py:223
+#: blueprints/api/audiobook.py:203
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "启动任务时发生未知错误：%(error)s"
 
-#: blueprints/api/audiobook.py:233 blueprints/api/audiobook.py:262
+#: blueprints/api/audiobook.py:213 blueprints/api/audiobook.py:243
 msgid "Task not found"
 msgstr "未找到任务"
 
-#: blueprints/api/audiobook.py:266
+#: blueprints/api/audiobook.py:247
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: blueprints/api/audiobook.py:270
+#: blueprints/api/audiobook.py:251
 msgid "Audiobook is not ready for download"
 msgstr "有声书尚未准备好下载"
 
-#: blueprints/api/audiobook.py:275
+#: blueprints/api/audiobook.py:256
 msgid "File not found on server"
 msgstr "服务器上未找到文件"
 
-#: blueprints/api/audiobook.py:297
+#: blueprints/api/audiobook.py:278
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "无法发送文件：%(error)s"
@@ -493,7 +442,7 @@ msgstr "删除用户数据目录时出错：%(error)s"
 msgid "User and their data have been successfully deleted."
 msgstr "用户及其数据已成功删除。"
 
-#: static/-js/login.js:3
+#: static/js/login.js:3
 msgid "A network error occurred, please try again."
 msgstr "网络发生错误，请重试"
 
@@ -692,132 +641,181 @@ msgstr "删除失败：{error}"
 msgid "Delete failed"
 msgstr "删除失败"
 
-#: static/js/page/handlers.js:12
+#: static/js/page/translations.js:10
 msgid "Network response was not ok."
 msgstr "网络响应异常。"
 
-#: static/js/page/handlers.js:13
+#: static/js/page/translations.js:11
 msgid "No changes detected."
 msgstr "未检测到任何更改。"
 
-#: static/js/page/handlers.js:14
-msgid "Queued..."
-msgstr "已加入队列..."
-
-#: static/js/page/handlers.js:15
+#: static/js/page/translations.js:12
 msgid "Are you sure you want to delete this book? This action cannot be undone."
 msgstr "您确定要删除这本书吗？此操作无法撤消。"
 
-#: static/js/page/handlers.js:16
+#: static/js/page/translations.js:13
 #, python-format
 msgid "Please enter a valid page number between 1 and %(totalPages)s."
 msgstr "请输入介于 1 和 %(totalPages)s 之间的有效页码。"
 
-#: static/js/page/handlers.js:17
+#: static/js/page/translations.js:14
 msgid "Please select files to upload."
 msgstr "请选择要上传的文件。"
 
-#: static/js/page/handlers.js:18
+#: static/js/page/translations.js:15
 msgid "Waiting..."
 msgstr "等待中..."
 
-#: static/js/page/handlers.js:19
+#: static/js/page/translations.js:16
 msgid "Uploading..."
 msgstr "上传中..."
 
-#: static/js/page/handlers.js:20 static/js/page/ui.js:10
+#: static/js/page/translations.js:17
 msgid "Processing..."
 msgstr "处理中..."
 
-#: static/js/page/handlers.js:21
+#: static/js/page/translations.js:18
 msgid "Upload failed"
 msgstr "上传失败"
 
-#: static/js/page/handlers.js:22
+#: static/js/page/translations.js:19
 msgid "Network Error"
 msgstr "网络错误"
 
-#: static/js/page/handlers.js:23
+#: static/js/page/translations.js:20
+msgid "Network error: Failed to connect to the server."
+msgstr "网络错误：无法连接到服务器。"
+
+#: static/js/page/translations.js:21
 msgid "All books uploaded successfully!"
 msgstr "所有图书上传成功！"
 
-#: static/js/page/handlers.js:24
+#: static/js/page/translations.js:22
 msgid "Some files failed to upload. Please check the progress details."
 msgstr "部分文件上传失败。请查看进度详情。"
 
-#: static/js/page/ui.js:6
+#: static/js/page/translations.js:23
 msgid "Generating..."
 msgstr "生成中..."
 
-#: static/js/page/ui.js:7
+#: static/js/page/translations.js:24
 msgid "Download Audiobook"
 msgstr "下载有声书"
 
-#: static/js/page/ui.js:8
+#: static/js/page/translations.js:25
 msgid "Failed"
 msgstr "失败"
 
-#: static/js/page/ui.js:9
+#: static/js/page/translations.js:26
 msgid "Error"
 msgstr "错误"
 
-#: static/js/page/ui.js:11
+#: static/js/page/translations.js:27
 msgid "Success!"
 msgstr "成功！"
 
-#: static/js/page/ui.js:12
+#: static/js/page/translations.js:30
 msgid "Title"
 msgstr "标题"
 
-#: static/js/page/ui.js:13 templates/stats.html:36 templates/stats.html:60
+#: static/js/page/translations.js:31 templates/stats.html:36
+#: templates/stats.html:60
 msgid "Author"
 msgstr "作者"
 
-#: static/js/page/ui.js:14
+#: static/js/page/translations.js:32
+msgid "Authors (comma-separated)"
+msgstr "作者（逗号分隔）"
+
+#: static/js/page/translations.js:33
 msgid "Rating (0-5)"
 msgstr "评分 (0-5)"
 
-#: static/js/page/ui.js:15
+#: static/js/page/translations.js:34
 msgid "Reading Progress (%)"
 msgstr "阅读进度 (%)"
 
-#: static/js/page/ui.js:16 templates/index.html:70 templates/index.html:143
+#: static/js/page/translations.js:35 templates/index.html:70
+#: templates/index.html:143
 msgid "Description"
 msgstr "描述"
 
-#: static/js/page/ui.js:17
+#: static/js/page/translations.js:36
 msgid "Note"
 msgstr "笔记"
 
-#: static/js/page/ui.js:18
+#: static/js/page/translations.js:37
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
 msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间才能生效。"
 
-#: static/js/page/ui.js:19
-msgid "Authors (comma-separated)"
-msgstr "作者（逗号分隔）"
-
-#: static/js/page/ui.js:20 templates/index.html:60 templates/index.html:136
+#: static/js/page/translations.js:38 templates/index.html:60
+#: templates/index.html:136
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/ui.js:21 templates/index.html:61
+#: static/js/page/translations.js:39 templates/index.html:61
 msgid "Publication Date"
 msgstr "出版日期"
 
-#: static/js/page/ui.js:22
+#: static/js/page/translations.js:40
 msgid "Tags (comma-separated)"
 msgstr "标签（逗号分隔）"
 
-#: static/js/page/ui.js:23
+#: static/js/page/translations.js:41
 msgid "Library (custom field #library)"
 msgstr "书库（自定义字段 #library）"
 
-#: static/js/page/ui.js:24
+#: static/js/page/translations.js:42
 msgid "Read Date (custom field #readdate)"
 msgstr "阅读日期（自定义字段 #readdate）"
+
+#: static/js/page/translations.js:45
+msgid "Task queued"
+msgstr "任务已加入队列"
+
+#: static/js/page/translations.js:46
+msgid "Starting audiobook generation..."
+msgstr "开始生成有声书..."
+
+#: static/js/page/translations.js:47
+msgid "Parsing EPUB file..."
+msgstr "正在解析 EPUB 文件..."
+
+#: static/js/page/translations.js:48
+#, python-format
+msgid "Processing: Chapter %(index)d/%(total)d"
+msgstr "正在处理章节：%(index)d/%(total)d"
+
+#: static/js/page/translations.js:49
+msgid "Merging audio files..."
+msgstr "正在合并音频文件..."
+
+#: static/js/page/translations.js:50
+msgid "Writing book metadata..."
+msgstr "正在写入书籍元数据..."
+
+#: static/js/page/translations.js:51
+msgid "Cleaning up temporary files..."
+msgstr "正在清理临时文件..."
+
+#: static/js/page/translations.js:52
+msgid "Audiobook generated successfully!"
+msgstr "有声书生成成功！"
+
+#: static/js/page/translations.js:53
+msgid "Could not extract any chapters from the EPUB file."
+msgstr "无法从 EPUB 文件中提取任何章节。"
+
+#: static/js/page/translations.js:54
+msgid "All chapters are empty or could not be converted to audio."
+msgstr "所有章节均为空或无法转换为音频。"
+
+#: static/js/page/translations.js:55
+#, python-format
+msgid "An unknown error occurred: %(error)s"
+msgstr "发生未知错误：%(error)s"
 
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
@@ -1935,4 +1933,10 @@ msgstr "还没有读完的图书。"
 
 #~ msgid "Created at"
 #~ msgstr "创建于"
+
+#~ msgid "FFmpeg error: %(error)s"
+#~ msgstr "FFmpeg 错误：%(error)s"
+
+#~ msgid "Queued..."
+#~ msgstr "已加入队列..."
 

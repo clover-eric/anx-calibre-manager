@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 00:24+0800\n"
+"POT-Creation-Date: 2025-09-22 01:59+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -111,96 +111,45 @@ msgstr "La page de statistiques de cet utilisateur est privée."
 msgid "Anx library not found for this user."
 msgstr "Bibliothèque Anx introuvable pour cet utilisateur."
 
-#: blueprints/api/audiobook.py:99 blueprints/api/audiobook.py:246
+#: blueprints/api/audiobook.py:100 blueprints/api/audiobook.py:226
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' ou 'library' est manquant dans la requête"
 
-#: blueprints/api/audiobook.py:108
+#: blueprints/api/audiobook.py:109
 msgid "A task for this book is already in progress."
 msgstr "Une tâche pour ce livre est déjà en cours."
 
-#: blueprints/api/audiobook.py:113
-msgid "Task queued"
-msgstr "Tâche mise en file d'attente"
-
-#: blueprints/api/audiobook.py:123
-msgid "Starting audiobook generation..."
-msgstr "Démarrage de la génération du livre audio..."
-
-#: blueprints/api/audiobook.py:124
-msgid "Parsing EPUB file..."
-msgstr "Analyse du fichier EPUB..."
-
-#: blueprints/api/audiobook.py:125
-#, python-format
-msgid "Processing: Chapter %(index)d/%(total)d"
-msgstr "Traitement : Chapitre %(index)d/%(total)d"
-
-#: blueprints/api/audiobook.py:126
-msgid "Merging audio files..."
-msgstr "Fusion des fichiers audio..."
-
-#: blueprints/api/audiobook.py:127
-msgid "Writing book metadata..."
-msgstr "Écriture des métadonnées du livre..."
-
-#: blueprints/api/audiobook.py:128
-msgid "Cleaning up temporary files..."
-msgstr "Nettoyage des fichiers temporaires..."
-
-#: blueprints/api/audiobook.py:129
-msgid "Audiobook generated successfully!"
-msgstr "Livre audio généré avec succès !"
-
-#: blueprints/api/audiobook.py:130
-msgid "Could not extract any chapters from the EPUB file."
-msgstr "Impossible d'extraire des chapitres du fichier EPUB."
-
-#: blueprints/api/audiobook.py:131
-msgid "All chapters are empty or could not be converted to audio."
-msgstr "Tous les chapitres sont vides ou n'ont pas pu être convertis en audio."
-
-#: blueprints/api/audiobook.py:132
-#, python-format
-msgid "An unknown error occurred: %(error)s"
-msgstr "Une erreur inconnue est survenue : %(error)s"
-
-#: blueprints/api/audiobook.py:139
-#, python-format
-msgid "FFmpeg error: %(error)s"
-msgstr "Erreur FFmpeg : %(error)s"
-
-#: blueprints/api/audiobook.py:191
+#: blueprints/api/audiobook.py:171
 msgid "Invalid 'library' type"
 msgstr "Type de 'library' invalide"
 
-#: blueprints/api/audiobook.py:219
+#: blueprints/api/audiobook.py:199 static/js/page/translations.js:56
 #, python-format
 msgid "File error: %(error)s"
 msgstr "Erreur de fichier : %(error)s"
 
-#: blueprints/api/audiobook.py:223
+#: blueprints/api/audiobook.py:203
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Une erreur inconnue est survenue lors du démarrage de la tâche : %(error)s"
 
-#: blueprints/api/audiobook.py:233 blueprints/api/audiobook.py:262
+#: blueprints/api/audiobook.py:213 blueprints/api/audiobook.py:243
 msgid "Task not found"
 msgstr "Tâche non trouvée"
 
-#: blueprints/api/audiobook.py:266
+#: blueprints/api/audiobook.py:247
 msgid "Forbidden"
 msgstr "Interdit"
 
-#: blueprints/api/audiobook.py:270
+#: blueprints/api/audiobook.py:251
 msgid "Audiobook is not ready for download"
 msgstr "Le livre audio n'est pas prêt à être téléchargé"
 
-#: blueprints/api/audiobook.py:275
+#: blueprints/api/audiobook.py:256
 msgid "File not found on server"
 msgstr "Fichier non trouvé sur le serveur"
 
-#: blueprints/api/audiobook.py:297
+#: blueprints/api/audiobook.py:278
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "Impossible d'envoyer le fichier : %(error)s"
@@ -715,108 +664,114 @@ msgstr "Échec de la suppression : {error}"
 msgid "Delete failed"
 msgstr "Échec de la suppression"
 
-#: static/js/page/handlers.js:12
+#: static/js/page/translations.js:10
 msgid "Network response was not ok."
 msgstr "La réponse du réseau n'était pas bonne."
 
-#: static/js/page/handlers.js:13
+#: static/js/page/translations.js:11
 msgid "No changes detected."
 msgstr "Aucun changement détecté."
 
-#: static/js/page/handlers.js:14
-msgid "Queued..."
-msgstr "En file d'attente..."
-
-#: static/js/page/handlers.js:15
+#: static/js/page/translations.js:12
 msgid "Are you sure you want to delete this book? This action cannot be undone."
 msgstr ""
 "Êtes-vous sûr de vouloir supprimer ce livre ? Cette action est "
 "irréversible."
 
-#: static/js/page/handlers.js:16
+#: static/js/page/translations.js:13
 #, python-format
 msgid "Please enter a valid page number between 1 and %(totalPages)s."
 msgstr "Veuillez saisir un numéro de page valide entre 1 et %(totalPages)s."
 
-#: static/js/page/handlers.js:17
+#: static/js/page/translations.js:14
 msgid "Please select files to upload."
 msgstr "Veuillez sélectionner les fichiers à téléverser."
 
-#: static/js/page/handlers.js:18
+#: static/js/page/translations.js:15
 msgid "Waiting..."
 msgstr "En attente..."
 
-#: static/js/page/handlers.js:19
+#: static/js/page/translations.js:16
 msgid "Uploading..."
 msgstr "Téléversement en cours..."
 
-#: static/js/page/handlers.js:20 static/js/page/ui.js:10
+#: static/js/page/translations.js:17
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
-#: static/js/page/handlers.js:21
+#: static/js/page/translations.js:18
 msgid "Upload failed"
 msgstr "Le téléversement a échoué"
 
-#: static/js/page/handlers.js:22
+#: static/js/page/translations.js:19
 msgid "Network Error"
 msgstr "Erreur réseau"
 
-#: static/js/page/handlers.js:23
+#: static/js/page/translations.js:20
+msgid "Network error: Failed to connect to the server."
+msgstr "Erreur réseau : Échec de la connexion au serveur."
+
+#: static/js/page/translations.js:21
 msgid "All books uploaded successfully!"
 msgstr "Tous les livres ont été téléversés avec succès !"
 
-#: static/js/page/handlers.js:24
+#: static/js/page/translations.js:22
 msgid "Some files failed to upload. Please check the progress details."
 msgstr ""
 "Certains fichiers n'ont pas pu être téléversés. Veuillez vérifier les "
 "détails de la progression."
 
-#: static/js/page/ui.js:6
+#: static/js/page/translations.js:23
 msgid "Generating..."
 msgstr "Génération en cours..."
 
-#: static/js/page/ui.js:7
+#: static/js/page/translations.js:24
 msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
-#: static/js/page/ui.js:8
+#: static/js/page/translations.js:25
 msgid "Failed"
 msgstr "Échec"
 
-#: static/js/page/ui.js:9
+#: static/js/page/translations.js:26
 msgid "Error"
 msgstr "Erreur"
 
-#: static/js/page/ui.js:11
+#: static/js/page/translations.js:27
 msgid "Success!"
 msgstr "Succès !"
 
-#: static/js/page/ui.js:12
+#: static/js/page/translations.js:30
 msgid "Title"
 msgstr "Titre"
 
-#: static/js/page/ui.js:13 templates/stats.html:36 templates/stats.html:60
+#: static/js/page/translations.js:31 templates/stats.html:36
+#: templates/stats.html:60
 msgid "Author"
 msgstr "Auteur"
 
-#: static/js/page/ui.js:14
+#: static/js/page/translations.js:32
+msgid "Authors (comma-separated)"
+msgstr "Auteurs (séparés par des virgules)"
+
+#: static/js/page/translations.js:33
 msgid "Rating (0-5)"
 msgstr "Note (0-5)"
 
-#: static/js/page/ui.js:15
+#: static/js/page/translations.js:34
 msgid "Reading Progress (%)"
 msgstr "Progression de la lecture (%)"
 
-#: static/js/page/ui.js:16 templates/index.html:70 templates/index.html:143
+#: static/js/page/translations.js:35 templates/index.html:70
+#: templates/index.html:143
 msgid "Description"
 msgstr "Description"
 
-#: static/js/page/ui.js:17
+#: static/js/page/translations.js:36
 msgid "Note"
 msgstr "Note"
 
-#: static/js/page/ui.js:18
+#: static/js/page/translations.js:37
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
@@ -824,29 +779,72 @@ msgstr ""
 "Les mises à jour de métadonnées pour les livres Calibre sont asynchrones "
 "et peuvent prendre un moment à s'appliquer."
 
-#: static/js/page/ui.js:19
-msgid "Authors (comma-separated)"
-msgstr "Auteurs (séparés par des virgules)"
-
-#: static/js/page/ui.js:20 templates/index.html:60 templates/index.html:136
+#: static/js/page/translations.js:38 templates/index.html:60
+#: templates/index.html:136
 msgid "Publisher"
 msgstr "Éditeur"
 
-#: static/js/page/ui.js:21 templates/index.html:61
+#: static/js/page/translations.js:39 templates/index.html:61
 msgid "Publication Date"
 msgstr "Date de publication"
 
-#: static/js/page/ui.js:22
+#: static/js/page/translations.js:40
 msgid "Tags (comma-separated)"
 msgstr "Étiquettes (séparées par des virgules)"
 
-#: static/js/page/ui.js:23
+#: static/js/page/translations.js:41
 msgid "Library (custom field #library)"
 msgstr "Bibliothèque (champ personnalisé #library)"
 
-#: static/js/page/ui.js:24
+#: static/js/page/translations.js:42
 msgid "Read Date (custom field #readdate)"
 msgstr "Date de lecture (champ personnalisé #readdate)"
+
+#: static/js/page/translations.js:45
+msgid "Task queued"
+msgstr "Tâche mise en file d'attente"
+
+#: static/js/page/translations.js:46
+msgid "Starting audiobook generation..."
+msgstr "Démarrage de la génération du livre audio..."
+
+#: static/js/page/translations.js:47
+msgid "Parsing EPUB file..."
+msgstr "Analyse du fichier EPUB..."
+
+#: static/js/page/translations.js:48
+#, python-format
+msgid "Processing: Chapter %(index)d/%(total)d"
+msgstr "Traitement : Chapitre %(index)d/%(total)d"
+
+#: static/js/page/translations.js:49
+msgid "Merging audio files..."
+msgstr "Fusion des fichiers audio..."
+
+#: static/js/page/translations.js:50
+msgid "Writing book metadata..."
+msgstr "Écriture des métadonnées du livre..."
+
+#: static/js/page/translations.js:51
+msgid "Cleaning up temporary files..."
+msgstr "Nettoyage des fichiers temporaires..."
+
+#: static/js/page/translations.js:52
+msgid "Audiobook generated successfully!"
+msgstr "Livre audio généré avec succès !"
+
+#: static/js/page/translations.js:53
+msgid "Could not extract any chapters from the EPUB file."
+msgstr "Impossible d'extraire des chapitres du fichier EPUB."
+
+#: static/js/page/translations.js:54
+msgid "All chapters are empty or could not be converted to audio."
+msgstr "Tous les chapitres sont vides ou n'ont pas pu être convertis en audio."
+
+#: static/js/page/translations.js:55
+#, python-format
+msgid "An unknown error occurred: %(error)s"
+msgstr "Une erreur inconnue est survenue : %(error)s"
 
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
@@ -2064,4 +2062,10 @@ msgstr "Aucun livre terminé pour le moment."
 
 #~ msgid "Created at"
 #~ msgstr "Créé le"
+
+#~ msgid "FFmpeg error: %(error)s"
+#~ msgstr "Erreur FFmpeg : %(error)s"
+
+#~ msgid "Queued..."
+#~ msgstr "En file d'attente..."
 
