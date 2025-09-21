@@ -101,68 +101,35 @@ def get_recent_anx_books(limit: int = 20):
 # --- EPUB Parsing Helpers ---
 
 def _get_text_from_html(html_string):
-    """Safely extracts plain text from an HTML string, preserving paragraphs."""
+    """Safely extracts plain text from an HTML string, preserving paragraphs and newlines."""
     if not html_string:
         return ""
     try:
         doc = html.fromstring(html_string)
+        
+        # Remove script and style tags completely
         for bad in doc.xpath("//script | //style"):
             bad.getparent().remove(bad)
-        
-        # Replace <p> and <br> with newlines
-        for p in doc.xpath("//p"):
-            p.append(etree.Element("br")) # Add a br to ensure newline after paragraph
-        
-        # Convert all <br> to newlines
-        for br in doc.xpath("//br"):
+
+        # Replace <br> with a newline
+        for br in doc.xpath(".//br"):
             br.tail = "\n" + (br.tail or "")
 
-        return doc.text_content().strip()
+        # Add newlines after paragraphs and other block elements
+        for p in doc.xpath(".//p | .//div | .//h1 | .//h2 | .//h3 | .//h4"):
+            p.tail = "\n\n" + (p.tail or "")
+
+        text = doc.text_content()
+        
+        # Clean up excessive whitespace
+        text = re.sub(r'[ \t]+', ' ', text)
+        text = re.sub(r'\n\s*\n', '\n\n', text)
+        return text.strip()
     except Exception:
-        return ""
+        return "" # Fallback for malformed content
 
-def _extract_toc_from_epub(epub_path):
-    """Extracts the table of contents from an EPUB file."""
-    book = epub.read_epub(epub_path)
-    toc_items = []
-    
-    if hasattr(book, 'toc') and book.toc:
-        chapter_num = 1
-        for item in book.toc:
-            if isinstance(item, tuple):
-                section, children = item
-                if hasattr(section, 'title') and hasattr(section, 'href'):
-                    toc_items.append({"chapter_number": chapter_num, "title": section.title, "href": section.href})
-                    chapter_num += 1
-                for child in children:
-                    if hasattr(child, 'title') and hasattr(child, 'href'):
-                        toc_items.append({"chapter_number": chapter_num, "title": f"  {child.title}", "href": child.href})
-                        chapter_num += 1
-            else:
-                if hasattr(item, 'title') and hasattr(item, 'href'):
-                    toc_items.append({"chapter_number": chapter_num, "title": item.title, "href": item.href})
-                    chapter_num += 1
-    
-    if not toc_items:
-        chapter_num = 1
-        for item_id, _ in book.spine:
-            item = book.get_item_with_id(item_id)
-            if item and item.get_type() == epub.ITEM_DOCUMENT:
-                title = os.path.splitext(os.path.basename(item.get_name()))[0]
-                toc_items.append({"chapter_number": chapter_num, "title": title, "href": item.get_name()})
-                chapter_num += 1
-    return toc_items
-
-def _extract_content_from_epub(epub_path, chapter_number):
-    """
-    Extracts the full content of a specific chapter from an EPUB file.
-    This version correctly handles chapters that span multiple internal HTML files
-    by using the book's spine to determine the chapter's extent, and also
-    handles multiple chapters within a single HTML file by using anchors.
-    """
-    book = epub.read_epub(epub_path)
-
-    # 1. Build a flat list of all chapter items from the TOC
+def _extract_toc_from_epub(book):
+    """Extracts a flat list of TOC items from a pre-loaded ebooklib book object."""
     toc_items = []
     if hasattr(book, 'toc') and book.toc:
         for item in book.toc:
@@ -181,102 +148,126 @@ def _extract_content_from_epub(epub_path, chapter_number):
     if not toc_items:
         for item_id, _ in book.spine:
             item = book.get_item_with_id(item_id)
-            if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type == 'text/html'):
+            if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type in ['application/xhtml+xml', 'text/html']):
                 title = os.path.splitext(os.path.basename(item.get_name()))[0]
                 toc_items.append({'title': title, 'href': item.get_name()})
+    return toc_items
 
-    # 2. Validate chapter number
-    if not (1 <= chapter_number <= len(toc_items)):
-        return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(toc_items)}"}
+def _process_entire_epub(epub_path):
+    """
+    Reads an EPUB file once and processes its entire structure and content.
+    Handles cross-file chapters and anchor-based chapters correctly.
+    This is the performant core function for all content/word count operations.
+    """
+    try:
+        book = epub.read_epub(epub_path)
+    except Exception as e:
+        return {"error": f"Failed to read or parse EPUB file: {e}"}
 
-    # 3. Determine the start and end hrefs/anchors for the chapter
-    chapter_info = toc_items[chapter_number - 1]
-    href_parts = chapter_info['href'].split('#')
-    start_href = href_parts[0]
-    start_anchor = href_parts[1] if len(href_parts) > 1 else None
+    toc_items = _extract_toc_from_epub(book)
+    if not toc_items:
+        return {"error": "Could not extract a valid Table of Contents from the book."}
 
-    next_chapter_start_href = None
-    next_anchor_in_same_file = None
-    if chapter_number < len(toc_items):
-        next_chapter_info = toc_items[chapter_number]
-        next_href_parts = next_chapter_info['href'].split('#')
-        next_chapter_start_href = next_href_parts[0]
-        if next_chapter_start_href == start_href and len(next_href_parts) > 1:
-            next_anchor_in_same_file = next_href_parts[1]
-
-    # 4. Use the spine to find all HTML files for the chapter
     spine_hrefs = [book.get_item_with_id(item_id).get_name() for item_id, _ in book.spine if book.get_item_with_id(item_id)]
     
-    try:
-        start_index = spine_hrefs.index(start_href)
-    except ValueError:
-        return {"error": f"无法在书籍的阅读顺序中找到章节的起始文件: {start_href}"}
+    processed_chapters = []
 
-    end_index = len(spine_hrefs)
-    if next_chapter_start_href and next_chapter_start_href != start_href:
-        if next_chapter_start_href in spine_hrefs:
-            end_index = spine_hrefs.index(next_chapter_start_href)
-    else:
-        end_index = start_index + 1
+    for i, chapter_info in enumerate(toc_items):
+        chapter_number = i + 1
+        
+        href_parts = chapter_info['href'].split('#')
+        start_href = href_parts[0]
+        start_anchor = href_parts[1] if len(href_parts) > 1 else None
 
-    # 5. Extract and combine content from all relevant files
-    full_content_html = ""
-    for i in range(start_index, end_index):
-        item_href = spine_hrefs[i]
-        item = book.get_item_with_href(item_href)
-        if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type == 'text/html'):
-            try:
-                parser = etree.HTMLParser()
-                doc = etree.fromstring(item.get_content(), parser)
-                body = doc.find('{http://www.w3.org/1999/xhtml}body')
-                if body is None: body = doc.find('.//body')
+        next_chapter_start_href = None
+        next_anchor_in_same_file = None
+        if chapter_number < len(toc_items):
+            next_chapter_info = toc_items[chapter_number]
+            next_href_parts = next_chapter_info['href'].split('#')
+            next_chapter_start_href = next_href_parts[0]
+            if next_chapter_start_href == start_href and len(next_href_parts) > 1:
+                next_anchor_in_same_file = next_href_parts[1]
 
-                if body is not None:
-                    etree.strip_elements(body, 'script', 'style')
-                    
-                    content_nodes = []
-                    # Anchor-based slicing logic
-                    if not start_anchor:
-                        content_nodes = body.getchildren()
-                    else:
-                        start_node = body.find(f".//*[@id='{start_anchor}']")
-                        if start_node is None:
+        try:
+            start_index = spine_hrefs.index(start_href)
+        except ValueError:
+            # Skip this chapter if its start file isn't in the spine
+            processed_chapters.append({
+                "chapter_number": chapter_number,
+                "title": chapter_info['title'],
+                "html_content": "<!-- Error: Chapter file not found in spine -->"
+            })
+            continue
+
+        end_index = len(spine_hrefs)
+        if next_chapter_start_href and next_chapter_start_href != start_href:
+            if next_chapter_start_href in spine_hrefs:
+                end_index = spine_hrefs.index(next_chapter_start_href)
+        else:
+            # If the next chapter is in the same file or this is the last chapter,
+            # the content is only in the start_href file.
+            end_index = start_index + 1
+
+        full_content_html = ""
+        for j in range(start_index, end_index):
+            item_href = spine_hrefs[j]
+            item = book.get_item_with_href(item_href)
+            if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type in ['application/xhtml+xml', 'text/html']):
+                try:
+                    parser = etree.HTMLParser()
+                    doc = etree.fromstring(item.get_content(), parser)
+                    body = doc.find('{http://www.w3.org/1999/xhtml}body')
+                    if body is None: body = doc.find('.//body')
+
+                    if body is not None:
+                        # Anchor-based slicing logic
+                        content_nodes = []
+                        if not start_anchor:
                             content_nodes = body.getchildren()
                         else:
-                            # Start from the node *after* the anchor, as the anchor is usually the heading itself.
-                            current_node = start_node.getnext()
-                            while current_node is not None:
-                                if next_anchor_in_same_file and current_node.get('id') == next_anchor_in_same_file:
-                                    break
-                                content_nodes.append(current_node)
-                                current_node = current_node.getnext()
-                    
-                    inner_html_parts = [etree.tostring(node, encoding='unicode') for node in content_nodes]
-                    full_content_html += "".join(inner_html_parts).strip()
-            except Exception as e:
-                full_content_html += f"<!-- Error processing content: {e} -->" + item.get_content().decode('utf-8', 'ignore')
+                            # Find the start node. Use a robust XPath.
+                            start_node = body.xpath(f".//*[@id='{start_anchor}']")
+                            if not start_node:
+                                content_nodes = body.getchildren() # Fallback if anchor not found
+                            else:
+                                start_node = start_node[0]
+                                current_node = start_node
+                                while current_node is not None:
+                                    if next_anchor_in_same_file:
+                                        # Check if the current node itself is the next anchor
+                                        if current_node.get('id') == next_anchor_in_same_file:
+                                            break
+                                        # Check if any descendant is the next anchor
+                                        if current_node.xpath(f".//*[@id='{next_anchor_in_same_file}']"):
+                                            break
+                                    content_nodes.append(current_node)
+                                    current_node = current_node.getnext()
+                        
+                        inner_html_parts = [etree.tostring(node, encoding='unicode', method='html') for node in content_nodes]
+                        full_content_html += "".join(inner_html_parts).strip()
+                except Exception:
+                    # Fallback to raw content on parsing error
+                    full_content_html += item.get_content().decode('utf-8', 'ignore')
+        
+        processed_chapters.append({
+            "chapter_number": chapter_number,
+            "title": chapter_info['title'],
+            "html_content": full_content_html
+        })
 
     return {
-        "chapter_title": chapter_info['title'],
-        "chapter_href": chapter_info['href'],
-        "content": full_content_html
+        "total_chapters": len(toc_items),
+        "chapters": toc_items,
+        "processed_chapters": processed_chapters
     }
 
 def push_calibre_book_to_anx(book_id: int):
-    # The logic function expects a dictionary. g.user is a sqlite3.Row, which is dict-like.
-    # To be safe and explicit, we convert it to a standard dict.
     return _push_calibre_to_anx_logic(dict(g.user), book_id)
 
 def send_calibre_book_to_kindle(book_id: int):
-    # The logic function expects a dictionary.
     return _send_to_kindle_logic(dict(g.user), book_id)
 
 def _get_processed_epub_for_anx_book(id: int, username: str):
-    """
-    Core logic to get a processed EPUB for an Anx book.
-    It handles converting (if necessary) and fixing the EPUB from a local file path.
-    Returns a tuple: (content, filename, needs_conversion_flag) or (None, None, None) on error.
-    """
     book_details = get_anx_book_details(username, id)
     if not book_details:
         return None, "BOOK_NOT_FOUND", False
@@ -300,7 +291,6 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
         epub_to_process_path = None
         
         if not needs_conversion:
-            # If it's already an EPUB, we still copy it to the temp dir for uniform processing
             epub_to_process_path = os.path.join(temp_dir, os.path.basename(full_file_path))
             shutil.copy2(full_file_path, epub_to_process_path)
         else:
@@ -317,14 +307,12 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
                     capture_output=True, text=True, check=True, timeout=300
                 )
                 epub_to_process_path = dest_path
-            except Exception as e:
-                # Consider logging the error e
+            except Exception:
                 return None, "CONVERSION_FAILED", False
 
         if not epub_to_process_path or not os.path.exists(epub_to_process_path):
             return None, "PROCESSING_FAILED", False
 
-        # Fix the EPUB
         fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
         
         with open(fixed_epub_path, 'rb') as f:
@@ -334,10 +322,6 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
         return content_to_send, final_filename, needs_conversion
 
 def get_calibre_epub_table_of_contents(book_id: int):
-    """
-    获取指定 Calibre 书籍的 EPUB 目录章节列表（包含章节序号和标题）。
-    如果书籍不是 EPUB 格式，会尝试自动转换。
-    """
     user_dict = dict(g.user)
     epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
 
@@ -346,70 +330,28 @@ def get_calibre_epub_table_of_contents(book_id: int):
     if not epub_content:
         return {'error': '无法获取或处理书籍的 EPUB 文件。'}
 
-    import tempfile
-    temp_epub_path = None
-    try:
-        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
-            temp_file.write(epub_content)
-            temp_epub_path = temp_file.name
+    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
+        temp_file.write(epub_content)
+        temp_file.flush()
         
-        toc_items = _extract_toc_from_epub(temp_epub_path)
-        
-        book_details = get_raw_calibre_book_details(book_id)
-        return {
-            "book_id": book_id,
-            "book_title": book_details.get('title', '') if book_details else 'N/A',
-            "total_chapters": len(toc_items),
-            "chapters": toc_items
-        }
-    except Exception as e:
-        return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
-    finally:
-        if temp_epub_path and os.path.exists(temp_epub_path):
-            os.unlink(temp_epub_path)
+        try:
+            book = epub.read_epub(temp_file.name)
+            toc_items = _extract_toc_from_epub(book)
+            # Add chapter numbers for user convenience
+            for i, item in enumerate(toc_items):
+                item['chapter_number'] = i + 1
 
-def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
-    """
-    获取指定 Calibre 书籍的指定章节完整内容。
-    如果书籍不是 EPUB 格式，会尝试自动转换。
-    """
-    user_dict = dict(g.user)
-    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
-
-    if epub_filename == 'CONVERTER_NOT_FOUND':
-        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
-    if not epub_content:
-        return {'error': '无法获取或处理书籍的 EPUB 文件。'}
-
-    import tempfile
-    temp_epub_path = None
-    try:
-        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
-            temp_file.write(epub_content)
-            temp_epub_path = temp_file.name
-        
-        content_result = _extract_content_from_epub(temp_epub_path, chapter_number)
-        if "error" in content_result:
-            return content_result
-        
-        book_details = get_raw_calibre_book_details(book_id)
-        return {
-            "book_id": book_id,
-            "book_title": book_details.get('title', '') if book_details else 'N/A',
-            "chapter_number": chapter_number,
-            **content_result
-        }
-    except Exception as e:
-        return {"error": f"获取章节内容时出错: {str(e)}"}
-    finally:
-        if temp_epub_path and os.path.exists(temp_epub_path):
-            os.unlink(temp_epub_path)
+            book_details = get_raw_calibre_book_details(book_id)
+            return {
+                "book_id": book_id,
+                "book_title": book_details.get('title', 'N/A'),
+                "total_chapters": len(toc_items),
+                "chapters": toc_items
+            }
+        except Exception as e:
+            return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
 
 def get_anx_epub_table_of_contents(id: int):
-    """
-    获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表（包含章节序号和标题）。
-    如果书籍不是 EPUB 格式，会尝试自动转换。
-    """
     epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
@@ -417,139 +359,120 @@ def get_anx_epub_table_of_contents(id: int):
     if not epub_content:
         return {'error': f'无法获取或处理书籍的 EPUB 文件。错误代码: {epub_filename}'}
 
-    temp_epub_path = None
-    try:
-        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
-            temp_file.write(epub_content)
-            temp_epub_path = temp_file.name
+    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
+        temp_file.write(epub_content)
+        temp_file.flush()
         
-        toc_items = _extract_toc_from_epub(temp_epub_path)
-        
-        book_details = get_anx_book_details(g.user['username'], id)
-        return {
-            "id": id,
-            "book_title": book_details.get('title', '') if book_details else 'N/A',
-            "total_chapters": len(toc_items),
-            "chapters": toc_items
-        }
-    except Exception as e:
-        return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
-    finally:
-        if temp_epub_path and os.path.exists(temp_epub_path):
-            os.unlink(temp_epub_path)
+        try:
+            book = epub.read_epub(temp_file.name)
+            toc_items = _extract_toc_from_epub(book)
+            for i, item in enumerate(toc_items):
+                item['chapter_number'] = i + 1
 
-def get_anx_epub_chapter_content(id: int, chapter_number: int):
-    """
-    获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。
-    如果书籍不是 EPUB 格式，会自动尝试自动转换。
-    """
-    epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
-
-    if epub_filename == 'CONVERTER_NOT_FOUND':
-        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
-    if not epub_content:
-        return {'error': f'无法获取或处理书籍的 EPUB 文件。错误代码: {epub_filename}'}
-
-    temp_epub_path = None
-    try:
-        with tempfile.NamedTemporaryFile(suffix='.epub', delete=False) as temp_file:
-            temp_file.write(epub_content)
-            temp_epub_path = temp_file.name
-        
-        content_result = _extract_content_from_epub(temp_epub_path, chapter_number)
-        if "error" in content_result:
-            return content_result
-        
-        book_details = get_anx_book_details(g.user['username'], id)
-        return {
-            "id": id,
-            "book_title": book_details.get('title', '') if book_details else 'N/A',
-            "chapter_number": chapter_number,
-            **content_result
-        }
-    except Exception as e:
-        return {"error": f"获取章节内容时出错: {str(e)}"}
-    finally:
-        if temp_epub_path and os.path.exists(temp_epub_path):
-            os.unlink(temp_epub_path)
+            book_details = get_anx_book_details(g.user['username'], id)
+            return {
+                "id": id,
+                "book_title": book_details.get('title', 'N/A'),
+                "total_chapters": len(toc_items),
+                "chapters": toc_items
+            }
+        except Exception as e:
+            return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
 
 def _count_words(text):
     """根据语言智能统计字数或词数。"""
-    # 匹配 CJK 字符
     cjk_chars = re.findall(r'[\u4e00-\u9fff]', text)
-    # 匹配拉丁语系的单词
-    latin_words = re.findall(r'\b[a-zA-Z]+\b', text)
+    latin_words = re.findall(r'\b[a-zA-Z0-9]+\b', text)
     
-    # 如果 CJK 字符占主导，则统计字符数，否则统计单词数
     if len(cjk_chars) > len(latin_words):
-        return len(re.findall(r'\S', text)) # 统计所有非空白字符
+        return len(text) # For CJK, count all characters
     else:
-        return len(latin_words)
+        return len(latin_words) # For Latin-based, count words
 
-def _get_entire_book_content_logic(book_id, get_toc_func, get_chapter_func):
-    """通用逻辑：获取整本书的纯文本内容。"""
-    toc_result = get_toc_func(book_id)
-    if 'error' in toc_result:
-        return toc_result
+def _get_entire_book_content_logic(book_id, get_epub_content_func, get_details_func):
+    """通用逻辑：使用高性能函数获取整本书的纯文本内容。"""
+    epub_content, epub_filename, _ = get_epub_content_func()
+    if 'error' in (epub_filename or {}): return epub_filename
+    if not epub_content: return {'error': f'无法获取或处理书籍的 EPUB 文件。代码: {epub_filename}'}
 
-    total_chapters = toc_result.get('total_chapters', 0)
+    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
+        temp_file.write(epub_content)
+        temp_file.flush()
+        processed_data = _process_entire_epub(temp_file.name)
+
+    if 'error' in processed_data:
+        return processed_data
+
     full_text_parts = []
-
-    for i in range(1, total_chapters + 1):
-        content_result = get_chapter_func(book_id, i)
-        text_content = _get_text_from_html(content_result.get('content', ''))
-        full_text_parts.append(f"--- Chapter {i}: {content_result.get('chapter_title', '')} ---\n\n{text_content}\n\n")
+    for chapter in processed_data.get('processed_chapters', []):
+        text_content = _get_text_from_html(chapter.get('html_content', ''))
+        full_text_parts.append(f"--- Chapter {chapter.get('chapter_number')}: {chapter.get('title', '')} ---\n\n{text_content}\n\n")
     
+    book_details = get_details_func(book_id)
     return {
         'book_id': book_id,
-        'book_title': toc_result.get('book_title', 'N/A'),
+        'book_title': book_details.get('title', 'N/A'),
         'full_text': "".join(full_text_parts)
     }
 
-def _get_book_word_count_statistics_logic(book_id, get_toc_func, get_chapter_func):
-    """通用逻辑：获取书籍的字数统计信息。"""
-    toc_result = get_toc_func(book_id)
-    if 'error' in toc_result:
-        return toc_result
-    
-    total_chapters = toc_result.get('total_chapters', 0)
+def _get_book_word_count_statistics_logic(book_id, get_epub_content_func, get_details_func):
+    """通用逻辑：使用高性能函数获取书籍的字数统计信息。"""
+    epub_content, epub_filename, _ = get_epub_content_func()
+    if 'error' in (epub_filename or {}): return epub_filename
+    if not epub_content: return {'error': f'无法获取或处理书籍的 EPUB 文件。代码: {epub_filename}'}
+
+    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
+        temp_file.write(epub_content)
+        temp_file.flush()
+        processed_data = _process_entire_epub(temp_file.name)
+
+    if 'error' in processed_data:
+        return processed_data
+
     stats = []
     total_word_count = 0
-
-    for i in range(1, total_chapters + 1):
-        content_result = get_chapter_func(book_id, i)
-        text_content = _get_text_from_html(content_result.get('content', ''))
+    for chapter in processed_data.get('processed_chapters', []):
+        text_content = _get_text_from_html(chapter.get('html_content', ''))
         word_count = _count_words(text_content)
         
         stats.append({
-            'chapter_number': i,
-            'chapter_title': content_result.get('chapter_title', 'N/A'),
+            'chapter_number': chapter.get('chapter_number'),
+            'chapter_title': chapter.get('title', 'N/A'),
             'word_count': word_count
         })
         total_word_count += word_count
     
+    book_details = get_details_func(book_id)
     return {
         'book_id': book_id,
-        'book_title': toc_result.get('book_title', 'N/A'),
+        'book_title': book_details.get('title', 'N/A'),
         'total_word_count': total_word_count,
         'chapter_statistics': stats
     }
 
 def get_calibre_entire_book_content(book_id: int):
     """获取指定 Calibre 书籍的完整纯文本内容。"""
-    return _get_entire_book_content_logic(book_id, get_calibre_epub_table_of_contents, get_calibre_epub_chapter_content)
+    user_dict = dict(g.user)
+    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict)
+    return _get_entire_book_content_logic(book_id, get_epub_func, get_raw_calibre_book_details)
 
 def get_anx_entire_book_content(id: int):
     """获取指定 Anx 书籍的完整纯文本内容。"""
-    return _get_entire_book_content_logic(id, get_anx_epub_table_of_contents, get_anx_epub_chapter_content)
+    get_epub_func = lambda: _get_processed_epub_for_anx_book(id, g.user['username'])
+    get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
+    return _get_entire_book_content_logic(id, get_epub_func, get_details_func)
 
 def get_calibre_book_word_count_statistics(book_id: int):
     """获取指定 Calibre 书籍的字数统计信息（分章节和总计）。"""
-    return _get_book_word_count_statistics_logic(book_id, get_calibre_epub_table_of_contents, get_calibre_epub_chapter_content)
+    user_dict = dict(g.user)
+    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict)
+    return _get_book_word_count_statistics_logic(book_id, get_epub_func, get_raw_calibre_book_details)
 
 def get_anx_book_word_count_statistics(id: int):
     """获取指定 Anx 书籍的字数统计信息（分章节和总计）。"""
-    return _get_book_word_count_statistics_logic(id, get_anx_epub_table_of_contents, get_anx_epub_chapter_content)
+    get_epub_func = lambda: _get_processed_epub_for_anx_book(id, g.user['username'])
+    get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
+    return _get_book_word_count_statistics_logic(id, get_epub_func, get_details_func)
 
 # --- Main MCP Endpoint ---
 
@@ -601,20 +524,10 @@ TOOLS = {
         'params': {'book_id': int},
         'description': '获取指定 Calibre 书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。'
     },
-    'get_calibre_epub_chapter_content': {
-        'function': get_calibre_epub_chapter_content,
-        'params': {'book_id': int, 'chapter_number': int},
-        'description': '获取指定 Calibre 书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
-    },
     'get_anx_epub_table_of_contents': {
         'function': get_anx_epub_table_of_contents,
         'params': {'id': int},
         'description': '获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。'
-    },
-    'get_anx_epub_chapter_content': {
-        'function': get_anx_epub_chapter_content,
-        'params': {'id': int, 'chapter_number': int},
-        'description': '获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
     },
     'get_calibre_entire_book_content': {
         'function': get_calibre_entire_book_content,
@@ -651,9 +564,7 @@ def get_input_schema(params):
             json_type = "boolean"
         
         properties[name] = {"type": json_type, "description": ""} # Placeholder description
-        # For simplicity, let's make all params optional for now, 
-        # as we don't have default values specified in a structured way.
-        # required.append(name)
+        required.append(name)
         
     return {"type": "object", "properties": properties, "required": required}
 
@@ -672,37 +583,21 @@ def mcp_endpoint():
         params = data.get('params', {})
 
         if method == 'initialize':
-            # Respond with server capabilities
             return jsonify({
                 "jsonrpc": "2.0",
                 "id": req_id,
                 "result": {
-                    "protocolVersion": "2024-11-05", # Echoing a recent version
-                    "capabilities": {
-                        "tools": {
-                            "listChanged": False # We don't support dynamic tool changes
-                        }
-                    },
-                    "serverInfo": {
-                        "name": "anx-calibre-manager",
-                        "version": "0.1.0"
-                    }
+                    "protocolVersion": "2024-11-05",
+                    "capabilities": {"tools": {"listChanged": False}},
+                    "serverInfo": {"name": "anx-calibre-manager", "version": "0.1.0"}
                 }
             })
         
         if method == 'notifications/initialized':
-            # Client is ready, we can just acknowledge this.
-            # No response is needed for notifications.
             return "", 204
 
         if method == 'tools/list':
-            tool_list = []
-            for name, info in TOOLS.items():
-                tool_list.append({
-                    "name": name,
-                    "description": info['description'],
-                    "inputSchema": get_input_schema(info['params'])
-                })
+            tool_list = [{"name": name, "description": info['description'], "inputSchema": get_input_schema(info['params'])} for name, info in TOOLS.items()]
             return jsonify({"jsonrpc": "2.0", "id": req_id, "result": {"tools": tool_list}})
 
         elif method == 'tools/call':
@@ -716,7 +611,6 @@ def mcp_endpoint():
             tool_function = tool_info['function']
             
             if tool_name == 'get_anx_book_details':
-                # Convert 'id' parameter to 'book_id' and add username
                 if 'id' in arguments:
                     arguments['book_id'] = arguments.pop('id')
                 arguments['username'] = g.user['username']
@@ -728,19 +622,13 @@ def mcp_endpoint():
                 return jsonify({
                     "jsonrpc": "2.0",
                     "id": req_id,
-                    "result": {
-                        "content": [{"type": "text", "text": result_text}],
-                        "isError": False
-                    }
+                    "result": {"content": [{"type": "text", "text": result_text}], "isError": False}
                 })
             except Exception as e:
                 return jsonify({
                     "jsonrpc": "2.0",
                     "id": req_id,
-                    "result": {
-                        "content": [{"type": "text", "text": f"Error executing tool {tool_name}: {str(e)}"}],
-                        "isError": True
-                    }
+                    "result": {"content": [{"type": "text", "text": f"Error executing tool {tool_name}: {str(e)}"}], "isError": True}
                 })
         else:
             return jsonify({"jsonrpc": "2.0", "error": {"code": -32601, "message": "Method not found"}, "id": req_id}), 404
