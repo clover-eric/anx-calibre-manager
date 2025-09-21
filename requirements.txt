@@ -15,6 +15,6 @@ edge-tts==7.0.2
 mutagen==1.47.0
 ffmpeg-python==0.2.0
 beautifulsoup4
-pydub
-audioop-lts
-sentencex
+pydub==0.25.1
+#audioop-lts for python 3.13+
+sentencex==0.6.1
