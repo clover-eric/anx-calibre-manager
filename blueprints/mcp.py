@@ -158,7 +158,7 @@ def _extract_content_from_epub(epub_path, chapter_number):
     if not toc_items:
         for item_id, _ in book.spine:
             item = book.get_item_with_id(item_id)
-            if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
+            if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type == 'text/html'):
                 title = os.path.splitext(os.path.basename(item.get_name()))[0]
                 toc_items.append({'title': title, 'href': item.get_name()})
 
@@ -168,11 +168,18 @@ def _extract_content_from_epub(epub_path, chapter_number):
 
     # 3. Determine the start and end hrefs for the chapter
     chapter_info = toc_items[chapter_number - 1]
-    start_href = chapter_info['href'].split('#')[0]
-    
+    href_parts = chapter_info['href'].split('#')
+    start_href = href_parts[0]
+    start_anchor = href_parts[1] if len(href_parts) > 1 else None
+
     next_chapter_start_href = None
+    next_anchor_in_same_file = None
     if chapter_number < len(toc_items):
-        next_chapter_start_href = toc_items[chapter_number]['href'].split('#')[0]
+        next_chapter_info = toc_items[chapter_number]
+        next_href_parts = next_chapter_info['href'].split('#')
+        next_chapter_start_href = next_href_parts[0]
+        if next_chapter_start_href == start_href and len(next_href_parts) > 1:
+            next_anchor_in_same_file = next_href_parts[1]
 
     # 4. Use the spine to find all HTML files for the chapter
     spine_hrefs = [book.get_item_with_id(item_id).get_name() for item_id, _ in book.spine if book.get_item_with_id(item_id)]
@@ -183,15 +190,21 @@ def _extract_content_from_epub(epub_path, chapter_number):
         return {"error": f"无法在书籍的阅读顺序中找到章节的起始文件: {start_href}"}
 
     end_index = len(spine_hrefs)
-    if next_chapter_start_href and next_chapter_start_href in spine_hrefs:
-        end_index = spine_hrefs.index(next_chapter_start_href)
+    # This is the key fix: correctly determine the end of the chapter's file range.
+    if next_chapter_start_href and next_chapter_start_href != start_href:
+        if next_chapter_start_href in spine_hrefs:
+            end_index = spine_hrefs.index(next_chapter_start_href)
+    else:
+        # If the next chapter is in the same file, or this is the last chapter,
+        # we only process the current file.
+        end_index = start_index + 1
 
     # 5. Extract and combine content from all relevant files
     full_content_html = ""
     for i in range(start_index, end_index):
         item_href = spine_hrefs[i]
         item = book.get_item_with_href(item_href)
-        if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
+        if item and (item.get_type() == ebooklib.ITEM_DOCUMENT or item.media_type == 'text/html'):
             try:
                 parser = etree.HTMLParser()
                 doc = etree.fromstring(item.get_content(), parser)
@@ -200,10 +213,27 @@ def _extract_content_from_epub(epub_path, chapter_number):
 
                 if body is not None:
                     etree.strip_elements(body, 'script', 'style')
-                    inner_html_parts = [etree.tostring(child, encoding='unicode') for child in body.iterchildren()]
+                    
+                    content_nodes = []
+                    # Anchor-based slicing logic
+                    if not start_anchor:
+                        content_nodes = body.getchildren()
+                    else:
+                        # Use a more robust XPath to find the start node, ignoring namespaces
+                        start_node = body.find(f".//*[@id='{start_anchor}']")
+                        if start_node is None:
+                            content_nodes = body.getchildren()
+                        else:
+                            current_node = start_node
+                            while current_node is not None:
+                                if next_anchor_in_same_file and current_node.get('id') == next_anchor_in_same_file:
+                                    break
+                                content_nodes.append(current_node)
+                                current_node = current_node.getnext()
+                    
+                    inner_html_parts = [etree.tostring(node, encoding='unicode') for node in content_nodes]
                     full_content_html += "".join(inner_html_parts).strip()
             except Exception:
-                # Fallback for malformed HTML
                 full_content_html += item.get_content().decode('utf-8', 'ignore')
 
     return {
