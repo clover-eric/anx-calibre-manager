@@ -146,9 +146,15 @@
                     <div class="prompt-item">
                         <p>"{{ _('Based on the chapter \'The Psychohistorians\' from the book \'Foundation\', what are the main ideas of psychohistory?') }}"</p>
                     </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Read the entire book \'The Little Prince\' and tell me what the fox\'s secret is.') }}"</p>
+                    </div>
                 </div>
                 <div class="prompt-card">
                     <h5>{{ _('Reading Statistics & Progress') }}</h5>
+                    <div class="prompt-item">
+                        <p>"{{ _('How many words is the book \'Dune\' in total, and list the word count for each chapter.') }}"</p>
+                    </div>
                     <div class="prompt-item">
                         <p>"{{ _('How many books have I read this year?') }}"</p>
                     </div>
@@ -167,13 +173,17 @@
                 <li><strong>get_recent_calibre_books</strong>: {{ _('Get recent Calibre books. Parameters: `limit` (int, default 20)') }}</li>
                 <li><strong>get_calibre_book_details</strong>: {{ _('Get Calibre book details. Parameters: `book_id` (int)') }}</li>
                 <li><strong>get_recent_anx_books</strong>: {{ _('Get recent Anx books. Parameters: `limit` (int, default 20)') }}</li>
-                <li><strong>get_anx_book_details</strong>: {{ _('Get Anx book details. Parameters: `book_id` (int)') }}</li>
+                <li><strong>get_anx_book_details</strong>: {{ _('Get Anx book details. Parameters: `id` (int)') }}</li>
                 <li><strong>push_calibre_book_to_anx</strong>: {{ _('Push Calibre book to Anx. Parameters: `book_id` (int)') }}</li>
                 <li><strong>send_calibre_book_to_kindle</strong>: {{ _('Send Calibre book to Kindle. Parameters: `book_id` (int)') }}</li>
                 <li><strong>get_calibre_epub_table_of_contents</strong>: {{ _('Get table of contents for a Calibre book. Params: `book_id` (int)') }}</li>
                 <li><strong>get_calibre_epub_chapter_content</strong>: {{ _('Get chapter content for a Calibre book. Params: `book_id` (int), `chapter_number` (int)') }}</li>
-                <li><strong>get_anx_epub_table_of_contents</strong>: {{ _('Get table of contents for an Anx book. Params: `book_id` (int)') }}</li>
-                <li><strong>get_anx_epub_chapter_content</strong>: {{ _('Get chapter content for an Anx book. Params: `book_id` (int), `chapter_number` (int)') }}</li>
+                <li><strong>get_anx_epub_table_of_contents</strong>: {{ _('Get table of contents for an Anx book. Params: `id` (int)') }}</li>
+                <li><strong>get_anx_epub_chapter_content</strong>: {{ _('Get chapter content for an Anx book. Params: `id` (int), `chapter_number` (int)') }}</li>
+                <li><strong>get_calibre_entire_book_content</strong>: {{ _('Get the entire content of a Calibre book. Params: `book_id` (int)') }}</li>
+                <li><strong>get_anx_entire_book_content</strong>: {{ _('Get the entire content of an Anx book. Params: `id` (int)') }}</li>
+                <li><strong>get_calibre_book_word_count_statistics</strong>: {{ _('Get word count statistics for a Calibre book. Params: `book_id` (int)') }}</li>
+                <li><strong>get_anx_book_word_count_statistics</strong>: {{ _('Get word count statistics for an Anx book. Params: `id` (int)') }}</li>
             </ul>
         </div>
     </div>

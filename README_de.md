@@ -244,8 +244,10 @@ Hier sind einige Beispiele für natürlichsprachige Prompts, die Sie mit einem K
   - > "Zeig mir das Inhaltsverzeichnis für das Buch 'Foundation'."
   - > "Hole das erste Kapitel von 'Foundation' und gib mir eine Zusammenfassung."
   - > "Was sind die Hauptideen der Psychohistorie, basierend auf dem Kapitel 'Die Psychohistoriker' aus dem Buch 'Foundation'?"
+  - > "Lies das ganze Buch 'Der kleine Prinz' und verrate mir das Geheimnis des Fuchses."
 
 - **Lesestatistiken & Fortschritt**:
+  - > "Wie viele Wörter hat das Buch 'Dune' insgesamt und liste die Wortzahl für jedes Kapitel auf."
   - > "Wie viele Bücher habe ich dieses Jahr gelesen?"
   - > "Wie ist mein Lesefortschritt bei 'Dune'?"
   - > "Wer ist der Autor von 'Project Hail Mary' und wie lange lese ich es schon?"
@@ -282,6 +284,10 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
 -   `get_calibre_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Calibre-Buch ab.
 -   `get_anx_epub_table_of_contents`: Ruft das Inhaltsverzeichnis für ein Buch aus der Anx-Bibliothek ab.
 -   `get_anx_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Buch der Anx-Bibliothek ab.
+-   `get_calibre_epub_entire_content`: Ruft den gesamten Inhalt eines Calibre-Buches ab.
+-   `get_anx_epub_entire_content`: Ruft den gesamten Inhalt eines Buches aus der Anx-Bibliothek ab.
+-   `get_calibre_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Calibre-Buch ab (Gesamtzahl und pro Kapitel).
+-   `get_anx_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Buch aus der Anx-Bibliothek ab (Gesamtzahl und pro Kapitel).
 
 ## 💻 Entwicklung
 

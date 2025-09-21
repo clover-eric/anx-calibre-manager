@@ -244,8 +244,10 @@ Aquí tienes algunos ejemplos de prompts en lenguaje natural que podrías usar c
   - > "Muéstrame la tabla de contenidos del libro 'Fundación'."
   - > "Obtén el primer capítulo de 'Fundación' y dame un resumen."
   - > "Basado en el capítulo 'Los Psicohistoriadores' del libro 'Fundación', ¿cuáles son las ideas principales de la psicohistoria?"
+  - > "Lee el libro completo 'El Principito' y dime cuál es el secreto del zorro."
 
 - **Estadísticas y Progreso de Lectura**:
+  - > "¿Cuántas palabras tiene el libro 'Dune' en total y enumera el recuento de palabras de cada capítulo?"
   - > "¿Cuántos libros he leído este año?"
   - > "¿Cuál es mi progreso de lectura en 'Dune'?"
   - > "¿Quién es el autor de 'Proyecto Hail Mary' y cuánto tiempo llevo leyéndolo?"
@@ -282,6 +284,10 @@ Puedes obtener una lista de todas las herramientas disponibles llamando al méto
 -   `get_calibre_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de Calibre.
 -   `get_anx_epub_table_of_contents`: Obtiene la tabla de contenidos de un libro de la biblioteca Anx.
 -   `get_anx_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de la biblioteca Anx.
+-   `get_calibre_epub_entire_content`: Obtiene el contenido completo de un libro de Calibre.
+-   `get_anx_epub_entire_content`: Obtiene el contenido completo de un libro de la biblioteca Anx.
+-   `get_calibre_book_word_count_stats`: Obtiene estadísticas de recuento de palabras para un libro de Calibre (total y por capítulo).
+-   `get_anx_book_word_count_stats`: Obtiene estadísticas de recuento de palabras para un libro de la biblioteca Anx (total y por capítulo).
 
 ## 💻 Desarrollo
 

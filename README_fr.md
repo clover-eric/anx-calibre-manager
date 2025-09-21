@@ -244,8 +244,10 @@ Voici quelques exemples de prompts en langage naturel que vous pourriez utiliser
   - > "Montre-moi la table des matières du livre 'Fondation'."
   - > "Récupère le premier chapitre de 'Fondation' et fais-moi un résumé."
   - > "D'après le chapitre 'Les Psychohistoriens' du livre 'Fondation', quelles sont les idées principales de la psychohistoire ?"
+  - > "Lis tout le livre 'Le Petit Prince' et dis-moi quel est le secret du renard."
 
 - **Statistiques et Progression de Lecture**:
+  - > "Combien de mots compte le livre 'Dune' au total, et dresse la liste du nombre de mots pour chaque chapitre."
   - > "Combien de livres ai-je lus cette année ?"
   - > "Quelle est ma progression de lecture sur 'Dune' ?"
   - > "Qui est l'auteur de 'Project Hail Mary' et depuis combien de temps le lis-je ?"
@@ -282,6 +284,10 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
 -   `get_calibre_epub_chapter_content`: Obtenir le contenu d'un chapitre d'un livre Calibre.
 -   `get_anx_epub_table_of_contents`: Obtenir la table des matières d'un livre de la bibliothèque Anx.
 -   `get_anx_epub_chapter_content`: Obtenir le contenu d'un chapitre d'un livre de la bibliothèque Anx.
+-   `get_calibre_epub_entire_content`: Obtenir le contenu complet d'un livre Calibre.
+-   `get_anx_epub_entire_content`: Obtenir le contenu complet d'un livre de la bibliothèque Anx.
+-   `get_calibre_book_word_count_stats`: Obtenir les statistiques de nombre de mots pour un livre Calibre (total et par chapitre).
+-   `get_anx_book_word_count_stats`: Obtenir les statistiques de nombre de mots pour un livre de la bibliothèque Anx (total et par chapitre).
 
 ## 💻 Développement
 

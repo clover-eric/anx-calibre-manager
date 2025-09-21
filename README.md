@@ -243,8 +243,10 @@ Here are a few examples of natural language prompts you could use with an AI age
   - > "Show me the table of contents for the book 'Foundation'."
   - > "Fetch the first chapter of 'Foundation' and give me a summary."
   - > "Based on the chapter 'The Psychohistorians' from the book 'Foundation', what are the main ideas of psychohistory?"
+  - > "Read the entire book 'The Little Prince' and tell me what the fox's secret is."
 
 - **Reading Statistics & Progress**:
+  - > "How many words is the book 'Dune' in total, and list the word count for each chapter."
   - > "How many books have I read this year?"
   - > "What's my reading progress on 'Dune'?"
   - > "Who is the author of 'Project Hail Mary' and how long have I been reading it?"
@@ -281,6 +283,10 @@ You can get a list of all available tools by calling the `tools/list` method. Th
 -   `get_calibre_epub_chapter_content`: Get the full content of a specific chapter from a Calibre book.
 -   `get_anx_epub_table_of_contents`: Get the table of contents for an Anx library book.
 -   `get_anx_epub_chapter_content`: Get the full content of a specific chapter from an Anx library book.
+-   `get_calibre_epub_entire_content`: Get the entire content of a Calibre book.
+-   `get_anx_epub_entire_content`: Get the entire content of an Anx library book.
+-   `get_calibre_book_word_count_stats`: Get word count statistics for a Calibre book (total and per-chapter).
+-   `get_anx_book_word_count_stats`: Get word count statistics for an Anx library book (total and per-chapter).
 
 ## 💻 Development
 
