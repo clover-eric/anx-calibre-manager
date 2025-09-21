@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ g.user.language if g.user and g.user.language else 'zh_Hans' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ _('Book Reader') }}</title>
+
+    <!-- Translations for JS -->
+    <script id="js-translations" type="application/json">{{ get_js_translations() | tojson | safe }}</script>
+    <script>
+        window.translations = JSON.parse(document.getElementById('js-translations').textContent);
+        function _(text) {
+            return window.translations[text] || text;
+        }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='reader.css') }}">
     <style>
