@@ -1,6 +1,7 @@
 import functools
 import json
 import os
+import re
 import requests
 import shutil
 import subprocess
@@ -98,6 +99,27 @@ def get_recent_anx_books(limit: int = 20):
     return books[:limit]
 
 # --- EPUB Parsing Helpers ---
+
+def _get_text_from_html(html_string):
+    """Safely extracts plain text from an HTML string, preserving paragraphs."""
+    if not html_string:
+        return ""
+    try:
+        doc = html.fromstring(html_string)
+        for bad in doc.xpath("//script | //style"):
+            bad.getparent().remove(bad)
+        
+        # Replace <p> and <br> with newlines
+        for p in doc.xpath("//p"):
+            p.append(etree.Element("br")) # Add a br to ensure newline after paragraph
+        
+        # Convert all <br> to newlines
+        for br in doc.xpath("//br"):
+            br.tail = "\n" + (br.tail or "")
+
+        return doc.text_content().strip()
+    except Exception:
+        return ""
 
 def _extract_toc_from_epub(epub_path):
     """Extracts the table of contents from an EPUB file."""
@@ -419,7 +441,7 @@ def get_anx_epub_table_of_contents(id: int):
 def get_anx_epub_chapter_content(id: int, chapter_number: int):
     """
     获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。
-    如果书籍不是 EPUB 格式，会尝试自动转换。
+    如果书籍不是 EPUB 格式，会自动尝试自动转换。
     """
     epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
 
@@ -450,6 +472,84 @@ def get_anx_epub_chapter_content(id: int, chapter_number: int):
     finally:
         if temp_epub_path and os.path.exists(temp_epub_path):
             os.unlink(temp_epub_path)
+
+def _count_words(text):
+    """根据语言智能统计字数或词数。"""
+    # 匹配 CJK 字符
+    cjk_chars = re.findall(r'[\u4e00-\u9fff]', text)
+    # 匹配拉丁语系的单词
+    latin_words = re.findall(r'\b[a-zA-Z]+\b', text)
+    
+    # 如果 CJK 字符占主导，则统计字符数，否则统计单词数
+    if len(cjk_chars) > len(latin_words):
+        return len(re.findall(r'\S', text)) # 统计所有非空白字符
+    else:
+        return len(latin_words)
+
+def _get_entire_book_content_logic(book_id, get_toc_func, get_chapter_func):
+    """通用逻辑：获取整本书的纯文本内容。"""
+    toc_result = get_toc_func(book_id)
+    if 'error' in toc_result:
+        return toc_result
+
+    total_chapters = toc_result.get('total_chapters', 0)
+    full_text_parts = []
+
+    for i in range(1, total_chapters + 1):
+        content_result = get_chapter_func(book_id, i)
+        text_content = _get_text_from_html(content_result.get('content', ''))
+        full_text_parts.append(f"--- Chapter {i}: {content_result.get('chapter_title', '')} ---\n\n{text_content}\n\n")
+    
+    return {
+        'book_id': book_id,
+        'book_title': toc_result.get('book_title', 'N/A'),
+        'full_text': "".join(full_text_parts)
+    }
+
+def _get_book_word_count_statistics_logic(book_id, get_toc_func, get_chapter_func):
+    """通用逻辑：获取书籍的字数统计信息。"""
+    toc_result = get_toc_func(book_id)
+    if 'error' in toc_result:
+        return toc_result
+    
+    total_chapters = toc_result.get('total_chapters', 0)
+    stats = []
+    total_word_count = 0
+
+    for i in range(1, total_chapters + 1):
+        content_result = get_chapter_func(book_id, i)
+        text_content = _get_text_from_html(content_result.get('content', ''))
+        word_count = _count_words(text_content)
+        
+        stats.append({
+            'chapter_number': i,
+            'chapter_title': content_result.get('chapter_title', 'N/A'),
+            'word_count': word_count
+        })
+        total_word_count += word_count
+    
+    return {
+        'book_id': book_id,
+        'book_title': toc_result.get('book_title', 'N/A'),
+        'total_word_count': total_word_count,
+        'chapter_statistics': stats
+    }
+
+def get_calibre_entire_book_content(book_id: int):
+    """获取指定 Calibre 书籍的完整纯文本内容。"""
+    return _get_entire_book_content_logic(book_id, get_calibre_epub_table_of_contents, get_calibre_epub_chapter_content)
+
+def get_anx_entire_book_content(id: int):
+    """获取指定 Anx 书籍的完整纯文本内容。"""
+    return _get_entire_book_content_logic(id, get_anx_epub_table_of_contents, get_anx_epub_chapter_content)
+
+def get_calibre_book_word_count_statistics(book_id: int):
+    """获取指定 Calibre 书籍的字数统计信息（分章节和总计）。"""
+    return _get_book_word_count_statistics_logic(book_id, get_calibre_epub_table_of_contents, get_calibre_epub_chapter_content)
+
+def get_anx_book_word_count_statistics(id: int):
+    """获取指定 Anx 书籍的字数统计信息（分章节和总计）。"""
+    return _get_book_word_count_statistics_logic(id, get_anx_epub_table_of_contents, get_anx_epub_chapter_content)
 
 # --- Main MCP Endpoint ---
 
@@ -515,6 +615,26 @@ TOOLS = {
         'function': get_anx_epub_chapter_content,
         'params': {'id': int, 'chapter_number': int},
         'description': '获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
+    },
+    'get_calibre_entire_book_content': {
+        'function': get_calibre_entire_book_content,
+        'params': {'book_id': int},
+        'description': '获取指定 Calibre 书籍的完整纯文本内容（保留段落格式）。'
+    },
+    'get_anx_entire_book_content': {
+        'function': get_anx_entire_book_content,
+        'params': {'id': int},
+        'description': '获取指定 Anx 书籍的完整纯文本内容（保留段落格式）。'
+    },
+    'get_calibre_book_word_count_statistics': {
+        'function': get_calibre_book_word_count_statistics,
+        'params': {'book_id': int},
+        'description': '获取指定 Calibre 书籍的字数统计信息（分章节和总计）。对于中文等语言统计字数，对于英文等语言统计单词数。'
+    },
+    'get_anx_book_word_count_statistics': {
+        'function': get_anx_book_word_count_statistics,
+        'params': {'id': int},
+        'description': '获取指定 Anx 书籍的字数统计信息（分章节和总计）。对于中文等语言统计字数，对于英文等语言统计单词数。'
     }
 }
 
