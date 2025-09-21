@@ -1,5 +1,44 @@
 const isAdmin = JSON.parse(document.getElementById('is-admin-data').textContent);
 
+// --- Translatable Strings ---
+const t = {
+    smtpFromAddressTip: _('Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.'),
+    webdavCopied: _('WebDAV address copied to clipboard'),
+    copyFailed: _('Copy failed'),
+    twoFAEnabled: _('2FA has been enabled.'),
+    disable: _('Disable'),
+    twoFANotEnabled: _('2FA is not enabled.'),
+    enable: _('Enable'),
+    setup2FAFailed: _('Failed to start 2FA setup.'),
+    confirmDisable2FA: _('Are you sure you want to disable 2FA?'),
+    noTokens: _('No available tokens.'),
+    createdAt: _('Created at'),
+    delete: _('Delete'),
+    tokenGenerated: _('New token has been generated.'),
+    generateTokenFailed: _('Failed to generate token.'),
+    confirmDeleteToken: _('Are you sure you want to delete this token?'),
+    confirmCleanup: _('Are you sure you want to delete ALL generated audiobook files? This action cannot be undone.'),
+    cleanupFailed: _('Cleanup failed'),
+    anErrorOccurred: _('An error occurred'),
+    enterTestEmail: _('Please enter a test recipient email address.'),
+    edit: _('Edit'),
+    add: _('Add'),
+    confirmDeleteUser: _('Are you sure you want to delete this user?'),
+    active: _('Active'),
+    disabled: _('Disabled'),
+    neverExpires: _('Never expires'),
+    unknown: _('Unknown'),
+    generateInviteSuccess: _('Invite code generated successfully: {code}'),
+    generateInviteFailed: _('Failed to generate: {error}'),
+    unknownError: _('Unknown error'),
+    generateInviteError: _('An error occurred while generating the invite code.'),
+    operationFailedWithError: _('Operation failed: {error}'),
+    operationFailed: _('Operation failed'),
+    confirmDeleteInvite: _('Are you sure you want to delete this invite code?'),
+    deleteFailedWithError: _('Delete failed: {error}'),
+    deleteFailed: _('Delete failed')
+};
+
 // --- Tab Control ---
 window.openTab = function(evt, tabName) {
     let i, tabcontent, tablinks;
@@ -62,7 +101,7 @@ async function populateForms() {
 
     if (userData.smtp_from_address) {
         const tipElement = document.getElementById('smtp_from_address_tip');
-        tipElement.textContent = _('Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.').replace('{email}', userData.smtp_from_address);
+        tipElement.textContent = t.smtpFromAddressTip.replace('{email}', userData.smtp_from_address);
     }
     update2FAStatus(userData.has_2fa);
     
@@ -93,9 +132,9 @@ async function populateForms() {
         koreaderWebDavUrlElement.textContent = webdavUrl;
         koreaderWebDavUrlElement.addEventListener('click', () => {
             navigator.clipboard.writeText(webdavUrl).then(() => {
-                alert(_('WebDAV address copied to clipboard'));
+                alert(t.webdavCopied);
             }, () => {
-                alert(_('Copy failed'));
+                alert(t.copyFailed);
             });
         });
     }
@@ -107,12 +146,12 @@ async function populateForms() {
 function update2FAStatus(is_enabled) {
     const statusContainer = document.getElementById('2fa_status_container');
     if (is_enabled) {
-        const enabledText = _('2FA has been enabled.');
-        const disableText = _('Disable');
+        const enabledText = t.twoFAEnabled;
+        const disableText = t.disable;
         statusContainer.innerHTML = `<p>${enabledText}</p><button type="button" class="button-danger" onclick="disable2FA()">${disableText}</button>`;
     } else {
-        const notEnabledText = _('2FA is not enabled.');
-        const enableText = _('Enable');
+        const notEnabledText = t.twoFANotEnabled;
+        const enableText = t.enable;
         statusContainer.innerHTML = `<p>${notEnabledText}</p><button type="button" class="button" onclick="setup2FA()">${enableText}</button>`;
     }
 }
@@ -126,7 +165,7 @@ window.setup2FA = async function() {
         document.getElementById('otp_secret_key').textContent = data.secret;
         document.getElementById('qr_code_container').innerHTML = `<img src="${data.qr_code}" alt="QR Code">`;
     } else {
-        alert(data.error);
+        alert(data.error || t.setup2FAFailed);
     }
 }
 
@@ -151,7 +190,7 @@ window.verify2FA = async function() {
 }
 
 window.disable2FA = async function() {
-    if (!confirm(_('Are you sure you want to disable 2FA?'))) return;
+    if (!confirm(t.confirmDisable2FA)) return;
     const response = await fetch('/api/2fa/disable', { method: 'POST' });
     const result = await response.json();
     alert(result.message || result.error);
@@ -201,7 +240,7 @@ async function fetchMcpTokens() {
     const listEl = document.getElementById('mcp-token-list');
     listEl.innerHTML = '';
     if (tokens.length === 0) {
-        const noTokensMessage = _('No available tokens.');
+        const noTokensMessage = t.noTokens;
         listEl.innerHTML = `<p>${noTokensMessage}</p>`;
     } else {
         tokens.forEach(token => {
@@ -210,9 +249,9 @@ async function fetchMcpTokens() {
             item.innerHTML = `
                 <div>
                     <span class="token-value">${token.token}</span>
-                    <small style="display: block; color: #666;">${_('Created at')}: ${new Date(token.created_at).toLocaleString()}</small>
+                    <small style="display: block; color: #666;">${t.createdAt}: ${new Date(token.created_at).toLocaleString()}</small>
                 </div>
-                <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">${_('Delete')}</button>
+                <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">${t.delete}</button>
             `;
             listEl.appendChild(item);
         });
@@ -223,15 +262,15 @@ window.generateMcpToken = async function() {
     const response = await fetch('/api/mcp_tokens', { method: 'POST' });
     const result = await response.json();
     if (response.ok) {
-        alert(_('New token has been generated.'));
+        alert(t.tokenGenerated);
         await fetchMcpTokens();
     } else {
-        alert(result.error || _('Failed to generate token.'));
+        alert(result.error || t.generateTokenFailed);
     }
 }
 
 window.deleteMcpToken = async function(tokenId) {
-    if (!confirm(_('Are you sure you want to delete this token?'))) return;
+    if (!confirm(t.confirmDeleteToken)) return;
     const response = await fetch(`/api/mcp_tokens/${tokenId}`, { method: 'DELETE' });
     const result = await response.json();
     alert(result.message || result.error);
@@ -258,16 +297,26 @@ window.saveGlobalSettings = async function(event) {
 }
 
 window.cleanupAllAudiobooks = async function() {
-    if (!confirm(_('Are you sure you want to delete ALL generated audiobook files? This action cannot be undone.'))) {
+    if (!confirm(t.confirmCleanup)) {
         return;
     }
 
-    const response = await fetch('/api/admin/cleanup_audiobooks', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-    });
-    const result = await response.json();
-    alert(result.message || result.error);
+    try {
+        const response = await fetch('/api/admin/cleanup_audiobooks', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+        });
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert(result.message);
+            window.location.href = '/';
+        } else {
+            alert(`${t.cleanupFailed}: ${result.error}`);
+        }
+    } catch (error) {
+        alert(`${t.anErrorOccurred}: ${error.message}`);
+    }
 }
 
 window.testSmtpSettings = async function() {
@@ -282,7 +331,7 @@ window.testSmtpSettings = async function() {
     };
 
     if (!data.to_address) {
-        alert(_('Please enter a test recipient email address.'));
+        alert(t.enterTestEmail);
         return;
     }
 
@@ -307,8 +356,8 @@ async function fetchUsers() {
             <td>${user.username}</td>
             <td>${user.role}</td>
             <td>
-                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', '${user.role}')">${_('Edit')}</button>
-                <button class="button-danger button-small" onclick="deleteUser(${user.id})">${_('Delete')}</button>
+                <button class="button-small" onclick="editUser(${user.id}, '${user.username}', '${user.role}')">${t.edit}</button>
+                <button class="button-danger button-small" onclick="deleteUser(${user.id})">${t.delete}</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -316,7 +365,7 @@ async function fetchUsers() {
 }
 
 window.editUser = function(id, username, role) {
-    document.getElementById('formTitle').textContent = _('Edit');
+    document.getElementById('formTitle').textContent = t.edit;
     document.getElementById('user_id').value = id;
     document.getElementById('username').value = username;
     document.getElementById('role').value = role;
@@ -324,7 +373,7 @@ window.editUser = function(id, username, role) {
 }
 
 window.resetUserForm = function() {
-    document.getElementById('formTitle').textContent = _('Add');
+    document.getElementById('formTitle').textContent = t.add;
     document.getElementById('userForm').reset();
     document.getElementById('user_id').value = '';
 }
@@ -360,7 +409,7 @@ window.handleUserFormSubmit = async function(event) {
 }
 
 window.deleteUser = async function(userId) {
-    if (!confirm(_('Are you sure you want to delete this user?'))) return;
+    if (!confirm(t.confirmDeleteUser)) return;
 
     const response = await fetch(`/api/users`, {
         method: 'DELETE',
@@ -408,21 +457,21 @@ async function loadInviteCodes() {
             tbody.innerHTML = '';
             codes.forEach(code => {
                 const row = document.createElement('tr');
-                const statusText = code.is_active ? _('Active') : _('Disabled');
-                const expiresAt = code.expires_at ? new Date(code.expires_at).toLocaleString() : _('Never expires');
+                const statusText = code.is_active ? t.active : t.disabled;
+                const expiresAt = code.expires_at ? new Date(code.expires_at).toLocaleString() : t.neverExpires;
                 const createdAt = new Date(code.created_at).toLocaleString();
                 
                 row.innerHTML = `
                     <td><code>${code.code}</code></td>
                     <td>${code.max_uses}</td>
                     <td>${code.current_uses}</td>
-                    <td>${code.created_by || _('Unknown')}</td>
+                    <td>${code.created_by || t.unknown}</td>
                     <td>${createdAt}</td>
                     <td>${expiresAt}</td>
                     <td>${statusText}</td>
                     <td>
-                        <button class="button-small" onclick="toggleInviteCode(${code.id})">${code.is_active ? _('Disable') : _('Enable')}</button>
-                        <button class="button-small button-danger" onclick="deleteInviteCode(${code.id})">${_('Delete')}</button>
+                        <button class="button-small" onclick="toggleInviteCode(${code.id})">${code.is_active ? t.disable : t.enable}</button>
+                        <button class="button-small button-danger" onclick="deleteInviteCode(${code.id})">${t.delete}</button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -452,14 +501,14 @@ window.generateInviteCode = async function(event) {
         
         const result = await response.json();
         if (response.ok && result.success) {
-            alert(_('Invite code generated successfully: {code}').replace('{code}', result.code));
+            alert(t.generateInviteSuccess.replace('{code}', result.code));
             await loadInviteCodes();
             event.target.reset();
         } else {
-            alert(_('Failed to generate: {error}').replace('{error}', result.error || _('Unknown error')));
+            alert(t.generateInviteFailed.replace('{error}', result.error || t.unknownError));
         }
     } catch (error) {
-        alert(_('An error occurred while generating the invite code.'));
+        alert(t.generateInviteError);
     }
 }
 
@@ -475,15 +524,15 @@ window.toggleInviteCode = async function(codeId) {
             await loadInviteCodes();
         } else {
             const error = await response.json();
-            alert(_('Operation failed: {error}').replace('{error}', error.error || _('Unknown error')));
+            alert(t.operationFailedWithError.replace('{error}', error.error || t.unknownError));
         }
     } catch (error) {
-        alert(_('Operation failed'));
+        alert(t.operationFailed);
     }
 }
 
 window.deleteInviteCode = async function(codeId) {
-    if (!confirm(_('Are you sure you want to delete this invite code?'))) return;
+    if (!confirm(t.confirmDeleteInvite)) return;
     
     try {
         const response = await fetch('/api/admin/invite-codes', {
@@ -496,10 +545,10 @@ window.deleteInviteCode = async function(codeId) {
             await loadInviteCodes();
         } else {
             const error = await response.json();
-            alert(_('Delete failed: {error}').replace('{error}', error.error || _('Unknown error')));
+            alert(t.deleteFailedWithError.replace('{error}', error.error || t.unknownError));
         }
     } catch (error) {
-        alert(_('Delete failed'));
+        alert(t.deleteFailed);
     }
 }
 

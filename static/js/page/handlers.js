@@ -7,11 +7,29 @@ import {
     finalizeAudiobookButton
 } from './ui.js';
 
+// --- Translatable Strings ---
+const t = {
+    networkResponseNotOk: _('Network response was not ok.'),
+    noChangesDetected: _('No changes detected.'),
+    queued: _('Queued...'),
+    confirmDeleteBook: _('Are you sure you want to delete this book? This action cannot be undone.'),
+    invalidPageNumber: _('Please enter a valid page number between 1 and %(totalPages)s.'),
+    selectFilesToUpload: _('Please select files to upload.'),
+    waiting: _('Waiting...'),
+    uploading: _('Uploading...'),
+    processing: _('Processing...'),
+    uploadFailed: _('Upload failed'),
+    networkError: _('Network Error'),
+    allBooksUploaded: _('All books uploaded successfully!'),
+    someFilesFailedUpload: _('Some files failed to upload. Please check the progress details.')
+};
+
+
 function pollAudiobookStatus(taskId, button, originalText) {
     const intervalId = setInterval(() => {
         fetch_with_token(`/api/audiobook/status/${taskId}`)
             .then(res => {
-                if (!res.ok) throw new Error(_('Network response was not ok.'));
+                if (!res.ok) throw new Error(t.networkResponseNotOk);
                 return res.json();
             })
             .then(data => {
@@ -144,7 +162,7 @@ function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksDat
     
     const changeKeys = Object.keys(payload);
     if (changeKeys.length === 0 || (changeKeys.length === 1 && changeKeys[0] === 'id')) {
-         alert(_('No changes detected.'));
+         alert(t.noChangesDetected);
          return;
     }
 
@@ -199,7 +217,7 @@ export function setupEventHandlers(
                 formData.append('book_id', bookId);
                 formData.append('library', library);
 
-                updateAudiobookButtonProgress(target, 0, _('Queued...'));
+                updateAudiobookButtonProgress(target, 0, t.queued);
 
                 fetch_with_token('/api/audiobook/generate', {
                     method: 'POST',
@@ -248,7 +266,7 @@ export function setupEventHandlers(
                 break;
             }
             case 'delete-anx':
-                if (confirm(_('Are you sure you want to delete this book? This action cannot be undone.'))) {
+                if (confirm(t.confirmDeleteBook)) {
                     fetch_with_token(`/api/delete_anx_book/${id}`, { method: 'DELETE' })
                         .then(res => res.json()).then(data => {
                             alert(data.message || data.error);
@@ -297,7 +315,7 @@ export function setupEventHandlers(
                     url.searchParams.set('page', page);
                     showLoaderAndNavigate(url.href, calibreLoader);
                 } else {
-                    alert(_('Please enter a valid page number between 1 and %(totalPages)s.').replace('%(totalPages)s', totalPages));
+                    alert(t.invalidPageNumber.replace('%(totalPages)s', totalPages));
                 }
                 break;
             }
@@ -310,7 +328,7 @@ export function setupEventHandlers(
                     url.searchParams.set('page', page);
                     showLoaderAndNavigate(url.href, calibreLoader);
                 } else {
-                    alert(_('Please enter a valid page number between 1 and %(totalPages)s.').replace('%(totalPages)s', totalPages));
+                    alert(t.invalidPageNumber.replace('%(totalPages)s', totalPages));
                 }
                 break;
             }
@@ -348,7 +366,7 @@ export function setupEventHandlers(
         progressContainer.innerHTML = ''; // Clear previous results
 
         if (files.length === 0) {
-            alert(_('Please select files to upload.'));
+            alert(t.selectFilesToUpload);
             return;
         }
 
@@ -362,7 +380,7 @@ export function setupEventHandlers(
             progressBar.max = 100;
             progressBar.value = 0;
             const progressLabel = document.createElement('span');
-            progressLabel.textContent = _('Waiting...'); // Set initial state to Waiting
+            progressLabel.textContent = t.waiting; // Set initial state to Waiting
             progressWrapper.appendChild(fileNameSpan);
             progressWrapper.appendChild(progressBar);
             progressWrapper.appendChild(progressLabel);
@@ -377,7 +395,7 @@ export function setupEventHandlers(
             const file = files[i];
             const { wrapper, bar, label } = progressElements[i];
             
-            label.textContent = _('Uploading...'); // Update status before starting
+            label.textContent = t.uploading; // Update status before starting
 
             const success = await new Promise((resolve) => {
                 const formData = new FormData();
@@ -391,7 +409,7 @@ export function setupEventHandlers(
                         const percentComplete = (event.loaded / event.total) * 100;
                         bar.value = percentComplete;
                         if (percentComplete >= 100) {
-                            label.textContent = _('Processing...');
+                            label.textContent = t.processing;
                         } else {
                             label.textContent = Math.round(percentComplete) + '%';
                         }
@@ -412,14 +430,14 @@ export function setupEventHandlers(
                             resolve(false);
                         }
                     } else {
-                        label.textContent = `❌ ${_('Upload failed')}: ${xhr.statusText}`;
+                        label.textContent = `❌ ${t.uploadFailed}: ${xhr.statusText}`;
                         wrapper.classList.add('error');
                         resolve(false);
                     }
                 };
 
                 xhr.onerror = function() {
-                    label.textContent = `❌ ${_('Network Error')}.`;
+                    label.textContent = `❌ ${t.networkError}.`;
                     wrapper.classList.add('error');
                     resolve(false);
                 };
@@ -434,9 +452,9 @@ export function setupEventHandlers(
 
         // --- Step 3: Final notification ---
         if (all_successful) {
-            alert(_('All books uploaded successfully!'));
+            alert(t.allBooksUploaded);
         } else {
-            alert(_('Some files failed to upload. Please check the progress details.'));
+            alert(t.someFilesFailedUpload);
         }
         
         // Reload the page after user confirms the alert, regardless of success or failure

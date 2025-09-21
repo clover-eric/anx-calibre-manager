@@ -1,6 +1,19 @@
 import './foliate/view.js';
 import { createTOCView } from './foliate/ui/tree.js';
 
+// --- Translatable Strings ---
+const t = {
+    failedToFetchSettings: _('Failed to fetch user settings'),
+    invalidBookType: _('Invalid book type specified.'),
+    invalidUrl: _('Invalid URL for book reader.'),
+    failedToFetchBook: _('Failed to fetch book: {statusText}'),
+    failedToInitRenderer: _('Failed to initialize book renderer.'),
+    errorLoadingBook: _('Error loading book: {message}'),
+    untitled: _('Untitled'),
+    unknownAuthor: _('Unknown Author'),
+    noVoices: _('No voices available')
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const readerContainer = document.getElementById('reader-container');
     const loadingOverlay = document.getElementById('loading-overlay');
@@ -60,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/api/user_settings');
             if (!response.ok) {
-                throw new Error('Failed to fetch user settings');
+                throw new Error(t.failedToFetchSettings);
             }
             const settings = await response.json();
             const theme = settings.theme || 'auto';
@@ -113,10 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (downloadUrl) {
             loadBook(downloadUrl);
         } else {
-            showError('Invalid book type specified.');
+            showError(t.invalidBookType);
         }
     } else {
-        showError('Invalid URL for book reader.');
+        showError(t.invalidUrl);
     }
 
     async function loadBook(url) {
@@ -124,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`Failed to fetch book: ${response.statusText}`);
+                throw new Error(t.failedToFetchBook.replace('{statusText}', response.statusText));
             }
 
             const disposition = response.headers.get('Content-Disposition');
@@ -157,11 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideLoading(); // Hide loading animation after book is loaded
             } else {
                 hideLoading(); // Hide loading animation even on error
-                showError('Failed to initialize book renderer.');
+                showError(t.failedToInitRenderer);
             }
         } catch (error) {
             console.error('Error loading book:', error);
-            showError(`Error loading book: ${error.message}`);
+            showError(t.errorLoadingBook.replace('{message}', error.message));
             hideLoading(); // Hide loading on error
         }
     }
@@ -209,8 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // END PATCH
 
         // 1. Setup Book Info (Title, Author, Cover)
-        const title = formatLanguageMap(book.metadata?.title) || 'Untitled';
-        const author = formatContributor(book.metadata?.author) || 'Unknown Author';
+        const title = formatLanguageMap(book.metadata?.title) || t.untitled;
+        const author = formatContributor(book.metadata?.author) || t.unknownAuthor;
         document.title = title;
         headerTitle.textContent = title;
         sideBarTitle.textContent = title;
@@ -357,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ttsVoice.innerHTML = '';
             if (voices.length === 0) {
                 const option = document.createElement('option');
-                option.textContent = 'No voices available';
+                option.textContent = t.noVoices;
                 ttsVoice.appendChild(option);
                 return;
             }

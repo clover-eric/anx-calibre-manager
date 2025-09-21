@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // --- Translatable Strings ---
+    const t = {
+        passwordMismatch: _('Password confirmation does not match'),
+        passwordTooShort: _('Password must be at least 6 characters'),
+        invalidUsername: _('Username can only contain letters, numbers and underscores, 3-50 characters long'),
+        registrationSuccess: _('Registration successful! Please login.'),
+        registrationFailed: _('Registration failed'),
+        networkError: _('Network error, please try again later')
+    };
+
     const registerForm = document.getElementById('registerForm');
     const errorMessage = document.getElementById('error-message');
     
@@ -11,18 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 客户端验证
         if (password !== confirmPassword) {
-            errorMessage.textContent = _('Password confirmation does not match');
+            errorMessage.textContent = t.passwordMismatch;
             return;
         }
         
         if (password.length < 6) {
-            errorMessage.textContent = _('Password must be at least 6 characters');
+            errorMessage.textContent = t.passwordTooShort;
             return;
         }
         
         const username = formData.get('username');
         if (!/^[a-zA-Z0-9_]{3,50}$/.test(username)) {
-            errorMessage.textContent = _('Username can only contain letters, numbers and underscores, 3-50 characters long');
+            errorMessage.textContent = t.invalidUsername;
             return;
         }
         
@@ -44,13 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (response.ok && data.success) {
                 // 显示成功提示
-                alert(data.message || _('Registration successful! Please login.'));
+                alert(data.message || t.registrationSuccess);
                 window.location.href = data.redirect_url || '/login';
             } else {
-                errorMessage.textContent = data.error || _('Registration failed');
+                errorMessage.textContent = data.error || t.registrationFailed;
             }
         } catch (error) {
-            errorMessage.textContent = _('Network error, please try again later');
+            errorMessage.textContent = t.networkError;
         }
     });
     
@@ -61,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     confirmPasswordField.addEventListener('input', function() {
         if (passwordField.value && confirmPasswordField.value) {
             if (passwordField.value !== confirmPasswordField.value) {
-                confirmPasswordField.setCustomValidity(_('Password confirmation does not match'));
+                confirmPasswordField.setCustomValidity(t.passwordMismatch);
             } else {
                 confirmPasswordField.setCustomValidity('');
             }
@@ -71,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     passwordField.addEventListener('input', function() {
         if (confirmPasswordField.value) {
             if (passwordField.value !== confirmPasswordField.value) {
-                confirmPasswordField.setCustomValidity(_('Password confirmation does not match'));
+                confirmPasswordField.setCustomValidity(t.passwordMismatch);
             } else {
                 confirmPasswordField.setCustomValidity('');
             }

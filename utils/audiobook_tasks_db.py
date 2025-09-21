@@ -59,15 +59,15 @@ def get_audiobook_task_by_book(user_id, book_id, library_type):
 
 def get_latest_task_for_book(user_id, book_id, library_type):
     """
-    获取特定书籍的最新任务。
+    获取特定书籍的最新**活动**任务（即未被清理的任务）。
     对于 Calibre 库，任务是共享的，不检查 user_id。
     对于 Anx 库，任务是用户私有的，会检查 user_id。
     """
     with closing(get_db()) as db:
-        # 基础查询语句
+        # 基础查询语句，排除了已被清理的任务
         query = """
             SELECT * FROM audiobook_tasks
-            WHERE book_id = ? AND TRIM(library_type) = TRIM(?)
+            WHERE book_id = ? AND TRIM(library_type) = TRIM(?) AND status != 'cleaned'
         """
         params = [book_id, library_type]
 

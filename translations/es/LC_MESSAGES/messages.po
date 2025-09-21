@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-21 22:21+0800\n"
+"POT-Creation-Date: 2025-09-22 00:24+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -46,7 +46,7 @@ msgstr "Se ha creado la cuenta de administrador, por favor, inicia sesión."
 msgid "Username and password cannot be empty"
 msgstr "El nombre de usuario y la contraseña no pueden estar vacíos"
 
-#: blueprints/auth.py:106 static/js/register.js:25
+#: blueprints/auth.py:106 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -54,7 +54,7 @@ msgstr ""
 "El nombre de usuario solo puede contener letras, números y guiones bajos,"
 " con una longitud de 3 a 50 caracteres"
 
-#: blueprints/auth.py:109 static/js/register.js:19
+#: blueprints/auth.py:109 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "La contraseña debe tener al menos 6 caracteres"
 
@@ -78,7 +78,7 @@ msgstr "El código de invitación ha alcanzado el límite de uso"
 msgid "Invite code has expired"
 msgstr "El código de invitación ha caducado"
 
-#: blueprints/auth.py:166 static/js/register.js:47
+#: blueprints/auth.py:166 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "¡Registro exitoso! Por favor, inicia sesión."
 
@@ -112,96 +112,96 @@ msgstr "La página de estadísticas de este usuario es privada."
 msgid "Anx library not found for this user."
 msgstr "Biblioteca Anx no encontrada para este usuario."
 
-#: blueprints/api/audiobook.py:80 blueprints/api/audiobook.py:220
+#: blueprints/api/audiobook.py:99 blueprints/api/audiobook.py:246
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "Falta 'book_id' o 'library' en la solicitud"
 
-#: blueprints/api/audiobook.py:89
+#: blueprints/api/audiobook.py:108
 msgid "A task for this book is already in progress."
 msgstr "Ya hay una tarea en progreso para este libro."
 
-#: blueprints/api/audiobook.py:94
+#: blueprints/api/audiobook.py:113
 msgid "Task queued"
 msgstr "Tarea en cola"
 
-#: blueprints/api/audiobook.py:104
+#: blueprints/api/audiobook.py:123
 msgid "Starting audiobook generation..."
 msgstr "Iniciando la generación del audiolibro..."
 
-#: blueprints/api/audiobook.py:105
+#: blueprints/api/audiobook.py:124
 msgid "Parsing EPUB file..."
 msgstr "Analizando el archivo EPUB..."
 
-#: blueprints/api/audiobook.py:106
+#: blueprints/api/audiobook.py:125
 #, python-format
 msgid "Processing: Chapter %(index)d/%(total)d"
 msgstr "Procesando: Capítulo %(index)d/%(total)d"
 
-#: blueprints/api/audiobook.py:107
+#: blueprints/api/audiobook.py:126
 msgid "Merging audio files..."
 msgstr "Fusionando archivos de audio..."
 
-#: blueprints/api/audiobook.py:108
+#: blueprints/api/audiobook.py:127
 msgid "Writing book metadata..."
 msgstr "Escribiendo metadatos del libro..."
 
-#: blueprints/api/audiobook.py:109
+#: blueprints/api/audiobook.py:128
 msgid "Cleaning up temporary files..."
 msgstr "Limpiando archivos temporales..."
 
-#: blueprints/api/audiobook.py:110
+#: blueprints/api/audiobook.py:129
 msgid "Audiobook generated successfully!"
 msgstr "¡Audiolibro generado con éxito!"
 
-#: blueprints/api/audiobook.py:111
+#: blueprints/api/audiobook.py:130
 msgid "Could not extract any chapters from the EPUB file."
 msgstr "No se pudieron extraer capítulos del archivo EPUB."
 
-#: blueprints/api/audiobook.py:112
+#: blueprints/api/audiobook.py:131
 msgid "All chapters are empty or could not be converted to audio."
 msgstr "Todos los capítulos están vacíos o no se pudieron convertir a audio."
 
-#: blueprints/api/audiobook.py:113
+#: blueprints/api/audiobook.py:132
 #, python-format
 msgid "An unknown error occurred: %(error)s"
 msgstr "Ocurrió un error desconocido: %(error)s"
 
-#: blueprints/api/audiobook.py:120
+#: blueprints/api/audiobook.py:139
 #, python-format
 msgid "FFmpeg error: %(error)s"
 msgstr "Error de FFmpeg: %(error)s"
 
-#: blueprints/api/audiobook.py:172
+#: blueprints/api/audiobook.py:191
 msgid "Invalid 'library' type"
 msgstr "Tipo de 'library' no válido"
 
-#: blueprints/api/audiobook.py:193
+#: blueprints/api/audiobook.py:219
 #, python-format
 msgid "File error: %(error)s"
 msgstr "Error de archivo: %(error)s"
 
-#: blueprints/api/audiobook.py:197
+#: blueprints/api/audiobook.py:223
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Ocurrió un error desconocido al iniciar la tarea: %(error)s"
 
-#: blueprints/api/audiobook.py:207 blueprints/api/audiobook.py:236
+#: blueprints/api/audiobook.py:233 blueprints/api/audiobook.py:262
 msgid "Task not found"
 msgstr "Tarea no encontrada"
 
-#: blueprints/api/audiobook.py:240
+#: blueprints/api/audiobook.py:266
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: blueprints/api/audiobook.py:244
+#: blueprints/api/audiobook.py:270
 msgid "Audiobook is not ready for download"
 msgstr "El audiolibro no está listo para descargar"
 
-#: blueprints/api/audiobook.py:249
+#: blueprints/api/audiobook.py:275
 msgid "File not found on server"
 msgstr "Archivo no encontrado en el servidor"
 
-#: blueprints/api/audiobook.py:254
+#: blueprints/api/audiobook.py:297
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "No se pudo enviar el archivo: %(error)s"
@@ -226,21 +226,21 @@ msgstr "Código de verificación incorrecto."
 msgid "2FA has been disabled."
 msgstr "2FA ha sido desactivado."
 
-#: blueprints/api/books.py:30
+#: blueprints/api/books.py:31
 msgid "Anx database not found."
 msgstr "Base de datos Anx no encontrada."
 
-#: blueprints/api/books.py:39
+#: blueprints/api/books.py:40
 #, python-format
 msgid "Book file with ID %(book_id)s not found."
 msgstr "Archivo de libro con ID %(book_id)s no encontrado."
 
-#: blueprints/api/books.py:46
+#: blueprints/api/books.py:47
 #, python-format
 msgid "Error downloading book: %(error)s"
 msgstr "Error al descargar el libro: %(error)s"
 
-#: blueprints/api/books.py:154
+#: blueprints/api/books.py:155
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
@@ -248,30 +248,30 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra en el entorno actual."
 
-#: blueprints/api/books.py:158
+#: blueprints/api/books.py:159
 msgid "Unable to process or convert the book."
 msgstr "No se puede procesar o convertir el libro."
 
-#: blueprints/api/books.py:163 blueprints/api/books.py:245
+#: blueprints/api/books.py:164 blueprints/api/books.py:246
 #: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "Detalles del libro no encontrados."
 
-#: blueprints/api/books.py:174
+#: blueprints/api/books.py:175
 msgid "This book has no available formats."
 msgstr "Este libro no tiene formatos disponibles."
 
-#: blueprints/api/books.py:180
+#: blueprints/api/books.py:181
 msgid "Unable to download the book."
 msgstr "No se puede descargar el libro."
 
-#: blueprints/api/books.py:185
+#: blueprints/api/books.py:186
 msgid "Please configure your Kindle email in user settings first."
 msgstr ""
 "Por favor, configura tu correo electrónico de Kindle en los ajustes de "
 "usuario primero."
 
-#: blueprints/api/books.py:191
+#: blueprints/api/books.py:192
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
@@ -279,11 +279,11 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra. Por favor, instálala en el PATH del sistema."
 
-#: blueprints/api/books.py:194
+#: blueprints/api/books.py:195
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "No se puede obtener o procesar el archivo EPUB para el libro."
 
-#: blueprints/api/books.py:239
+#: blueprints/api/books.py:240
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
@@ -291,19 +291,19 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra."
 
-#: blueprints/api/books.py:252
+#: blueprints/api/books.py:253
 msgid "No pushable format found."
 msgstr "No se encontró formato para enviar."
 
-#: blueprints/api/books.py:257
+#: blueprints/api/books.py:258
 msgid "Error downloading or processing the book."
 msgstr "Error al descargar o procesar el libro."
 
-#: blueprints/api/books.py:263
+#: blueprints/api/books.py:264
 msgid "User directory not configured."
 msgstr "Directorio de usuario no configurado."
 
-#: blueprints/api/books.py:283
+#: blueprints/api/books.py:284
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
@@ -312,7 +312,7 @@ msgstr ""
 "Libro '%(filename)s' enviado. Procesados: %(processed)s, Omitidos: "
 "%(skipped)s."
 
-#: blueprints/api/books.py:308
+#: blueprints/api/books.py:309
 msgid "Missing book ID."
 msgstr "Falta el ID del libro."
 
@@ -439,7 +439,7 @@ msgstr ""
 msgid "Invite code already exists"
 msgstr "El código de invitación ya existe"
 
-#: blueprints/api/invite.py:77 static/js/settings.js:470
+#: blueprints/api/invite.py:77 static/js/settings.js:36
 msgid "Operation failed"
 msgstr "Operación fallida"
 
@@ -511,19 +511,61 @@ msgstr "Error al eliminar el directorio de datos del usuario: %(error)s"
 msgid "User and their data have been successfully deleted."
 msgstr "El usuario y sus datos han sido eliminados correctamente."
 
-#: static/js/register.js:14 static/js/register.js:64 static/js/register.js:74
+#: static/js/login.js:3
+msgid "A network error occurred, please try again."
+msgstr "Ocurrió un error de red, por favor, inténtalo de nuevo."
+
+#: static/js/reader.js:6
+msgid "Failed to fetch user settings"
+msgstr "Error al obtener la configuración del usuario"
+
+#: static/js/reader.js:7
+msgid "Invalid book type specified."
+msgstr "Se ha especificado un tipo de libro no válido."
+
+#: static/js/reader.js:8
+msgid "Invalid URL for book reader."
+msgstr "URL no válida para el lector de libros."
+
+#: static/js/reader.js:9
+#, python-brace-format
+msgid "Failed to fetch book: {statusText}"
+msgstr "Error al obtener el libro: {statusText}"
+
+#: static/js/reader.js:10
+msgid "Failed to initialize book renderer."
+msgstr "Error al inicializar el renderizador de libros."
+
+#: static/js/reader.js:11
+#, python-brace-format
+msgid "Error loading book: {message}"
+msgstr "Error al cargar el libro: {message}"
+
+#: static/js/reader.js:12
+msgid "Untitled"
+msgstr "Sin título"
+
+#: static/js/reader.js:13
+msgid "Unknown Author"
+msgstr "Autor desconocido"
+
+#: static/js/reader.js:14
+msgid "No voices available"
+msgstr "No hay voces disponibles"
+
+#: static/js/register.js:4
 msgid "Password confirmation does not match"
 msgstr "La confirmación de la contraseña no coincide"
 
-#: static/js/register.js:50
+#: static/js/register.js:8
 msgid "Registration failed"
 msgstr "Registro fallido"
 
-#: static/js/register.js:53
+#: static/js/register.js:9
 msgid "Network error, please try again later"
 msgstr "Error de red, por favor, inténtalo de nuevo más tarde"
 
-#: static/js/settings.js:65
+#: static/js/settings.js:5
 #, python-brace-format
 msgid ""
 "Please make sure to add the sender email address ({email}) to your Amazon"
@@ -533,51 +575,63 @@ msgstr ""
 "({email}) a tu lista de correos electrónicos de confianza de Amazon "
 "Kindle."
 
-#: static/js/settings.js:96
+#: static/js/settings.js:6
 msgid "WebDAV address copied to clipboard"
 msgstr "Dirección WebDAV copiada al portapapeles"
 
-#: static/js/settings.js:98
+#: static/js/settings.js:7
 msgid "Copy failed"
 msgstr "Error al copiar"
 
-#: static/js/settings.js:110
+#: static/js/settings.js:8
 msgid "2FA has been enabled."
 msgstr "La autenticación de dos factores ha sido activada."
 
-#: static/js/settings.js:111
+#: static/js/settings.js:9
 msgid "Disable"
 msgstr "Desactivar"
 
-#: static/js/settings.js:114
+#: static/js/settings.js:10
 msgid "2FA is not enabled."
 msgstr "La autenticación de dos factores no está activada."
 
-#: static/js/settings.js:115
+#: static/js/settings.js:11
 msgid "Enable"
 msgstr "Activar"
 
-#: static/js/settings.js:154
+#: static/js/settings.js:12
+msgid "Failed to start 2FA setup."
+msgstr "Error al iniciar la configuración de 2FA."
+
+#: static/js/settings.js:13
 msgid "Are you sure you want to disable 2FA?"
 msgstr "¿Estás seguro de que quieres desactivar 2FA?"
 
-#: static/js/settings.js:204
+#: static/js/settings.js:14
 msgid "No available tokens."
 msgstr "No hay tokens disponibles."
 
-#: static/js/settings.js:226
+#: static/js/settings.js:15
+msgid "Created at"
+msgstr "Creado en"
+
+#: static/js/settings.js:16 templates/index.html:150
+msgid "Delete"
+msgstr "Eliminar"
+
+#: static/js/settings.js:17
 msgid "New token has been generated."
 msgstr "Se ha generado un nuevo token."
 
-#: static/js/settings.js:229
+#: static/js/settings.js:18
 msgid "Failed to generate token."
 msgstr "Error al generar el token."
 
-#: static/js/settings.js:234
+#: static/js/settings.js:19
 msgid "Are you sure you want to delete this token?"
 msgstr "¿Estás seguro de que quieres eliminar este token?"
 
-#: static/js/settings.js:261
+#: static/js/settings.js:20
 msgid ""
 "Are you sure you want to delete ALL generated audiobook files? This "
 "action cannot be undone."
@@ -585,148 +639,186 @@ msgstr ""
 "¿Estás seguro de que quieres eliminar TODOS los archivos de audiolibros "
 "generados? Esta acción no se puede deshacer."
 
-#: static/js/settings.js:285
+#: static/js/settings.js:21
+msgid "Cleanup failed"
+msgstr "Error en la limpieza"
+
+#: static/js/settings.js:22
+msgid "An error occurred"
+msgstr "Ocurrió un error"
+
+#: static/js/settings.js:23
 msgid "Please enter a test recipient email address."
 msgstr ""
 "Por favor, introduce una dirección de correo electrónico de destinatario "
 "de prueba."
 
-#: static/js/settings.js:319 templates/index.html:81 templates/index.html:149
+#: static/js/settings.js:24 templates/index.html:81 templates/index.html:149
 msgid "Edit"
 msgstr "Editar"
 
-#: static/js/settings.js:327 templates/settings.html:386
+#: static/js/settings.js:25 templates/settings.html:386
 msgid "Add"
 msgstr "Añadir"
 
-#: static/js/settings.js:363
+#: static/js/settings.js:26
 msgid "Are you sure you want to delete this user?"
 msgstr "¿Estás seguro de que quieres eliminar a este usuario?"
 
-#: static/js/settings.js:400
+#: static/js/settings.js:27
 msgid "Active"
 msgstr "Activo"
 
-#: static/js/settings.js:400
+#: static/js/settings.js:28
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: static/js/settings.js:401
+#: static/js/settings.js:29
 msgid "Never expires"
 msgstr "Nunca expira"
 
-#: static/js/settings.js:444
+#: static/js/settings.js:30
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: static/js/settings.js:31
 #, python-brace-format
 msgid "Invite code generated successfully: {code}"
 msgstr "Código de invitación generado correctamente: {code}"
 
-#: static/js/settings.js:448
+#: static/js/settings.js:32
 #, python-brace-format
 msgid "Failed to generate: {error}"
 msgstr "Error al generar: {error}"
 
-#: static/js/settings.js:448 static/js/settings.js:467
-#: static/js/settings.js:488
+#: static/js/settings.js:33
 msgid "Unknown error"
 msgstr "Error desconocido"
 
-#: static/js/settings.js:451
+#: static/js/settings.js:34
 msgid "An error occurred while generating the invite code."
 msgstr "Ocurrió un error al generar el código de invitación."
 
-#: static/js/settings.js:467
+#: static/js/settings.js:35
 #, python-brace-format
 msgid "Operation failed: {error}"
 msgstr "Operación fallida: {error}"
 
-#: static/js/settings.js:475
+#: static/js/settings.js:37
 msgid "Are you sure you want to delete this invite code?"
 msgstr "¿Estás seguro de que quieres eliminar este código de invitación?"
 
-#: static/js/settings.js:488
+#: static/js/settings.js:38
 #, python-brace-format
 msgid "Delete failed: {error}"
 msgstr "Error al eliminar: {error}"
 
-#: static/js/settings.js:491
+#: static/js/settings.js:39
 msgid "Delete failed"
 msgstr "Error al eliminar"
 
-#: static/js/page/handlers.js:14
+#: static/js/page/handlers.js:12
 msgid "Network response was not ok."
 msgstr "La respuesta de la red no fue correcta."
 
-#: static/js/page/handlers.js:147
+#: static/js/page/handlers.js:13
 msgid "No changes detected."
 msgstr "No se han detectado cambios."
 
-#: static/js/page/handlers.js:202
+#: static/js/page/handlers.js:14
 msgid "Queued..."
 msgstr "En cola..."
 
-#: static/js/page/handlers.js:251
+#: static/js/page/handlers.js:15
 msgid "Are you sure you want to delete this book? This action cannot be undone."
 msgstr ""
 "¿Estás seguro de que quieres eliminar este libro? Esta acción no se puede"
 " deshacer."
 
-#: static/js/page/handlers.js:300 static/js/page/handlers.js:313
+#: static/js/page/handlers.js:16
 #, python-format
 msgid "Please enter a valid page number between 1 and %(totalPages)s."
 msgstr "Por favor, introduce un número de página válido entre 1 y %(totalPages)s."
 
-#: static/js/page/handlers.js:351
+#: static/js/page/handlers.js:17
 msgid "Please select files to upload."
 msgstr "Por favor, selecciona los archivos que quieras subir."
 
-#: static/js/page/handlers.js:365
+#: static/js/page/handlers.js:18
 msgid "Waiting..."
 msgstr "Esperando..."
 
-#: static/js/page/handlers.js:380
+#: static/js/page/handlers.js:19
 msgid "Uploading..."
 msgstr "Subiendo..."
 
-#: static/js/page/handlers.js:394 static/js/page/ui.js:147
+#: static/js/page/handlers.js:20 static/js/page/ui.js:10
 msgid "Processing..."
 msgstr "Procesando..."
 
-#: static/js/page/handlers.js:437
+#: static/js/page/handlers.js:21
+msgid "Upload failed"
+msgstr "Error al subir"
+
+#: static/js/page/handlers.js:22
+msgid "Network Error"
+msgstr "Error de red"
+
+#: static/js/page/handlers.js:23
 msgid "All books uploaded successfully!"
 msgstr "¡Todos los libros se han subido correctamente!"
 
-#: static/js/page/handlers.js:439
+#: static/js/page/handlers.js:24
 msgid "Some files failed to upload. Please check the progress details."
 msgstr ""
 "Algunos archivos no se han podido subir. Por favor, comprueba los "
 "detalles del progreso."
 
-#: static/js/page/ui.js:10 static/js/page/ui.js:47
+#: static/js/page/ui.js:6
+msgid "Generating..."
+msgstr "Generando..."
+
+#: static/js/page/ui.js:7
+msgid "Download Audiobook"
+msgstr "Descargar audiolibro"
+
+#: static/js/page/ui.js:8
+msgid "Failed"
+msgstr "Fallido"
+
+#: static/js/page/ui.js:9
+msgid "Error"
+msgstr "Error"
+
+#: static/js/page/ui.js:11
+msgid "Success!"
+msgstr "¡Éxito!"
+
+#: static/js/page/ui.js:12
 msgid "Title"
 msgstr "Título"
 
-#: static/js/page/ui.js:11 templates/stats.html:36 templates/stats.html:60
+#: static/js/page/ui.js:13 templates/stats.html:36 templates/stats.html:60
 msgid "Author"
 msgstr "Autor"
 
-#: static/js/page/ui.js:12 static/js/page/ui.js:51
+#: static/js/page/ui.js:14
 msgid "Rating (0-5)"
 msgstr "Calificación (0-5)"
 
-#: static/js/page/ui.js:13
+#: static/js/page/ui.js:15
 msgid "Reading Progress (%)"
 msgstr "Progreso de lectura (%)"
 
-#: static/js/page/ui.js:14 static/js/page/ui.js:55 templates/index.html:70
-#: templates/index.html:143
+#: static/js/page/ui.js:16 templates/index.html:70 templates/index.html:143
 msgid "Description"
 msgstr "Descripción"
 
-#: static/js/page/ui.js:45
+#: static/js/page/ui.js:17
 msgid "Note"
 msgstr "Nota"
 
-#: static/js/page/ui.js:46
+#: static/js/page/ui.js:18
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
@@ -734,41 +826,29 @@ msgstr ""
 "Las actualizaciones de metadatos para libros de Calibre son asíncronas y "
 "pueden tardar un momento en aplicarse."
 
-#: static/js/page/ui.js:48
+#: static/js/page/ui.js:19
 msgid "Authors (comma-separated)"
 msgstr "Autores (separados por comas)"
 
-#: static/js/page/ui.js:49 templates/index.html:60 templates/index.html:136
+#: static/js/page/ui.js:20 templates/index.html:60 templates/index.html:136
 msgid "Publisher"
 msgstr "Editorial"
 
-#: static/js/page/ui.js:50 templates/index.html:61
+#: static/js/page/ui.js:21 templates/index.html:61
 msgid "Publication Date"
 msgstr "Fecha de publicación"
 
-#: static/js/page/ui.js:52
+#: static/js/page/ui.js:22
 msgid "Tags (comma-separated)"
 msgstr "Etiquetas (separadas por comas)"
 
-#: static/js/page/ui.js:53
+#: static/js/page/ui.js:23
 msgid "Library (custom field #library)"
 msgstr "Biblioteca (campo personalizado #library)"
 
-#: static/js/page/ui.js:54
+#: static/js/page/ui.js:24
 msgid "Read Date (custom field #readdate)"
 msgstr "Fecha de lectura (campo personalizado #readdate)"
-
-#: static/js/page/ui.js:104 static/js/page/ui.js:110
-msgid "Download Audiobook"
-msgstr "Descargar audiolibro"
-
-#: static/js/page/ui.js:118
-msgid "Failed"
-msgstr "Fallido"
-
-#: static/js/page/ui.js:157
-msgid "Success!"
-msgstr "¡Éxito!"
 
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
@@ -921,10 +1001,6 @@ msgstr "Fecha de actualización"
 #: templates/index.html:142
 msgid "Producer"
 msgstr "Productor"
-
-#: templates/index.html:150
-msgid "Delete"
-msgstr "Eliminar"
 
 #: templates/index.html:159
 msgid "No books in Anx library."
@@ -1155,8 +1231,8 @@ msgstr "El proveedor de servicios de texto a voz que se utilizará."
 #: templates/settings.html:78
 msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
 msgstr ""
-"La voz que se utilizará para la generación. Por ejemplo, zh-CN-YunjianNeural "
-"para Edge TTS."
+"La voz que se utilizará para la generación. Por ejemplo, zh-CN-"
+"YunjianNeural para Edge TTS."
 
 #: templates/settings.html:81
 msgid "API Key"
@@ -1173,7 +1249,8 @@ msgstr "URL base"
 #: templates/settings.html:88
 msgid "Custom base URL for the API (for proxies or self-hosted models)."
 msgstr ""
-"URL base personalizada para la API (para proxies o modelos autohospedados)."
+"URL base personalizada para la API (para proxies o modelos "
+"autohospedados)."
 
 #: templates/settings.html:91
 msgid "Model"
@@ -1182,8 +1259,8 @@ msgstr "Modelo"
 #: templates/settings.html:93
 msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
 msgstr ""
-"El modelo específico que se utilizará, por ejemplo, tts-1-hd (si lo admite "
-"el proveedor)."
+"El modelo específico que se utilizará, por ejemplo, tts-1-hd (si lo "
+"admite el proveedor)."
 
 #: templates/settings.html:98
 #, python-format
@@ -1452,8 +1529,8 @@ msgstr ""
 #: templates/settings.html:229
 msgid "Get the entire content of a Calibre book. Params: `book_id` (int)"
 msgstr ""
-"Obtener el contenido completo de un libro de Calibre. Parámetros: `book_id` "
-"(int)"
+"Obtener el contenido completo de un libro de Calibre. Parámetros: "
+"`book_id` (int)"
 
 #: templates/settings.html:230
 msgid "Get the entire content of an Anx book. Params: `id` (int)"
@@ -1468,8 +1545,8 @@ msgstr ""
 #: templates/settings.html:232
 msgid "Get word count statistics for an Anx book. Params: `id` (int)"
 msgstr ""
-"Obtener estadísticas de recuento de palabras para un libro Anx. Parámetros: "
-"`id` (int)"
+"Obtener estadísticas de recuento de palabras para un libro Anx. "
+"Parámetros: `id` (int)"
 
 #: templates/settings.html:239
 msgid "KOReader Sync Settings"
@@ -1703,8 +1780,9 @@ msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
 msgstr ""
-"Eliminar automáticamente los archivos de audiolibros generados que tengan "
-"más de este número de días. Establezca en 0 para deshabilitar la limpieza."
+"Eliminar automáticamente los archivos de audiolibros generados que tengan"
+" más de este número de días. Establezca en 0 para deshabilitar la "
+"limpieza."
 
 #: templates/settings.html:327
 msgid "Manual Cleanup"

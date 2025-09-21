@@ -1,3 +1,8 @@
+// --- Translatable Strings ---
+const t = {
+    networkError: _('A network error occurred, please try again.')
+};
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
@@ -36,7 +41,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             passwordInput.disabled = false; // Re-enable on error
         }
     } catch (error) {
-        errorMessageDiv.textContent = '发生网络错误，请重试。';
+        errorMessageDiv.textContent = t.networkError;
         passwordInput.disabled = false; // Re-enable on network error
     }
 });

@@ -568,18 +568,31 @@ class AudiobookGenerator:
 
             await self.update_progress("progress", {"percentage": 75, "status_key": "MERGING_FILES"})
             
-            # 使用 pydub 合并音频文件
-            combined_audio = AudioSegment.empty()
-            for chapter in sorted(chapters_audio, key=lambda c: c.index):
-                try:
-                    segment = AudioSegment.from_mp3(chapter.audio_path)
-                    combined_audio += segment
-                except Exception as e:
-                    logger.warning(f"Could not process chapter audio file {chapter.audio_path}, skipping. Error: {e}")
-            
-            # 导出为 m4b (mp4) 格式
-            # 注意：pydub 需要 ffmpeg 在后台支持 mp4 导出
-            combined_audio.export(final_output_path, format="mp4", bitrate="64k")
+            # --- 使用 ffmpeg concat 进行高效合并 ---
+            concat_list_path = os.path.join(OUTPUT_DIR, f"concat_list_{book_id}.txt")
+            with open(concat_list_path, "w", encoding="utf-8") as f:
+                for chapter in sorted(chapters_audio, key=lambda c: c.index):
+                    # 使用正确的引号处理可能包含特殊字符的路径
+                    f.write(f"file '{os.path.abspath(chapter.audio_path)}'\n")
+
+            try:
+                # 使用 ffmpeg-python 库来执行合并操作
+                (
+                    ffmpeg
+                    .input(concat_list_path, format='concat', safe=0)
+                    .output(final_output_path, ac=2, bitrate="64k")
+                    .run(overwrite_output=True, quiet=True)
+                )
+                logger.info(f"Successfully merged audio files into {final_output_path}")
+            except ffmpeg.Error as e:
+                logger.error(f"ffmpeg concat failed. Stderr: {e.stderr.decode('utf8')}")
+                # 如果合并失败，清理列表文件并重新抛出异常
+                os.remove(concat_list_path)
+                raise ValueError("MERGE_FILES_FAILED") from e
+            finally:
+                # 确保临时列表文件在操作完成后被删除
+                if os.path.exists(concat_list_path):
+                    os.remove(concat_list_path)
 
             await self.update_progress("progress", {"percentage": 90, "status_key": "WRITING_METADATA"})
             self._write_m4b_tags(book, final_output_path, chapters_audio, cover_image_data=cover_image_data)
