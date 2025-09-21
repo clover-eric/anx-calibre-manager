@@ -14,7 +14,7 @@ googletrans==4.0.2
 edge-tts==7.0.2
 mutagen==1.47.0
 ffmpeg-python==0.2.0
-beautifulsoup4
+beautifulsoup4==4.13.5
 pydub==0.25.1
 #audioop-lts for python 3.13+
 sentencex==0.6.1
