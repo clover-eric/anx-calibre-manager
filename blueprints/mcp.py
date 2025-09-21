@@ -135,7 +135,8 @@ def _extract_content_from_epub(epub_path, chapter_number):
     """
     Extracts the full content of a specific chapter from an EPUB file.
     This version correctly handles chapters that span multiple internal HTML files
-    by using the book's spine to determine the chapter's extent.
+    by using the book's spine to determine the chapter's extent, and also
+    handles multiple chapters within a single HTML file by using anchors.
     """
     book = epub.read_epub(epub_path)
 
@@ -166,7 +167,7 @@ def _extract_content_from_epub(epub_path, chapter_number):
     if not (1 <= chapter_number <= len(toc_items)):
         return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(toc_items)}"}
 
-    # 3. Determine the start and end hrefs for the chapter
+    # 3. Determine the start and end hrefs/anchors for the chapter
     chapter_info = toc_items[chapter_number - 1]
     href_parts = chapter_info['href'].split('#')
     start_href = href_parts[0]
@@ -190,13 +191,10 @@ def _extract_content_from_epub(epub_path, chapter_number):
         return {"error": f"无法在书籍的阅读顺序中找到章节的起始文件: {start_href}"}
 
     end_index = len(spine_hrefs)
-    # This is the key fix: correctly determine the end of the chapter's file range.
     if next_chapter_start_href and next_chapter_start_href != start_href:
         if next_chapter_start_href in spine_hrefs:
             end_index = spine_hrefs.index(next_chapter_start_href)
     else:
-        # If the next chapter is in the same file, or this is the last chapter,
-        # we only process the current file.
         end_index = start_index + 1
 
     # 5. Extract and combine content from all relevant files
@@ -219,12 +217,12 @@ def _extract_content_from_epub(epub_path, chapter_number):
                     if not start_anchor:
                         content_nodes = body.getchildren()
                     else:
-                        # Use a more robust XPath to find the start node, ignoring namespaces
                         start_node = body.find(f".//*[@id='{start_anchor}']")
                         if start_node is None:
                             content_nodes = body.getchildren()
                         else:
-                            current_node = start_node
+                            # Start from the node *after* the anchor, as the anchor is usually the heading itself.
+                            current_node = start_node.getnext()
                             while current_node is not None:
                                 if next_anchor_in_same_file and current_node.get('id') == next_anchor_in_same_file:
                                     break
@@ -233,8 +231,8 @@ def _extract_content_from_epub(epub_path, chapter_number):
                     
                     inner_html_parts = [etree.tostring(node, encoding='unicode') for node in content_nodes]
                     full_content_html += "".join(inner_html_parts).strip()
-            except Exception:
-                full_content_html += item.get_content().decode('utf-8', 'ignore')
+            except Exception as e:
+                full_content_html += f"<!-- Error processing content: {e} -->" + item.get_content().decode('utf-8', 'ignore')
 
     return {
         "chapter_title": chapter_info['title'],
