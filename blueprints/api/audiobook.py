@@ -120,16 +120,16 @@ def generate_audiobook_route():
         file_path = data.get("path")
         
         message_map = {
-            "GENERATION_STARTED": _("Starting audiobook generation..."),
-            "PARSING_EPUB": _("Parsing EPUB file..."),
-            "PROCESSING_CHAPTER": _("Processing: Chapter %(index)d/%(total)d"),
-            "MERGING_FILES": _("Merging audio files..."),
-            "WRITING_METADATA": _("Writing book metadata..."),
-            "CLEANING_UP": _("Cleaning up temporary files..."),
-            "GENERATION_SUCCESS": _("Audiobook generated successfully!"),
-            "CHAPTER_EXTRACTION_FAILED": _("Could not extract any chapters from the EPUB file."),
-            "CHAPTER_CONVERSION_FAILED": _("All chapters are empty or could not be converted to audio."),
-            "UNKNOWN_ERROR": _("An unknown error occurred: %(error)s"),
+            "GENERATION_STARTED": str(_("Starting audiobook generation...")),
+            "PARSING_EPUB": str(_("Parsing EPUB file...")),
+            "PROCESSING_CHAPTER": str(_("Processing: Chapter %(index)d/%(total)d")),
+            "MERGING_FILES": str(_("Merging audio files...")),
+            "WRITING_METADATA": str(_("Writing book metadata...")),
+            "CLEANING_UP": str(_("Cleaning up temporary files...")),
+            "GENERATION_SUCCESS": str(_("Audiobook generated successfully!")),
+            "CHAPTER_EXTRACTION_FAILED": str(_("Could not extract any chapters from the EPUB file.")),
+            "CHAPTER_CONVERSION_FAILED": str(_("All chapters are empty or could not be converted to audio.")),
+            "UNKNOWN_ERROR": str(_("An unknown error occurred: %(error)s")),
         }
 
         message = ""

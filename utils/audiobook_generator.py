@@ -20,6 +20,7 @@ from sentencex import segment
 
 import config_manager
 from utils.audiobook_tasks_db import get_tasks_to_cleanup, update_task_as_cleaned, get_all_successful_tasks
+from utils.epub_utils import _process_entire_epub
 
 # --- 常量 ---
 _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
@@ -261,54 +262,77 @@ class AudiobookGenerator:
 
     def _get_epub_chapters(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
         """
-        使用多级回退策略从 EPUB 文件中提取章节和内容。
+        使用三级回退策略从 EPUB 文件中提取章节和内容，以确保最大程度的兼容性。
+        该函数会执行所有级别，并返回内容最丰富的那个级别结果。
         """
-        logger.info("Attempting chapter extraction strategy: Level 1 (epub_to_audiobook logic)...")
-        chapters = self._get_epub_chapters_level1(book)
-        
-        total_text_length = sum(len(content) for _, content in chapters)
-        if chapters and total_text_length > 500:
-            logger.info(f"Level 1 extraction successful. Found {len(chapters)} chapters with total length {total_text_length}.")
+        # --- Level 1: MCP 高性能解析器 ---
+        logger.info("Attempting chapter extraction strategy: Level 1 (MCP Processor)...")
+        chapters_l1 = self._get_epub_chapters_level1_mcp(epub_path)
+        len_l1 = sum(len(self._extract_text_from_html(content)) for _, content in chapters_l1)
+        logger.info(f"Level 1 Result: {len(chapters_l1)} chapters, Total Length: {len_l1}")
+        # 如果 Level 1 的结果非常好，可以直接返回，跳过其他策略以提高效率
+        if len_l1 > 500:
+            logger.info("Level 1 provided a good result, using it directly.")
+            return chapters_l1
+
+        # --- Level 2: 旧版文档流解析 ---
+        logger.info("Attempting chapter extraction strategy: Level 2 (Legacy Document Stream)...")
+        chapters_l2 = self._get_epub_chapters_level2_legacy(book)
+        # Level 2 的内容已经是半处理过的文本，所以直接计算长度
+        len_l2 = sum(len(content) for _, content in chapters_l2)
+        logger.info(f"Level 2 Result: {len(chapters_l2)} chapters, Total Length: {len_l2}")
+
+        # --- Level 3: 基于 Spine 的原始文件读取 ---
+        logger.info("Attempting chapter extraction strategy: Level 3 (Spine Fallback)...")
+        chapters_l3 = self._get_epub_chapters_level3_spine(book, epub_path)
+        len_l3 = sum(len(self._extract_text_from_html(content)) for _, content in chapters_l3)
+        logger.info(f"Level 3 Result: {len(chapters_l3)} chapters, Total Length: {len_l3}")
+
+        # --- 比较所有结果并选择最佳 ---
+        results = [
+            (len_l1, chapters_l1, "Level 1"),
+            (len_l2, chapters_l2, "Level 2"),
+            (len_l3, chapters_l3, "Level 3")
+        ]
+
+        # 找到长度最大的那个结果
+        best_len, best_chapters, best_level_name = max(results, key=lambda item: item[0])
+
+        logger.info(f"Selected best result from {best_level_name}. Final Chapters: {len(best_chapters)}, Final Length: {best_len}.")
+        return best_chapters
+
+    def _get_epub_chapters_level1_mcp(self, epub_path: str) -> List[Tuple[str, str]]:
+        """
+        第一级提取策略：使用来自 utils.epub_utils 的高性能函数来精确提取章节内容。
+        返回原始 HTML 内容。
+        """
+        try:
+            processed_data = _process_entire_epub(epub_path)
+            if 'error' in processed_data:
+                logger.error(f"Level 1 MCP processor failed: {processed_data['error']}")
+                return []
+            
+            chapters = []
+            for chapter_data in processed_data.get('processed_chapters', []):
+                title = chapter_data.get('title', 'Untitled Chapter')
+                html_content = chapter_data.get('html_content', '')
+                if html_content.strip():
+                    chapters.append((title, html_content))
             return chapters
+        except Exception as e:
+            logger.error(f"Exception in Level 1 MCP processor: {e}")
+            return []
 
-        logger.warning(f"Level 1 extraction yielded insufficient content (Chapters: {len(chapters)}, Length: {total_text_length}). Falling back to Level 2.")
-
-        logger.info("Attempting chapter extraction strategy: Level 2 (zipfile + spine logic)...")
-        chapters_level2 = self._get_epub_chapters_level2_spine(book, epub_path)
-
-        total_text_length_level2 = sum(len(self._extract_text_from_html(content)) for _, content in chapters_level2)
-        if chapters_level2 and total_text_length_level2 > total_text_length:
-            logger.info(f"Level 2 extraction successful. Found {len(chapters_level2)} chapters with total length {total_text_length_level2}.")
-            return chapters_level2
-
-        logger.warning(f"Level 2 extraction was not better than Level 1. Returning original result.")
-        return chapters
-
-    def _get_epub_chapters_level1(self, book: epub.EpubBook) -> List[Tuple[str, str]]:
+    def _get_epub_chapters_level2_legacy(self, book: epub.EpubBook) -> List[Tuple[str, str]]:
         """
-        第一级提取策略：移植自 epub_to_audiobook 的核心逻辑。
+        第二级提取策略：移植自旧版 epub_to_audiobook 的核心逻辑。
+        返回带段落标记的文本。
         """
         chapters = []
-        newline_mode = "double"
-        remove_endnotes = True
-
         for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
             content = item.get_content()
             soup = BeautifulSoup(content, "lxml-xml")
-            raw_text = soup.get_text(strip=False)
-
-            if newline_mode == "double":
-                cleaned_text = re.sub(r"[\n\r]{2,}", _PARAGRAPH_BREAK_MARKER, raw_text.strip())
-            else:
-                cleaned_text = re.sub(r"[\n\r]+", _PARAGRAPH_BREAK_MARKER, raw_text.strip())
             
-            cleaned_text = re.sub(r'[\n\r]+', ' ', cleaned_text)
-            cleaned_text = re.sub(r"\s+", " ", cleaned_text)
-
-            if remove_endnotes:
-                cleaned_text = re.sub(r'(?<=[a-zA-Z.,!?;”")])\d+', "", cleaned_text)
-            cleaned_text = re.sub(r'\[\d+(\.\d+)?\]', '', cleaned_text)
-
             title = ""
             for level in ['h1', 'h2', 'h3', 'title']:
                 if tag := soup.find(level):
@@ -317,25 +341,38 @@ class AudiobookGenerator:
             if not title:
                 title = item.get_name() or item.file_name
 
+            # 使用 _extract_text_from_html 进行更可靠的文本提取和段落处理
+            cleaned_text = self._extract_text_from_html(str(soup))
+            
             if cleaned_text.strip():
                 chapters.append((title, cleaned_text))
-        
         return chapters
 
-    def _get_epub_chapters_level2_spine(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
+    def _get_epub_chapters_level3_spine(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
         """
-        第二级提取策略：基于 zipfile 和 book.spine 的手动解析。
+        第三级提取策略：基于 zipfile 和 book.spine 的手动解析。
+        返回原始 HTML 内容。
         """
         chapters = []
-        if book.spine:
-            logger.info("Extracting chapters from EPUB spine.")
+        if not book.spine:
+            logger.warning("EPUB has no spine. Cannot use Level 3 extraction.")
+            return chapters
+            
+        try:
             with zipfile.ZipFile(epub_path, 'r') as archive:
                 toc_title_map = {}
                 if book.toc:
+                    # 确保 toc_items 是可迭代的
                     toc_items = book.toc if isinstance(book.toc, (list, tuple)) else [book.toc]
                     for item in toc_items:
-                        if isinstance(item, ebooklib.epub.Link):
-                            toc_title_map[item.href.split('#')[0]] = item.title
+                        # 递归处理嵌套的目录项
+                        def process_toc_item(toc_item):
+                            if isinstance(toc_item, ebooklib.epub.Link):
+                                toc_title_map[toc_item.href.split('#')[0]] = toc_item.title
+                            elif isinstance(toc_item, (list, tuple)):
+                                for sub_item in toc_item:
+                                    process_toc_item(sub_item)
+                        process_toc_item(item)
 
                 for item_id, _ in book.spine:
                     item = book.get_item_with_id(item_id)
@@ -343,14 +380,19 @@ class AudiobookGenerator:
                         file_name = item.file_name
                         title = toc_title_map.get(file_name, item.get_name() or file_name)
                         try:
-                            content = archive.read(file_name).decode('utf-8', 'ignore')
+                            content = archive.read(f"OEBPS/{file_name}").decode('utf-8', 'ignore')
                             chapters.append((title, content))
                         except KeyError:
-                            logger.warning(f"File '{file_name}' not found in EPUB archive.")
+                             try: # 尝试不带 OEBPS 前缀
+                                content = archive.read(file_name).decode('utf-8', 'ignore')
+                                chapters.append((title, content))
+                             except KeyError:
+                                logger.warning(f"File '{file_name}' not found in EPUB archive (with or without OEBPS prefix).")
                         except Exception as e:
                             logger.error(f"Error reading file '{file_name}' from EPUB: {e}")
-        else:
-            logger.warning("EPUB has no spine. Cannot use Level 2 extraction.")
+        except Exception as e:
+            logger.error(f"Failed to process EPUB with Level 3 (spine) method: {e}")
+
         return chapters
 
     def _extract_text_from_html(self, html_content: str) -> str:
@@ -387,7 +429,7 @@ class AudiobookGenerator:
             logger.error(f"Error extracting cover: {e}")
         return None
 
-    async def _generate_chapter_audio(self, semaphore: asyncio.Semaphore, index: int, title: str, content: str, book_id: str, is_full_book: bool = False) -> ChapterAudio | None:
+    async def _generate_chapter_audio(self, semaphore: asyncio.Semaphore, index: int, title: str, content: str, book_id: str) -> ChapterAudio | None:
         async with semaphore:
             try:
                 progress = 10 + int(60 * (index / self.total_chapters))
@@ -397,10 +439,15 @@ class AudiobookGenerator:
                     "params": {"index": index + 1, "total": self.total_chapters}
                 })
 
-                text = self._extract_text_from_html(content) if not is_full_book else content
+                # 无条件调用 _extract_text_from_html 来确保所有内容都被统一清理为纯文本。
+                # 这个函数足够健壮，可以处理原始 HTML 和半处理过的文本。
+                text = self._extract_text_from_html(content)
+
+                # 将 _extract_text_from_html 产生的标准段落分隔符 (\n\n) 转换回 TTS 处理器使用的内部标记。
+                text = text.replace('\n\n', f' {_PARAGRAPH_BREAK_MARKER} ')
                 
-                if not text:
-                    logger.warning(f"Chapter {index + 1} '{title}' is empty, skipping.")
+                if not text.strip():
+                    logger.warning(f"Chapter {index + 1} '{title}' is empty after processing, skipping.")
                     return None
 
                 temp_audio_path = os.path.join(OUTPUT_DIR, f"temp_{book_id}_{index:04d}.mp3")
@@ -520,7 +567,7 @@ class AudiobookGenerator:
 
             await self.update_progress("progress", {"percentage": 5, "status_key": "PARSING_EPUB"})
             chapters = self._get_epub_chapters(book, epub_path)
-            logger.info(f"DEBUG: Found {len(chapters)} chapters.")
+            logger.info(f"DEBUG: Found {len(chapters)} chapters from best-effort extraction.")
             if not chapters:
                 raise ValueError("CHAPTER_EXTRACTION_FAILED")
             self.total_chapters = len(chapters)
@@ -555,7 +602,7 @@ class AudiobookGenerator:
                     self.total_chapters = 1 # 重置章节总数以便UI正确显示
                     
                     # 重新运行生成任务
-                    tasks = [self._generate_chapter_audio(semaphore, i, title, content, book_id, is_full_book=True) for i, (title, content) in enumerate(single_chapter_content_for_tts)]
+                    tasks = [self._generate_chapter_audio(semaphore, i, title, content, book_id) for i, (title, content) in enumerate(single_chapter_content_for_tts)]
                     results = await asyncio.gather(*tasks)
                     chapters_audio = [res for res in results if res is not None]
                 

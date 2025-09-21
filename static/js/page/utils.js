@@ -1,6 +1,9 @@
 // --- API Helper ---
 export function fetch_with_token(url, options) {
-    return fetch(url, { ...options });
+    // Ensure that session cookies are sent with every API request.
+    // This is crucial for backend services like i18n that rely on session data.
+    const newOptions = { ...options, credentials: 'same-origin' };
+    return fetch(url, newOptions);
 }
 
 // --- Modal Controls ---
