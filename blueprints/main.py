@@ -14,7 +14,7 @@ from database import get_db
 from anx_library import get_anx_books
 from utils.text import safe_title, safe_author
 from utils.auth import get_calibre_auth
-from blueprints.api.calibre import download_calibre_cover
+from utils.covers import get_calibre_cover_data
 
 main_bp = Blueprint('main', __name__)
 
@@ -189,7 +189,7 @@ def reader_page(book_type, book_id):
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required
 def calibre_cover(book_id):
-    cover_content, _unused = download_calibre_cover(book_id)
+    cover_content = get_calibre_cover_data(book_id)
     if cover_content:
         return send_file(io.BytesIO(cover_content), mimetype='image/jpeg')
     return redirect("https://via.placeholder.com/150x220.png?text=Cover+Error")

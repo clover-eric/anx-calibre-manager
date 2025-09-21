@@ -256,18 +256,6 @@ def get_calibre_book_details(book_id):
         print(f"Error getting book details for {book_id}: {e}")
         return None
 
-def download_calibre_cover(book_id):
-    config = config_manager.config
-    url = f"{config['CALIBRE_URL']}/get/cover/{book_id}"
-    try:
-        response = requests.get(url, auth=get_calibre_auth(), stream=True)
-        response.raise_for_status()
-        # Assume JPG, which is Calibre's default for covers
-        return response.content, "cover.jpg"
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching cover for book {book_id}: {e}")
-        return None, None
-
 def download_calibre_book(book_id, download_format='mobi'):
     details = get_calibre_book_details(book_id)
     if not details: return None, None

@@ -16,9 +16,10 @@ from anx_library import (
     update_anx_book_metadata,
     delete_anx_book
 )
-from .calibre import download_calibre_book, get_calibre_book_details, download_calibre_cover
+from .calibre import download_calibre_book, get_calibre_book_details
 from .email_service import send_email_with_config
 from epub_fixer import fix_epub_for_kindle
+from utils.covers import get_calibre_cover_data
 from utils.text import random_english_text, safe_title, safe_author
 
 books_bp = Blueprint('books', __name__, url_prefix='/api')
@@ -256,7 +257,7 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
     if not book_content:
         return {'success': False, 'error': _('Error downloading or processing the book.')}
 
-    cover_content, _unused = download_calibre_cover(book_id)
+    cover_content = get_calibre_cover_data(book_id)
 
     dirs = get_anx_user_dirs(user_dict['username'])
     if not dirs:
