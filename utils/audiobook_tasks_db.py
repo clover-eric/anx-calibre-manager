@@ -58,15 +58,28 @@ def get_audiobook_task_by_book(user_id, book_id, library_type):
         return task
 
 def get_latest_task_for_book(user_id, book_id, library_type):
-    """根据 book_id 和 library_type 获取一个用户的最新任务，无论状态如何。"""
+    """
+    获取特定书籍的最新任务。
+    对于 Calibre 库，任务是共享的，不检查 user_id。
+    对于 Anx 库，任务是用户私有的，会检查 user_id。
+    """
     with closing(get_db()) as db:
-        # 使用 TRIM() 来消除 library_type 字段中可能存在的前后空格，增强查询的健壮性
-        task = db.execute("""
+        # 基础查询语句
+        query = """
             SELECT * FROM audiobook_tasks
-            WHERE user_id = ? AND book_id = ? AND TRIM(library_type) = TRIM(?)
-            ORDER BY updated_at DESC
-            LIMIT 1
-        """, (user_id, book_id, library_type)).fetchone()
+            WHERE book_id = ? AND TRIM(library_type) = TRIM(?)
+        """
+        params = [book_id, library_type]
+
+        # 如果是 anx 库，则添加用户限制
+        if library_type.strip().lower() == 'anx':
+            query += " AND user_id = ?"
+            params.append(user_id)
+
+        # 添加排序和限制
+        query += " ORDER BY updated_at DESC LIMIT 1"
+
+        task = db.execute(query, tuple(params)).fetchone()
         return task
 
 def get_tasks_to_cleanup(age_in_days=7):

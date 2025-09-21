@@ -417,7 +417,7 @@ class AudiobookGenerator:
                 logger.error(f"Error processing chapter {index+1} ('{title}'): {e}")
                 return None
 
-    def _write_m4b_tags(self, book: epub.EpubBook, m4b_path: str, chapters_audio: List[ChapterAudio]):
+    def _write_m4b_tags(self, book: epub.EpubBook, m4b_path: str, chapters_audio: List[ChapterAudio], cover_image_data: bytes | None = None):
         try:
             audio = MP4(m4b_path)
             
@@ -463,9 +463,16 @@ class AudiobookGenerator:
 
             audio["\xa9wrt"] = [self.tts_provider.config.voice]  # Composer/Narrator
 
-            if cover_data := self._get_epub_cover_image(book):
-                img_format = MP4Cover.FORMAT_JPEG if cover_data.startswith(b'\xff\xd8') else MP4Cover.FORMAT_PNG
-                audio["covr"] = [MP4Cover(cover_data, imageformat=img_format)]
+            # --- 封面处理 ---
+            # 优先使用外部传入的封面数据（例如从 Anx 数据库直接读取的）
+            final_cover_data = cover_image_data
+            if not final_cover_data:
+                # 如果没有外部封面，则尝试从 EPUB 文件内部提取
+                final_cover_data = self._get_epub_cover_image(book)
+
+            if final_cover_data:
+                img_format = MP4Cover.FORMAT_JPEG if final_cover_data.startswith(b'\xff\xd8') else MP4Cover.FORMAT_PNG
+                audio["covr"] = [MP4Cover(final_cover_data, imageformat=img_format)]
 
             # --- 章节元数据 ---
             # mutagen 使用 Nero 格式的章节标签
@@ -500,7 +507,7 @@ class AudiobookGenerator:
         except Exception as e:
             logger.error(f"Error writing M4B tags: {e}")
 
-    async def generate(self, epub_path: str, book_id: str) -> str | None:
+    async def generate(self, epub_path: str, book_id: str, cover_image_data: bytes | None = None) -> str | None:
         # 在开始新任务前，执行一次自动清理
         cleanup_old_audiobooks()
 
@@ -575,7 +582,7 @@ class AudiobookGenerator:
             combined_audio.export(final_output_path, format="mp4", bitrate="64k")
 
             await self.update_progress("progress", {"percentage": 90, "status_key": "WRITING_METADATA"})
-            self._write_m4b_tags(book, final_output_path, chapters_audio)
+            self._write_m4b_tags(book, final_output_path, chapters_audio, cover_image_data=cover_image_data)
 
             await self.update_progress("progress", {"percentage": 98, "status_key": "CLEANING_UP"})
             for chapter in chapters_audio:

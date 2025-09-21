@@ -16,6 +16,7 @@ from .books import _get_processed_epub_for_book
 from .calibre import get_calibre_book_details
 from anx_library import get_anx_user_dirs
 from utils.text import safe_title, safe_author
+from utils.covers import get_anx_cover_data
 from utils.audiobook_tasks_db import (
     add_audiobook_task,
     update_audiobook_task,
@@ -55,6 +56,7 @@ def get_anx_book_details(username, book_id):
             return None, None
         return book_row['title'], book_row['author']
 
+
 def get_calibre_book_as_temp_file(user_dict, book_id):
     """获取 Calibre 书籍的 EPUB 内容并存入临时文件"""
     content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
@@ -72,10 +74,11 @@ def get_calibre_book_as_temp_file(user_dict, book_id):
     return temp_file.name
 
 
-def run_async_task(target, *args, temp_file_to_clean=None):
+def run_async_task(target, *args, **kwargs):
     """在一个新的事件循环中运行异步任务的线程目标函数，并可选地在之后清理一个临时文件。"""
+    temp_file_to_clean = kwargs.pop('temp_file_to_clean', None)
     try:
-        asyncio.run(target(*args))
+        asyncio.run(target(*args, **kwargs))
     except Exception as e:
         print(f"异步任务线程中发生错误: {e}")
     finally:
@@ -190,15 +193,22 @@ def generate_audiobook_route():
         # 3. 在后台线程中运行生成任务
         generator = AudiobookGenerator(tts_provider, update_progress_callback)
         
+        # 准备传递给生成器的参数
+        generator_kwargs = {}
+        if library == 'anx':
+            cover_data = get_anx_cover_data(g.user.username, book_id)
+            if cover_data:
+                generator_kwargs['cover_image_data'] = cover_data
+
         # 检查是否使用了临时文件，以便在任务结束后清理
-        temp_file_kwarg = {}
         if "tmp" in book_path_or_temp_file:
-            temp_file_kwarg['temp_file_to_clean'] = book_path_or_temp_file
+            # 这个特殊的 kwarg 是给 run_async_task 用的，而不是 generator.generate
+            generator_kwargs['temp_file_to_clean'] = book_path_or_temp_file
 
         thread = threading.Thread(
             target=run_async_task,
             args=(generator.generate, book_path_or_temp_file, str(book_id)),
-            kwargs=temp_file_kwarg
+            kwargs=generator_kwargs
         )
         thread.daemon = True
         thread.start()
@@ -251,8 +261,8 @@ def download_audiobook(task_id):
     if not task:
         return jsonify({"error": _("Task not found")}), 404
 
-    # 安全检查：确保任务属于当前用户
-    if task['user_id'] != g.user.id:
+    # 安全检查：对于非 Calibre 库的书籍，确保任务属于当前用户
+    if task['library_type'] != 'calibre' and task['user_id'] != g.user.id:
         return jsonify({"error": _("Forbidden")}), 403
 
     # 检查任务是否成功完成
@@ -267,9 +277,9 @@ def download_audiobook(task_id):
     try:
         # 构造新的文件名
         title, author = None, None
-        if task['library'] == 'anx':
+        if task['library_type'] == 'anx':
             title, author = get_anx_book_details(g.user.username, task['book_id'])
-        elif task['library'] == 'calibre':
+        elif task['library_type'] == 'calibre':
             details = get_calibre_book_details(task['book_id'])
             if details:
                 title = details.get('title')
