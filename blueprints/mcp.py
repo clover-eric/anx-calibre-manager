@@ -131,81 +131,84 @@ def _extract_toc_from_epub(epub_path):
     return toc_items
 
 def _extract_content_from_epub(epub_path, chapter_number):
-    """Extracts the content of a specific chapter from an EPUB file."""
+    """
+    Extracts the full content of a specific chapter from an EPUB file.
+    This version correctly handles chapters that span multiple internal HTML files
+    by using the book's spine to determine the chapter's extent.
+    """
     book = epub.read_epub(epub_path)
-    
-    chapter_items = []
+
+    # 1. Build a flat list of all chapter items from the TOC
+    toc_items = []
     if hasattr(book, 'toc') and book.toc:
         for item in book.toc:
             if isinstance(item, tuple):
                 section, children = item
                 if hasattr(section, 'title') and hasattr(section, 'href'):
-                    chapter_items.append((section.title, section.href))
+                    toc_items.append({'title': section.title, 'href': section.href})
                 for child in children:
                     if hasattr(child, 'title') and hasattr(child, 'href'):
-                        chapter_items.append((child.title, child.href))
+                        toc_items.append({'title': child.title, 'href': child.href})
             else:
                 if hasattr(item, 'title') and hasattr(item, 'href'):
-                    chapter_items.append((item.title, item.href))
-    
-    if not chapter_items:
+                    toc_items.append({'title': item.title, 'href': item.href})
+
+    # Fallback to spine if TOC is empty or malformed
+    if not toc_items:
         for item_id, _ in book.spine:
             item = book.get_item_with_id(item_id)
             if item and item.get_type() == epub.ITEM_DOCUMENT:
                 title = os.path.splitext(os.path.basename(item.get_name()))[0]
-                chapter_items.append((title, item.get_name()))
+                toc_items.append({'title': title, 'href': item.get_name()})
+
+    # 2. Validate chapter number
+    if not (1 <= chapter_number <= len(toc_items)):
+        return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(toc_items)}"}
+
+    # 3. Determine the start and end hrefs for the chapter
+    chapter_info = toc_items[chapter_number - 1]
+    start_href = chapter_info['href'].split('#')[0]
     
-    if not (1 <= chapter_number <= len(chapter_items)):
-        return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(chapter_items)}"}
+    next_chapter_start_href = None
+    if chapter_number < len(toc_items):
+        next_chapter_start_href = toc_items[chapter_number]['href'].split('#')[0]
+
+    # 4. Use the spine to find all HTML files for the chapter
+    spine_hrefs = [book.get_item_with_id(item_id).get_name() for item_id, _ in book.spine if book.get_item_with_id(item_id)]
     
-    chapter_title, chapter_href = chapter_items[chapter_number - 1]
-    clean_href = chapter_href.split('#')[0]
-    
-    target_item = book.get_item_with_href(clean_href)
-    if not target_item:
-        for item in book.get_items():
-            if item.get_name() == clean_href:
-                target_item = item
-                break
-    
-    if not target_item:
-        return {"error": f"无法找到章节文件: {clean_href}"}
-    
-    content = target_item.get_content().decode('utf-8', 'ignore')
     try:
-        # Parse the HTML content from bytes, as it's more robust
-        parser = etree.HTMLParser()
-        doc = etree.fromstring(target_item.get_content(), parser)
-        
-        # Find the body element, supporting namespaced XHTML
-        body = doc.find('{http://www.w3.org/1999/xhtml}body')
-        if body is None:
-            body = doc.find('.//body')
+        start_index = spine_hrefs.index(start_href)
+    except ValueError:
+        return {"error": f"无法在书籍的阅读顺序中找到章节的起始文件: {start_href}"}
 
-        if body is not None:
-            # Strip script and style tags to remove noise
-            etree.strip_elements(body, 'script', 'style')
-            
-            # Join the string representation of all children of the body tag
-            # This extracts the *inner* HTML of the body.
-            inner_html_parts = [
-                etree.tostring(child, encoding='unicode')
-                for child in body.iterchildren()
-            ]
-            cleaned_content = "".join(inner_html_parts).strip()
-        else:
-            # If no body tag, fall back to a simpler text extraction
-            etree.strip_elements(doc, 'script', 'style')
-            cleaned_content = '\n'.join(line.strip() for line in doc.text_content().split('\n') if line.strip())
+    end_index = len(spine_hrefs)
+    if next_chapter_start_href and next_chapter_start_href in spine_hrefs:
+        end_index = spine_hrefs.index(next_chapter_start_href)
 
-    except Exception:
-        # If parsing fails, decode and return the raw content as a last resort
-        cleaned_content = target_item.get_content().decode('utf-8', 'ignore')
-        
+    # 5. Extract and combine content from all relevant files
+    full_content_html = ""
+    for i in range(start_index, end_index):
+        item_href = spine_hrefs[i]
+        item = book.get_item_with_href(item_href)
+        if item and item.get_type() == epub.ITEM_DOCUMENT:
+            try:
+                parser = etree.HTMLParser()
+                doc = etree.fromstring(item.get_content(), parser)
+                body = doc.find('{http://www.w3.org/1999/xhtml}body')
+                if body is None: body = doc.find('.//body')
+
+                if body is not None:
+                    etree.strip_elements(body, 'script', 'style')
+                    inner_html_parts = [etree.tostring(child, encoding='unicode') for child in body.iterchildren()]
+                    full_content_html += "".join(inner_html_parts).strip()
+            except Exception:
+                # Fallback for malformed HTML
+                full_content_html += item.get_content().decode('utf-8', 'ignore')
+
     return {
-        "chapter_title": chapter_title,
-        "chapter_href": chapter_href,
-        "content": cleaned_content
+        "chapter_title": chapter_info['title'],
+        "chapter_href": chapter_info['href'],
+        "content": full_content_html
     }
 
 def push_calibre_book_to_anx(book_id: int):
