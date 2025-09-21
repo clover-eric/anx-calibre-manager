@@ -1,19 +1,20 @@
+import json
 from contextlib import closing
 from database import get_db
 
-def add_audiobook_task(task_id, user_id, book_id, library_type, status="queued", message="Task queued", percentage=0):
+def add_audiobook_task(task_id, user_id, book_id, library_type, status="queued", status_key="QUEUED", percentage=0):
     """向 audiobook_tasks 表中添加一个新任务"""
     with closing(get_db()) as db:
         db.execute(
             """
-            INSERT INTO audiobook_tasks (task_id, user_id, book_id, library_type, status, message, percentage)
+            INSERT INTO audiobook_tasks (task_id, user_id, book_id, library_type, status, status_key, percentage)
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
-            (task_id, user_id, book_id, library_type, status, message, percentage)
+            (task_id, user_id, book_id, library_type, status, status_key, percentage)
         )
         db.commit()
 
-def update_audiobook_task(task_id, status, message=None, percentage=None, file_path=None):
+def update_audiobook_task(task_id, status, status_key=None, status_params=None, percentage=None, file_path=None):
     """更新 audiobook_tasks 表中现有任务的状态"""
     with closing(get_db()) as db:
         # 构建更新语句
@@ -23,9 +24,12 @@ def update_audiobook_task(task_id, status, message=None, percentage=None, file_p
         fields.append("status = ?")
         params.append(status)
         
-        if message is not None:
-            fields.append("message = ?")
-            params.append(message)
+        if status_key is not None:
+            fields.append("status_key = ?")
+            params.append(status_key)
+        if status_params is not None:
+            fields.append("status_params = ?")
+            params.append(json.dumps(status_params))
         if percentage is not None:
             fields.append("percentage = ?")
             params.append(percentage)

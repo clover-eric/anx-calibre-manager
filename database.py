@@ -104,6 +104,21 @@ def update_schema_if_needed(db):
         print("Migrating database: creating 'audiobook_tasks' table.")
         create_audiobook_tasks_table(cursor)
         db.commit()
+    else:
+        # 如果表已存在，检查是否需要迁移 message -> status_key
+        cursor.execute("PRAGMA table_info(audiobook_tasks)")
+        task_columns = [row['name'] for row in cursor.fetchall()]
+        if 'message' in task_columns:
+            print("Migrating database: altering 'audiobook_tasks' table from message to status_key/status_params.")
+            # 使用 ALTER TABLE RENAME COLUMN (SQLite 3.25.0+)
+            cursor.execute("ALTER TABLE audiobook_tasks RENAME COLUMN message TO status_key")
+            cursor.execute("ALTER TABLE audiobook_tasks ADD COLUMN status_params TEXT")
+            db.commit()
+        elif 'status_key' not in task_columns:
+             # 兼容非常旧的、没有 message 列的版本
+             cursor.execute("ALTER TABLE audiobook_tasks ADD COLUMN status_key TEXT")
+             cursor.execute("ALTER TABLE audiobook_tasks ADD COLUMN status_params TEXT")
+             db.commit()
 
 
 def create_audiobook_tasks_table(cursor):
@@ -116,7 +131,8 @@ def create_audiobook_tasks_table(cursor):
             book_id INTEGER NOT NULL,
             library_type TEXT NOT NULL,
             status TEXT NOT NULL,
-            message TEXT,
+            status_key TEXT,
+            status_params TEXT,
             percentage INTEGER,
             file_path TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

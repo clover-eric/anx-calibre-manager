@@ -17,6 +17,7 @@ from .calibre import get_calibre_book_details
 from anx_library import get_anx_user_dirs
 from utils.text import safe_title, safe_author
 from utils.covers import get_anx_cover_data
+import json
 from utils.audiobook_tasks_db import (
     add_audiobook_task,
     update_audiobook_task,
@@ -110,42 +111,21 @@ def generate_audiobook_route():
         }), 409
 
     task_id = str(uuid.uuid4())
-    add_audiobook_task(task_id, g.user.id, book_id, library, message=_("Task queued"))
+    add_audiobook_task(task_id, g.user.id, book_id, library)
 
     async def update_progress_callback(status, data):
-        """用于更新任务状态的回调函数，将状态码翻译成用户消息并存入数据库。"""
-        status_key = data.get("status_key")
-        params = data.get("params", {})
-        percentage = data.get("percentage")
-        file_path = data.get("path")
-        
-        message_map = {
-            "GENERATION_STARTED": str(_("Starting audiobook generation...")),
-            "PARSING_EPUB": str(_("Parsing EPUB file...")),
-            "PROCESSING_CHAPTER": str(_("Processing: Chapter %(index)d/%(total)d")),
-            "MERGING_FILES": str(_("Merging audio files...")),
-            "WRITING_METADATA": str(_("Writing book metadata...")),
-            "CLEANING_UP": str(_("Cleaning up temporary files...")),
-            "GENERATION_SUCCESS": str(_("Audiobook generated successfully!")),
-            "CHAPTER_EXTRACTION_FAILED": str(_("Could not extract any chapters from the EPUB file.")),
-            "CHAPTER_CONVERSION_FAILED": str(_("All chapters are empty or could not be converted to audio.")),
-            "UNKNOWN_ERROR": str(_("An unknown error occurred: %(error)s")),
-        }
-
-        message = ""
-        if status_key:
-            if status_key.startswith("FFMPEG_ERROR:"):
-                ffmpeg_error_details = status_key.replace("FFMPEG_ERROR: ", "")
-                message = _("FFmpeg error: %(error)s") % {'error': ffmpeg_error_details}
-            elif status_key in message_map:
-                message_template = message_map.get(status_key)
-                if message_template:
-                    try:
-                        message = message_template % params
-                    except (TypeError, KeyError): # 处理参数不匹配或缺失的情况
-                        message = message_template
-        
-        update_audiobook_task(task_id, status, message=message, percentage=percentage, file_path=file_path)
+        """
+        用于更新任务状态的回调函数。
+        它只将原始的 status_key 和 params 存入数据库，翻译操作推迟到 API 查询时进行。
+        """
+        update_audiobook_task(
+            task_id,
+            status,
+            status_key=data.get("status_key"),
+            status_params=data.get("params"),
+            percentage=data.get("percentage"),
+            file_path=data.get("path")
+        )
 
     try:
         # 1. 加载TTS配置 (用户设置优先，全局配置其次)
@@ -217,11 +197,11 @@ def generate_audiobook_route():
 
     except (FileNotFoundError, RuntimeError) as e:
         error_message = _("File error: %(error)s") % {'error': str(e)}
-        update_audiobook_task(task_id, "error", message=error_message)
+        update_audiobook_task(task_id, "error", status_key="FILE_ERROR", status_params={"error": str(e)})
         return jsonify({"error": error_message}), 404
     except Exception as e:
         error_message = _("An unknown error occurred while starting the task: %(error)s") % {'error': str(e)}
-        update_audiobook_task(task_id, "error", message=error_message)
+        update_audiobook_task(task_id, "error", status_key="UNKNOWN_ERROR", status_params={"error": str(e)})
         return jsonify({"error": error_message}), 500
 
 
@@ -232,7 +212,7 @@ def get_task_status(task_id):
     if not task:
         return jsonify({"error": _("Task not found")}), 404
     
-    # 将 sqlite3.Row 对象转换为字典
+    # 直接返回原始任务数据，翻译由前端处理
     return jsonify(dict(task))
 
 
@@ -250,6 +230,7 @@ def get_task_status_for_book():
     if not task:
         return jsonify({}) # 返回一个空对象表示没有活动任务
     
+    # 直接返回原始任务数据，翻译由前端处理
     return jsonify(dict(task))
 
 

@@ -1,28 +1,29 @@
 import { showModal } from './utils.js';
 import { setupCompletions } from './completions.js';
+import { t } from './translations.js';
 
-// --- Translatable Strings ---
-const t = {
-    generating: _('Generating...'),
-    downloadAudiobook: _('Download Audiobook'),
-    failed: _('Failed'),
-    error: _('Error'),
-    processing: _('Processing...'),
-    success: _('Success!'),
-    title: _('Title'),
-    author: _('Author'),
-    rating: _('Rating (0-5)'),
-    readingProgress: _('Reading Progress (%)'),
-    description: _('Description'),
-    note: _('Note'),
-    metadataNote: _('Metadata updates for Calibre books are asynchronous and may take a moment to apply.'),
-    authors: _('Authors (comma-separated)'),
-    publisher: _('Publisher'),
-    pubDate: _('Publication Date'),
-    tags: _('Tags (comma-separated)'),
-    library: _('Library (custom field #library)'),
-    readDate: _('Read Date (custom field #readdate)')
-};
+function getTranslatedMessage(task) {
+    if (!task || !task.status_key) {
+        return t.processing; // Default message
+    }
+
+    let message = t[task.status_key] || task.status_key; // Fallback to key if not found
+
+    if (task.status_params) {
+        try {
+            // The params from backend are a JSON string
+            const params = typeof task.status_params === 'string' ? JSON.parse(task.status_params) : task.status_params;
+            for (const key in params) {
+                // Use a regex to handle both %(key)s and %(key)d formats, etc.
+                const regex = new RegExp(`%\\(${key}\\)[sd]`, "g");
+                message = message.replace(regex, params[key]);
+            }
+        } catch (e) {
+            console.error("Failed to parse or apply status_params", e);
+        }
+    }
+    return message;
+}
 
 // --- Edit Modal Population ---
 export function populateAnxEditForm(book, currentEditing, editBookForm, editModal) {
@@ -80,7 +81,7 @@ export function populateCalibreEditForm(book, currentEditing, editBookForm, edit
 }
 
 // --- Audiobook Button UI Handlers ---
-export function updateAudiobookButtonProgress(button, percentage, message) {
+export function updateAudiobookButtonProgress(button, task) {
     const buttonText = button.querySelector('.button-text');
     let progressOverlay = button.querySelector('.progress-overlay');
 
@@ -93,13 +94,17 @@ export function updateAudiobookButtonProgress(button, percentage, message) {
         }
     }
     
-    buttonText.textContent = message || `${t.generating} ${percentage}%`;
+    const percentage = task.percentage || 0;
+    const message = getTranslatedMessage(task);
+    
+    buttonText.textContent = message;
     progressOverlay.style.width = `${percentage}%`;
 }
 
-export function finalizeAudiobookButton(button, status, data, originalText) {
+export function finalizeAudiobookButton(button, task, originalText) {
     const buttonText = button.querySelector('.button-text');
     const progressOverlay = button.querySelector('.progress-overlay');
+    const status = task.status;
 
     if (status === 'success') {
         button.classList.remove('in-progress');
@@ -108,8 +113,7 @@ export function finalizeAudiobookButton(button, status, data, originalText) {
 
         // Replace button with a download link
         const downloadLink = document.createElement('a');
-        // The data object here is the task from the database
-        downloadLink.href = `/api/audiobook/download/${data.task_id}`;
+        downloadLink.href = `/api/audiobook/download/${task.task_id}`;
         downloadLink.textContent = t.downloadAudiobook;
         downloadLink.className = 'button is-success';
         
@@ -119,7 +123,8 @@ export function finalizeAudiobookButton(button, status, data, originalText) {
         button.classList.remove('in-progress');
         button.classList.add('is-failure');
         buttonText.textContent = t.failed;
-        alert(`${t.error}: ${data.message}`);
+        const message = getTranslatedMessage(task);
+        alert(`${t.error}: ${message}`);
 
         setTimeout(() => {
             button.classList.remove('is-failure');

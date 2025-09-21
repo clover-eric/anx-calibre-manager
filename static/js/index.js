@@ -1,7 +1,11 @@
 import { setupMobileView, setupAnxWebDavUrl } from './page/ui.js';
 import { setupEventHandlers } from './page/handlers.js';
+import { initializeTranslations } from './page/translations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Initialize Translations ---
+    // This must be the first thing to run to ensure all UI text is translated.
+    initializeTranslations();
     // --- Data ---
     const anxBooksData = JSON.parse(document.getElementById('anx-books-data').textContent);
     const calibreBooksData = JSON.parse(document.getElementById('calibre-books-data').textContent);

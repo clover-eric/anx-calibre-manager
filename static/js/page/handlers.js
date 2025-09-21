@@ -6,23 +6,7 @@ import {
     updateAudiobookButtonProgress,
     finalizeAudiobookButton
 } from './ui.js';
-
-// --- Translatable Strings ---
-const t = {
-    networkResponseNotOk: _('Network response was not ok.'),
-    noChangesDetected: _('No changes detected.'),
-    queued: _('Queued...'),
-    confirmDeleteBook: _('Are you sure you want to delete this book? This action cannot be undone.'),
-    invalidPageNumber: _('Please enter a valid page number between 1 and %(totalPages)s.'),
-    selectFilesToUpload: _('Please select files to upload.'),
-    waiting: _('Waiting...'),
-    uploading: _('Uploading...'),
-    processing: _('Processing...'),
-    uploadFailed: _('Upload failed'),
-    networkError: _('Network Error'),
-    allBooksUploaded: _('All books uploaded successfully!'),
-    someFilesFailedUpload: _('Some files failed to upload. Please check the progress details.')
-};
+import { t } from './translations.js';
 
 
 function pollAudiobookStatus(taskId, button, originalText) {
@@ -34,16 +18,28 @@ function pollAudiobookStatus(taskId, button, originalText) {
             })
             .then(data => {
                 if (data.status === 'progress' || data.status === 'queued' || data.status === 'start' || data.status === 'processing') {
-                    updateAudiobookButtonProgress(button, data.percentage, data.message);
+                    // Pass the whole task object to the UI function
+                    updateAudiobookButtonProgress(button, data);
                 } else {
                     clearInterval(intervalId);
                     // Pass the whole task object to finalize
-                    finalizeAudiobookButton(button, data.status, data, originalText);
+                    finalizeAudiobookButton(button, data, originalText);
                 }
             })
             .catch(error => {
                 clearInterval(intervalId);
-                finalizeAudiobookButton(button, 'error', { message: error.message }, originalText);
+                let errorKey = 'UNKNOWN_ERROR';
+                let errorParams = { error: error.message };
+
+                // Check for a network error specifically
+                if (error instanceof TypeError && error.message.toLowerCase().includes('failed to fetch')) {
+                    errorKey = 'NETWORK_ERROR';
+                    errorParams = {}; // No params needed for this specific key
+                }
+                
+                // Create a task-like object for error display
+                const errorData = { status: 'error', status_key: errorKey, status_params: errorParams };
+                finalizeAudiobookButton(button, errorData, originalText);
             });
     }, 2000);
 }
@@ -62,13 +58,13 @@ function initializeAudiobookButtons() {
                 // If a task object is returned and has a status
                 if (task && task.status) {
                     if (task.status === 'success') {
-                        finalizeAudiobookButton(button, 'success', task, originalText);
+                        finalizeAudiobookButton(button, task, originalText);
                     } else if (task.status === 'error') {
                         // Don't show permanent error on load, just reset the button
                         console.log(`Task for book ${bookId} found with error state. Button reset.`);
                     } else {
                         // Task is in progress
-                        updateAudiobookButtonProgress(button, task.percentage, task.message);
+                        updateAudiobookButtonProgress(button, task);
                         pollAudiobookStatus(task.task_id, button, originalText);
                     }
                 }
@@ -217,7 +213,8 @@ export function setupEventHandlers(
                 formData.append('book_id', bookId);
                 formData.append('library', library);
 
-                updateAudiobookButtonProgress(target, 0, t.queued);
+                // Update button immediately with a status object
+                updateAudiobookButtonProgress(target, { status: 'queued', status_key: 'QUEUED', percentage: 0 });
 
                 fetch_with_token('/api/audiobook/generate', {
                     method: 'POST',
@@ -243,8 +240,9 @@ export function setupEventHandlers(
                         // This is a conflict (409), task already exists, so just start polling
                         pollAudiobookStatus(error.task_id, target, originalText);
                     } else {
-                        // This is a different error
-                        finalizeAudiobookButton(target, 'error', { message: error.message }, originalText);
+                        // This is a different error, create a task-like object for display
+                        const errorData = { status: 'error', status_key: 'UNKNOWN_ERROR', status_params: { error: error.message } };
+                        finalizeAudiobookButton(target, errorData, originalText);
                     }
                 });
                 break;
@@ -488,6 +486,6 @@ export function setupEventHandlers(
         });
     });
 
-    // Initialize audiobook buttons on page load
+    // Initialize audiobook buttons after all other handlers are set up
     initializeAudiobookButtons();
 }
