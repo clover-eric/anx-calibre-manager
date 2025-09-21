@@ -20,6 +20,7 @@
 - **移动端优先界面**: 简洁、响应式的用户界面，专为在手机上轻松使用而设计。
 - **PWA 支持**: 可作为渐进式 Web 应用 (PWA) 安装，提供类似原生应用的体验。
 - **浏览器内图书预览器**: 直接在浏览器中预览电子书。支持文本转语音（TTS）功能。
+- **有声书生成**: 使用可配置的文本转语音（TTS）提供商（例如，Microsoft Edge TTS），将 EPUB 电子书转换为带章节标记的 M4B 有声书。生成的 M4B 文件与 [Audiobookshelf](https://www.audiobookshelf.org/) 等有声书服务器完全兼容。
 - **Calibre 集成**: 连接到您现有的 Calibre 服务器，以浏览和搜索您的书库。
 - **KOReader 同步**: 与您的 KOReader 设备同步阅读进度和阅读时间。
 - **智能推送到 Kindle**: 发送书籍到您的 Kindle 时，应用会自动处理格式。如果书籍已有 EPUB 格式，则直接发送；如果没有，它将根据您的格式偏好设置，自动将最优先的可用格式**转换为 EPUB**后再发送，以确保最佳兼容性。
@@ -70,6 +71,7 @@
 ### 先决条件
 
 - 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
+- 您的服务器上已安装 [ffmpeg](https://ffmpeg.org/download.html) 并且在系统的 PATH 中可用。这是有声书生成功能所必需的。
 - 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。
 
 ### 使用 Docker 运行
@@ -88,6 +90,7 @@
     ```bash
     mkdir -p /path/to/your/config
     mkdir -p /path/to/your/webdav
+    mkdir -p /path/to/your/audiobooks # 可选：用于存放生成的有声书
     mkdir -p /path/to/your/fonts # 可选：用于自定义字体
     ```
 
@@ -105,8 +108,9 @@
       -e TZ="Asia/Shanghai" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -v /path/to/your/audiobooks:/audiobooks \ # 可选：挂载有声书输出目录
       -v /path/to/your/fonts:/opt/share/fonts \ # 可选：挂载自定义字体
-      -e "GUNICORN_WORKERS=2" \ 
+      -e "GUNICORN_WORKERS=2" \
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -129,6 +133,7 @@
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
+          - /path/to/your/audiobooks:/audiobooks # 可选：挂载有声书输出目录
           - /path/to/your/fonts:/opt/share/fonts # 可选：挂载自定义字体
         environment:
           - PUID=1000
@@ -177,6 +182,12 @@
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |
 | `SMTP_PASSWORD` | SMTP 密码。 | `""` |
 | `SMTP_ENCRYPTION` | SMTP 加密类型 (`ssl`, `starttls`, `none`)。 | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | 用于有声书生成的默认 TTS 提供商 (`edge_tts` 或 `openai_tts`)。 | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | 所选 TTS 提供商的默认语音。 | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | TTS 提供商的默认语速 (例如, `+10%`)。 | `+0%` |
+| `DEFAULT_OPENAI_API_KEY` | 您的 OpenAI API 密钥 (如果使用 `openai_tts` 则为必需)。 | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | 用于 OpenAI 兼容 API 的自定义基础 URL。 | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | 用于 TTS 的 OpenAI 模型 (例如, `tts-1`)。 | `tts-1` |
 
 ## 📖 KOReader 同步
 

@@ -32,6 +32,16 @@ async function populateForms() {
     document.getElementById('stats_enabled').checked = userData.stats_enabled;
     document.getElementById('stats_public').checked = userData.stats_public;
 
+    // Populate TTS settings
+    document.getElementById('tts_provider').value = userData.tts_provider || 'edge';
+    document.getElementById('tts_voice').value = userData.tts_voice || '';
+    document.getElementById('tts_api_key').value = userData.tts_api_key || '';
+    document.getElementById('tts_base_url').value = userData.tts_base_url || '';
+    document.getElementById('tts_model').value = userData.tts_model || '';
+    document.getElementById('tts_rate').value = userData.tts_rate || '+0%';
+    document.getElementById('tts_volume').value = userData.tts_volume || '+0%';
+    document.getElementById('tts_pitch').value = userData.tts_pitch || '+0Hz';
+
     const statsEnabledCheckbox = document.getElementById('stats_enabled');
     const statsUrlContainer = document.getElementById('stats_url_container');
     const statsUrlLink = document.getElementById('stats_url');
@@ -247,6 +257,19 @@ window.saveGlobalSettings = async function(event) {
     }
 }
 
+window.cleanupAllAudiobooks = async function() {
+    if (!confirm(_('Are you sure you want to delete ALL generated audiobook files? This action cannot be undone.'))) {
+        return;
+    }
+
+    const response = await fetch('/api/admin/cleanup_audiobooks', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+    });
+    const result = await response.json();
+    alert(result.message || result.error);
+}
+
 window.testSmtpSettings = async function() {
     const form = document.getElementById('globalSettingsForm');
     const data = {
@@ -357,6 +380,17 @@ document.addEventListener('DOMContentLoaded', () => {
     populateForms();
     if (isAdmin) {
         fetchUsers();
+    }
+
+    // --- Koreader Plugin Download Button ---
+    const downloadBtn = document.getElementById('download-koreader-plugin-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            const url = downloadBtn.dataset.url;
+            if (url) {
+                window.location.href = url;
+            }
+        });
     }
 });
 

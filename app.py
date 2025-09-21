@@ -149,6 +149,7 @@ def create_app():
     from blueprints.api.tokens import tokens_bp
     from blueprints.api.auth_2fa import auth_2fa_bp
     from blueprints.api.invite import invite_bp
+    from blueprints.api.audiobook import audiobook_bp
     
     # Register all blueprints
     app.register_blueprint(main_bp)
@@ -166,6 +167,7 @@ def create_app():
     app.register_blueprint(tokens_bp)
     app.register_blueprint(auth_2fa_bp)
     app.register_blueprint(invite_bp)
+    app.register_blueprint(audiobook_bp)
 
     @app.context_processor
     def inject_conf_var():

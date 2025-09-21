@@ -20,6 +20,7 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
 - **Mobil-orientierte Benutzeroberfläche**: Eine saubere, responsive Benutzeroberfläche, die für eine einfache Bedienung auf Ihrem Telefon konzipiert ist.
 - **PWA-Unterstützung**: Als Progressive Web App installierbar für ein nativ-ähnliches Erlebnis.
 - **In-Browser-Buchvorschau**: Vorschau von E-Books direkt in Ihrem Browser. Bietet Text-zu-Sprache (TTS).
+- **Hörbuchgenerierung**: Konvertieren Sie EPUB-Bücher in M4B-Hörbücher mit Kapitelmarkierungen unter Verwendung konfigurierbarer Text-zu-Sprache (TTS)-Anbieter (z. B. Microsoft Edge TTS). Die generierten M4B-Dateien sind vollständig kompatibel mit Hörbuchservern wie [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Calibre-Integration**: Verbindet sich mit Ihrem vorhandenen Calibre-Server, um Ihre Bibliothek zu durchsuchen und zu durchsuchen.
 - **KOReader-Synchronisierung**: Synchronisieren Sie Ihren Lesefortschritt und Ihre Lesezeit mit KOReader-Geräten.
 - **Intelligentes Senden an Kindle**: Behandelt automatisch Formate beim Senden an Ihren Kindle. Wenn ein EPUB vorhanden ist, wird es direkt gesendet. Wenn nicht, konvertiert die App **das beste verfügbare Format in EPUB** basierend auf Ihren Vorlieben, bevor sie es sendet, um eine optimale Kompatibilität zu gewährleisten.
@@ -71,6 +72,7 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
 ### Voraussetzungen
 
 - [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
+- [ffmpeg](https://ffmpeg.org/download.html) auf Ihrem Server installiert und im Systempfad verfügbar. Dies ist für die Hörbuchgenerierung erforderlich.
 - Ein vorhandener Calibre-Server (optional, aber für die meisten Funktionen erforderlich).
 
 ### Ausführen mit Docker
@@ -89,6 +91,7 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
     ```bash
     mkdir -p /pfad/zu/ihrer/config
     mkdir -p /pfad/zu/ihrem/webdav
+    mkdir -p /pfad/zu/ihren/audiobooks # Optional: für generierte Hörbücher
     mkdir -p /pfad/zu/ihren/schriftarten # Optional: für benutzerdefinierte Schriftarten
     ```
 
@@ -106,8 +109,9 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
       -e TZ="Europe/Berlin" \
       -v /pfad/zu/ihrer/config:/config \
       -v /pfad/zu/ihrem/webdav:/webdav \
+      -v /pfad/zu/ihren/audiobooks:/audiobooks \ # Optional: Hörbuch-Ausgabeverzeichnis mounten
       -v /pfad/zu/ihren/schriftarten:/opt/share/fonts \ # Optional: Benutzerdefinierte Schriftarten mounten
-      -e "GUNICORN_WORKERS=2" \ 
+      -e "GUNICORN_WORKERS=2" \
       -e "SECRET_KEY=ihr_super_geheimer_schlüssel" \
       -e "CALIBRE_URL=http://ip-ihres-calibre-servers:8080" \
       -e "CALIBRE_USERNAME=ihr_calibre_benutzername" \
@@ -130,6 +134,7 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
         volumes:
           - /pfad/zu/ihrer/config:/config
           - /pfad/zu/ihrem/webdav:/webdav
+          - /pfad/zu/ihren/audiobooks:/audiobooks # Optional: Hörbuch-Ausgabeverzeichnis mounten
           - /pfad/zu/ihren/schriftarten:/opt/share/fonts # Optional: Benutzerdefinierte Schriftarten mounten
         environment:
           - PUID=1000
@@ -178,6 +183,12 @@ Die Anwendung wird über Umgebungsvariablen konfiguriert.
 | `SMTP_USERNAME` | SMTP-Benutzername. | `""` |
 | `SMTP_PASSWORD` | SMTP-Passwort. | `""` |
 | `SMTP_ENCRYPTION` | SMTP-Verschlüsselungstyp (`ssl`, `starttls`, `none`). | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | Der Standard-TTS-Anbieter für die Hörbuchgenerierung (`edge_tts` oder `openai_tts`). | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | Die Standardstimme für den ausgewählten TTS-Anbieter. | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | Die Standard-Sprechgeschwindigkeit für den TTS-Anbieter (z. B. `+10%`). | `+0%` |
+| `DEFAULT_OPENAI_API_KEY` | Ihr OpenAI-API-Schlüssel (erforderlich, wenn `openai_tts` verwendet wird). | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | Benutzerdefinierte Basis-URL für OpenAI-kompatible APIs. | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | Das OpenAI-Modell, das für TTS verwendet werden soll (z. B. `tts-1`). | `tts-1` |
 
 ## 📖 KOReader-Synchronisierung
 

@@ -21,7 +21,7 @@ from .main import get_calibre_books
 from .api.calibre import get_calibre_book_details as get_raw_calibre_book_details
 from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
 from anx_library import get_anx_books, get_anx_book_details
-from .utils.epub_utils import _get_text_from_html, _extract_toc_from_epub, _process_entire_epub, _count_words
+from utils.epub_utils import _get_text_from_html, _extract_toc_from_epub, _process_entire_epub, _count_words
 
 mcp_bp = Blueprint('mcp', __name__, url_prefix='/mcp')
 

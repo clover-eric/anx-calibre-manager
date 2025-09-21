@@ -20,6 +20,7 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
 - **Interfaz Orientada a Móviles**: Una interfaz de usuario limpia y adaptable diseñada para un uso fácil en tu teléfono.
 - **Soporte PWA**: Se puede instalar como una Aplicación Web Progresiva para una experiencia similar a la nativa.
 - **Visualizador de libros en el navegador**: Previsualiza libros electrónicos directamente en tu navegador. Incluye función de texto a voz (TTS).
+- **Generación de Audiolibros**: Convierte libros EPUB en audiolibros M4B con marcadores de capítulo, utilizando proveedores de Texto a Voz (TTS) configurables (por ejemplo, Microsoft Edge TTS). Los archivos M4B generados son totalmente compatibles con servidores de audiolibros como [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Integración con Calibre**: Se conecta a tu servidor Calibre existente para navegar y buscar en tu biblioteca.
 - **Sincronización con KOReader**: Sincroniza tu progreso de lectura y tiempo de lectura con dispositivos KOReader.
 - **Envío Inteligente a Kindle**: Maneja automáticamente los formatos al enviar a tu Kindle. Si existe un EPUB, se envía directamente. Si no, la aplicación **convierte el mejor formato disponible a EPUB** según tus preferencias antes de enviarlo, asegurando una compatibilidad óptima.
@@ -71,6 +72,7 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
 ### Prerrequisitos
 
 - [Docker](https://www.docker.com/get-started) instalado en tu servidor.
+- [ffmpeg](https://ffmpeg.org/download.html) instalado en tu servidor y disponible en el PATH del sistema. Esto es necesario para la generación de audiolibros.
 - Un servidor Calibre existente (opcional, pero necesario para la mayoría de las funciones).
 
 ### Ejecutar con Docker
@@ -89,6 +91,7 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
     ```bash
     mkdir -p /ruta/a/tu/config
     mkdir -p /ruta/a/tu/webdav
+    mkdir -p /ruta/a/tu/audiobooks # Opcional: para audiolibros generados
     mkdir -p /ruta/a/tus/fuentes # Opcional: para fuentes personalizadas
     ```
 
@@ -106,8 +109,9 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
       -e TZ="America/New_York" \
       -v /ruta/a/tu/config:/config \
       -v /ruta/a/tu/webdav:/webdav \
+      -v /ruta/a/tu/audiobooks:/audiobooks \ # Opcional: Montar directorio de salida de audiolibros
       -v /ruta/a/tus/fuentes:/opt/share/fonts \ # Opcional: Montar fuentes personalizadas
-      -e "GUNICORN_WORKERS=2" \ 
+      -e "GUNICORN_WORKERS=2" \
       -e "SECRET_KEY=tu_clave_super_secreta" \
       -e "CALIBRE_URL=http://ip-de-tu-servidor-calibre:8080" \
       -e "CALIBRE_USERNAME=tu_usuario_calibre" \
@@ -130,6 +134,7 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
         volumes:
           - /ruta/a/tu/config:/config
           - /ruta/a/tu/webdav:/webdav
+          - /ruta/a/tu/audiobooks:/audiobooks # Opcional: Montar directorio de salida de audiolibros
           - /ruta/a/tus/fuentes:/opt/share/fonts # Opcional: Montar fuentes personalizadas
         environment:
           - PUID=1000
@@ -178,6 +183,12 @@ La aplicación se configura a través de variables de entorno.
 | `SMTP_USERNAME` | Nombre de usuario SMTP. | `""` |
 | `SMTP_PASSWORD` | Contraseña SMTP. | `""` |
 | `SMTP_ENCRYPTION` | Tipo de cifrado SMTP (`ssl`, `starttls`, `none`). | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | El proveedor de TTS predeterminado para la generación de audiolibros (`edge_tts` o `openai_tts`). | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | La voz predeterminada para el proveedor de TTS seleccionado. | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | La velocidad de habla predeterminada para el proveedor de TTS (por ejemplo, `+10%`). | `+0%` |
+| `DEFAULT_OPENAI_API_KEY` | Tu clave de API de OpenAI (requerida si se usa `openai_tts`). | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | URL base personalizada para APIs compatibles con OpenAI. | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | El modelo de OpenAI a utilizar para TTS (por ejemplo, `tts-1`). | `tts-1` |
 
 ## 📖 Sincronización con KOReader
 

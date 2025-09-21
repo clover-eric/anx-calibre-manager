@@ -1,0 +1,287 @@
+import asyncio
+import threading
+import uuid
+import os
+import tempfile
+import sqlite3
+from contextlib import closing
+from flask import Blueprint, request, jsonify, g, send_file
+from werkzeug.utils import secure_filename
+from flask_babel import gettext as _
+
+import config_manager
+# 内部导入
+from utils.audiobook_generator import AudiobookGenerator, TTSConfig, EdgeTTSProvider
+from .books import _get_processed_epub_for_book
+from .calibre import get_calibre_book_details
+from anx_library import get_anx_user_dirs
+from utils.text import safe_title, safe_author
+from utils.audiobook_tasks_db import (
+    add_audiobook_task,
+    update_audiobook_task,
+    get_audiobook_task_by_id,
+    get_audiobook_task_by_book,
+    get_latest_task_for_book,
+)
+
+audiobook_bp = Blueprint('audiobook_api', __name__, url_prefix='/api/audiobook')
+
+
+def get_anx_book_path(username, book_id):
+    """根据 book_id 获取 Anx 书籍的完整文件路径"""
+    dirs = get_anx_user_dirs(username)
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        raise FileNotFoundError("Anx database not found.")
+    
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        book_row = db.execute("SELECT file_path FROM tb_books WHERE id = ?", (book_id,)).fetchone()
+        if not book_row or not book_row['file_path']:
+            raise FileNotFoundError(f"Anx book file with ID {book_id} not found.")
+        
+        return os.path.join(dirs["workspace"], book_row['file_path'])
+
+
+def get_anx_book_details(username, book_id):
+    """根据 book_id 获取 Anx 书籍的标题和作者"""
+    dirs = get_anx_user_dirs(username)
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return None, None
+    
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        book_row = db.execute("SELECT title, author FROM tb_books WHERE id = ?", (book_id,)).fetchone()
+        if not book_row:
+            return None, None
+        return book_row['title'], book_row['author']
+
+def get_calibre_book_as_temp_file(user_dict, book_id):
+    """获取 Calibre 书籍的 EPUB 内容并存入临时文件"""
+    content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+    
+    if filename == 'CONVERTER_NOT_FOUND':
+        raise RuntimeError("ebook-converter tool is missing.")
+    if not content or not filename:
+        raise FileNotFoundError(f"Could not get or process Calibre book ID {book_id}.")
+
+    # 创建一个临时文件来保存 EPUB 内容
+    # 注意：需要确保这个文件在任务结束后被删除
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".epub")
+    temp_file.write(content)
+    temp_file.close()
+    return temp_file.name
+
+
+def run_async_task(target, *args, temp_file_to_clean=None):
+    """在一个新的事件循环中运行异步任务的线程目标函数，并可选地在之后清理一个临时文件。"""
+    try:
+        asyncio.run(target(*args))
+    except Exception as e:
+        print(f"异步任务线程中发生错误: {e}")
+    finally:
+        # 清理临时文件
+        if temp_file_to_clean and os.path.exists(temp_file_to_clean):
+            os.remove(temp_file_to_clean)
+            print(f"已清理临时文件: {temp_file_to_clean}")
+
+
+@audiobook_bp.route('/generate', methods=['POST'])
+def generate_audiobook_route():
+    """
+    启动一个有声书生成任务。
+    需要 'book_id' 和 'library' ('anx' 或 'calibre') 在 POST 请求的 form data 中。
+    """
+    form_data = request.form
+    if 'book_id' not in form_data or 'library' not in form_data:
+        return jsonify({"error": _("'book_id' or 'library' is missing from the request")}), 400
+
+    book_id = int(form_data['book_id'])
+    library = form_data['library']
+    
+    # 检查是否已有正在进行的任务
+    existing_task = get_audiobook_task_by_book(g.user.id, book_id, library)
+    if existing_task:
+        return jsonify({
+            "error": _("A task for this book is already in progress."),
+            "task_id": existing_task['task_id']
+        }), 409
+
+    task_id = str(uuid.uuid4())
+    add_audiobook_task(task_id, g.user.id, book_id, library, message=_("Task queued"))
+
+    async def update_progress_callback(status, data):
+        """用于更新任务状态的回调函数，将状态码翻译成用户消息并存入数据库。"""
+        status_key = data.get("status_key")
+        params = data.get("params", {})
+        percentage = data.get("percentage")
+        file_path = data.get("path")
+        
+        message_map = {
+            "GENERATION_STARTED": _("Starting audiobook generation..."),
+            "PARSING_EPUB": _("Parsing EPUB file..."),
+            "PROCESSING_CHAPTER": _("Processing: Chapter %(index)d/%(total)d"),
+            "MERGING_FILES": _("Merging audio files..."),
+            "WRITING_METADATA": _("Writing book metadata..."),
+            "CLEANING_UP": _("Cleaning up temporary files..."),
+            "GENERATION_SUCCESS": _("Audiobook generated successfully!"),
+            "CHAPTER_EXTRACTION_FAILED": _("Could not extract any chapters from the EPUB file."),
+            "CHAPTER_CONVERSION_FAILED": _("All chapters are empty or could not be converted to audio."),
+            "UNKNOWN_ERROR": _("An unknown error occurred: %(error)s"),
+        }
+
+        message = ""
+        if status_key:
+            if status_key.startswith("FFMPEG_ERROR:"):
+                ffmpeg_error_details = status_key.replace("FFMPEG_ERROR: ", "")
+                message = _("FFmpeg error: %(error)s") % {'error': ffmpeg_error_details}
+            elif status_key in message_map:
+                message_template = message_map.get(status_key)
+                if message_template:
+                    try:
+                        message = message_template % params
+                    except (TypeError, KeyError): # 处理参数不匹配或缺失的情况
+                        message = message_template
+        
+        update_audiobook_task(task_id, status, message=message, percentage=percentage, file_path=file_path)
+
+    try:
+        # 1. 加载TTS配置 (用户设置优先，全局配置其次)
+        tts_config_data = {}
+        tts_fields = [
+            'tts_provider', 'tts_voice', 'tts_api_key', 'tts_base_url',
+            'tts_model', 'tts_rate', 'tts_volume', 'tts_pitch'
+        ]
+        for field in tts_fields:
+            user_value = getattr(g.user, field, None)
+            if user_value is not None and user_value != '':
+                tts_config_data[field.replace('tts_', '')] = user_value # 移除前缀以匹配TTSConfig
+            else:
+                default_key = f"DEFAULT_{field.upper()}"
+                tts_config_data[field.replace('tts_', '')] = config_manager.config.get(default_key)
+
+        # 从配置数据中分离出 provider，因为它不属于 TTSConfig
+        provider = tts_config_data.pop('provider', 'edge_tts') # 默认为 edge_tts
+        
+        tts_config = TTSConfig(**tts_config_data)
+        
+        # TODO: 根据 provider 实例化不同的提供者
+        if provider == 'openai_tts':
+            # tts_provider = OpenAITTSProvider(tts_config) # 未来实现
+            # 暂时回退到 EdgeTTS
+            tts_provider = EdgeTTSProvider(tts_config)
+        else: # 默认为 edge_tts
+            tts_provider = EdgeTTSProvider(tts_config)
+
+        # 2. 获取书籍文件路径
+        book_path_or_temp_file = None
+        if library == 'anx':
+            book_path_or_temp_file = get_anx_book_path(g.user.username, book_id)
+        elif library == 'calibre':
+            user_dict = {
+                'username': g.user.username,
+                'kindle_email': g.user.kindle_email,
+                'send_format_priority': g.user.send_format_priority,
+                'force_epub_conversion': g.user.force_epub_conversion
+            }
+            book_path_or_temp_file = get_calibre_book_as_temp_file(user_dict, book_id)
+        else:
+            return jsonify({"error": _("Invalid 'library' type")}), 400
+
+        # 3. 在后台线程中运行生成任务
+        generator = AudiobookGenerator(tts_provider, update_progress_callback)
+        
+        # 检查是否使用了临时文件，以便在任务结束后清理
+        temp_file_kwarg = {}
+        if "tmp" in book_path_or_temp_file:
+            temp_file_kwarg['temp_file_to_clean'] = book_path_or_temp_file
+
+        thread = threading.Thread(
+            target=run_async_task,
+            args=(generator.generate, book_path_or_temp_file, str(book_id)),
+            kwargs=temp_file_kwarg
+        )
+        thread.daemon = True
+        thread.start()
+
+        return jsonify({"task_id": task_id})
+
+    except (FileNotFoundError, RuntimeError) as e:
+        error_message = _("File error: %(error)s") % {'error': str(e)}
+        update_audiobook_task(task_id, "error", message=error_message)
+        return jsonify({"error": error_message}), 404
+    except Exception as e:
+        error_message = _("An unknown error occurred while starting the task: %(error)s") % {'error': str(e)}
+        update_audiobook_task(task_id, "error", message=error_message)
+        return jsonify({"error": error_message}), 500
+
+
+@audiobook_bp.route('/status/<task_id>', methods=['GET'])
+def get_task_status(task_id):
+    """获取指定任务ID的状态。"""
+    task = get_audiobook_task_by_id(task_id)
+    if not task:
+        return jsonify({"error": _("Task not found")}), 404
+    
+    # 将 sqlite3.Row 对象转换为字典
+    return jsonify(dict(task))
+
+
+@audiobook_bp.route('/status_for_book', methods=['GET'])
+def get_task_status_for_book():
+    """获取特定书籍的活动任务状态。"""
+    book_id = request.args.get('book_id', type=int)
+    library_type = request.args.get('library')
+
+    if not book_id or not library_type:
+        return jsonify({"error": _("'book_id' or 'library' is missing from the request")}), 400
+
+    task = get_latest_task_for_book(g.user.id, book_id, library_type)
+
+    if not task:
+        return jsonify({}) # 返回一个空对象表示没有活动任务
+    
+    return jsonify(dict(task))
+
+
+@audiobook_bp.route('/download/<task_id>', methods=['GET'])
+def download_audiobook(task_id):
+    """下载生成的有声书文件。"""
+    task = get_audiobook_task_by_id(task_id)
+
+    if not task:
+        return jsonify({"error": _("Task not found")}), 404
+
+    # 安全检查：确保任务属于当前用户
+    if task['user_id'] != g.user.id:
+        return jsonify({"error": _("Forbidden")}), 403
+
+    # 检查任务是否成功完成
+    if task['status'] != 'success':
+        return jsonify({"error": _("Audiobook is not ready for download")}), 400
+
+    # 检查文件路径是否存在
+    file_path = task['file_path']
+    if not file_path or not os.path.exists(file_path):
+        return jsonify({"error": _("File not found on server")}), 404
+
+    try:
+        # 构造新的文件名
+        title, author = None, None
+        if task['library'] == 'anx':
+            title, author = get_anx_book_details(g.user.username, task['book_id'])
+        elif task['library'] == 'calibre':
+            details = get_calibre_book_details(task['book_id'])
+            if details:
+                title = details.get('title')
+                author = " & ".join(details.get('authors', []))
+
+        if title and author:
+            safe_t = safe_title(title)
+            safe_a = safe_author(author)
+            download_name = f"{safe_t} - {safe_a}.m4b"
+        else:
+            download_name = os.path.basename(file_path)
+
+        return send_file(file_path, as_attachment=True, download_name=download_name)
+    except Exception as e:
+        return jsonify({"error": _("Could not send file: %(error)s") % {'error': str(e)}}), 500

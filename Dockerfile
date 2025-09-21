@@ -56,7 +56,8 @@ RUN apt-get update && \
     zip \
     locales \
     libxslt1.1 \
-    libxml2 && \
+    libxml2 \
+    ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
 # Configure locales
@@ -87,8 +88,8 @@ ENV SMTP_ENCRYPTION="ssl"
 
 # Create app user and standard directories as root
 RUN useradd --uid 1001 --create-home appuser && \
-    mkdir -p /config /webdav /tmp && \
-    chown -R appuser:appuser /config /webdav /tmp
+    mkdir -p /config /webdav /audiobooks /tmp && \
+    chown -R appuser:appuser /config /webdav /audiobooks /tmp
 
 # Set working directory
 WORKDIR /home/appuser
@@ -128,7 +129,7 @@ ENV PATH="/home/appuser/build_venv/bin:/home/appuser/venv/bin:$PATH"
 EXPOSE $PORT
 
 # Define volumes for persistent data
-VOLUME ["/config", "/webdav"]
+VOLUME ["/config", "/webdav", "/audiobooks"]
 
 # Set the entrypoint to use tini for proper signal handling
 ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]

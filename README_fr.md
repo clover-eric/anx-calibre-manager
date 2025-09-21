@@ -20,6 +20,7 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
 - **Interface Axée sur le Mobile**: Une interface utilisateur propre et réactive conçue pour une utilisation facile sur votre téléphone.
 - **Support PWA**: Installable en tant qu'application web progressive pour une expérience similaire à une application native.
 - **Visionneuse de livres dans le navigateur**: Prévisualisez les livres électroniques directement dans votre navigateur. Comprend une fonction de synthèse vocale (TTS).
+- **Génération de Livres Audio**: Convertissez des livres EPUB en livres audio M4B avec des marqueurs de chapitre, en utilisant des fournisseurs de synthèse vocale (TTS) configurables (par ex., Microsoft Edge TTS). Les fichiers M4B générés sont entièrement compatibles avec des serveurs de livres audio comme [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Intégration Calibre**: Se connecte à votre serveur Calibre existant pour parcourir et rechercher votre bibliothèque.
 - **Synchronisation KOReader**: Synchronisez votre progression de lecture et votre temps de lecture avec les appareils KOReader.
 - **Envoi Intelligent vers Kindle**: Gère automatiquement les formats lors de l'envoi vers votre Kindle. Si un EPUB existe, il est envoyé directement. Sinon, l'application **convertit le meilleur format disponible en EPUB** selon vos préférences avant de l'envoyer, garantissant une compatibilité optimale.
@@ -71,6 +72,7 @@ Cette application est conçue pour être déployée avec Docker.
 ### Prérequis
 
 - [Docker](https://www.docker.com/get-started) installé sur votre serveur.
+- [ffmpeg](https://ffmpeg.org/download.html) installé sur votre serveur et disponible dans le PATH du système. Ceci est requis pour la génération de livres audio.
 - Un serveur Calibre existant (facultatif, mais requis pour la plupart des fonctionnalités).
 
 ### Exécuter avec Docker
@@ -89,6 +91,7 @@ Cette application est conçue pour être déployée avec Docker.
     ```bash
     mkdir -p /chemin/vers/votre/config
     mkdir -p /chemin/vers/votre/webdav
+    mkdir -p /chemin/vers/vos/audiobooks # Facultatif : pour les livres audio générés
     mkdir -p /chemin/vers/vos/polices # Facultatif : pour les polices personnalisées
     ```
 
@@ -106,8 +109,9 @@ Cette application est conçue pour être déployée avec Docker.
       -e TZ="Europe/Paris" \
       -v /chemin/vers/votre/config:/config \
       -v /chemin/vers/votre/webdav:/webdav \
+      -v /chemin/vers/vos/audiobooks:/audiobooks \ # Facultatif : Monter le répertoire de sortie des livres audio
       -v /chemin/vers/vos/polices:/opt/share/fonts \ # Facultatif : Monter des polices personnalisées
-      -e "GUNICORN_WORKERS=2" \ 
+      -e "GUNICORN_WORKERS=2" \
       -e "SECRET_KEY=votre_super_cle_secrete" \
       -e "CALIBRE_URL=http://ip-de-votre-serveur-calibre:8080" \
       -e "CALIBRE_USERNAME=votre_nom_utilisateur_calibre" \
@@ -130,6 +134,7 @@ Cette application est conçue pour être déployée avec Docker.
         volumes:
           - /chemin/vers/votre/config:/config
           - /chemin/vers/votre/webdav:/webdav
+          - /chemin/vers/vos/audiobooks:/audiobooks # Facultatif : Monter le répertoire de sortie des livres audio
           - /chemin/vers/vos/polices:/opt/share/fonts # Facultatif : Monter des polices personnalisées
         environment:
           - PUID=1000
@@ -178,6 +183,12 @@ L'application est configurée via des variables d'environnement.
 | `SMTP_USERNAME` | Nom d'utilisateur SMTP. | `""` |
 | `SMTP_PASSWORD` | Mot de passe SMTP. | `""` |
 | `SMTP_ENCRYPTION` | Type de chiffrement SMTP (`ssl`, `starttls`, `none`). | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | Le fournisseur TTS par défaut pour la génération de livres audio (`edge_tts` ou `openai_tts`). | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | La voix par défaut pour le fournisseur TTS sélectionné. | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | La vitesse de parole par défaut pour le fournisseur TTS (par ex., `+10%`). | `+0%` |
+| `DEFAULT_OPENAI_API_KEY` | Votre clé API OpenAI (requise si vous utilisez `openai_tts`). | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | URL de base personnalisée pour les API compatibles avec OpenAI. | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | Le modèle OpenAI à utiliser pour le TTS (par ex., `tts-1`). | `tts-1` |
 
 ## 📖 Synchronisation KOReader
 

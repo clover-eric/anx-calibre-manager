@@ -20,6 +20,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **Mobile-First Interface**: A clean, responsive UI designed for easy use on your phone.
 - **PWA Support**: Installable as a Progressive Web App for a native-like experience.
 - **In-Browser Book Previewer**: Preview E-Book directly in your browser. Features Text-to-Speech (TTS).
+- **Audiobook Generation**: Convert EPUB books into M4B audiobooks with chapter markers, using configurable Text-to-Speech (TTS) providers (e.g., Microsoft Edge TTS). The generated M4B files are fully compatible with audiobook servers like [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
 - **KOReader Sync**: Sync your reading progress and reading time with KOReader devices.
 - **Smart Send to Kindle**: Automatically handles formats when sending to your Kindle. If an EPUB exists, it's sent directly. If not, the app **converts the best available format to EPUB** based on your preferences before sending, ensuring optimal compatibility.
@@ -70,6 +71,7 @@ This application is designed to be deployed using Docker.
 ### Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your server.
+- [ffmpeg](https://ffmpeg.org/download.html) installed on your server and available in the system's PATH. This is required for audiobook generation.
 - An existing Calibre server (optional, but required for most features).
 
 ### Running with Docker
@@ -88,6 +90,7 @@ This application is designed to be deployed using Docker.
     ```bash
     mkdir -p /path/to/your/config
     mkdir -p /path/to/your/webdav
+    mkdir -p /path/to/your/audiobooks # Optional: for generated audiobooks
     mkdir -p /path/to/your/fonts # Optional: for custom fonts
     ```
 
@@ -105,8 +108,9 @@ This application is designed to be deployed using Docker.
       -e TZ="America/New_York" \
       -v /path/to/your/config:/config \
       -v /path/to/your/webdav:/webdav \
+      -v /path/to/your/audiobooks:/audiobooks \ # Optional: Mount audiobook output directory
       -v /path/to/your/fonts:/opt/share/fonts \ # Optional: Mount custom fonts
-      -e "GUNICORN_WORKERS=2" \ 
+      -e "GUNICORN_WORKERS=2" \
       -e "SECRET_KEY=your_super_secret_key" \
       -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
       -e "CALIBRE_USERNAME=your_calibre_username" \
@@ -129,6 +133,7 @@ This application is designed to be deployed using Docker.
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
+          - /path/to/your/audiobooks:/audiobooks # Optional: Mount audiobook output directory
           - /path/to/your/fonts:/opt/share/fonts # Optional: Mount custom fonts
         environment:
           - PUID=1000
@@ -177,6 +182,12 @@ The application is configured via environment variables.
 | `SMTP_USERNAME` | SMTP username. | `""` |
 | `SMTP_PASSWORD` | SMTP password. | `""` |
 | `SMTP_ENCRYPTION` | SMTP encryption type (`ssl`, `starttls`, `none`). | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | The default TTS provider for audiobook generation (`edge_tts` or `openai_tts`). | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | The default voice for the selected TTS provider. | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | The default speech rate for the TTS provider (e.g., `+10%`). | `+0%` |
+| `DEFAULT_OPENAI_API_KEY` | Your OpenAI API key (required if using `openai_tts`). | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | Custom base URL for OpenAI-compatible APIs. | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | The OpenAI model to use for TTS (e.g., `tts-1`). | `tts-1` |
 
 ## 📖 KOReader Sync
 

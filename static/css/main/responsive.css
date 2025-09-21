@@ -23,9 +23,24 @@
         flex-direction: row;
         width: 100%;
         margin-top: 1rem;
+        flex-wrap: wrap;
+        gap: 0; /* Reset gap for the main container */
     }
-    .book-row .actions .button {
+    /* This rule is now for the buttons inside the main row */
+    .book-row .actions .actions-main .button {
         flex: 1;
+    }
+    .book-row .actions .actions-main {
+        display: flex;
+        flex-basis: 100%;
+        gap: 8px;
+    }
+    .book-row .actions .actions-full-width {
+        flex-basis: 100%;
+        margin-top: 8px;
+    }
+    .book-row .actions .actions-full-width .button {
+        width: 100%;
     }
 
     .library-header {
@@ -66,5 +81,13 @@
     }
     .nav-button .icon {
         font-size: 1.5em;
+    }
+}
+
+@media (min-width: 769px) {
+    .book-row .actions .actions-main {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Gap for buttons inside the main group */
     }
 }

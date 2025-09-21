@@ -62,6 +62,52 @@
                 <label for="force_epub_conversion" style="display: inline;">{{ _('Force EPUB Conversion') }}</label></br>
                 <small>{{ _('If enabled, will always try to convert the book to an optimized EPUB format when downloading or pushing to the ANX library, instead of sending the original format.') }}</small>
             </div>
+
+            <h3>{{ _('Audiobook Generation Settings') }}</h3>
+            <div class="form-group">
+                <label for="tts_provider">{{ _('TTS Provider') }}</label>
+                <select id="tts_provider" name="tts_provider">
+                    <option value="edge">Edge TTS</option>
+                    <!-- <option value="openai">OpenAI TTS</option> -->
+                </select>
+                <small>{{ _('The text-to-speech service provider to use.') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_voice">{{ _('Voice') }}</label>
+                <input type="text" id="tts_voice" name="tts_voice">
+                <small>{{ _('The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS.') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_api_key">{{ _('API Key') }}</label>
+                <input type="password" id="tts_api_key" name="tts_api_key" autocomplete="new-password">
+                <small>{{ _('API key for the selected provider (if required).') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_base_url">{{ _('Base URL') }}</label>
+                <input type="url" id="tts_base_url" name="tts_base_url">
+                <small>{{ _('Custom base URL for the API (for proxies or self-hosted models).') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_model">{{ _('Model') }}</label>
+                <input type="text" id="tts_model" name="tts_model">
+                <small>{{ _('The specific model to use, e.g., tts-1-hd (if supported by the provider).') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_rate">{{ _('Rate') }}</label>
+                <input type="text" id="tts_rate" name="tts_rate">
+                <small>{{ _('Speaking rate. e.g., +10%% or -10%%.') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_volume">{{ _('Volume') }}</label>
+                <input type="text" id="tts_volume" name="tts_volume">
+                <small>{{ _('Volume level. e.g., +10%% or -10%%.') }}</small>
+            </div>
+            <div class="form-group">
+                <label for="tts_pitch">{{ _('Pitch') }}</label>
+                <input type="text" id="tts_pitch" name="tts_pitch">
+                <small>{{ _('Speaking pitch. e.g., +10Hz or -10Hz.') }}</small>
+            </div>
+
             <h3>{{ _('Statistics Settings') }}</h3>
             <div class="form-group">
                 <input type="checkbox" id="stats_enabled" name="stats_enabled" value="true" style="width: auto; margin-right: 5px;">
@@ -210,7 +256,7 @@
                 <li>
                     <strong>{{ _('Download Plugin') }}</strong>: {{ _('Click the button below to download the plugin zip file.') }}
                     <div style="margin-top: 1rem; margin-bottom: 1rem;">
-                        <button onclick="location.href='{{ url_for('calibre.download_koreader_plugin') }}'" class="button-primary">{{ _('Download KOReader Plugin (.zip)') }}</button>
+                        <button id="download-koreader-plugin-btn" data-url="{{ url_for('calibre.download_koreader_plugin') }}" class="button-primary">{{ _('Download KOReader Plugin (.zip)') }}</button>
                     </div>
                 </li>
                 <li><strong>{{ _('Install Plugin') }}</strong>: {{ _('Unzip the downloaded `.zip` file, and you will get a folder named `anx-calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire folder</strong> to the `koreader/plugins/` directory on your KOReader device.') }}</li>
@@ -269,6 +315,18 @@
                 <label for="DEFAULT_FORMAT_PRIORITY">{{ _('Default Format Priority for New Users') }}</label>
                 <input type="text" id="DEFAULT_FORMAT_PRIORITY" name="DEFAULT_FORMAT_PRIORITY">
                 <small>{{ _('Default format priority for new users, separated by commas, e.g., azw3,mobi,epub') }}</small>
+            </div>
+
+            <h3>{{ _('Audiobook Settings') }}</h3>
+            <div class="form-group">
+                <label for="AUDIOBOOK_CLEANUP_DAYS">{{ _('Audiobook File Retention Period (days)') }}</label>
+                <input type="number" id="AUDIOBOOK_CLEANUP_DAYS" name="AUDIOBOOK_CLEANUP_DAYS" min="0">
+                <small>{{ _('Automatically delete generated audiobook files older than this number of days. Set to 0 to disable cleanup.') }}</small>
+            </div>
+            <div class="form-group">
+                <label>{{ _('Manual Cleanup') }}</label>
+                <button type="button" class="button button-danger" onclick="cleanupAllAudiobooks()">{{ _('Clean Up All Audiobooks Now') }}</button><br>
+                <small>{{ _('Immediately delete all generated audiobook files and update their database records.') }}</small>
             </div>
 
             <h3>{{ _('SMTP Settings (for Send to Kindle)') }}</h3>

@@ -1,5 +1,67 @@
 import { fetch_with_token, showModal, hideModal, showLoaderAndNavigate } from './utils.js';
-import { populateAnxEditForm, populateCalibreEditForm, handleButtonAnimation } from './ui.js';
+import {
+    populateAnxEditForm,
+    populateCalibreEditForm,
+    handleButtonAnimation,
+    updateAudiobookButtonProgress,
+    finalizeAudiobookButton
+} from './ui.js';
+
+function pollAudiobookStatus(taskId, button, originalText) {
+    const intervalId = setInterval(() => {
+        fetch_with_token(`/api/audiobook/status/${taskId}`)
+            .then(res => {
+                if (!res.ok) throw new Error(_('Network response was not ok.'));
+                return res.json();
+            })
+            .then(data => {
+                if (data.status === 'progress' || data.status === 'queued' || data.status === 'start' || data.status === 'processing') {
+                    updateAudiobookButtonProgress(button, data.percentage, data.message);
+                } else {
+                    clearInterval(intervalId);
+                    // Pass the whole task object to finalize
+                    finalizeAudiobookButton(button, data.status, data, originalText);
+                }
+            })
+            .catch(error => {
+                clearInterval(intervalId);
+                finalizeAudiobookButton(button, 'error', { message: error.message }, originalText);
+            });
+    }, 2000);
+}
+
+function initializeAudiobookButtons() {
+    const audiobookButtons = document.querySelectorAll('[data-action="generate-audiobook"]');
+    audiobookButtons.forEach(button => {
+        const bookId = button.dataset.id;
+        const library = button.dataset.library;
+        const buttonText = button.querySelector('.button-text');
+        const originalText = buttonText.textContent;
+
+        fetch_with_token(`/api/audiobook/status_for_book?book_id=${bookId}&library=${library}`)
+            .then(res => res.json())
+            .then(task => {
+                // If a task object is returned and has a status
+                if (task && task.status) {
+                    if (task.status === 'success') {
+                        finalizeAudiobookButton(button, 'success', task, originalText);
+                    } else if (task.status === 'error') {
+                        // Don't show permanent error on load, just reset the button
+                        console.log(`Task for book ${bookId} found with error state. Button reset.`);
+                    } else {
+                        // Task is in progress
+                        updateAudiobookButtonProgress(button, task.percentage, task.message);
+                        pollAudiobookStatus(task.task_id, button, originalText);
+                    }
+                }
+            })
+            .catch(error => {
+                // Don't alert the user on load, just log it. It might be a network blip.
+                console.error(`[Audiobook Status] Failed to fetch status for book ${bookId}. Error:`, error);
+            });
+    });
+}
+
 
 function handleSaveChanges(saveButton, editBookForm, currentEditing, anxBooksData, calibreBooksData, editModal) {
     const formData = new FormData(editBookForm);
@@ -125,6 +187,50 @@ export function setupEventHandlers(
         const id = target.dataset.id;
         
         switch (action) {
+            case 'generate-audiobook': {
+                if (target.classList.contains('in-progress')) break;
+
+                const library = target.dataset.library;
+                const bookId = target.dataset.id;
+                const buttonText = target.querySelector('.button-text');
+                const originalText = buttonText.textContent;
+
+                const formData = new FormData();
+                formData.append('book_id', bookId);
+                formData.append('library', library);
+
+                updateAudiobookButtonProgress(target, 0, _('Queued...'));
+
+                fetch_with_token('/api/audiobook/generate', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(async res => {
+                    const data = await res.json();
+                    if (!res.ok) {
+                        const error = new Error(data.error);
+                        // If task already exists, server returns 409 with the task_id
+                        if (res.status === 409 && data.task_id) {
+                            error.task_id = data.task_id;
+                        }
+                        throw error;
+                    }
+                    return data;
+                })
+                .then(data => {
+                    pollAudiobookStatus(data.task_id, target, originalText);
+                })
+                .catch(error => {
+                    if (error.task_id) {
+                        // This is a conflict (409), task already exists, so just start polling
+                        pollAudiobookStatus(error.task_id, target, originalText);
+                    } else {
+                        // This is a different error
+                        finalizeAudiobookButton(target, 'error', { message: error.message }, originalText);
+                    }
+                });
+                break;
+            }
             case 'show-upload-modal':
                 showModal(uploadModal);
                 break;
@@ -363,4 +469,7 @@ export function setupEventHandlers(
             showLoaderAndNavigate(url.href, calibreLoader);
         });
     });
+
+    // Initialize audiobook buttons on page load
+    initializeAudiobookButtons();
 }

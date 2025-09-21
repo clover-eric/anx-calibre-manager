@@ -6,6 +6,7 @@ from flask_babel import gettext as _
 from contextlib import closing
 import database
 import config_manager
+from utils.audiobook_generator import cleanup_all_audiobooks
 
 settings_bp = Blueprint('settings', __name__, url_prefix='/api')
 
@@ -40,7 +41,15 @@ def user_settings_api():
             field_map = {
                 'kindle_email': 'kindle_email',
                 'theme': 'theme',
-                'language': 'language'
+                'language': 'language',
+                'tts_provider': 'tts_provider',
+                'tts_voice': 'tts_voice',
+                'tts_api_key': 'tts_api_key',
+                'tts_base_url': 'tts_base_url',
+                'tts_model': 'tts_model',
+                'tts_rate': 'tts_rate',
+                'tts_volume': 'tts_volume',
+                'tts_pitch': 'tts_pitch'
             }
             for key, column in field_map.items():
                 if key in data:
@@ -77,7 +86,7 @@ def user_settings_api():
         else:
             default_priority_str = config_manager.config.get('DEFAULT_FORMAT_PRIORITY', 'azw3,mobi,epub,fb2,txt,pdf')
             priority = [item.strip() for item in default_priority_str.split(',')]
-        return jsonify({
+        user_settings = {
             'username': g.user.username,
             'kindle_email': g.user.kindle_email,
             'send_format_priority': priority,
@@ -88,7 +97,22 @@ def user_settings_api():
             'stats_enabled': bool(g.user.stats_enabled),
             'stats_public': bool(g.user.stats_public),
             'language': g.user.language
-        })
+        }
+        
+        # Load TTS settings, falling back to global defaults
+        tts_fields = [
+            'tts_provider', 'tts_voice', 'tts_api_key', 'tts_base_url',
+            'tts_model', 'tts_rate', 'tts_volume', 'tts_pitch'
+        ]
+        for field in tts_fields:
+            user_value = getattr(g.user, field, None)
+            if user_value is not None and user_value != '':
+                user_settings[field] = user_value
+            else:
+                default_key = f"DEFAULT_{field.upper()}"
+                user_settings[field] = config_manager.config.get(default_key)
+        
+        return jsonify(user_settings)
 
 @settings_bp.route('/global_settings', methods=['GET', 'POST'])
 @admin_required_api
@@ -101,3 +125,13 @@ def global_settings_api():
         return jsonify({'message': _('Global settings updated.')})
     else: # GET
         return jsonify(config_manager.config.get_all())
+
+@settings_bp.route('/admin/cleanup_audiobooks', methods=['POST'])
+@admin_required_api
+def cleanup_audiobooks_api():
+    """手动触发清理所有已生成的有声书文件。"""
+    try:
+        cleaned_count = cleanup_all_audiobooks()
+        return jsonify({'success': True, 'message': _('%(count)s audiobook files have been cleaned up.', count=cleaned_count)})
+    except Exception as e:
+        return jsonify({'error': _('An error occurred during cleanup: %(error)s', error=str(e))}), 500

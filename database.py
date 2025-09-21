@@ -81,6 +81,58 @@ def update_schema_if_needed(db):
         cursor.execute("ALTER TABLE users ADD COLUMN language TEXT DEFAULT 'zh_Hans'")
         db.commit()
 
+    # Add TTS settings columns
+    tts_columns = {
+        'tts_provider': "TEXT DEFAULT 'edge'",
+        'tts_voice': "TEXT DEFAULT 'zh-CN-YunjianNeural'",
+        'tts_api_key': "TEXT",
+        'tts_base_url': "TEXT",
+        'tts_model': "TEXT",
+        'tts_rate': "TEXT DEFAULT '+0%'",
+        'tts_volume': "TEXT DEFAULT '+0%'",
+        'tts_pitch': "TEXT DEFAULT '+0Hz'"
+    }
+    for col, col_type in tts_columns.items():
+        if col not in columns:
+            print(f"Migrating database: adding '{col}' column to users table.")
+            cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
+            db.commit()
+
+    # 检查 audiobook_tasks 表是否存在
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audiobook_tasks'")
+    if cursor.fetchone() is None:
+        print("Migrating database: creating 'audiobook_tasks' table.")
+        create_audiobook_tasks_table(cursor)
+        db.commit()
+
+
+def create_audiobook_tasks_table(cursor):
+    """创建有声书任务表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE audiobook_tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task_id TEXT NOT NULL UNIQUE,
+            user_id INTEGER NOT NULL,
+            book_id INTEGER NOT NULL,
+            library_type TEXT NOT NULL,
+            status TEXT NOT NULL,
+            message TEXT,
+            percentage INTEGER,
+            file_path TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        );
+    ''')
+    # 创建触发器以自动更新 updated_at
+    cursor.execute('''
+        CREATE TRIGGER update_audiobook_tasks_updated_at
+        AFTER UPDATE ON audiobook_tasks
+        FOR EACH ROW
+        BEGIN
+            UPDATE audiobook_tasks SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+        END;
+    ''')
 
 def create_mcp_tokens_table(cursor):
     """创建 mcp_tokens 表的辅助函数"""
@@ -145,12 +197,21 @@ def create_schema():
                             kosync_userkey TEXT,
                             stats_enabled INTEGER NOT NULL DEFAULT 1,
                             stats_public INTEGER NOT NULL DEFAULT 0,
-                            language TEXT DEFAULT 'zh_Hans'
+                            language TEXT DEFAULT 'zh_Hans',
+                            tts_provider TEXT DEFAULT 'edge',
+                            tts_voice TEXT DEFAULT 'zh-CN-YunjianNeural',
+                            tts_api_key TEXT,
+                            tts_base_url TEXT,
+                            tts_model TEXT,
+                            tts_rate TEXT DEFAULT '+0%',
+                            tts_volume TEXT DEFAULT '+0%',
+                            tts_pitch TEXT DEFAULT '+0Hz'
                         );
                     ''')
                     # MCP Tokens Table
                     create_mcp_tokens_table(cursor)
                     create_invite_codes_table(cursor)
+                    create_audiobook_tasks_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

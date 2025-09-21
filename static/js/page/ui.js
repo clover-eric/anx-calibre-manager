@@ -76,6 +76,59 @@ export function populateCalibreEditForm(book, currentEditing, editBookForm, edit
     setupCompletions(editBookForm);
 }
 
+// --- Audiobook Button UI Handlers ---
+export function updateAudiobookButtonProgress(button, percentage, message) {
+    const buttonText = button.querySelector('.button-text');
+    let progressOverlay = button.querySelector('.progress-overlay');
+
+    if (!button.classList.contains('in-progress')) {
+        button.classList.add('in-progress');
+        if (!progressOverlay) {
+            progressOverlay = document.createElement('div');
+            progressOverlay.className = 'progress-overlay';
+            button.appendChild(progressOverlay);
+        }
+    }
+    
+    buttonText.textContent = message || `${_('Generating...')} ${percentage}%`;
+    progressOverlay.style.width = `${percentage}%`;
+}
+
+export function finalizeAudiobookButton(button, status, data, originalText) {
+    const buttonText = button.querySelector('.button-text');
+    const progressOverlay = button.querySelector('.progress-overlay');
+
+    if (status === 'success') {
+        button.classList.remove('in-progress');
+        button.classList.add('is-success');
+        buttonText.textContent = _('Download Audiobook');
+
+        // Replace button with a download link
+        const downloadLink = document.createElement('a');
+        // The data object here is the task from the database
+        downloadLink.href = `/api/audiobook/download/${data.task_id}`;
+        downloadLink.textContent = _('Download Audiobook');
+        downloadLink.className = 'button is-success';
+        
+        button.parentNode.replaceChild(downloadLink, button);
+
+    } else { // error
+        button.classList.remove('in-progress');
+        button.classList.add('is-failure');
+        buttonText.textContent = _('Failed');
+        alert(`${_('Error')}: ${data.message}`);
+
+        setTimeout(() => {
+            button.classList.remove('is-failure');
+            buttonText.textContent = originalText;
+            if (progressOverlay) {
+                progressOverlay.style.width = '0%';
+            }
+        }, 5000);
+    }
+}
+
+
 // --- Button Animation Handler ---
 export function handleButtonAnimation(button, apiPromise) {
     if (button.classList.contains('in-progress')) return;

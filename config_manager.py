@@ -40,6 +40,19 @@ DEFAULT_CONFIG = {
 
     # Registration settings
     'REQUIRE_INVITE_CODE': {'env': 'REQUIRE_INVITE_CODE', 'default': True},
+
+    # Text-to-Speech (TTS) settings for Audiobook Generation
+    'DEFAULT_TTS_PROVIDER': {'env': 'DEFAULT_TTS_PROVIDER', 'default': 'edge'},
+    'DEFAULT_TTS_VOICE': {'env': 'DEFAULT_TTS_VOICE', 'default': 'zh-CN-YunjianNeural'},
+    'DEFAULT_TTS_API_KEY': {'env': 'DEFAULT_TTS_API_KEY', 'default': ''},
+    'DEFAULT_TTS_BASE_URL': {'env': 'DEFAULT_TTS_BASE_URL', 'default': ''},
+    'DEFAULT_TTS_MODEL': {'env': 'DEFAULT_TTS_MODEL', 'default': ''},
+    'DEFAULT_TTS_RATE': {'env': 'DEFAULT_TTS_RATE', 'default': '+0%'},
+    'DEFAULT_TTS_VOLUME': {'env': 'DEFAULT_TTS_VOLUME', 'default': '+0%'},
+    'DEFAULT_TTS_PITCH': {'env': 'DEFAULT_TTS_PITCH', 'default': '+0Hz'},
+
+    # Audiobook file cleanup settings
+    'AUDIOBOOK_CLEANUP_DAYS': {'env': 'AUDIOBOOK_CLEANUP_DAYS', 'default': 7}, # 0 means do not clean up
 }
 
 # Initialize config as a dictionary first to avoid NameError during initial load
@@ -72,7 +85,7 @@ class ConfigManager:
             # Priority 2: Environment variables
             elif os.environ.get(values['env']):
                 val = os.environ.get(values['env'])
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT']:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS']:
                     try:
                         loaded_config[key] = int(val)
                     except (ValueError, TypeError):
@@ -127,7 +140,7 @@ class ConfigManager:
                 if key in ['CALIBRE_PASSWORD', 'SMTP_PASSWORD'] and not value:
                     continue
 
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT'] and value is not None:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS'] and value is not None:
                     try:
                         current_config[key] = int(value)
                     except (ValueError, TypeError):
