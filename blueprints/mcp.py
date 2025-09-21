@@ -9,6 +9,7 @@ from flask import Blueprint, request, jsonify, g
 from contextlib import closing
 import database
 import config_manager
+import ebooklib
 from ebooklib import epub
 from lxml import etree, html
 from epub_fixer import fix_epub_for_kindle
@@ -157,7 +158,7 @@ def _extract_content_from_epub(epub_path, chapter_number):
     if not toc_items:
         for item_id, _ in book.spine:
             item = book.get_item_with_id(item_id)
-            if item and item.media_type == 'application/xhtml+xml':
+            if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
                 title = os.path.splitext(os.path.basename(item.get_name()))[0]
                 toc_items.append({'title': title, 'href': item.get_name()})
 
@@ -190,7 +191,7 @@ def _extract_content_from_epub(epub_path, chapter_number):
     for i in range(start_index, end_index):
         item_href = spine_hrefs[i]
         item = book.get_item_with_href(item_href)
-        if item and item.media_type == 'application/xhtml+xml':
+        if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
             try:
                 parser = etree.HTMLParser()
                 doc = etree.fromstring(item.get_content(), parser)
