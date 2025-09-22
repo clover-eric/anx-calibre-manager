@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="{{ g.user.language if g.user and g.user.language else 'zh_Hans' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Audiobook Player') }}</title>
+    <script id="js-translations" type="application/json">{{ get_js_translations() | tojson | safe }}</script>
+    <script>
+        window.translations = JSON.parse(document.getElementById('js-translations').textContent);
+        function _(text) { return window.translations[text] || text; }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/audio_player.css') }}?v={{ cache_buster }}">
+</head>
+<body class="theme-{{ theme }}" data-library-id="{{ library_id }}">
+    <div class="audio-player-container">
+        <!-- Desktop: Left Panel / Mobile: Full View -->
+        <div class="list-view">
+            <header class="list-header">
+                <a href="{{ url_for('main.index') }}" class="back-button" title="{{ _('Back to main library') }}">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="library-toggle">
+                    <button class="button {% if library_id == 'calibre' %}active{% endif %}" data-library="calibre">{{ _('Calibre Library') }}</button>
+                    <button class="button {% if library_id == 'anx' %}active{% endif %}" data-library="anx">{{ _('Anx Library') }}</button>
+                </div>
+            </header>
+            <div class="search-bar-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="search" id="search-input" placeholder="{{ _('Search in library...') }}">
+            </div>
+            <div class="loading-overlay" id="library-loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            <div id="audiobook-list" class="audiobook-list"></div>
+            <div id="empty-library-message" class="empty-library-message" style="display: none;">
+                <i class="fas fa-book-open"></i>
+                <p>{{ _('No audiobooks found in this library.') }}</p>
+                <span>{{ _('Try generating one from your book list.') }}</span>
+            </div>
+        </div>
+
+        <!-- Desktop Only: Right Panel -->
+        <div class="player-view" id="player-view">
+            <div class="player-placeholder" id="player-placeholder">
+                <i class="fas fa-headphones"></i>
+                <p>{{ _('Select an audiobook to begin playback.') }}</p>
+            </div>
+            <div class="player-content hidden" id="player-content">
+                <!-- Player content will be injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Only: Mini Player -->
+    <footer class="mini-player hidden" id="mini-player">
+        <div class="mini-player-progress-container">
+            <input type="range" class="progress-bar" id="mini-player-progress-bar" value="0" step="1">
+        </div>
+        <div class="mini-player-content">
+            <div class="mini-player-info">
+                <img id="mini-player-cover" src="" alt="Cover">
+                <div class="mini-player-details">
+                    <h4 id="mini-player-title"></h4>
+                    <p id="mini-player-artist"></p>
+                </div>
+            </div>
+            <div class="mini-player-controls">
+                <button class="control-button prev-chapter-btn" title="{{ _('Previous Chapter') }}"><i class="fas fa-backward"></i></button>
+                <button class="control-button play-pause-btn" title="{{ _('Play/Pause') }}"><i class="fas fa-play"></i></button>
+                <button class="control-button next-chapter-btn" title="{{ _('Next Chapter') }}"><i class="fas fa-forward"></i></button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Only: Full Screen Player Overlay -->
+    <div class="full-player-overlay hidden" id="full-player-overlay">
+        <div class="full-player-header">
+            <button class="control-button" id="full-player-close-btn"><i class="fas fa-chevron-down"></i></button>
+            <h3>{{ _('Now Playing') }}</h3>
+        </div>
+        <div class="full-player-content">
+            <!-- Full player content will be injected by JS -->
+        </div>
+    </div>
+
+    <audio id="audio-element"></audio>
+
+    <script type="module" src="{{ url_for('static', filename='js/audio_player.js') }}?v={{ cache_buster }}"></script>
+</body>
+</html>

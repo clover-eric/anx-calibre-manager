@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 01:59+0800\n"
+"POT-Creation-Date: 2025-09-22 15:32+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -817,6 +817,38 @@ msgstr "所有章節均為空或無法轉換為音訊。"
 msgid "An unknown error occurred: %(error)s"
 msgstr "發生未知錯誤：%(error)s"
 
+#: templates/audio_player.html:6
+msgid "Audiobook Player"
+msgstr "有聲書播放器"
+
+#: templates/audio_player.html:24
+msgid "My Audiobooks"
+msgstr "我的有聲書"
+
+#: templates/audio_player.html:26
+msgid "Calibre Library"
+msgstr "Calibre 書庫"
+
+#: templates/audio_player.html:27 templates/index.html:113
+msgid "Anx Library"
+msgstr "Anx 書庫"
+
+#: templates/audio_player.html:38
+msgid "No audiobooks found in this library."
+msgstr "此書庫中沒有找到有聲書。"
+
+#: templates/audio_player.html:39
+msgid "Try generating one from your book list."
+msgstr "嘗試從您的圖書清單中產生一本。"
+
+#: templates/audio_player.html:86 templates/audio_player.html:110
+msgid "Chapters"
+msgstr "章節列表"
+
+#: templates/audio_player.html:96
+msgid "Now Playing"
+msgstr "正在播放"
+
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
@@ -928,10 +960,6 @@ msgstr "產生有聲書"
 msgid "No books in Calibre library."
 msgstr "Calibre 書庫中沒有圖書。"
 
-#: templates/index.html:113
-msgid "Anx Library"
-msgstr "Anx 書庫"
-
 #: templates/index.html:116
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
@@ -1030,19 +1058,19 @@ msgstr "在此註冊"
 msgid "Book Reader"
 msgstr "圖書閱讀器"
 
-#: templates/reader.html:71
+#: templates/reader.html:81
 msgid "TTS Settings"
 msgstr "TTS 設定"
 
-#: templates/reader.html:73 templates/settings.html:96
+#: templates/reader.html:83 templates/settings.html:96
 msgid "Rate"
 msgstr "語速"
 
-#: templates/reader.html:78 templates/settings.html:106
+#: templates/reader.html:88 templates/settings.html:106
 msgid "Pitch"
 msgstr "音高"
 
-#: templates/reader.html:83 templates/settings.html:76
+#: templates/reader.html:93 templates/settings.html:76
 msgid "Voice"
 msgstr "聲音"
 
@@ -1939,4 +1967,7 @@ msgstr "還沒有已讀完的書籍。"
 
 #~ msgid "Queued..."
 #~ msgstr "已加入佇列..."
+
+#~ msgid "Failed to fetch audiobook list."
+#~ msgstr "取得圖書失敗：{statusText}"
 

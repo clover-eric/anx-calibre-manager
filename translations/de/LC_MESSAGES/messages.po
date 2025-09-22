@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 01:59+0800\n"
+"POT-Creation-Date: 2025-09-22 15:32+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -846,6 +846,38 @@ msgstr "Alle Kapitel sind leer oder konnten nicht in Audio konvertiert werden."
 msgid "An unknown error occurred: %(error)s"
 msgstr "Ein unbekannter Fehler ist aufgetreten: %(error)s"
 
+#: templates/audio_player.html:6
+msgid "Audiobook Player"
+msgstr "Hörbuch-Player"
+
+#: templates/audio_player.html:24
+msgid "My Audiobooks"
+msgstr "Meine Hörbücher"
+
+#: templates/audio_player.html:26
+msgid "Calibre Library"
+msgstr "Calibre-Bibliothek"
+
+#: templates/audio_player.html:27 templates/index.html:113
+msgid "Anx Library"
+msgstr "Anx-Bibliothek"
+
+#: templates/audio_player.html:38
+msgid "No audiobooks found in this library."
+msgstr "Keine Hörbücher in dieser Bibliothek gefunden."
+
+#: templates/audio_player.html:39
+msgid "Try generating one from your book list."
+msgstr "Versuchen Sie, eines aus Ihrer Buchliste zu generieren."
+
+#: templates/audio_player.html:86 templates/audio_player.html:110
+msgid "Chapters"
+msgstr "Kapitel"
+
+#: templates/audio_player.html:96
+msgid "Now Playing"
+msgstr "Aktuelle Wiedergabe"
+
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
@@ -957,10 +989,6 @@ msgstr "Hörbuch generieren"
 msgid "No books in Calibre library."
 msgstr "Keine Bücher in der Calibre-Bibliothek."
 
-#: templates/index.html:113
-msgid "Anx Library"
-msgstr "Anx-Bibliothek"
-
 #: templates/index.html:116
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
@@ -1062,19 +1090,19 @@ msgstr "Hier registrieren"
 msgid "Book Reader"
 msgstr "Buchleser"
 
-#: templates/reader.html:71
+#: templates/reader.html:81
 msgid "TTS Settings"
 msgstr "TTS-Einstellungen"
 
-#: templates/reader.html:73 templates/settings.html:96
+#: templates/reader.html:83 templates/settings.html:96
 msgid "Rate"
 msgstr "Geschwindigkeit"
 
-#: templates/reader.html:78 templates/settings.html:106
+#: templates/reader.html:88 templates/settings.html:106
 msgid "Pitch"
 msgstr "Tonhöhe"
 
-#: templates/reader.html:83 templates/settings.html:76
+#: templates/reader.html:93 templates/settings.html:76
 msgid "Voice"
 msgstr "Stimme"
 
@@ -2056,4 +2084,7 @@ msgstr "Noch keine Bücher fertig gelesen."
 
 #~ msgid "Queued..."
 #~ msgstr "In Warteschlange..."
+
+#~ msgid "Failed to fetch audiobook list."
+#~ msgstr "Fehler beim Abrufen des Buches: {statusText}"
 

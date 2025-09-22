@@ -111,13 +111,25 @@ export function finalizeAudiobookButton(button, task, originalText) {
         button.classList.add('is-success');
         buttonText.textContent = t.downloadAudiobook;
 
-        // Replace button with a download link
+        // Create a container for the new buttons
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'audiobook-actions-container';
+
+        // Create Listen button
+        const listenLink = document.createElement('a');
+        listenLink.href = `/audio_player?task_id=${task.task_id}`;
+        listenLink.textContent = t.listenAudiobook;
+        listenLink.className = 'button listen-button';
+        buttonContainer.appendChild(listenLink);
+
+        // Create Download button
         const downloadLink = document.createElement('a');
         downloadLink.href = `/api/audiobook/download/${task.task_id}`;
         downloadLink.textContent = t.downloadAudiobook;
         downloadLink.className = 'button is-success';
+        buttonContainer.appendChild(downloadLink);
         
-        button.parentNode.replaceChild(downloadLink, button);
+        button.parentNode.replaceChild(buttonContainer, button);
 
     } else { // error
         button.classList.remove('in-progress');

@@ -169,3 +169,16 @@
 .dark-mode ::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+
+/* --- Audiobook Actions --- */
+.audiobook-actions-container {
+    display: flex;
+    gap: 10px; /* Adjust the space between buttons */
+    align-items: center;
+}
+
+.audiobook-actions-container .button {
+    flex: 1; /* Make buttons share space equally */
+    padding: 8px 12px; /* Adjust padding as needed */
+    font-size: 0.9em; /* Adjust font size as needed */
+}

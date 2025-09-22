@@ -1,0 +1,449 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- State ---
+    let currentAudiobooks = [];
+    let filteredAudiobooks = [];
+    let currentTrackIndex = -1;
+    let saveProgressInterval;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    // --- DOM Elements ---
+    const dom = {
+        body: document.body,
+        listView: document.querySelector('.list-view'),
+        libraryToggleButtons: document.querySelectorAll('.library-toggle button'),
+        searchInput: document.getElementById('search-input'),
+        audiobookList: document.getElementById('audiobook-list'),
+        emptyLibraryMessage: document.getElementById('empty-library-message'),
+        loadingOverlay: document.getElementById('library-loading-overlay'),
+        audioElement: document.getElementById('audio-element'),
+        
+        // Desktop Player
+        playerView: document.getElementById('player-view'),
+        playerPlaceholder: document.getElementById('player-placeholder'),
+        playerContent: document.getElementById('player-content'),
+
+        // Mobile Player
+        miniPlayer: document.getElementById('mini-player'),
+        miniPlayerInfo: document.querySelector('.mini-player-info'),
+        miniPlayerCover: document.getElementById('mini-player-cover'),
+        miniPlayerTitle: document.getElementById('mini-player-title'),
+        miniPlayerArtist: document.getElementById('mini-player-artist'),
+        miniPlayerProgressBar: document.getElementById('mini-player-progress-bar'),
+        miniPlayerControls: document.querySelector('.mini-player-controls'),
+        
+        fullPlayerOverlay: document.getElementById('full-player-overlay'),
+        fullPlayerCloseBtn: document.getElementById('full-player-close-btn'),
+    };
+
+    // --- Utility Functions ---
+    const formatTime = (seconds) => {
+        if (isNaN(seconds) || seconds < 0) return '0:00';
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    };
+
+    // --- API Functions ---
+    const fetchAudiobooks = async (libraryType) => {
+        dom.loadingOverlay.style.display = 'flex';
+        try {
+            const response = await fetch(`/api/audioplayer/list/${libraryType}`);
+            if (!response.ok) throw new Error(_("Failed to fetch audiobook list."));
+            currentAudiobooks = await response.json();
+            filterAndRenderList();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            dom.loadingOverlay.style.display = 'none';
+        }
+    };
+    
+    const fetchProgress = async (taskId) => {
+        try {
+            const response = await fetch(`/api/audioplayer/progress/${taskId}`);
+            if (!response.ok) return 0;
+            const data = await response.json();
+            return data.currentTime || 0;
+        } catch (error) { return 0; }
+    };
+
+    const saveProgress = () => {
+        if (currentTrackIndex === -1 || !dom.audioElement.src) return;
+        const track = currentAudiobooks[currentTrackIndex];
+        fetch(`/api/audioplayer/progress/${track.task_id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                currentTime: dom.audioElement.currentTime,
+                totalDuration: dom.audioElement.duration,
+            }),
+        });
+    };
+
+    // --- Render Functions ---
+    const filterAndRenderList = () => {
+        const query = dom.searchInput.value.toLowerCase();
+        filteredAudiobooks = currentAudiobooks.filter(book => 
+            book.title.toLowerCase().includes(query) || 
+            book.artist.toLowerCase().includes(query)
+        );
+        renderAudiobookList();
+    };
+
+    const renderAudiobookList = () => {
+        dom.audiobookList.innerHTML = '';
+        if (filteredAudiobooks.length === 0) {
+            dom.audiobookList.style.display = 'none';
+            dom.emptyLibraryMessage.style.display = 'flex';
+            return;
+        }
+        
+        dom.audiobookList.style.display = 'block';
+        dom.emptyLibraryMessage.style.display = 'none';
+
+        filteredAudiobooks.forEach((book) => {
+            const originalIndex = currentAudiobooks.findIndex(b => b.task_id === book.task_id);
+            const item = document.createElement('div');
+            item.className = 'audiobook-item';
+            item.dataset.index = originalIndex;
+
+            const titleHtml = `<div class="marquee"><span>${book.title}</span></div>`;
+            const artistHtml = `<p class="marquee"><span>${book.artist}</span></p>`;
+ 
+             item.innerHTML = `
+                 <img src="${book.cover || '/static/images/default-cover.svg'}" alt="${book.title}" class="cover">
+                 <div class="info">
+                     <div class="info-main">
+                         <h4>${titleHtml}</h4>
+                         ${artistHtml}
+                     </div>
+                     <div class="meta">
+                         <span>${book.chapter_count} ${_('chapters')}</span>
+                        <span>${formatTime(book.total_duration)}</span>
+                    </div>
+                </div>
+            `;
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+                playAudiobook(originalIndex);
+            });
+            dom.audiobookList.appendChild(item);
+        });
+    };
+
+    const renderPlayerContent = (track) => {
+        const chaptersHtml = track.chapters && track.chapters.length > 0
+            ? track.chapters.map((chap, index) => `
+                <li data-start="${chap.start}" data-index="${index}">
+                    <span class="marquee"><span>${chap.title}</span></span>
+                    <span>${formatTime(chap.end - chap.start)}</span>
+                </li>`).join('')
+            : `<li>${_('No chapters available.')}</li>`;
+
+        const metadataHtml = [
+            { label: _('Album'), value: track.album },
+            { label: _('Album Artist'), value: track.album_artist },
+            { label: _('Genre'), value: track.genre },
+            { label: _('Year'), value: track.year },
+            { label: _('Composer'), value: track.composer },
+            { label: _('Comment'), value: track.comment },
+            { label: _('Description'), value: track.description }
+        ]
+        .filter(item => item.value)
+        .map(item => `<p><strong>${item.label}:</strong> ${item.value}</p>`)
+        .join('');
+        
+        const metadataContainerHtml = metadataHtml
+            ? `<div class="track-metadata">${metadataHtml}</div><button class="button metadata-toggle-btn">${_('More')}</button>`
+            : '';
+ 
+         return `
+             <div class="player-top-info">
+                 <img src="${track.cover || '/static/images/default-cover.svg'}" alt="Cover" class="player-cover">
+                 <div class="track-details">
+                     <h2 class="marquee"><span>${track.title}</span></h2>
+                     <p class="marquee"><span>${track.artist}</span></p>
+                     ${metadataContainerHtml}
+                 </div>
+             </div>
+             <div class="player-chapters-container">
+                <ul class="chapter-list">${chaptersHtml}</ul>
+            </div>
+            <div class="player-bottom-controls">
+                <div class="progress-container">
+                    <input type="range" class="progress-bar" value="0" step="1">
+                    <div class="time-labels">
+                        <span class="current-time">00:00</span>
+                        <span class="total-duration">00:00</span>
+                    </div>
+                </div>
+                <div class="playback-buttons">
+                    <button class="control-button prev-track-btn" title="${_('Previous Track')}"><i class="fas fa-step-backward"></i></button>
+                    <button class="control-button seek-backward-btn" title="${_('Seek Backward 10s')}"><i class="fas fa-undo"></i></button>
+                    <button class="control-button play-pause-btn" title="${_('Play/Pause')}"><i class="fas fa-play"></i></button>
+                    <button class="control-button seek-forward-btn" title="${_('Seek Forward 30s')}"><i class="fas fa-redo"></i></button>
+                    <button class="control-button next-track-btn" title="${_('Next Track')}"><i class="fas fa-step-forward"></i></button>
+                </div>
+            </div>
+        `;
+    };
+
+    const bindPlayerEvents = (container) => {
+        const playPauseBtn = container.querySelector('.play-pause-btn');
+        if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlayPause);
+
+        const prevTrackBtn = container.querySelector('.prev-track-btn');
+        if (prevTrackBtn) prevTrackBtn.addEventListener('click', () => changeTrack(-1));
+
+        const nextTrackBtn = container.querySelector('.next-track-btn');
+        if (nextTrackBtn) nextTrackBtn.addEventListener('click', () => changeTrack(1));
+
+        const seekBackwardBtn = container.querySelector('.seek-backward-btn');
+        if (seekBackwardBtn) seekBackwardBtn.addEventListener('click', () => seek(-10));
+
+        const seekForwardBtn = container.querySelector('.seek-forward-btn');
+        if (seekForwardBtn) seekForwardBtn.addEventListener('click', () => seek(30));
+
+        const progressBar = container.querySelector('.progress-bar');
+        if (progressBar) {
+            let isSeeking = false;
+            progressBar.addEventListener('mousedown', () => isSeeking = true);
+            progressBar.addEventListener('touchstart', () => isSeeking = true);
+            
+            progressBar.addEventListener('input', (e) => {
+                if (!isSeeking) return;
+                // Update time label visually while dragging
+                const currentTimeEl = container.querySelector('.current-time');
+                if (currentTimeEl) {
+                     currentTimeEl.textContent = formatTime(parseFloat(e.target.value));
+                }
+            });
+
+            progressBar.addEventListener('change', (e) => { // mouseup/touchend
+                const track = currentAudiobooks[currentTrackIndex];
+                const chapter = track.chapters[getCurrentChapterIndex()];
+                if (chapter) {
+                    const newTime = chapter.start + parseFloat(e.target.value);
+                    dom.audioElement.currentTime = newTime;
+                }
+                isSeeking = false;
+            });
+             progressBar.addEventListener('mouseup', () => isSeeking = false);
+             progressBar.addEventListener('touchend', () => isSeeking = false);
+         }
+         container.querySelectorAll('.chapter-list li').forEach(li => {
+             li.addEventListener('click', () => {
+                 dom.audioElement.currentTime = parseFloat(li.dataset.start);
+             });
+         });
+
+        const metadataToggleBtn = container.querySelector('.metadata-toggle-btn');
+        if (metadataToggleBtn) {
+            metadataToggleBtn.addEventListener('click', (e) => {
+                const metadataContainer = container.querySelector('.track-metadata');
+                metadataContainer.classList.toggle('expanded');
+                if (metadataContainer.classList.contains('expanded')) {
+                    e.target.textContent = _('Less');
+                } else {
+                    e.target.textContent = _('More');
+                }
+            });
+        }
+     };
+
+    // --- Player Logic ---
+    const playAudiobook = async (index) => {
+        if (saveProgressInterval) clearInterval(saveProgressInterval);
+        currentTrackIndex = index;
+        const track = currentAudiobooks[index];
+        
+        if (isMobile) {
+            dom.listView.classList.add('playing');
+            dom.miniPlayer.classList.remove('hidden');
+            dom.miniPlayerCover.src = track.cover || '/static/images/default-cover.svg';
+            dom.miniPlayerTitle.innerHTML = `<div class="marquee"><span>${track.title}</span></div>`;
+            dom.miniPlayerArtist.textContent = track.artist;
+        } else {
+            dom.playerPlaceholder.classList.add('hidden');
+            dom.playerContent.innerHTML = renderPlayerContent(track);
+            bindPlayerEvents(dom.playerContent);
+            dom.playerContent.classList.remove('hidden');
+        }
+
+        dom.audioElement.src = `/api/audioplayer/stream/${track.task_id}`;
+        const savedTime = await fetchProgress(track.task_id);
+        
+        dom.audioElement.addEventListener('loadedmetadata', () => {
+            if (isFinite(savedTime)) {
+                dom.audioElement.currentTime = savedTime;
+            }
+            dom.audioElement.play();
+        }, { once: true });
+
+        saveProgressInterval = setInterval(saveProgress, 5000);
+    };
+
+    const togglePlayPause = () => {
+        if (!dom.audioElement.src) return;
+        if (dom.audioElement.paused) dom.audioElement.play();
+        else dom.audioElement.pause();
+    };
+
+    const changeTrack = (direction) => {
+        let newIndex = currentTrackIndex + direction;
+        if (newIndex < 0) newIndex = currentAudiobooks.length - 1;
+        if (newIndex >= currentAudiobooks.length) newIndex = 0;
+        
+        const newActiveItem = dom.audiobookList.querySelector(`[data-index='${newIndex}']`);
+        if (newActiveItem) {
+            document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
+            newActiveItem.classList.add('active');
+            newActiveItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        playAudiobook(newIndex);
+    };
+    
+    const seek = (seconds) => { dom.audioElement.currentTime += seconds; };
+
+    const getCurrentChapterIndex = () => {
+        const track = currentAudiobooks[currentTrackIndex];
+        const currentTime = dom.audioElement.currentTime;
+        if (!track || !track.chapters) return -1;
+        
+        for (let i = track.chapters.length - 1; i >= 0; i--) {
+            if (currentTime >= track.chapters[i].start) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    const updateAllPlayerStates = () => {
+        const { currentTime, duration, paused } = dom.audioElement;
+        
+        const playerUIs = [dom.playerContent, dom.fullPlayerOverlay, dom.miniPlayer];
+        
+        const track = currentAudiobooks[currentTrackIndex];
+        const chapterIndex = getCurrentChapterIndex();
+        const chapter = track && track.chapters && chapterIndex !== -1 ? track.chapters[chapterIndex] : null;
+
+        playerUIs.forEach(ui => {
+            if (!ui || (ui.classList.contains('hidden') && ui.id !== 'mini-player')) return;
+
+            const playPauseIcon = ui.querySelector('.play-pause-btn i');
+            if (playPauseIcon) {
+                playPauseIcon.classList.toggle('fa-play', paused);
+                playPauseIcon.classList.toggle('fa-pause', !paused);
+            }
+
+            const progressBar = ui.querySelector('.progress-bar');
+            if (progressBar) {
+               if (chapter) {
+                   const chapterDuration = chapter.end - chapter.start;
+                   const timeInChapter = currentTime - chapter.start;
+                   progressBar.value = timeInChapter > 0 ? timeInChapter : 0;
+                   progressBar.max = chapterDuration > 0 ? chapterDuration : 0;
+               } else if (duration > 0) {
+                   // Fallback for books without chapters
+                   progressBar.value = currentTime;
+                   progressBar.max = duration;
+               } else {
+                   progressBar.value = 0;
+                   progressBar.max = 0;
+               }
+            }
+            
+            const currentTimeEl = ui.querySelector('.current-time');
+            if (currentTimeEl && chapter) {
+                currentTimeEl.textContent = formatTime(currentTime - chapter.start);
+            } else if (currentTimeEl) {
+                currentTimeEl.textContent = formatTime(currentTime);
+            }
+
+            const totalDurationEl = ui.querySelector('.total-duration');
+            if (totalDurationEl && chapter) {
+                totalDurationEl.textContent = formatTime(chapter.end - chapter.start);
+            } else if (totalDurationEl) {
+                totalDurationEl.textContent = formatTime(duration);
+            }
+            
+            const chapterList = ui.querySelector('.chapter-list');
+            if (chapterList) {
+                chapterList.querySelectorAll('li').forEach((li, index) => {
+                    li.classList.toggle('active', index === chapterIndex);
+                });
+            }
+        });
+    };
+
+    // --- Event Listeners ---
+    dom.libraryToggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const libraryId = button.dataset.library;
+            window.location.href = `/audio_player?library_id=${libraryId}`;
+        });
+    });
+
+    dom.searchInput.addEventListener('input', filterAndRenderList);
+
+    dom.audioElement.addEventListener('play', updateAllPlayerStates);
+    dom.audioElement.addEventListener('pause', updateAllPlayerStates);
+    dom.audioElement.addEventListener('timeupdate', updateAllPlayerStates);
+    dom.audioElement.addEventListener('loadedmetadata', updateAllPlayerStates);
+    dom.audioElement.addEventListener('ended', () => changeTrack(1));
+
+    if (isMobile) {
+        dom.miniPlayerInfo.addEventListener('click', () => {
+            const track = currentAudiobooks[currentTrackIndex];
+            if (!track) return;
+            
+            const fullPlayerContent = dom.fullPlayerOverlay.querySelector('.full-player-content');
+            fullPlayerContent.innerHTML = renderPlayerContent(track);
+            bindPlayerEvents(fullPlayerContent);
+            updateAllPlayerStates();
+            dom.fullPlayerOverlay.classList.remove('hidden');
+        });
+
+        const changeChapter = (direction) => {
+            const track = currentAudiobooks[currentTrackIndex];
+            if (!track || !track.chapters) return;
+            let newChapterIndex = getCurrentChapterIndex() + direction;
+            if (newChapterIndex >= 0 && newChapterIndex < track.chapters.length) {
+                dom.audioElement.currentTime = track.chapters[newChapterIndex].start;
+            }
+        };
+
+        dom.miniPlayerInfo.addEventListener('click', () => {
+            const track = currentAudiobooks[currentTrackIndex];
+            if (!track) return;
+            
+            const fullPlayerContent = dom.fullPlayerOverlay.querySelector('.full-player-content');
+            fullPlayerContent.innerHTML = renderPlayerContent(track);
+            bindPlayerEvents(fullPlayerContent);
+            updateAllPlayerStates();
+            dom.fullPlayerOverlay.classList.remove('hidden');
+        });
+
+        const miniPlayPauseBtn = dom.miniPlayerControls.querySelector('.play-pause-btn');
+        if (miniPlayPauseBtn) miniPlayPauseBtn.addEventListener('click', togglePlayPause);
+        
+        const miniPrevChapterBtn = dom.miniPlayerControls.querySelector('.prev-chapter-btn');
+        if (miniPrevChapterBtn) miniPrevChapterBtn.addEventListener('click', () => changeChapter(-1));
+
+        const miniNextChapterBtn = dom.miniPlayerControls.querySelector('.next-chapter-btn');
+        if (miniNextChapterBtn) miniNextChapterBtn.addEventListener('click', () => changeChapter(1));
+
+        dom.fullPlayerCloseBtn.addEventListener('click', () => {
+            dom.fullPlayerOverlay.classList.add('hidden');
+        });
+    }
+
+    window.addEventListener('beforeunload', saveProgress);
+
+    // --- Initial Load ---
+    const initialLibraryId = dom.body.dataset.libraryId || 'calibre';
+    fetchAudiobooks(initialLibraryId);
+});

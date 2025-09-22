@@ -186,6 +186,13 @@ def settings_page():
 def reader_page(book_type, book_id):
     return render_template('reader.html', book_type=book_type, book_id=book_id)
 
+@main_bp.route('/audio_player')
+@login_required
+def audio_player_page():
+    theme = g.user.theme if hasattr(g.user, 'theme') and g.user.theme else 'auto'
+    library_id = request.args.get('library_id', 'calibre')
+    return render_template('audio_player.html', theme=theme, library_id=library_id)
+
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required
 def calibre_cover(book_id):

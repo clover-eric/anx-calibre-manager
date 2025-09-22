@@ -120,6 +120,38 @@ def update_schema_if_needed(db):
              cursor.execute("ALTER TABLE audiobook_tasks ADD COLUMN status_params TEXT")
              db.commit()
 
+    # 检查 audiobook_progress 表是否存在
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audiobook_progress'")
+    if cursor.fetchone() is None:
+        print("Migrating database: creating 'audiobook_progress' table.")
+        create_audiobook_progress_table(cursor)
+        db.commit()
+
+
+def create_audiobook_progress_table(cursor):
+    """创建有声书播放进度表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE audiobook_progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            task_id TEXT NOT NULL,
+            current_time REAL DEFAULT 0,
+            total_duration REAL DEFAULT 0,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id, task_id),
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+            FOREIGN KEY (task_id) REFERENCES audiobook_tasks (task_id) ON DELETE CASCADE
+        );
+    ''')
+    # 创建触发器以自动更新 updated_at
+    cursor.execute('''
+        CREATE TRIGGER update_audiobook_progress_updated_at
+        AFTER UPDATE ON audiobook_progress
+        FOR EACH ROW
+        BEGIN
+            UPDATE audiobook_progress SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+        END;
+    ''')
 
 def create_audiobook_tasks_table(cursor):
     """创建有声书任务表的辅助函数"""
@@ -228,6 +260,7 @@ def create_schema():
                     create_mcp_tokens_table(cursor)
                     create_invite_codes_table(cursor)
                     create_audiobook_tasks_table(cursor)
+                    create_audiobook_progress_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

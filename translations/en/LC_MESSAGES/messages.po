@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 01:59+0800\n"
+"POT-Creation-Date: 2025-09-22 15:32+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -839,6 +839,38 @@ msgstr "All chapters are empty or could not be converted to audio."
 msgid "An unknown error occurred: %(error)s"
 msgstr "An unknown error occurred: %(error)s"
 
+#: templates/audio_player.html:6
+msgid "Audiobook Player"
+msgstr "Audiobook Player"
+
+#: templates/audio_player.html:24
+msgid "My Audiobooks"
+msgstr "My Audiobooks"
+
+#: templates/audio_player.html:26
+msgid "Calibre Library"
+msgstr "Calibre Library"
+
+#: templates/audio_player.html:27 templates/index.html:113
+msgid "Anx Library"
+msgstr "Anx Library"
+
+#: templates/audio_player.html:38
+msgid "No audiobooks found in this library."
+msgstr "No audiobooks found in this library."
+
+#: templates/audio_player.html:39
+msgid "Try generating one from your book list."
+msgstr "Try generating one from your book list."
+
+#: templates/audio_player.html:86 templates/audio_player.html:110
+msgid "Chapters"
+msgstr "Chapters"
+
+#: templates/audio_player.html:96
+msgid "Now Playing"
+msgstr "Now Playing"
+
 #: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
@@ -950,10 +982,6 @@ msgstr "Generate Audiobook"
 msgid "No books in Calibre library."
 msgstr "No books in Calibre library."
 
-#: templates/index.html:113
-msgid "Anx Library"
-msgstr "Anx Library"
-
 #: templates/index.html:116
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
@@ -1054,19 +1082,19 @@ msgstr "Register here"
 msgid "Book Reader"
 msgstr "Book Reader"
 
-#: templates/reader.html:71
+#: templates/reader.html:81
 msgid "TTS Settings"
 msgstr "TTS Settings"
 
-#: templates/reader.html:73 templates/settings.html:96
+#: templates/reader.html:83 templates/settings.html:96
 msgid "Rate"
 msgstr "Rate"
 
-#: templates/reader.html:78 templates/settings.html:106
+#: templates/reader.html:88 templates/settings.html:106
 msgid "Pitch"
 msgstr "Pitch"
 
-#: templates/reader.html:83 templates/settings.html:76
+#: templates/reader.html:93 templates/settings.html:76
 msgid "Voice"
 msgstr "Voice"
 
@@ -2026,4 +2054,10 @@ msgstr "No finished books yet."
 
 #~ msgid "Queued..."
 #~ msgstr "Queued..."
+
+#~ msgid "Listen Audiobook"
+#~ msgstr "Listen Audiobook"
+
+#~ msgid "Failed to fetch audiobook list."
+#~ msgstr "Failed to fetch book: {statusText}"
 
