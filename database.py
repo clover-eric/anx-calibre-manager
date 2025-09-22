@@ -12,7 +12,8 @@ def get_db():
     """获取数据库连接"""
     db_dir = os.path.dirname(DATABASE_PATH)
     os.makedirs(db_dir, exist_ok=True)
-    conn = sqlite3.connect(DATABASE_PATH)
+    # isolation_level=None enables autocommit mode, which can help with write-then-read consistency.
+    conn = sqlite3.connect(DATABASE_PATH, isolation_level=None)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -135,23 +136,23 @@ def create_audiobook_progress_table(cursor):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             task_id TEXT NOT NULL,
-            current_time REAL DEFAULT 0,
-            total_duration REAL DEFAULT 0,
+            progress_ms INTEGER DEFAULT 0,
+            duration_ms INTEGER DEFAULT 0,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, task_id),
             FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
             FOREIGN KEY (task_id) REFERENCES audiobook_tasks (task_id) ON DELETE CASCADE
         );
     ''')
-    # 创建触发器以自动更新 updated_at
-    cursor.execute('''
-        CREATE TRIGGER update_audiobook_progress_updated_at
-        AFTER UPDATE ON audiobook_progress
-        FOR EACH ROW
-        BEGIN
-            UPDATE audiobook_progress SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
-        END;
-    ''')
+    # 创建触发器以自动更新 updated_at (Removed due to causing issues with current_time field)
+    # cursor.execute('''
+    #     CREATE TRIGGER update_audiobook_progress_updated_at
+    #     AFTER UPDATE ON audiobook_progress
+    #     FOR EACH ROW
+    #     BEGIN
+    #         UPDATE audiobook_progress SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+    #     END;
+    # ''')
 
 def create_audiobook_tasks_table(cursor):
     """创建有声书任务表的辅助函数"""

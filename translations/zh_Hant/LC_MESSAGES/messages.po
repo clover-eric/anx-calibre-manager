@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 15:32+0800\n"
+"POT-Creation-Date: 2025-09-22 19:36+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -122,7 +122,7 @@ msgstr "本書的任務已在進行中。"
 msgid "Invalid 'library' type"
 msgstr "無效的 'library' 類型"
 
-#: blueprints/api/audiobook.py:199 static/js/page/translations.js:56
+#: blueprints/api/audiobook.py:199 static/js/page/translations.js:57
 #, python-format
 msgid "File error: %(error)s"
 msgstr "檔案錯誤：%(error)s"
@@ -442,6 +442,48 @@ msgstr "刪除使用者資料目錄時發生錯誤：%(error)s"
 msgid "User and their data have been successfully deleted."
 msgstr "使用者及其資料已成功刪除。"
 
+#: static/js/audio_player.js:67
+#, fuzzy
+msgid "Failed to fetch audiobook list."
+msgstr "取得圖書失敗：{statusText}"
+
+#: static/js/audio_player.js:164
+msgid "Album"
+msgstr "專輯"
+
+#: static/js/audio_player.js:165
+msgid "Album Artist"
+msgstr "專輯藝術家"
+
+#: static/js/audio_player.js:166
+msgid "Genre"
+msgstr "類型"
+
+#: static/js/audio_player.js:167
+msgid "Year"
+msgstr "年份"
+
+#: static/js/audio_player.js:168
+msgid "Composer"
+msgstr "作曲家"
+
+#: static/js/audio_player.js:169
+msgid "Comment"
+msgstr "評論"
+
+#: static/js/audio_player.js:170 static/js/page/translations.js:36
+#: templates/index.html:70 templates/index.html:143
+msgid "Description"
+msgstr "描述"
+
+#: static/js/audio_player.js:266
+msgid "Less"
+msgstr "收合"
+
+#: static/js/audio_player.js:268
+msgid "More"
+msgstr "更多"
+
 #: static/js/login.js:3
 msgid "A network error occurred, please try again."
 msgstr "網路發生錯誤，請重試。"
@@ -703,116 +745,116 @@ msgid "Download Audiobook"
 msgstr "下載有聲書"
 
 #: static/js/page/translations.js:25
+#, fuzzy
+msgid "Listen to Audiobook"
+msgstr "產生有聲書"
+
+#: static/js/page/translations.js:26
 msgid "Failed"
 msgstr "失敗"
 
-#: static/js/page/translations.js:26
+#: static/js/page/translations.js:27
 msgid "Error"
 msgstr "錯誤"
 
-#: static/js/page/translations.js:27
+#: static/js/page/translations.js:28
 msgid "Success!"
 msgstr "成功！"
 
-#: static/js/page/translations.js:30
+#: static/js/page/translations.js:31
 msgid "Title"
 msgstr "標題"
 
-#: static/js/page/translations.js:31 templates/stats.html:36
+#: static/js/page/translations.js:32 templates/stats.html:36
 #: templates/stats.html:60
 msgid "Author"
 msgstr "作者"
 
-#: static/js/page/translations.js:32
+#: static/js/page/translations.js:33
 msgid "Authors (comma-separated)"
 msgstr "作者（逗號分隔）"
 
-#: static/js/page/translations.js:33
+#: static/js/page/translations.js:34
 msgid "Rating (0-5)"
 msgstr "評分 (0-5)"
 
-#: static/js/page/translations.js:34
+#: static/js/page/translations.js:35
 msgid "Reading Progress (%)"
 msgstr "閱讀進度 (%)"
 
-#: static/js/page/translations.js:35 templates/index.html:70
-#: templates/index.html:143
-msgid "Description"
-msgstr "描述"
-
-#: static/js/page/translations.js:36
+#: static/js/page/translations.js:37
 msgid "Note"
 msgstr "筆記"
 
-#: static/js/page/translations.js:37
+#: static/js/page/translations.js:38
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
 msgstr "Calibre 圖書的中繼資料更新是非同步的，可能需要一些時間才能生效。"
 
-#: static/js/page/translations.js:38 templates/index.html:60
+#: static/js/page/translations.js:39 templates/index.html:60
 #: templates/index.html:136
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/translations.js:39 templates/index.html:61
+#: static/js/page/translations.js:40 templates/index.html:61
 msgid "Publication Date"
 msgstr "出版日期"
 
-#: static/js/page/translations.js:40
+#: static/js/page/translations.js:41
 msgid "Tags (comma-separated)"
 msgstr "標籤（逗號分隔）"
 
-#: static/js/page/translations.js:41
+#: static/js/page/translations.js:42
 msgid "Library (custom field #library)"
 msgstr "書庫（自訂欄位 #library）"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:43
 msgid "Read Date (custom field #readdate)"
 msgstr "閱讀日期（自訂欄位 #readdate）"
 
-#: static/js/page/translations.js:45
+#: static/js/page/translations.js:46
 msgid "Task queued"
 msgstr "任務已排入佇列"
 
-#: static/js/page/translations.js:46
+#: static/js/page/translations.js:47
 msgid "Starting audiobook generation..."
 msgstr "開始產生有聲書..."
 
-#: static/js/page/translations.js:47
+#: static/js/page/translations.js:48
 msgid "Parsing EPUB file..."
 msgstr "正在解析 EPUB 檔案..."
 
-#: static/js/page/translations.js:48
+#: static/js/page/translations.js:49
 #, python-format
 msgid "Processing: Chapter %(index)d/%(total)d"
 msgstr "正在處理：第 %(index)d/%(total)d 章"
 
-#: static/js/page/translations.js:49
+#: static/js/page/translations.js:50
 msgid "Merging audio files..."
 msgstr "正在合併音訊檔案..."
 
-#: static/js/page/translations.js:50
+#: static/js/page/translations.js:51
 msgid "Writing book metadata..."
 msgstr "正在寫入書籍中繼資料..."
 
-#: static/js/page/translations.js:51
+#: static/js/page/translations.js:52
 msgid "Cleaning up temporary files..."
 msgstr "正在清理暫存檔案..."
 
-#: static/js/page/translations.js:52
+#: static/js/page/translations.js:53
 msgid "Audiobook generated successfully!"
 msgstr "有聲書產生成功！"
 
-#: static/js/page/translations.js:53
+#: static/js/page/translations.js:54
 msgid "Could not extract any chapters from the EPUB file."
 msgstr "無法從 EPUB 檔案中擷取任何章節。"
 
-#: static/js/page/translations.js:54
+#: static/js/page/translations.js:55
 msgid "All chapters are empty or could not be converted to audio."
 msgstr "所有章節均為空或無法轉換為音訊。"
 
-#: static/js/page/translations.js:55
+#: static/js/page/translations.js:56
 #, python-format
 msgid "An unknown error occurred: %(error)s"
 msgstr "發生未知錯誤：%(error)s"
@@ -821,31 +863,51 @@ msgstr "發生未知錯誤：%(error)s"
 msgid "Audiobook Player"
 msgstr "有聲書播放器"
 
-#: templates/audio_player.html:24
-msgid "My Audiobooks"
-msgstr "我的有聲書"
+#: templates/audio_player.html:21
+#, fuzzy
+msgid "Back to main library"
+msgstr "Anx 書庫"
 
-#: templates/audio_player.html:26
+#: templates/audio_player.html:25
 msgid "Calibre Library"
 msgstr "Calibre 書庫"
 
-#: templates/audio_player.html:27 templates/index.html:113
+#: templates/audio_player.html:26 templates/index.html:113
 msgid "Anx Library"
 msgstr "Anx 書庫"
 
-#: templates/audio_player.html:38
+#: templates/audio_player.html:31
+#, fuzzy
+msgid "Search in library..."
+msgstr "搜尋 Calibre 圖書..."
+
+#: templates/audio_player.html:39
 msgid "No audiobooks found in this library."
 msgstr "此書庫中沒有找到有聲書。"
 
-#: templates/audio_player.html:39
+#: templates/audio_player.html:40
 msgid "Try generating one from your book list."
 msgstr "嘗試從您的圖書清單中產生一本。"
 
-#: templates/audio_player.html:86 templates/audio_player.html:110
-msgid "Chapters"
+#: templates/audio_player.html:48
+msgid "Select an audiobook to begin playback."
+msgstr "選取有聲書以開始播放。"
+
+#: templates/audio_player.html:70
+#, fuzzy
+msgid "Previous Chapter"
+msgstr "上一頁"
+
+#: templates/audio_player.html:71
+msgid "Play/Pause"
+msgstr "播放/暫停"
+
+#: templates/audio_player.html:72
+#, fuzzy
+msgid "Next Chapter"
 msgstr "章節列表"
 
-#: templates/audio_player.html:96
+#: templates/audio_player.html:81
 msgid "Now Playing"
 msgstr "正在播放"
 
@@ -1970,4 +2032,7 @@ msgstr "還沒有已讀完的書籍。"
 
 #~ msgid "Failed to fetch audiobook list."
 #~ msgstr "取得圖書失敗：{statusText}"
+
+#~ msgid "My Audiobooks"
+#~ msgstr "我的有聲書"
 

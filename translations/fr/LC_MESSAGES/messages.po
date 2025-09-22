@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-22 15:32+0800\n"
+"POT-Creation-Date: 2025-09-22 19:36+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -123,7 +123,7 @@ msgstr "Une tâche pour ce livre est déjà en cours."
 msgid "Invalid 'library' type"
 msgstr "Type de 'library' invalide"
 
-#: blueprints/api/audiobook.py:199 static/js/page/translations.js:56
+#: blueprints/api/audiobook.py:199 static/js/page/translations.js:57
 #, python-format
 msgid "File error: %(error)s"
 msgstr "Erreur de fichier : %(error)s"
@@ -461,6 +461,48 @@ msgstr ""
 msgid "User and their data have been successfully deleted."
 msgstr "L'utilisateur et ses données ont été supprimés avec succès."
 
+#: static/js/audio_player.js:67
+#, fuzzy
+msgid "Failed to fetch audiobook list."
+msgstr "Échec de la récupération du livre : {statusText}"
+
+#: static/js/audio_player.js:164
+msgid "Album"
+msgstr "Album"
+
+#: static/js/audio_player.js:165
+msgid "Album Artist"
+msgstr "Artiste de l'album"
+
+#: static/js/audio_player.js:166
+msgid "Genre"
+msgstr "Genre"
+
+#: static/js/audio_player.js:167
+msgid "Year"
+msgstr "Année"
+
+#: static/js/audio_player.js:168
+msgid "Composer"
+msgstr "Compositeur"
+
+#: static/js/audio_player.js:169
+msgid "Comment"
+msgstr "Commentaire"
+
+#: static/js/audio_player.js:170 static/js/page/translations.js:36
+#: templates/index.html:70 templates/index.html:143
+msgid "Description"
+msgstr "Description"
+
+#: static/js/audio_player.js:266
+msgid "Less"
+msgstr "Moins"
+
+#: static/js/audio_player.js:268
+msgid "More"
+msgstr "Plus"
+
 #: static/js/login.js:3
 msgid "A network error occurred, please try again."
 msgstr "Une erreur réseau est survenue, veuillez réessayer."
@@ -730,48 +772,48 @@ msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
 #: static/js/page/translations.js:25
+#, fuzzy
+msgid "Listen to Audiobook"
+msgstr "Générer un livre audio"
+
+#: static/js/page/translations.js:26
 msgid "Failed"
 msgstr "Échec"
 
-#: static/js/page/translations.js:26
+#: static/js/page/translations.js:27
 msgid "Error"
 msgstr "Erreur"
 
-#: static/js/page/translations.js:27
+#: static/js/page/translations.js:28
 msgid "Success!"
 msgstr "Succès !"
 
-#: static/js/page/translations.js:30
+#: static/js/page/translations.js:31
 msgid "Title"
 msgstr "Titre"
 
-#: static/js/page/translations.js:31 templates/stats.html:36
+#: static/js/page/translations.js:32 templates/stats.html:36
 #: templates/stats.html:60
 msgid "Author"
 msgstr "Auteur"
 
-#: static/js/page/translations.js:32
+#: static/js/page/translations.js:33
 msgid "Authors (comma-separated)"
 msgstr "Auteurs (séparés par des virgules)"
 
-#: static/js/page/translations.js:33
+#: static/js/page/translations.js:34
 msgid "Rating (0-5)"
 msgstr "Note (0-5)"
 
-#: static/js/page/translations.js:34
+#: static/js/page/translations.js:35
 msgid "Reading Progress (%)"
 msgstr "Progression de la lecture (%)"
 
-#: static/js/page/translations.js:35 templates/index.html:70
-#: templates/index.html:143
-msgid "Description"
-msgstr "Description"
-
-#: static/js/page/translations.js:36
+#: static/js/page/translations.js:37
 msgid "Note"
 msgstr "Note"
 
-#: static/js/page/translations.js:37
+#: static/js/page/translations.js:38
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
@@ -779,69 +821,69 @@ msgstr ""
 "Les mises à jour de métadonnées pour les livres Calibre sont asynchrones "
 "et peuvent prendre un moment à s'appliquer."
 
-#: static/js/page/translations.js:38 templates/index.html:60
+#: static/js/page/translations.js:39 templates/index.html:60
 #: templates/index.html:136
 msgid "Publisher"
 msgstr "Éditeur"
 
-#: static/js/page/translations.js:39 templates/index.html:61
+#: static/js/page/translations.js:40 templates/index.html:61
 msgid "Publication Date"
 msgstr "Date de publication"
 
-#: static/js/page/translations.js:40
+#: static/js/page/translations.js:41
 msgid "Tags (comma-separated)"
 msgstr "Étiquettes (séparées par des virgules)"
 
-#: static/js/page/translations.js:41
+#: static/js/page/translations.js:42
 msgid "Library (custom field #library)"
 msgstr "Bibliothèque (champ personnalisé #library)"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:43
 msgid "Read Date (custom field #readdate)"
 msgstr "Date de lecture (champ personnalisé #readdate)"
 
-#: static/js/page/translations.js:45
+#: static/js/page/translations.js:46
 msgid "Task queued"
 msgstr "Tâche mise en file d'attente"
 
-#: static/js/page/translations.js:46
+#: static/js/page/translations.js:47
 msgid "Starting audiobook generation..."
 msgstr "Démarrage de la génération du livre audio..."
 
-#: static/js/page/translations.js:47
+#: static/js/page/translations.js:48
 msgid "Parsing EPUB file..."
 msgstr "Analyse du fichier EPUB..."
 
-#: static/js/page/translations.js:48
+#: static/js/page/translations.js:49
 #, python-format
 msgid "Processing: Chapter %(index)d/%(total)d"
 msgstr "Traitement : Chapitre %(index)d/%(total)d"
 
-#: static/js/page/translations.js:49
+#: static/js/page/translations.js:50
 msgid "Merging audio files..."
 msgstr "Fusion des fichiers audio..."
 
-#: static/js/page/translations.js:50
+#: static/js/page/translations.js:51
 msgid "Writing book metadata..."
 msgstr "Écriture des métadonnées du livre..."
 
-#: static/js/page/translations.js:51
+#: static/js/page/translations.js:52
 msgid "Cleaning up temporary files..."
 msgstr "Nettoyage des fichiers temporaires..."
 
-#: static/js/page/translations.js:52
+#: static/js/page/translations.js:53
 msgid "Audiobook generated successfully!"
 msgstr "Livre audio généré avec succès !"
 
-#: static/js/page/translations.js:53
+#: static/js/page/translations.js:54
 msgid "Could not extract any chapters from the EPUB file."
 msgstr "Impossible d'extraire des chapitres du fichier EPUB."
 
-#: static/js/page/translations.js:54
+#: static/js/page/translations.js:55
 msgid "All chapters are empty or could not be converted to audio."
 msgstr "Tous les chapitres sont vides ou n'ont pas pu être convertis en audio."
 
-#: static/js/page/translations.js:55
+#: static/js/page/translations.js:56
 #, python-format
 msgid "An unknown error occurred: %(error)s"
 msgstr "Une erreur inconnue est survenue : %(error)s"
@@ -850,31 +892,51 @@ msgstr "Une erreur inconnue est survenue : %(error)s"
 msgid "Audiobook Player"
 msgstr "Lecteur de livres audio"
 
-#: templates/audio_player.html:24
-msgid "My Audiobooks"
-msgstr "Mes livres audio"
+#: templates/audio_player.html:21
+#, fuzzy
+msgid "Back to main library"
+msgstr "Bibliothèque Anx"
 
-#: templates/audio_player.html:26
+#: templates/audio_player.html:25
 msgid "Calibre Library"
 msgstr "Bibliothèque Calibre"
 
-#: templates/audio_player.html:27 templates/index.html:113
+#: templates/audio_player.html:26 templates/index.html:113
 msgid "Anx Library"
 msgstr "Bibliothèque Anx"
 
-#: templates/audio_player.html:38
+#: templates/audio_player.html:31
+#, fuzzy
+msgid "Search in library..."
+msgstr "Rechercher des livres Calibre..."
+
+#: templates/audio_player.html:39
 msgid "No audiobooks found in this library."
 msgstr "Aucun livre audio trouvé dans cette bibliothèque."
 
-#: templates/audio_player.html:39
+#: templates/audio_player.html:40
 msgid "Try generating one from your book list."
 msgstr "Essayez d'en générer un à partir de votre liste de livres."
 
-#: templates/audio_player.html:86 templates/audio_player.html:110
-msgid "Chapters"
+#: templates/audio_player.html:48
+msgid "Select an audiobook to begin playback."
+msgstr "Sélectionnez un livre audio pour commencer la lecture."
+
+#: templates/audio_player.html:70
+#, fuzzy
+msgid "Previous Chapter"
+msgstr "Précédent"
+
+#: templates/audio_player.html:71
+msgid "Play/Pause"
+msgstr "Lecture/Pause"
+
+#: templates/audio_player.html:72
+#, fuzzy
+msgid "Next Chapter"
 msgstr "Chapitres"
 
-#: templates/audio_player.html:96
+#: templates/audio_player.html:81
 msgid "Now Playing"
 msgstr "En cours de lecture"
 
@@ -2099,4 +2161,7 @@ msgstr "Aucun livre terminé pour le moment."
 
 #~ msgid "Failed to fetch audiobook list."
 #~ msgstr "Échec de la récupération du livre : {statusText}"
+
+#~ msgid "My Audiobooks"
+#~ msgstr "Mes livres audio"
 

@@ -27,6 +27,22 @@ body.theme-dark {
     --box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+/* Apply dark theme variables when user preference is 'auto' and OS is in dark mode */
+@media (prefers-color-scheme: dark) {
+    body.theme-auto {
+        --background-color: #181a1b;
+        --background-color-alt: #25282a;
+        --text-color: #e8e6e3;
+        --text-color-secondary: #95a5a6;
+        --border-color: #34383b;
+        --primary-color: #5dade2;
+        --primary-color-rgb: 93, 173, 226;
+        --primary-color-translucent: rgba(93, 173, 226, 0.1);
+        --hover-color: #34383b;
+        --box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+}
+
 body {
     background-color: var(--background-color);
     color: var(--text-color);
@@ -159,6 +175,11 @@ body.theme-dark .library-toggle .button.active {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+}
+.audiobook-item .info-main {
+    flex-grow: 1;
+    min-width: 0;
 }
 .audiobook-item h4, .audiobook-item p {
     margin: 0;
@@ -172,13 +193,20 @@ body.theme-dark .library-toggle .button.active {
 
 .marquee span {
     display: inline-block;
-    padding-left: 100%;
     animation: marquee 15s linear infinite;
+    animation-play-state: paused; /* Initially paused */
+    padding-right: 2rem; /* Add some space at the end of the scroll */
 }
 
-@keyframes marquee {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(-100%, 0); }
+.marquee.overflowing span {
+    animation-play-state: running; /* Run automatically if overflowing */
+}
+ 
+ @keyframes marquee {
+    0% { transform: translateX(0); }
+    10% { transform: translateX(0); } /* Pause at the beginning */
+    90% { transform: translateX(-100%); }
+    100% { transform: translateX(-100%); }
 }
 .audiobook-item h4 { font-size: 1rem; font-weight: 500; color: var(--text-color); }
 .audiobook-item p { font-size: 0.85rem; color: var(--text-color-secondary); }
@@ -223,6 +251,7 @@ body.theme-dark .library-toggle .button.active {
     padding: 1rem;
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
+    align-items: flex-start;
 }
 .player-top-info .player-cover {
     width: 100px;
@@ -236,14 +265,35 @@ body.theme-dark .library-toggle .button.active {
     text-align: left;
     flex-grow: 1;
 }
-.player-top-info .track-details .track-metadata p {
+.track-metadata {
     font-size: 0.85rem;
     color: var(--text-color-secondary);
+    line-height: 1.5;
+    max-height: calc(1.5em * 3); /* line-height * 3 lines */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease-in-out;
+}
+.track-metadata.expanded {
+    max-height: 200px; /* A reasonable max height */
+    overflow-y: auto;
+}
+.track-metadata p {
     margin: 0.25rem 0;
 }
-.player-top-info .track-details h2 { font-size: 1.4rem; margin-bottom: 0.25rem; }
-.player-top-info .track-details p { font-size: 1rem; }
-
+.metadata-toggle-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+.player-top-info .track-details h2 { font-size: 1.4rem; margin: 0 0 0.25rem 0; }
+.player-top-info .track-details p { font-size: 1rem; margin: 0; }
+ 
 .player-chapters-container {
     flex-grow: 1;
     overflow-y: auto;
@@ -257,18 +307,24 @@ body.theme-dark .library-toggle .button.active {
 .player-chapters-container .chapter-list li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
+    gap: 1rem;
+}
+.player-chapters-container .chapter-list li > span:first-child {
+    flex-grow: 1;
+    min-width: 0;
 }
 .player-chapters-container .chapter-list li:hover { background-color: var(--hover-color); }
 .player-chapters-container .chapter-list li.active { color: var(--primary-color); font-weight: 500; }
 
 .player-bottom-controls {
-    padding: 1rem;
+    padding: 0.25rem 1rem 0.5rem 1rem;
     flex-shrink: 0;
 }
-.progress-container { width: 100%; margin-bottom: 1rem; }
+.progress-container { width: 100%; margin-bottom: 0.5rem; }
 .progress-bar { width: 100%; }
 .time-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-color-secondary); margin-top: 0.5rem; }
 .playback-buttons { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
@@ -369,6 +425,7 @@ body.theme-dark .library-toggle .button.active {
         padding: 0;
     }
     .full-player-content .player-top-info {
+        min-height: 120px; /* Ensure enough space for cover and title */
         max-height: 40vh;
         overflow-y: auto;
     }

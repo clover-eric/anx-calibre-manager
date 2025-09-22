@@ -20,24 +20,24 @@
         text-align: center;
     }
     .book-row .actions {
-        flex-direction: row;
+        flex-direction: column; /* Stack button groups vertically */
         width: 100%;
         margin-top: 1rem;
-        flex-wrap: wrap;
-        gap: 0; /* Reset gap for the main container */
-    }
-    /* This rule is now for the buttons inside the main row */
-    .book-row .actions .actions-main .button {
-        flex: 1;
-    }
-    .book-row .actions .actions-main {
-        display: flex;
-        flex-basis: 100%;
         gap: 8px;
     }
+    .book-row .actions .actions-main,
+    .book-row .actions .audiobook-actions-container {
+        display: flex;
+        flex-direction: row; /* Buttons inside groups are horizontal */
+        gap: 8px;
+        width: 100%;
+    }
+    .book-row .actions .actions-main .button,
+    .book-row .actions .audiobook-actions-container .button {
+        flex: 1; /* Make buttons inside groups share space */
+    }
     .book-row .actions .actions-full-width {
-        flex-basis: 100%;
-        margin-top: 8px;
+        width: 100%;
     }
     .book-row .actions .actions-full-width .button {
         width: 100%;
@@ -85,9 +85,18 @@
 }
 
 @media (min-width: 769px) {
-    .book-row .actions .actions-main {
+    /* Ensure all button groups stack vertically on desktop */
+    .book-row .actions .actions-main,
+    .book-row .actions .actions-full-width,
+    .book-row .actions .audiobook-actions-container {
         display: flex;
         flex-direction: column;
-        gap: 8px; /* Gap for buttons inside the main group */
+        gap: 8px;
+        width: 100%;
+    }
+    .book-row .actions .actions-main .button,
+    .book-row .actions .actions-full-width .button,
+    .book-row .actions .audiobook-actions-container .button {
+        width: 100%;
     }
 }

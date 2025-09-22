@@ -22,6 +22,7 @@ export function initializeTranslations() {
         someFilesFailedUpload: _('Some files failed to upload. Please check the progress details.'),
         generating: _('Generating...'),
         downloadAudiobook: _('Download Audiobook'),
+        listenAudiobook: _('Listen to Audiobook'),
         failed: _('Failed'),
         error: _('Error'),
         success: _('Success!'),

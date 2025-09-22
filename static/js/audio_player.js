@@ -45,8 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${m}:${s.toString().padStart(2, '0')}`;
     };
 
-    // --- API Functions ---
-    const fetchAudiobooks = async (libraryType) => {
+    const applyConditionalMarquee = (container) => {
+        setTimeout(() => {
+            const marquees = container.querySelectorAll('.marquee');
+            marquees.forEach(marquee => {
+                const span = marquee.querySelector('span');
+                if (span && span.scrollWidth > marquee.clientWidth) {
+                    marquee.classList.add('overflowing');
+                } else {
+                    marquee.classList.remove('overflowing');
+                }
+            });
+        }, 0);
+    };
+ 
+     // --- API Functions ---
+     const fetchAudiobooks = async (libraryType) => {
         dom.loadingOverlay.style.display = 'flex';
         try {
             const response = await fetch(`/api/audioplayer/list/${libraryType}`);
@@ -61,22 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const fetchProgress = async (taskId) => {
-        try {
-            const response = await fetch(`/api/audioplayer/progress/${taskId}`);
-            if (!response.ok) return 0;
-            const data = await response.json();
-            return data.currentTime || 0;
-        } catch (error) { return 0; }
-    };
+       try {
+           const response = await fetch(`/api/audioplayer/progress/${taskId}`);
+           if (!response.ok) return { currentTime: 0, totalDuration: 0 };
+           return await response.json();
+       } catch (error) {
+           return { currentTime: 0, totalDuration: 0 };
+       }
+   };
 
     const saveProgress = () => {
-        if (currentTrackIndex === -1 || !dom.audioElement.src) return;
+        if (currentTrackIndex === -1 || !dom.audioElement.src || dom.audioElement.currentTime === 0) return;
         const track = currentAudiobooks[currentTrackIndex];
+        const currentTime = dom.audioElement.currentTime;
         fetch(`/api/audioplayer/progress/${track.task_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                currentTime: dom.audioElement.currentTime,
+                currentTime: currentTime,
                 totalDuration: dom.audioElement.duration,
             }),
         });
@@ -131,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 playAudiobook(originalIndex);
             });
             dom.audiobookList.appendChild(item);
+            applyConditionalMarquee(item);
         });
     };
 
@@ -181,11 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="playback-buttons">
-                    <button class="control-button prev-track-btn" title="${_('Previous Track')}"><i class="fas fa-step-backward"></i></button>
+                    <button class="control-button prev-chapter-btn" title="${_('Previous Chapter')}"><i class="fas fa-step-backward"></i></button>
                     <button class="control-button seek-backward-btn" title="${_('Seek Backward 10s')}"><i class="fas fa-undo"></i></button>
                     <button class="control-button play-pause-btn" title="${_('Play/Pause')}"><i class="fas fa-play"></i></button>
                     <button class="control-button seek-forward-btn" title="${_('Seek Forward 30s')}"><i class="fas fa-redo"></i></button>
-                    <button class="control-button next-track-btn" title="${_('Next Track')}"><i class="fas fa-step-forward"></i></button>
+                    <button class="control-button next-chapter-btn" title="${_('Next Chapter')}"><i class="fas fa-step-forward"></i></button>
                 </div>
             </div>
         `;
@@ -195,13 +212,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const playPauseBtn = container.querySelector('.play-pause-btn');
         if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlayPause);
 
-        const prevTrackBtn = container.querySelector('.prev-track-btn');
-        if (prevTrackBtn) prevTrackBtn.addEventListener('click', () => changeTrack(-1));
-
-        const nextTrackBtn = container.querySelector('.next-track-btn');
-        if (nextTrackBtn) nextTrackBtn.addEventListener('click', () => changeTrack(1));
-
-        const seekBackwardBtn = container.querySelector('.seek-backward-btn');
+        const prevChapterBtn = container.querySelector('.prev-chapter-btn');
+        if (prevChapterBtn) prevChapterBtn.addEventListener('click', () => changeChapter(-1));
+ 
+         const nextChapterBtn = container.querySelector('.next-chapter-btn');
+        if (nextChapterBtn) nextChapterBtn.addEventListener('click', () => changeChapter(1));
+ 
+         const seekBackwardBtn = container.querySelector('.seek-backward-btn');
         if (seekBackwardBtn) seekBackwardBtn.addEventListener('click', () => seek(-10));
 
         const seekForwardBtn = container.querySelector('.seek-forward-btn');
@@ -256,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Player Logic ---
     const playAudiobook = async (index) => {
+        saveProgress(); // Save progress of the current track before switching
         if (saveProgressInterval) clearInterval(saveProgressInterval);
         currentTrackIndex = index;
         const track = currentAudiobooks[index];
@@ -265,19 +283,23 @@ document.addEventListener('DOMContentLoaded', () => {
             dom.miniPlayer.classList.remove('hidden');
             dom.miniPlayerCover.src = track.cover || '/static/images/default-cover.svg';
             dom.miniPlayerTitle.innerHTML = `<div class="marquee"><span>${track.title}</span></div>`;
-            dom.miniPlayerArtist.textContent = track.artist;
+            dom.miniPlayerArtist.innerHTML = `<div class="marquee"><span>${track.artist}</span></div>`;
+            applyConditionalMarquee(dom.miniPlayer);
         } else {
             dom.playerPlaceholder.classList.add('hidden');
             dom.playerContent.innerHTML = renderPlayerContent(track);
             bindPlayerEvents(dom.playerContent);
+            applyConditionalMarquee(dom.playerContent);
             dom.playerContent.classList.remove('hidden');
         }
 
         dom.audioElement.src = `/api/audioplayer/stream/${track.task_id}`;
-        const savedTime = await fetchProgress(track.task_id);
-        
+        const progressData = await fetchProgress(track.task_id);
+        const savedTime = progressData.currentTime || 0;
+
         dom.audioElement.addEventListener('loadedmetadata', () => {
-            if (isFinite(savedTime)) {
+            const duration = dom.audioElement.duration;
+            if (isFinite(savedTime) && savedTime > 0 && savedTime < duration) {
                 dom.audioElement.currentTime = savedTime;
             }
             dom.audioElement.play();
@@ -288,28 +310,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const togglePlayPause = () => {
         if (!dom.audioElement.src) return;
-        if (dom.audioElement.paused) dom.audioElement.play();
-        else dom.audioElement.pause();
+        if (dom.audioElement.paused) {
+            dom.audioElement.play();
+        } else {
+            dom.audioElement.pause();
+            saveProgress(); // Save progress on pause
+        }
     };
 
     const changeTrack = (direction) => {
-        let newIndex = currentTrackIndex + direction;
-        if (newIndex < 0) newIndex = currentAudiobooks.length - 1;
-        if (newIndex >= currentAudiobooks.length) newIndex = 0;
-        
-        const newActiveItem = dom.audiobookList.querySelector(`[data-index='${newIndex}']`);
+        if (filteredAudiobooks.length === 0) return;
+
+        // Find the current track's index within the *filtered* list
+        const currentFilteredIndex = filteredAudiobooks.findIndex(book =>
+            currentAudiobooks.indexOf(book) === currentTrackIndex
+        );
+
+        let nextFilteredIndex = currentFilteredIndex + direction;
+
+        if (nextFilteredIndex < 0) {
+            nextFilteredIndex = filteredAudiobooks.length - 1;
+        }
+        if (nextFilteredIndex >= filteredAudiobooks.length) {
+            nextFilteredIndex = 0;
+        }
+
+        const nextBook = filteredAudiobooks[nextFilteredIndex];
+        const nextOriginalIndex = currentAudiobooks.indexOf(nextBook);
+
+        const newActiveItem = dom.audiobookList.querySelector(`[data-index='${nextOriginalIndex}']`);
         if (newActiveItem) {
             document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
             newActiveItem.classList.add('active');
             newActiveItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        playAudiobook(newIndex);
+        playAudiobook(nextOriginalIndex);
     };
     
     const seek = (seconds) => { dom.audioElement.currentTime += seconds; };
 
-    const getCurrentChapterIndex = () => {
+    const changeChapter = (direction) => {
         const track = currentAudiobooks[currentTrackIndex];
+        if (!track || !track.chapters || track.chapters.length === 0) return;
+        let newChapterIndex = getCurrentChapterIndex() + direction;
+        if (newChapterIndex >= 0 && newChapterIndex < track.chapters.length) {
+            dom.audioElement.currentTime = track.chapters[newChapterIndex].start;
+        }
+    };
+ 
+     const getCurrentChapterIndex = () => {
+         const track = currentAudiobooks[currentTrackIndex];
         const currentTime = dom.audioElement.currentTime;
         if (!track || !track.chapters) return -1;
         
@@ -394,15 +444,40 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.audioElement.addEventListener('timeupdate', updateAllPlayerStates);
     dom.audioElement.addEventListener('loadedmetadata', updateAllPlayerStates);
     dom.audioElement.addEventListener('ended', () => changeTrack(1));
+ 
+     if (isMobile) {
+        // Bind events for the mini player progress bar
+        let isMiniSeeking = false;
+        dom.miniPlayerProgressBar.addEventListener('mousedown', () => isMiniSeeking = true);
+        dom.miniPlayerProgressBar.addEventListener('touchstart', () => isMiniSeeking = true);
+        
+        dom.miniPlayerProgressBar.addEventListener('input', (e) => {
+            if (!isMiniSeeking) return;
+            // No time label to update on mini player, so this is just for visual feedback
+        });
 
-    if (isMobile) {
-        dom.miniPlayerInfo.addEventListener('click', () => {
+        dom.miniPlayerProgressBar.addEventListener('change', (e) => {
+            if (currentTrackIndex === -1) return;
             const track = currentAudiobooks[currentTrackIndex];
+            const chapter = track.chapters[getCurrentChapterIndex()];
+            if (chapter) {
+                const newTime = chapter.start + parseFloat(e.target.value);
+                dom.audioElement.currentTime = newTime;
+            }
+            isMiniSeeking = false;
+        });
+        dom.miniPlayerProgressBar.addEventListener('mouseup', () => isMiniSeeking = false);
+        dom.miniPlayerProgressBar.addEventListener('touchend', () => isMiniSeeking = false);
+
+
+         dom.miniPlayerInfo.addEventListener('click', () => {
+             const track = currentAudiobooks[currentTrackIndex];
             if (!track) return;
             
             const fullPlayerContent = dom.fullPlayerOverlay.querySelector('.full-player-content');
             fullPlayerContent.innerHTML = renderPlayerContent(track);
             bindPlayerEvents(fullPlayerContent);
+            applyConditionalMarquee(fullPlayerContent);
             updateAllPlayerStates();
             dom.fullPlayerOverlay.classList.remove('hidden');
         });
@@ -423,6 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullPlayerContent = dom.fullPlayerOverlay.querySelector('.full-player-content');
             fullPlayerContent.innerHTML = renderPlayerContent(track);
             bindPlayerEvents(fullPlayerContent);
+            applyConditionalMarquee(fullPlayerContent);
             updateAllPlayerStates();
             dom.fullPlayerOverlay.classList.remove('hidden');
         });

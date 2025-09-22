@@ -21,6 +21,7 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
 - **Support PWA**: Installable en tant qu'application web progressive pour une expérience similaire à une application native.
 - **Visionneuse de livres dans le navigateur**: Prévisualisez les livres électroniques directement dans votre navigateur. Comprend une fonction de synthèse vocale (TTS).
 - **Génération de Livres Audio**: Convertissez des livres EPUB en livres audio M4B avec des marqueurs de chapitre, en utilisant des fournisseurs de synthèse vocale (TTS) configurables (par ex., Microsoft Edge TTS). Les fichiers M4B générés sont entièrement compatibles avec des serveurs de livres audio comme [Audiobookshelf](https://www.audiobookshelf.org/).
+- **Lecteur de Livres Audio en Ligne**: Écoutez vos livres audio M4B générés directement dans le navigateur. Votre progression d'écoute est automatiquement sauvegardée et synchronisée.
 - **Intégration Calibre**: Se connecte à votre serveur Calibre existant pour parcourir et rechercher votre bibliothèque.
 - **Synchronisation KOReader**: Synchronisez votre progression de lecture et votre temps de lecture avec les appareils KOReader.
 - **Envoi Intelligent vers Kindle**: Gère automatiquement les formats lors de l'envoi vers votre Kindle. Si un EPUB existe, il est envoyé directement. Sinon, l'application **convertit le meilleur format disponible en EPUB** selon vos préférences avant de l'envoyer, garantissant une compatibilité optimale.

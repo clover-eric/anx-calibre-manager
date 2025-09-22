@@ -21,6 +21,7 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
 - **PWA-Unterstützung**: Als Progressive Web App installierbar für ein nativ-ähnliches Erlebnis.
 - **In-Browser-Buchvorschau**: Vorschau von E-Books direkt in Ihrem Browser. Bietet Text-zu-Sprache (TTS).
 - **Hörbuchgenerierung**: Konvertieren Sie EPUB-Bücher in M4B-Hörbücher mit Kapitelmarkierungen unter Verwendung konfigurierbarer Text-zu-Sprache (TTS)-Anbieter (z. B. Microsoft Edge TTS). Die generierten M4B-Dateien sind vollständig kompatibel mit Hörbuchservern wie [Audiobookshelf](https://www.audiobookshelf.org/).
+- **Online-Hörbuch-Player**: Hören Sie Ihre generierten M4B-Hörbücher direkt im Browser. Ihr Hörfortschritt wird automatisch gespeichert und synchronisiert.
 - **Calibre-Integration**: Verbindet sich mit Ihrem vorhandenen Calibre-Server, um Ihre Bibliothek zu durchsuchen und zu durchsuchen.
 - **KOReader-Synchronisierung**: Synchronisieren Sie Ihren Lesefortschritt und Ihre Lesezeit mit KOReader-Geräten.
 - **Intelligentes Senden an Kindle**: Behandelt automatisch Formate beim Senden an Ihren Kindle. Wenn ein EPUB vorhanden ist, wird es direkt gesendet. Wenn nicht, konvertiert die App **das beste verfügbare Format in EPUB** basierend auf Ihren Vorlieben, bevor sie es sendet, um eine optimale Kompatibilität zu gewährleisten.

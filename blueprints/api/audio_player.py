@@ -1,9 +1,11 @@
 import os
+import logging
 from flask import Blueprint, jsonify, g, request, send_file, Response
 from contextlib import closing
 import database
 from utils.audio_metadata import extract_m4b_metadata
 
+logger = logging.getLogger(__name__)
 audio_player_bp = Blueprint('audio_player', __name__, url_prefix='/api/audioplayer')
 
 def get_db():
@@ -83,19 +85,45 @@ def handle_progress(task_id):
             if current_time is None or total_duration is None:
                 return jsonify({'error': 'Invalid progress data'}), 400
 
+            # Convert seconds (float) to milliseconds (int) for stable storage
+            progress_ms = int(float(current_time) * 1000)
+            duration_ms = int(float(total_duration) * 1000)
+            
             db.execute("""
-                INSERT INTO audiobook_progress (user_id, task_id, current_time, total_duration)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO audiobook_progress (user_id, task_id, progress_ms, duration_ms, updated_at)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
                 ON CONFLICT(user_id, task_id) DO UPDATE SET
-                current_time = excluded.current_time,
-                total_duration = excluded.total_duration,
+                progress_ms = excluded.progress_ms,
+                duration_ms = excluded.duration_ms,
                 updated_at = CURRENT_TIMESTAMP
-            """, (user_id, task_id, current_time, total_duration))
+            """, (user_id, task_id, progress_ms, duration_ms))
+            
             db.commit()
             return jsonify({'message': 'Progress updated'})
-        else: # GET
-            progress = db.execute("SELECT current_time, total_duration FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
-            if progress:
-                return jsonify({'currentTime': progress['current_time'], 'totalDuration': progress['total_duration']})
-            else:
+        else:  # GET
+            progress = db.execute("SELECT progress_ms FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
+            task = db.execute("SELECT file_path FROM audiobook_tasks WHERE task_id = ?", (task_id,)).fetchone()
+
+            if not task or not task['file_path'] or not os.path.exists(task['file_path']):
                 return jsonify({'currentTime': 0, 'totalDuration': 0})
+
+            metadata = extract_m4b_metadata(task['file_path'])
+            total_duration_sec = metadata.get('duration', 0) if metadata else 0
+            saved_time_sec = 0
+
+            if progress and progress['progress_ms'] is not None:
+                progress_ms_val = progress['progress_ms']
+                
+                try:
+                    # Convert milliseconds (int) back to seconds (float)
+                    saved_time_sec = int(progress_ms_val) / 1000.0
+                except (ValueError, TypeError):
+                    saved_time_sec = 0.0
+                
+                if total_duration_sec > 0 and saved_time_sec > total_duration_sec:
+                    saved_time_sec = 0
+
+            return jsonify({
+                'currentTime': saved_time_sec,
+                'totalDuration': total_duration_sec
+            })
