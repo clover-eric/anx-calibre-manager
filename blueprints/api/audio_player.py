@@ -23,7 +23,7 @@ def get_audiobook_list(library_type):
         if library_type == 'anx':
             cursor.execute("""
                 SELECT task_id, book_id, library_type, file_path FROM audiobook_tasks
-                WHERE user_id = ? AND status = 'success'
+                WHERE user_id = ? AND library_type = 'anx' AND status = 'success'
             """, (user_id,))
         elif library_type == 'calibre':
             cursor.execute("""
