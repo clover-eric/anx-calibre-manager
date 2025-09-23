@@ -337,8 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Player Logic ---
     const playAudiobook = async (index) => {
-       updateMediaSession(currentAudiobooks[index]);
-       saveProgress(); // Save progress of the current track before switching
+        saveProgress(); // Save progress of the current track before switching
         if (saveProgressInterval) clearInterval(saveProgressInterval);
         currentTrackIndex = index;
         const track = currentAudiobooks[index];
