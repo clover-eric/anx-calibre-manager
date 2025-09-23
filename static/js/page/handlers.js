@@ -255,8 +255,9 @@ export function setupEventHandlers(
             }
             case 'listen-audiobook': {
                 const taskId = target.dataset.taskId;
+                const library = target.dataset.library;
                 if (taskId) {
-                    window.location.href = `/audio_player?task_id=${taskId}`;
+                    window.location.href = `/audio_player?task_id=${taskId}&library_id=${library}`;
                 }
                 break;
             }

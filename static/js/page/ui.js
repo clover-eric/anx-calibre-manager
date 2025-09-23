@@ -102,6 +102,7 @@ export function updateAudiobookButtonProgress(button, task) {
 }
 
 export function finalizeAudiobookButton(button, task, originalText) {
+    const library = button.dataset.library; // Get library from original button
     const buttonText = button.querySelector('.button-text');
     const progressOverlay = button.querySelector('.progress-overlay');
     const status = task.status;
@@ -116,11 +117,13 @@ export function finalizeAudiobookButton(button, task, originalText) {
         buttonContainer.className = 'audiobook-actions-container';
 
         // Create Listen button
-        const listenLink = document.createElement('a');
-        listenLink.href = `/audio_player?task_id=${task.task_id}`;
-        listenLink.textContent = t.listenAudiobook;
-        listenLink.className = 'button listen-button';
-        buttonContainer.appendChild(listenLink);
+        const listenButton = document.createElement('button');
+        listenButton.dataset.action = 'listen-audiobook';
+        listenButton.dataset.taskId = task.task_id;
+        listenButton.dataset.library = library; // Add library to the new button
+        listenButton.textContent = t.listenAudiobook;
+        listenButton.className = 'button listen-button';
+        buttonContainer.appendChild(listenButton);
 
         // Create Download button
         const downloadLink = document.createElement('a');
