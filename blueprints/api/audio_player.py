@@ -118,49 +118,53 @@ def handle_progress(task_id):
             data = request.get_json()
             current_time = data.get('currentTime')
             total_duration = data.get('totalDuration')
+            playback_rate = data.get('playbackRate', 1.0)
             
             if current_time is None or total_duration is None:
                 return jsonify({'error': 'Invalid progress data'}), 400
 
-            # Convert seconds (float) to milliseconds (int) for stable storage
             progress_ms = int(float(current_time) * 1000)
             duration_ms = int(float(total_duration) * 1000)
             
             db.execute("""
-                INSERT INTO audiobook_progress (user_id, task_id, progress_ms, duration_ms, updated_at)
-                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+                INSERT INTO audiobook_progress (user_id, task_id, progress_ms, duration_ms, playback_rate, updated_at)
+                VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                 ON CONFLICT(user_id, task_id) DO UPDATE SET
                 progress_ms = excluded.progress_ms,
                 duration_ms = excluded.duration_ms,
+                playback_rate = excluded.playback_rate,
                 updated_at = CURRENT_TIMESTAMP
-            """, (user_id, task_id, progress_ms, duration_ms))
+            """, (user_id, task_id, progress_ms, duration_ms, playback_rate))
             
             db.commit()
-            return jsonify({'message': 'Progress updated'})
+            return jsonify({'message': 'Progress and playback rate updated'})
         else:  # GET
-            progress = db.execute("SELECT progress_ms FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
+            progress = db.execute("SELECT progress_ms, playback_rate FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
             task = db.execute("SELECT file_path FROM audiobook_tasks WHERE task_id = ?", (task_id,)).fetchone()
 
             if not task or not task['file_path'] or not os.path.exists(task['file_path']):
-                return jsonify({'currentTime': 0, 'totalDuration': 0})
+                return jsonify({'currentTime': 0, 'totalDuration': 0, 'playbackRate': 1.0})
 
             metadata = extract_m4b_metadata(task['file_path'])
             total_duration_sec = metadata.get('duration', 0) if metadata else 0
             saved_time_sec = 0
+            saved_rate = 1.0
 
-            if progress and progress['progress_ms'] is not None:
-                progress_ms_val = progress['progress_ms']
+            if progress:
+                if progress['progress_ms'] is not None:
+                    try:
+                        saved_time_sec = int(progress['progress_ms']) / 1000.0
+                    except (ValueError, TypeError):
+                        saved_time_sec = 0.0
                 
-                try:
-                    # Convert milliseconds (int) back to seconds (float)
-                    saved_time_sec = int(progress_ms_val) / 1000.0
-                except (ValueError, TypeError):
-                    saved_time_sec = 0.0
-                
+                if progress['playback_rate'] is not None:
+                    saved_rate = float(progress['playback_rate'])
+
                 if total_duration_sec > 0 and saved_time_sec > total_duration_sec:
                     saved_time_sec = 0
 
             return jsonify({
                 'currentTime': saved_time_sec,
-                'totalDuration': total_duration_sec
+                'totalDuration': total_duration_sec,
+                'playbackRate': saved_rate
             })

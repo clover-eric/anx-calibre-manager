@@ -88,12 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentTrackIndex === -1 || !dom.audioElement.src || dom.audioElement.currentTime === 0) return;
         const track = currentAudiobooks[currentTrackIndex];
         const currentTime = dom.audioElement.currentTime;
+        const playbackRate = dom.audioElement.playbackRate;
         fetch(`/api/audioplayer/progress/${track.task_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 currentTime: currentTime,
                 totalDuration: dom.audioElement.duration,
+                playbackRate: playbackRate
             }),
         });
     };
@@ -303,13 +305,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
      };
 
+    // --- Media Session API Integration ---
+    const updateMediaSession = (track) => {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track.title,
+                artist: track.artist,
+                album: track.album || 'Audiobook',
+                artwork: [
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '96x96', type: 'image/svg+xml' },
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '128x128', type: 'image/svg+xml' },
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '192x192', type: 'image/svg+xml' },
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '256x256', type: 'image/svg+xml' },
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '384x384', type: 'image/svg+xml' },
+                    { src: track.cover || '/static/images/default-cover.svg', sizes: '512x512', type: 'image/svg+xml' },
+                ]
+            });
+        }
+    };
+
+    const setupMediaSessionHandlers = () => {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', togglePlayPause);
+            navigator.mediaSession.setActionHandler('pause', togglePlayPause);
+            navigator.mediaSession.setActionHandler('previoustrack', () => changeChapter(-1));
+            navigator.mediaSession.setActionHandler('nexttrack', () => changeChapter(1));
+            navigator.mediaSession.setActionHandler('seekbackward', () => seek(-10));
+            navigator.mediaSession.setActionHandler('seekforward', () => seek(30));
+        }
+    };
+
     // --- Player Logic ---
     const playAudiobook = async (index) => {
-        saveProgress(); // Save progress of the current track before switching
+       updateMediaSession(currentAudiobooks[index]);
+       saveProgress(); // Save progress of the current track before switching
         if (saveProgressInterval) clearInterval(saveProgressInterval);
         currentTrackIndex = index;
         const track = currentAudiobooks[index];
         
+        updateMediaSession(track); // Update media session metadata
+
         // This function now also handles showing the correct view
         const showPlayerDetail = () => {
             if (isMobile) {
@@ -344,6 +379,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.audioElement.src = `/api/audioplayer/stream/${track.task_id}`;
         const progressData = await fetchProgress(track.task_id);
         const savedTime = progressData.currentTime || 0;
+        const savedRate = progressData.playbackRate || 1.0;
+
+        applyPlaybackRate(savedRate); // Apply saved rate before playing
 
         dom.audioElement.addEventListener('loadedmetadata', () => {
             const duration = dom.audioElement.duration;
@@ -413,7 +451,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        localStorage.setItem('audiobookPlaybackRate', rate);
+        // No longer need to save to localStorage, as it's handled by the backend
+        // localStorage.setItem('audiobookPlaybackRate', rate);
     };
 
     const changeChapter = (direction) => {
@@ -506,8 +545,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dom.searchInput.addEventListener('input', filterAndRenderList);
 
-    dom.audioElement.addEventListener('play', updateAllPlayerStates);
-    dom.audioElement.addEventListener('pause', updateAllPlayerStates);
+    dom.audioElement.addEventListener('play', () => {
+        updateAllPlayerStates();
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+    });
+    dom.audioElement.addEventListener('pause', () => {
+        updateAllPlayerStates();
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+    });
     dom.audioElement.addEventListener('timeupdate', updateAllPlayerStates);
     dom.audioElement.addEventListener('loadedmetadata', updateAllPlayerStates);
     dom.audioElement.addEventListener('ended', () => changeTrack(1));
@@ -598,35 +643,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('beforeunload', saveProgress);
 
-    // Keyboard shortcuts listener
+    // Keyboard shortcuts listener (keep for non-media keys)
     document.addEventListener('keydown', (e) => {
-        // Do not trigger shortcuts if user is typing in an input field
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-            return;
-        }
-
-        switch (e.key) {
-            case 'MediaTrackPrevious':
-                changeChapter(-1);
-                break;
-            case 'MediaTrackNext':
-                changeChapter(1);
-                break;
-            case ' ': // Space bar for play/pause
-                e.preventDefault();
-                togglePlayPause();
-                break;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === ' ') {
+            e.preventDefault();
+            togglePlayPause();
         }
     });
 
     // --- Initial Load ---
+    setupMediaSessionHandlers(); // Set up media key handlers
     const initialLibraryId = dom.body.dataset.libraryId || 'calibre';
     const urlParams = new URLSearchParams(window.location.search);
     const taskIdToPlay = urlParams.get('task_id');
 
-    // Restore playback rate
-    const savedRate = parseFloat(localStorage.getItem('audiobookPlaybackRate')) || 1.0;
-    applyPlaybackRate(savedRate);
+    // Restore playback rate - This is now handled within playAudiobook after fetching progress
+    // const savedRate = parseFloat(localStorage.getItem('audiobookPlaybackRate')) || 1.0;
+    // applyPlaybackRate(savedRate);
 
     // Global listener to close rate list
     document.addEventListener('click', () => {

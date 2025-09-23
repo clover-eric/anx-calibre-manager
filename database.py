@@ -127,6 +127,14 @@ def update_schema_if_needed(db):
         print("Migrating database: creating 'audiobook_progress' table.")
         create_audiobook_progress_table(cursor)
         db.commit()
+    else:
+        # 如果表已存在，检查是否需要添加 playback_rate 列
+        cursor.execute("PRAGMA table_info(audiobook_progress)")
+        progress_columns = [row['name'] for row in cursor.fetchall()]
+        if 'playback_rate' not in progress_columns:
+            print("Migrating database: adding 'playback_rate' column to audiobook_progress table.")
+            cursor.execute("ALTER TABLE audiobook_progress ADD COLUMN playback_rate REAL DEFAULT 1.0")
+            db.commit()
 
 
 def create_audiobook_progress_table(cursor):
@@ -138,6 +146,7 @@ def create_audiobook_progress_table(cursor):
             task_id TEXT NOT NULL,
             progress_ms INTEGER DEFAULT 0,
             duration_ms INTEGER DEFAULT 0,
+            playback_rate REAL DEFAULT 1.0,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, task_id),
             FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
