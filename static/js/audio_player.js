@@ -203,6 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="control-button play-pause-btn" title="${_('Play/Pause')}"><i class="fas fa-play"></i></button>
                     <button class="control-button seek-forward-btn" title="${_('Seek Forward 30s')}"><i class="fas fa-redo"></i></button>
                     <button class="control-button next-chapter-btn" title="${_('Next Chapter')}"><i class="fas fa-step-forward"></i></button>
+                    <div class="playback-rate-container">
+                        <button class="control-button playback-rate-btn" title="${_('Playback Speed')}">1.0x</button>
+                        <ul class="playback-rate-list">
+                            <!-- Rates will be populated by JS -->
+                        </ul>
+                    </div>
                 </div>
             </div>
         `;
@@ -223,6 +229,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const seekForwardBtn = container.querySelector('.seek-forward-btn');
         if (seekForwardBtn) seekForwardBtn.addEventListener('click', () => seek(30));
+
+        const playbackRateContainer = container.querySelector('.playback-rate-container');
+        if (playbackRateContainer) {
+            const rateBtn = playbackRateContainer.querySelector('.playback-rate-btn');
+            const rateList = playbackRateContainer.querySelector('.playback-rate-list');
+
+            // Populate the list
+            rateList.innerHTML = playbackRates.map(rate =>
+                `<li data-rate="${rate}">${rate.toFixed(1)}x</li>`
+            ).join('');
+
+            // Show/hide list
+            rateBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playbackRateContainer.classList.toggle('active');
+            });
+
+            // Select rate
+            rateList.addEventListener('click', (e) => {
+                if (e.target.tagName === 'LI') {
+                    const newRate = parseFloat(e.target.dataset.rate);
+                    applyPlaybackRate(newRate);
+                    playbackRateContainer.classList.remove('active');
+                }
+            });
+        }
 
         const progressBar = container.querySelector('.progress-bar');
         if (progressBar) {
@@ -278,20 +310,36 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTrackIndex = index;
         const track = currentAudiobooks[index];
         
-        if (isMobile) {
-            dom.listView.classList.add('playing');
-            dom.miniPlayer.classList.remove('hidden');
-            dom.miniPlayerCover.src = track.cover || '/static/images/default-cover.svg';
-            dom.miniPlayerTitle.innerHTML = `<div class="marquee"><span>${track.title}</span></div>`;
-            dom.miniPlayerArtist.innerHTML = `<div class="marquee"><span>${track.artist}</span></div>`;
-            applyConditionalMarquee(dom.miniPlayer);
-        } else {
-            dom.playerPlaceholder.classList.add('hidden');
-            dom.playerContent.innerHTML = renderPlayerContent(track);
-            bindPlayerEvents(dom.playerContent);
-            applyConditionalMarquee(dom.playerContent);
-            dom.playerContent.classList.remove('hidden');
-        }
+        // This function now also handles showing the correct view
+        const showPlayerDetail = () => {
+            if (isMobile) {
+                dom.listView.classList.add('playing');
+                dom.miniPlayer.classList.remove('hidden');
+                dom.miniPlayerCover.src = track.cover || '/static/images/default-cover.svg';
+                dom.miniPlayerTitle.innerHTML = `<div class="marquee"><span>${track.title}</span></div>`;
+                dom.miniPlayerArtist.innerHTML = `<div class="marquee"><span>${track.artist}</span></div>`;
+                applyConditionalMarquee(dom.miniPlayer);
+
+                // --- MODIFICATION START ---
+                // Show the full player overlay automatically
+                const fullPlayerContent = dom.fullPlayerOverlay.querySelector('.full-player-content');
+                fullPlayerContent.innerHTML = renderPlayerContent(track);
+                bindPlayerEvents(fullPlayerContent);
+                applyConditionalMarquee(fullPlayerContent);
+                updateAllPlayerStates(); // Ensure the state is correct on show
+                dom.fullPlayerOverlay.classList.remove('hidden');
+                // --- MODIFICATION END ---
+
+            } else {
+                dom.playerPlaceholder.classList.add('hidden');
+                dom.playerContent.innerHTML = renderPlayerContent(track);
+                bindPlayerEvents(dom.playerContent);
+                applyConditionalMarquee(dom.playerContent);
+                dom.playerContent.classList.remove('hidden');
+            }
+        };
+
+        showPlayerDetail();
 
         dom.audioElement.src = `/api/audioplayer/stream/${track.task_id}`;
         const progressData = await fetchProgress(track.task_id);
@@ -348,6 +396,25 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const seek = (seconds) => { dom.audioElement.currentTime += seconds; };
+
+    const playbackRates = [0.3, 0.5, 0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5, 3.0];
+
+    const applyPlaybackRate = (rate) => {
+        dom.audioElement.playbackRate = rate;
+        
+        document.querySelectorAll('.playback-rate-container').forEach(container => {
+            const btn = container.querySelector('.playback-rate-btn');
+            const list = container.querySelector('.playback-rate-list');
+            if (btn) btn.textContent = `${rate.toFixed(1)}x`;
+            if (list) {
+                list.querySelectorAll('li').forEach(li => {
+                    li.classList.toggle('active', parseFloat(li.dataset.rate) === rate);
+                });
+            }
+        });
+        
+        localStorage.setItem('audiobookPlaybackRate', rate);
+    };
 
     const changeChapter = (direction) => {
         const track = currentAudiobooks[currentTrackIndex];
@@ -444,6 +511,18 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.audioElement.addEventListener('timeupdate', updateAllPlayerStates);
     dom.audioElement.addEventListener('loadedmetadata', updateAllPlayerStates);
     dom.audioElement.addEventListener('ended', () => changeTrack(1));
+
+    // Loading animation handlers
+    const toggleLoading = (isLoading) => {
+        document.querySelectorAll('.play-pause-btn').forEach(btn => {
+            btn.classList.toggle('loading', isLoading);
+        });
+    };
+
+    dom.audioElement.addEventListener('loadstart', () => toggleLoading(true));
+    dom.audioElement.addEventListener('canplay', () => toggleLoading(false));
+    dom.audioElement.addEventListener('stalled', () => toggleLoading(false));
+    dom.audioElement.addEventListener('error', () => toggleLoading(false));
  
      if (isMobile) {
         // Bind events for the mini player progress bar
@@ -519,7 +598,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('beforeunload', saveProgress);
 
+    // Keyboard shortcuts listener
+    document.addEventListener('keydown', (e) => {
+        // Do not trigger shortcuts if user is typing in an input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        switch (e.key) {
+            case 'MediaTrackPrevious':
+                changeChapter(-1);
+                break;
+            case 'MediaTrackNext':
+                changeChapter(1);
+                break;
+            case ' ': // Space bar for play/pause
+                e.preventDefault();
+                togglePlayPause();
+                break;
+        }
+    });
+
     // --- Initial Load ---
     const initialLibraryId = dom.body.dataset.libraryId || 'calibre';
-    fetchAudiobooks(initialLibraryId);
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskIdToPlay = urlParams.get('task_id');
+
+    // Restore playback rate
+    const savedRate = parseFloat(localStorage.getItem('audiobookPlaybackRate')) || 1.0;
+    applyPlaybackRate(savedRate);
+
+    // Global listener to close rate list
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.playback-rate-container.active').forEach(container => {
+            container.classList.remove('active');
+        });
+    });
+
+    fetchAudiobooks(initialLibraryId).then(() => {
+        if (taskIdToPlay) {
+            const indexToPlay = currentAudiobooks.findIndex(book => book.task_id === taskIdToPlay);
+            if (indexToPlay !== -1) {
+                // Highlight the item in the list
+                const itemInList = dom.audiobookList.querySelector(`[data-index='${indexToPlay}']`);
+                if (itemInList) {
+                    itemInList.classList.add('active');
+                    itemInList.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                playAudiobook(indexToPlay);
+            } else {
+                console.warn(`Task ID ${taskIdToPlay} not found in the current library view.`);
+            }
+        }
+    });
 });

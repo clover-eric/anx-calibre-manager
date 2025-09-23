@@ -253,6 +253,13 @@ export function setupEventHandlers(
                 });
                 break;
             }
+            case 'listen-audiobook': {
+                const taskId = target.dataset.taskId;
+                if (taskId) {
+                    window.location.href = `/audio_player?task_id=${taskId}`;
+                }
+                break;
+            }
             case 'show-upload-modal':
                 showModal(uploadModal);
                 break;

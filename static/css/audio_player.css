@@ -330,7 +330,95 @@ body.theme-dark .library-toggle .button.active {
 .playback-buttons { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
 .control-button { background: none; border: none; color: var(--text-color-secondary); font-size: 1.5rem; cursor: pointer; transition: all 0.2s; }
 .control-button:hover { color: var(--text-color); }
-.play-pause-btn { font-size: 2.5rem; color: var(--text-color); }
+.play-pause-btn { font-size: 2.5rem; color: var(--text-color); position: relative; }
+
+.play-pause-btn.loading i {
+    visibility: hidden;
+}
+
+.play-pause-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-top: -12px;
+    margin-left: -12px;
+    border: 3px solid var(--primary-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.playback-rate-btn {
+    background-color: transparent;
+    color: var(--text-color-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    min-width: 50px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.playback-rate-btn:hover {
+    background-color: var(--hover-color);
+    border-color: var(--primary-color);
+}
+
+.playback-rate-container {
+    position: relative;
+    display: inline-block;
+}
+
+.playback-rate-list {
+    position: absolute;
+    bottom: 100%; /* Position above the button */
+    right: 0;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0 0 0.5rem 0;
+    background-color: var(--background-color-alt);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 10;
+    min-width: 80px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.playback-rate-container.active .playback-rate-list {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.playback-rate-list li {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.playback-rate-list li:hover {
+    background-color: var(--hover-color);
+}
+
+.playback-rate-list li.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
 
 /* --- Desktop Layout --- */
 @media (min-width: 769px) {

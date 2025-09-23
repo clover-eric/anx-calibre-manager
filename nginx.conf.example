@@ -37,6 +37,29 @@ server {
     ssl_trusted_certificate /cert/example.example.org_ecc/example.example.org.cer;
 
     # reverse proxy
+    location /api/audioplayer/stream/ {
+        proxy_pass http://your_host:5000; # Note: No trailing slash here
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # Enable buffering for large media files
+        proxy_buffering on;
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+
+        # Optional: Cache audio files for better performance
+        # First, define a cache zone in your http block:
+        # proxy_cache_path /path/to/nginx_cache levels=1:2 keys_zone=audio_cache:10m max_size=10g inactive=60m use_temp_path=off;
+        # Then, enable it here:
+        # proxy_cache audio_cache;
+        # proxy_cache_key "$scheme$request_method$host$request_uri";
+        # proxy_cache_valid 200 30d; # Cache successful responses for 30 days
+        # add_header X-Proxy-Cache $upstream_cache_status;
+    }
+
     location / {
         proxy_pass http://your_host:5000/;
         proxy_http_version  1.1;

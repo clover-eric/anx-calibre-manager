@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 from flask import Blueprint, jsonify, g, request, send_file, Response
 from contextlib import closing
 import database
@@ -67,7 +68,43 @@ def stream_audiobook(task_id):
     if not task or not task['file_path'] or not os.path.exists(task['file_path']):
         return jsonify({'error': 'Audiobook not found'}), 404
 
-    return send_file(task['file_path'], mimetype='audio/mp4')
+    file_path = task['file_path']
+    file_size = os.path.getsize(file_path)
+    range_header = request.headers.get('Range', None)
+    
+    start = 0
+    end = file_size - 1
+    status_code = 200
+
+    if range_header:
+        range_match = re.search(r'bytes=(\d+)-(\d*)', range_header)
+        if range_match:
+            start = int(range_match.group(1))
+            if range_match.group(2):
+                end = int(range_match.group(2))
+            status_code = 206 # Partial Content
+
+    length = end - start + 1
+
+    def generate_chunks():
+        with open(file_path, 'rb') as f:
+            f.seek(start)
+            bytes_read = 0
+            while bytes_read < length:
+                chunk_size = min(4096, length - bytes_read)
+                chunk = f.read(chunk_size)
+                if not chunk:
+                    break
+                bytes_read += len(chunk)
+                yield chunk
+
+    response = Response(generate_chunks(), status=status_code, mimetype='audio/mp4', direct_passthrough=True)
+    response.headers.set('Content-Length', str(length))
+    response.headers.set('Accept-Ranges', 'bytes')
+    if range_header:
+        response.headers.set('Content-Range', f'bytes {start}-{end}/{file_size}')
+
+    return response
 
 @audio_player_bp.route('/progress/<task_id>', methods=['GET', 'POST'])
 def handle_progress(task_id):
