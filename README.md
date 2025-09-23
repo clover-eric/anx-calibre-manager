@@ -72,7 +72,6 @@ This application is designed to be deployed using Docker.
 ### Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your server.
-- [ffmpeg](https://ffmpeg.org/download.html) installed on your server and available in the system's PATH. This is required for audiobook generation.
 - An existing Calibre server (optional, but required for most features).
 
 ### Running with Docker

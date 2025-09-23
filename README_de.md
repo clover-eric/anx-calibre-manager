@@ -73,7 +73,6 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
 ### Voraussetzungen
 
 - [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
-- [ffmpeg](https://ffmpeg.org/download.html) auf Ihrem Server installiert und im Systempfad verfügbar. Dies ist für die Hörbuchgenerierung erforderlich.
 - Ein vorhandener Calibre-Server (optional, aber für die meisten Funktionen erforderlich).
 
 ### Ausführen mit Docker

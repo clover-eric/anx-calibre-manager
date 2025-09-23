@@ -73,7 +73,6 @@ Cette application est conçue pour être déployée avec Docker.
 ### Prérequis
 
 - [Docker](https://www.docker.com/get-started) installé sur votre serveur.
-- [ffmpeg](https://ffmpeg.org/download.html) installé sur votre serveur et disponible dans le PATH du système. Ceci est requis pour la génération de livres audio.
 - Un serveur Calibre existant (facultatif, mais requis pour la plupart des fonctionnalités).
 
 ### Exécuter avec Docker

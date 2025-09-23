@@ -72,7 +72,6 @@
 ### 先决条件
 
 - 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
-- 您的服务器上已安装 [ffmpeg](https://ffmpeg.org/download.html) 并且在系统的 PATH 中可用。这是有声书生成功能所必需的。
 - 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。
 
 ### 使用 Docker 运行
