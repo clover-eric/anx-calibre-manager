@@ -234,7 +234,7 @@ class EdgeTTSProvider(BaseTTSProvider):
         for seg in segments:
             combined += seg
         
-        combined.export(output_path, format="mp3")
+        combined.export(output_path, format="ipod", codec="aac")
         return os.path.exists(output_path) and os.path.getsize(output_path) > 0
 
 class OpenAITTSProvider(BaseTTSProvider):
@@ -306,7 +306,7 @@ class OpenAITTSProvider(BaseTTSProvider):
         for seg in segments:
             combined += seg
         
-        combined.export(output_path, format="mp3")
+        combined.export(output_path, format="ipod", codec="aac")
         return os.path.exists(output_path) and os.path.getsize(output_path) > 0
 
 # --- 有声书生成器 (主逻辑) ---
@@ -532,7 +532,7 @@ class AudiobookGenerator:
                     logger.warning(f"Chapter {index + 1} '{title}' is empty after processing, skipping.")
                     return None
 
-                temp_audio_path = os.path.join(OUTPUT_DIR, f"temp_{book_id}_{index:04d}.mp3")
+                temp_audio_path = os.path.join(OUTPUT_DIR, f"temp_{book_id}_{index:04d}.m4a")
                 success = await self.tts_provider.text_to_speech(text, temp_audio_path, self.book_language)
 
                 if not success:
@@ -745,6 +745,6 @@ class AudiobookGenerator:
             error_key = str(e) if isinstance(e, ValueError) else "UNKNOWN_ERROR"
             await self.update_progress("error", {"status_key": error_key, "params": {"error": str(e)}})
             for i in range(len(chapters)):
-                temp_file = os.path.join(OUTPUT_DIR, f"temp_{book_id}_{i:04d}.mp3")
+                temp_file = os.path.join(OUTPUT_DIR, f"temp_{book_id}_{i:04d}.m4a")
                 if os.path.exists(temp_file): os.remove(temp_file)
             return None
