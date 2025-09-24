@@ -11,7 +11,7 @@ from flask_babel import gettext as _
 
 import config_manager
 # 内部导入
-from utils.audiobook_generator import AudiobookGenerator, TTSConfig, EdgeTTSProvider
+from utils.audiobook_generator import AudiobookGenerator, TTSConfig, EdgeTTSProvider, OpenAITTSProvider
 from .books import _get_processed_epub_for_book
 from .calibre import get_calibre_book_details
 from anx_library import get_anx_user_dirs
@@ -25,8 +25,17 @@ from utils.audiobook_tasks_db import (
     get_audiobook_task_by_book,
     get_latest_task_for_book,
 )
+from utils.tts_static_data import EDGE_TTS_VOICES, OPENAI_TTS_VOICES
 
 audiobook_bp = Blueprint('audiobook_api', __name__, url_prefix='/api/audiobook')
+
+@audiobook_bp.route('/tts_voices', methods=['GET'])
+def get_tts_voices():
+    """Returns a list of supported voices for TTS providers."""
+    return jsonify({
+        'edge_tts': EDGE_TTS_VOICES,
+        'openai_tts': OPENAI_TTS_VOICES
+    })
 
 
 def get_anx_book_path(username, book_id):
@@ -147,11 +156,9 @@ def generate_audiobook_route():
         
         tts_config = TTSConfig(**tts_config_data)
         
-        # TODO: 根据 provider 实例化不同的提供者
+        # 根据 provider 实例化不同的提供者
         if provider == 'openai_tts':
-            # tts_provider = OpenAITTSProvider(tts_config) # 未来实现
-            # 暂时回退到 EdgeTTS
-            tts_provider = EdgeTTSProvider(tts_config)
+            tts_provider = OpenAITTSProvider(tts_config)
         else: # 默认为 edge_tts
             tts_provider = EdgeTTSProvider(tts_config)
 

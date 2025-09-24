@@ -1,5 +1,10 @@
 const isAdmin = JSON.parse(document.getElementById('is-admin-data').textContent);
 
+let ttsVoiceLists = {
+    edge: [],
+    openai: []
+};
+
 // --- Translatable Strings ---
 const t = {
     smtpFromAddressTip: _('Please make sure to add the sender email address ({email}) to your Amazon Kindle trusted email list.'),
@@ -61,6 +66,30 @@ window.openTab = function(evt, tabName) {
 }
 
 // --- User Settings Logic ---
+function updateTTS_UI() {
+    const providerSelect = document.getElementById('tts_provider');
+    const voiceInput = document.getElementById('tts_voice');
+    const provider = providerSelect.value;
+
+    // 1. Toggle visibility of provider-specific settings
+    toggleTTSSettings();
+
+    // 2. Update the voice datalist
+    updateVoiceDatalist();
+
+    // 3. Set a default voice if the current one is invalid or empty
+    const currentVoice = voiceInput.value;
+    const newVoiceList = ttsVoiceLists[provider] || [];
+
+    if (!currentVoice || !newVoiceList.includes(currentVoice)) {
+        if (provider === 'edge') {
+            voiceInput.value = 'zh-CN-YunjianNeural';
+        } else if (provider === 'openai') {
+            voiceInput.value = 'alloy';
+        }
+    }
+}
+
 async function populateForms() {
     const userRes = await fetch('/api/user_settings');
     const userData = await userRes.json();
@@ -72,7 +101,15 @@ async function populateForms() {
     document.getElementById('stats_public').checked = userData.stats_public;
 
     // Populate TTS settings
-    document.getElementById('tts_provider').value = userData.tts_provider || 'edge';
+    const ttsProviderSelect = document.getElementById('tts_provider');
+    
+    // Normalize provider data from backend to frontend's standard ('edge', 'openai')
+    let provider = userData.tts_provider;
+    if (provider === 'edge_tts') provider = 'edge';
+    if (provider === 'openai_tts') provider = 'openai';
+    if (!provider) provider = 'edge'; // Default value
+    ttsProviderSelect.value = provider;
+
     document.getElementById('tts_voice').value = userData.tts_voice || '';
     document.getElementById('tts_api_key').value = userData.tts_api_key || '';
     document.getElementById('tts_base_url').value = userData.tts_base_url || '';
@@ -141,6 +178,45 @@ async function populateForms() {
 
     document.getElementById('settings-loading-overlay').style.display = 'none';
     document.getElementById('userSettings').classList.add('visible');
+    
+    updateTTS_UI();
+}
+
+function toggleTTSSettings() {
+    const provider = document.getElementById('tts_provider').value;
+    const edgeSettings = document.querySelectorAll('.edge-setting');
+    const openaiSettings = document.querySelectorAll('.openai-setting');
+
+    // Hide all provider-specific settings first
+    document.querySelectorAll('.tts-setting').forEach(el => {
+        if (!el.classList.contains('edge-setting') && !el.classList.contains('openai-setting')) {
+            // This is a common setting, do nothing
+        } else {
+            el.style.display = 'none';
+        }
+    });
+
+    // Show settings for the selected provider
+    if (provider === 'openai') {
+        openaiSettings.forEach(el => el.style.display = 'block');
+    } else { // Default to edge
+        edgeSettings.forEach(el => el.style.display = 'block');
+    }
+}
+
+function updateVoiceDatalist() {
+    const provider = document.getElementById('tts_provider').value;
+    const datalist = document.getElementById('tts_voice_list');
+    
+    datalist.innerHTML = '';
+
+    const voices = ttsVoiceLists[provider] || [];
+
+    voices.forEach(voice => {
+        const option = document.createElement('option');
+        option.value = voice;
+        datalist.appendChild(option);
+    });
 }
 
 function update2FAStatus(is_enabled) {
@@ -425,10 +501,27 @@ window.deleteUser = async function(userId) {
 }
 
 // --- Initializer ---
-document.addEventListener('DOMContentLoaded', () => {
-    populateForms();
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/audiobook/tts_voices');
+        if (response.ok) {
+            const rawVoiceLists = await response.json();
+            // Adapt backend keys ('edge_tts') to frontend keys ('edge')
+            ttsVoiceLists = {
+                edge: rawVoiceLists.edge_tts || [],
+                openai: rawVoiceLists.openai_tts || []
+            };
+        }
+    } catch (error) {
+        console.error('Failed to fetch TTS voice lists:', error);
+    }
+
+    document.getElementById('tts_provider').addEventListener('change', updateTTS_UI);
+
+    await populateForms();
+
     if (isAdmin) {
-        fetchUsers();
+        await fetchUsers();
     }
 
     // --- Koreader Plugin Download Button ---

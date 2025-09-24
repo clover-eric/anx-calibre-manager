@@ -18,3 +18,4 @@ beautifulsoup4==4.13.5
 pydub==0.25.1
 #audioop-lts for python 3.13+
 sentencex==0.6.1
+openai==1.109.0
