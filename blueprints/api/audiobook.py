@@ -15,7 +15,7 @@ from utils.audiobook_generator import AudiobookGenerator, TTSConfig, EdgeTTSProv
 from .books import _get_processed_epub_for_book
 from .calibre import get_calibre_book_details
 from anx_library import get_anx_user_dirs
-from utils.text import safe_title, safe_author
+from utils.text import generate_audiobook_filename
 from utils.covers import get_anx_cover_data
 import json
 from utils.audiobook_tasks_db import (
@@ -185,10 +185,28 @@ def generate_audiobook_route():
             # 这个特殊的 kwarg 是给 run_async_task 用的，而不是 generator.generate
             generator_kwargs['temp_file_to_clean'] = book_path_or_temp_file
 
+        # 准备传递给生成器的参数
+        generator_kwargs = {
+            'library_type': library,
+            'username': g.user.username
+        }
+        if library == 'anx':
+            cover_data = get_anx_cover_data(g.user.username, book_id)
+            if cover_data:
+                generator_kwargs['cover_image_data'] = cover_data
+
+        # 检查是否使用了临时文件，以便在任务结束后清理
+        temp_file_to_clean = None
+        if "tmp" in book_path_or_temp_file:
+            temp_file_to_clean = book_path_or_temp_file
+        
+        # 将 temp_file_to_clean 单独传递给 run_async_task
+        run_async_kwargs = {'temp_file_to_clean': temp_file_to_clean}
+
         thread = threading.Thread(
             target=run_async_task,
             args=(generator.generate, book_path_or_temp_file, str(book_id)),
-            kwargs=generator_kwargs
+            kwargs={**generator_kwargs, **run_async_kwargs}
         )
         thread.daemon = True
         thread.start()
@@ -256,21 +274,26 @@ def download_audiobook(task_id):
         return jsonify({"error": _("File not found on server")}), 404
 
     try:
-        # 构造新的文件名
+        # 使用新的工具函数构造一致的文件名
         title, author = None, None
         if task['library_type'] == 'anx':
             title, author = get_anx_book_details(g.user.username, task['book_id'])
         elif task['library_type'] == 'calibre':
             details = get_calibre_book_details(task['book_id'])
             if details:
-                title = details.get('title')
-                author = " & ".join(details.get('authors', []))
+                title = details.get('title', 'Untitled')
+                author = " & ".join(details.get('authors', ['Unknown']))
 
         if title and author:
-            safe_t = safe_title(title)
-            safe_a = safe_author(author)
-            download_name = f"{safe_t} - {safe_a}.m4b"
+            download_name = generate_audiobook_filename(
+                title=title,
+                author=author,
+                book_id=task['book_id'],
+                library_type=task['library_type'],
+                username=g.user.username if task['library_type'] == 'anx' else None
+            )
         else:
+            # 如果无法获取元数据，则回退到原始文件名
             download_name = os.path.basename(file_path)
 
         return send_file(file_path, as_attachment=True, download_name=download_name)

@@ -158,20 +158,64 @@ def sanitize_filename(filename):
     """
     return re.sub(r'[\\/*?:"<>|]', '', filename).rstrip()
 
-def safe_title(title):
+def safe_title(title, max_bytes=195):
     """
     Sanitizes and truncates a title to a safe length.
     """
     sanitized = re.sub(r'[\\/*?:"<>|]', '', title).strip()
-    while len(sanitized.encode('utf-8')) > 195:
+    while len(sanitized.encode('utf-8')) > max_bytes:
         sanitized = sanitized[:-1]
     return sanitized
 
-def safe_author(author):
+def safe_author(author, max_bytes=45):
     """
     Sanitizes and truncates an author string to a safe length.
     """
     sanitized = re.sub(r'[\\/*?:"<>|]', '', author).strip()
-    while len(sanitized.encode('utf-8')) > 45:
+    while len(sanitized.encode('utf-8')) > max_bytes:
         sanitized = sanitized[:-1]
     return sanitized
+
+def generate_audiobook_filename(title, author, book_id, library_type, username=None):
+    """
+    Generates a safe and descriptive filename for an audiobook, ensuring it does not exceed 255 bytes.
+    It intelligently truncates the title and author to preserve the unique suffix.
+    """
+    # --- Define fixed parts ---
+    extension = ".m4b"
+    separator = " - "
+    
+    # --- Determine the unique suffix ---
+    if library_type == 'anx' and username:
+        unique_suffix = f"{book_id}_{username}"
+    else:
+        unique_suffix = f"{book_id}_{library_type}"
+
+    # --- Calculate byte lengths of fixed parts ---
+    extension_bytes = len(extension.encode('utf-8'))
+    separator_bytes = len(separator.encode('utf-8'))
+    suffix_bytes = len(unique_suffix.encode('utf-8'))
+    
+    # Total bytes available for title and author
+    max_total_bytes = 255
+    fixed_bytes = (2 * separator_bytes) + suffix_bytes + extension_bytes
+    available_bytes_for_meta = max_total_bytes - fixed_bytes
+
+    # --- Allocate bytes for title and author (e.g., 70% for title, 30% for author) ---
+    available_title_bytes = int(available_bytes_for_meta * 0.7)
+    available_author_bytes = available_bytes_for_meta - available_title_bytes
+
+    # --- Sanitize and truncate title and author ---
+    safe_t = safe_title(title, max_bytes=available_title_bytes)
+    safe_a = safe_author(author, max_bytes=available_author_bytes)
+
+    # --- Assemble the final filename ---
+    filename = f"{safe_t}{separator}{safe_a}{separator}{unique_suffix}{extension}"
+    
+    # Final check to ensure it's under the limit (due to utf-8 character boundaries)
+    while len(filename.encode('utf-8')) > max_total_bytes:
+        # If still too long, truncate from the title part as it's likely the longest
+        safe_t = safe_t[:-1]
+        filename = f"{safe_t}{separator}{safe_a}{separator}{unique_suffix}{extension}"
+
+    return filename

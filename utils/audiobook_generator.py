@@ -21,6 +21,7 @@ from sentencex import segment
 import config_manager
 from utils.audiobook_tasks_db import get_tasks_to_cleanup, update_task_as_cleaned, get_all_successful_tasks
 from utils.epub_utils import _process_entire_epub
+from utils.text import generate_audiobook_filename
 
 # --- 常量 ---
 _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
@@ -259,6 +260,14 @@ class AudiobookGenerator:
         except Exception as e:
             logger.error(f"Error extracting title: {e}")
         return "Untitled"
+
+    def _get_book_author(self, book: epub.EpubBook) -> str:
+        try:
+            if creator_meta := book.get_metadata('DC', 'creator'):
+                return creator_meta[0][0]
+        except Exception as e:
+            logger.error(f"Error extracting author: {e}")
+        return "Unknown Author"
 
     def _get_epub_chapters(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
         """
@@ -554,7 +563,7 @@ class AudiobookGenerator:
         except Exception as e:
             logger.error(f"Error writing M4B tags: {e}")
 
-    async def generate(self, epub_path: str, book_id: str, cover_image_data: bytes | None = None) -> str | None:
+    async def generate(self, epub_path: str, book_id: str, library_type: str, username: str | None = None, cover_image_data: bytes | None = None) -> str | None:
         # 在开始新任务前，执行一次自动清理
         cleanup_old_audiobooks()
 
@@ -573,9 +582,15 @@ class AudiobookGenerator:
             self.total_chapters = len(chapters)
             
             book_title = self._get_book_title(book)
-            sanitized_title = re.sub(r'[^\w\s-]', '', book_title).strip()
-            sanitized_title = re.sub(r'[-\s]+', '_', sanitized_title)
-            output_filename = f"{sanitized_title}_{book_id}.m4b"
+            book_author = self._get_book_author(book)
+            
+            output_filename = generate_audiobook_filename(
+                title=book_title,
+                author=book_author,
+                book_id=book_id,
+                library_type=library_type,
+                username=username
+            )
             final_output_path = os.path.join(OUTPUT_DIR, output_filename)
 
             semaphore = asyncio.Semaphore(CONCURRENT_TTS_REQUESTS)
@@ -627,7 +642,7 @@ class AudiobookGenerator:
                 (
                     ffmpeg
                     .input(concat_list_path, format='concat', safe=0)
-                    .output(final_output_path, ac=2, bitrate="64k")
+                    .output(final_output_path, acodec='copy', af='pan=stereo|c0=c0|c1=c0')
                     .run(overwrite_output=True, quiet=True)
                 )
                 logger.info(f"Successfully merged audio files into {final_output_path}")
