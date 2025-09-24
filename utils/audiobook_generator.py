@@ -710,24 +710,36 @@ class AudiobookGenerator:
                     # 使用正确的引号处理可能包含特殊字符的路径
                     f.write(f"file '{os.path.abspath(chapter.audio_path)}'\n")
 
+            temp_merged_path = os.path.join(OUTPUT_DIR, f"temp_merged_{book_id}.mp3")
             try:
-                # 使用 ffmpeg-python 库来执行合并操作
+                # 步骤 1: 使用 acodec='copy' 快速合并为一个单声道文件
+                logger.info("Merging audio files (Step 1/2): Fast concatenation...")
                 (
                     ffmpeg
                     .input(concat_list_path, format='concat', safe=0)
-                    .output(final_output_path, acodec='copy', af='pan=stereo|c0=c0|c1=c0')
+                    .output(temp_merged_path, acodec='copy')
                     .run(overwrite_output=True, quiet=True)
                 )
-                logger.info(f"Successfully merged audio files into {final_output_path}")
+                
+                # 步骤 2: 将合并后的单声道文件转换为立体声
+                logger.info("Converting to stereo (Step 2/2)...")
+                (
+                    ffmpeg
+                    .input(temp_merged_path)
+                    .output(final_output_path, af='pan=stereo|c0=c0|c1=c0')
+                    .run(overwrite_output=True, quiet=True)
+                )
+                logger.info(f"Successfully merged and converted audio to {final_output_path}")
+
             except ffmpeg.Error as e:
-                logger.error(f"ffmpeg concat failed. Stderr: {e.stderr.decode('utf8')}")
-                # 如果合并失败，清理列表文件并重新抛出异常
-                os.remove(concat_list_path)
+                logger.error(f"ffmpeg operation failed. Stderr: {e.stderr.decode('utf8')}")
                 raise ValueError("MERGE_FILES_FAILED") from e
             finally:
-                # 确保临时列表文件在操作完成后被删除
+                # 确保所有临时文件都被删除
                 if os.path.exists(concat_list_path):
                     os.remove(concat_list_path)
+                if os.path.exists(temp_merged_path):
+                    os.remove(temp_merged_path)
 
             await self.update_progress("progress", {"percentage": 90, "status_key": "WRITING_METADATA"})
             self._write_m4b_tags(book, final_output_path, chapters_audio, cover_image_data=cover_image_data)
