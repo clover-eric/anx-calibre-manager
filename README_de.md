@@ -49,9 +49,14 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
   <img src="screenshots/Screen Shot - SettingPage.png">
 </p>
 
-| MCP-Chat | MCP-Einstellungen |
-| :---: | :---: |
-| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+<p align="center">
+  <em>MCP-Einstellungen</em><br>
+  <img src="screenshots/Screen Shot - MCPSetting.png">
+</p>
+
+| MCP-Chat | MCP-Chat | MCP-Chat | MCP-Chat |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-1.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-2.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-3.png" width="250"/> |
 
 | Koreader-Buchstatus | Koreader-Synchronisierung |
 | :---: | :---: |
@@ -65,6 +70,10 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
   <em>Statistik-Seite</em><br>
   <img src="screenshots/Screen Shot - StatsPage.png">
 </p>
+
+| Hörbuchliste | Hörbuch-Player |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
 ## 🚀 Bereitstellung
 

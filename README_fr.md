@@ -49,9 +49,14 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
   <img src="screenshots/Screen Shot - SettingPage.png">
 </p>
 
-| Chat MCP | Paramètres MCP |
-| :---: | :---: |
-| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+<p align="center">
+  <em>Paramètres MCP</em><br>
+  <img src="screenshots/Screen Shot - MCPSetting.png">
+</p>
+
+| Chat MCP | Chat MCP | Chat MCP | Chat MCP |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-1.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-2.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-3.png" width="250"/> |
 
 | Statut du Livre Koreader | Synchronisation Koreader |
 | :---: | :---: |
@@ -65,6 +70,10 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
   <em>Page des Statistiques</em><br>
   <img src="screenshots/Screen Shot - StatsPage.png">
 </p>
+
+| Liste des livres audio | Lecteur de livres audio |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
 ## 🚀 Déploiement
 

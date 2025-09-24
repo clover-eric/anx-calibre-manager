@@ -48,9 +48,14 @@ A modern, mobile-first web application to manage your ebook library, integrating
   <img src="screenshots/Screen Shot - SettingPage.png">
 </p>
 
-| MCP Chat | MCP Settings |
-| :---: | :---: |
-| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+<p align="center">
+  <em>MCP Settings</em><br>
+  <img src="screenshots/Screen Shot - MCPSetting.png">
+</p>
+
+| MCP Chat | MCP Chat | MCP Chat | MCP Chat |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-1.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-2.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-3.png" width="250"/> |
 
 | Koreader Book Status | Koreader Sync |
 | :---: | :---: |
@@ -64,6 +69,10 @@ A modern, mobile-first web application to manage your ebook library, integrating
   <em>Stats Page</em><br>
   <img src="screenshots/Screen Shot - StatsPage.png">
 </p>
+
+| Audiobook List | Audiobook Player |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
 ## 🚀 Deployment
 

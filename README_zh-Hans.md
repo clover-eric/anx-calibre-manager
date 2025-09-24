@@ -48,9 +48,14 @@
   <img src="screenshots/Screen Shot - SettingPage.png">
 </p>
 
-| MCP 聊天 | MCP 设置 |
-| :---: | :---: |
-| <img src="screenshots/Screen Shot - MCPChat.jpg" width="350"/> | <img src="screenshots/Screen Shot - MCPSetting.png" width="650"/> |
+<p align="center">
+  <em>MCP 设置</em><br>
+  <img src="screenshots/Screen Shot - MCPSetting.png">
+</p>
+
+| MCP 聊天 | MCP 聊天 | MCP 聊天 | MCP 聊天 |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/Screen Shot - MCPChat.jpg" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-1.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-2.png" width="250"/> | <img src="screenshots/Screen Shot - MCPChat2-3.png" width="250"/> |
 
 | Koreader 书籍状态 | Koreader 同步 |
 | :---: | :---: |
@@ -64,6 +69,10 @@
   <em>统计页面</em><br>
   <img src="screenshots/Screen Shot - StatsPage.png">
 </p>
+
+| 有声书列表 | 有声书播放器 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
 ## 🚀 部署
 
