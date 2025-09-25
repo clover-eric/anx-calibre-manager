@@ -163,7 +163,8 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
 
 def get_calibre_epub_table_of_contents(book_id: int):
     user_dict = dict(g.user)
-    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict, language=language)
 
     if epub_filename == 'CONVERTER_NOT_FOUND':
         return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
@@ -251,7 +252,8 @@ def _get_chapter_content_logic(book_id, chapter_number, get_epub_content_func, g
 def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
     """获取指定 Calibre 书籍的指定章节完整内容。"""
     user_dict = dict(g.user)
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict)
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
     return _get_chapter_content_logic(book_id, chapter_number, get_epub_func, get_raw_calibre_book_details)
 
 def get_anx_epub_chapter_content(id: int, chapter_number: int):
@@ -324,7 +326,8 @@ def _get_book_word_count_statistics_logic(book_id, get_epub_content_func, get_de
 def get_calibre_entire_book_content(book_id: int):
     """获取指定 Calibre 书籍的完整纯文本内容。"""
     user_dict = dict(g.user)
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict)
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
     return _get_entire_book_content_logic(book_id, get_epub_func, get_raw_calibre_book_details)
 
 def get_anx_entire_book_content(id: int):
@@ -336,7 +339,8 @@ def get_anx_entire_book_content(id: int):
 def get_calibre_book_word_count_statistics(book_id: int):
     """获取指定 Calibre 书籍的字数统计信息（分章节和总计）。"""
     user_dict = dict(g.user)
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict)
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
     return _get_book_word_count_statistics_logic(book_id, get_epub_func, get_raw_calibre_book_details)
 
 def get_anx_book_word_count_statistics(id: int):

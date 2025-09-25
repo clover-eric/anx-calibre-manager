@@ -69,7 +69,8 @@ def get_anx_book_details(username, book_id):
 
 def get_calibre_book_as_temp_file(user_dict, book_id):
     """获取 Calibre 书籍的 EPUB 内容并存入临时文件"""
-    content, filename, _ = _get_processed_epub_for_book(book_id, user_dict)
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    content, filename, _ = _get_processed_epub_for_book(book_id, user_dict, language=language)
     
     if filename == 'CONVERTER_NOT_FOUND':
         raise RuntimeError("ebook-converter tool is missing.")
@@ -171,7 +172,8 @@ def generate_audiobook_route():
                 'username': g.user.username,
                 'kindle_email': g.user.kindle_email,
                 'send_format_priority': g.user.send_format_priority,
-                'force_epub_conversion': g.user.force_epub_conversion
+                'force_epub_conversion': g.user.force_epub_conversion,
+                'language': g.user.language
             }
             book_path_or_temp_file = get_calibre_book_as_temp_file(user_dict, book_id)
         else:

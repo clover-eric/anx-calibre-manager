@@ -46,7 +46,7 @@ def download_anx_book_api(book_id):
         print(f"Error downloading anx book {book_id} for user {g.user.username}: {e}")
         return jsonify({'error': _('Error downloading book: %(error)s', error=e)}), 500
 
-def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - author'):
+def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - author', language='zh'):
     """
     Core logic to get a processed EPUB for a book.
     It handles downloading, converting (if necessary), and fixing the EPUB.
@@ -120,7 +120,7 @@ def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - au
 
         # --- Fix the EPUB ---
         logging.info(f"Processing EPUB with kindle-epub-fixer: {epub_to_process_path}")
-        fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
+        fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language=language)
         
         with open(fixed_epub_path, 'rb') as f:
             content_to_send = f.read()
@@ -147,9 +147,12 @@ def download_book_api(book_id):
             'username': g.user.username,
             'kindle_email': g.user.kindle_email,
             'send_format_priority': g.user.send_format_priority,
-            'force_epub_conversion': g.user.force_epub_conversion
+            'force_epub_conversion': g.user.force_epub_conversion,
+            'language': g.user.language
         }
-        content, filename, needs_conversion = _get_processed_epub_for_book(book_id, user_dict)
+        
+        language = (user_dict.get('language') or 'zh').split('_')[0]
+        content, filename, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, language=language)
         
         if filename == 'CONVERTER_NOT_FOUND':
             return jsonify({'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing in the current environment.')}), 412
@@ -186,7 +189,8 @@ def _send_to_kindle_logic(user_dict, book_id):
         return {'success': False, 'error': _('Please configure your Kindle email in user settings first.')}
 
     # Kindle always requires a processed EPUB
-    content_to_send, filename_to_send, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, filename_format='title')
+    language = (user_dict.get('language') or 'zh').split('_')[0]
+    content_to_send, filename_to_send, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, filename_format='title', language=language)
 
     if filename_to_send == 'CONVERTER_NOT_FOUND':
         return {'success': False, 'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing. Please install it in the system PATH.'), 'code': 'CONVERTER_NOT_FOUND'}
@@ -217,7 +221,8 @@ def send_to_kindle_api(book_id):
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
         'send_format_priority': g.user.send_format_priority,
-        'force_epub_conversion': g.user.force_epub_conversion
+        'force_epub_conversion': g.user.force_epub_conversion,
+        'language': g.user.language
     }
     result = _send_to_kindle_logic(user_dict, book_id)
     if result['success']:
@@ -235,7 +240,8 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
 
     if user_dict.get('force_epub_conversion'):
         logging.info(f"Force EPUB conversion is ON for user {user_dict['username']} for book {book_id} push to Anx.")
-        content, filename, _unused = _get_processed_epub_for_book(book_id, user_dict)
+        language = (user_dict.get('language') or 'zh').split('_')[0]
+        content, filename, _unused = _get_processed_epub_for_book(book_id, user_dict, language=language)
         if filename == 'CONVERTER_NOT_FOUND':
             return {'success': False, 'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing.')}
         book_content, book_filename = content, filename
@@ -293,7 +299,8 @@ def push_to_anx_api(book_id):
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
         'send_format_priority': g.user.send_format_priority,
-        'force_epub_conversion': g.user.force_epub_conversion
+        'force_epub_conversion': g.user.force_epub_conversion,
+        'language': g.user.language
     }
     result = _push_calibre_to_anx_logic(user_dict, book_id)
     if result['success']:
