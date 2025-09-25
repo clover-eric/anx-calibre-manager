@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-25 16:56+0800\n"
+"POT-Creation-Date: 2025-09-25 18:38+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -110,45 +110,45 @@ msgstr "该用户的统计页面是私密的。"
 msgid "Anx library not found for this user."
 msgstr "未找到该用户的 Anx 书库。"
 
-#: blueprints/api/audiobook.py:109 blueprints/api/audiobook.py:251
+#: blueprints/api/audiobook.py:110 blueprints/api/audiobook.py:253
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' 或 'library' 参数缺失"
 
-#: blueprints/api/audiobook.py:118
+#: blueprints/api/audiobook.py:119
 msgid "A task for this book is already in progress."
 msgstr "本书的有声书生成任务已在进行中。"
 
-#: blueprints/api/audiobook.py:178
+#: blueprints/api/audiobook.py:180
 msgid "Invalid 'library' type"
 msgstr "无效的 'library' 类型"
 
-#: blueprints/api/audiobook.py:224 static/js/page/translations.js:57
+#: blueprints/api/audiobook.py:226 static/js/page/translations.js:57
 #, python-format
 msgid "File error: %(error)s"
 msgstr "文件错误：%(error)s"
 
-#: blueprints/api/audiobook.py:228
+#: blueprints/api/audiobook.py:230
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "启动任务时发生未知错误：%(error)s"
 
-#: blueprints/api/audiobook.py:238 blueprints/api/audiobook.py:268
+#: blueprints/api/audiobook.py:240 blueprints/api/audiobook.py:270
 msgid "Task not found"
 msgstr "未找到任务"
 
-#: blueprints/api/audiobook.py:272
+#: blueprints/api/audiobook.py:274
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: blueprints/api/audiobook.py:276
+#: blueprints/api/audiobook.py:278
 msgid "Audiobook is not ready for download"
 msgstr "有声书尚未准备好下载"
 
-#: blueprints/api/audiobook.py:281
+#: blueprints/api/audiobook.py:283
 msgid "File not found on server"
 msgstr "服务器上未找到文件"
 
-#: blueprints/api/audiobook.py:308
+#: blueprints/api/audiobook.py:310
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "无法发送文件：%(error)s"
@@ -187,69 +187,69 @@ msgstr "未找到 ID 为 %(book_id)s 的图书文件。"
 msgid "Error downloading book: %(error)s"
 msgstr "下载图书时出错：%(error)s"
 
-#: blueprints/api/books.py:155
+#: blueprints/api/books.py:158
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
 msgstr "这本书需要转换为 EPUB，但当前环境中缺少 `ebook-converter` 工具。"
 
-#: blueprints/api/books.py:159
+#: blueprints/api/books.py:162
 msgid "Unable to process or convert the book."
 msgstr "无法处理或转换该图书。"
 
-#: blueprints/api/books.py:164 blueprints/api/books.py:246
+#: blueprints/api/books.py:167 blueprints/api/books.py:252
 #: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "未找到图书详情。"
 
-#: blueprints/api/books.py:175
+#: blueprints/api/books.py:178
 msgid "This book has no available formats."
 msgstr "该图书没有可用的格式。"
 
-#: blueprints/api/books.py:181
+#: blueprints/api/books.py:184
 msgid "Unable to download the book."
 msgstr "无法下载该图书。"
 
-#: blueprints/api/books.py:186
+#: blueprints/api/books.py:189
 msgid "Please configure your Kindle email in user settings first."
 msgstr "请先在用户设置中配置您的 Kindle 邮箱。"
 
-#: blueprints/api/books.py:192
+#: blueprints/api/books.py:196
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
 msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。请在系统 PATH 中安装它。"
 
-#: blueprints/api/books.py:195
+#: blueprints/api/books.py:199
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "无法获取或处理该图书的 EPUB 文件。"
 
-#: blueprints/api/books.py:240
+#: blueprints/api/books.py:246
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
 msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。"
 
-#: blueprints/api/books.py:253
+#: blueprints/api/books.py:259
 msgid "No pushable format found."
 msgstr "未找到可推送的格式。"
 
-#: blueprints/api/books.py:258
+#: blueprints/api/books.py:264
 msgid "Error downloading or processing the book."
 msgstr "下载或处理图书时出错。"
 
-#: blueprints/api/books.py:264
+#: blueprints/api/books.py:270
 msgid "User directory not configured."
 msgstr "用户目录未配置。"
 
-#: blueprints/api/books.py:284
+#: blueprints/api/books.py:290
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
 "%(skipped)s."
 msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过：%(skipped)s。"
 
-#: blueprints/api/books.py:309
+#: blueprints/api/books.py:316
 msgid "Missing book ID."
 msgstr "缺少图书 ID。"
 
@@ -763,8 +763,8 @@ msgstr "成功！"
 msgid "Title"
 msgstr "标题"
 
-#: static/js/page/translations.js:32 templates/stats.html:36
-#: templates/stats.html:60
+#: static/js/page/translations.js:32 templates/stats.html:109
+#: templates/stats.html:134
 msgid "Author"
 msgstr "作者"
 
@@ -987,8 +987,8 @@ msgstr "前往"
 msgid "Next"
 msgstr "下一页"
 
-#: templates/index.html:58 templates/index.html:135 templates/stats.html:38
-#: templates/stats.html:62
+#: templates/index.html:58 templates/index.html:135 templates/stats.html:111
+#: templates/stats.html:136
 msgid "Rating"
 msgstr "评分"
 
@@ -1030,7 +1030,7 @@ msgstr "点击复制"
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: templates/index.html:138 templates/stats.html:39 templates/stats.html:63
+#: templates/index.html:138 templates/stats.html:112 templates/stats.html:137
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
@@ -1565,9 +1565,7 @@ msgstr "获取一本 Anx 图书的字数统计。参数：`id` (int)"
 msgid ""
 "Generate an audiobook for a book. Parameters: `book_id` (int), "
 "`library_type` (str, \"anx\" or \"calibre\")"
-msgstr ""
-"为一本书生成有声书。参数：`book_id` (int)，`library_type` (str, \"anx\" 或 "
-"\"calibre\")"
+msgstr "为一本书生成有声书。参数：`book_id` (int)，`library_type` (str, \"anx\" 或 \"calibre\")"
 
 #: templates/settings.html:243
 msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
@@ -1578,8 +1576,8 @@ msgid ""
 "Get the latest audiobook task status for a book. Parameters: `book_id` "
 "(int), `library_type` (str, \"anx\" or \"calibre\")"
 msgstr ""
-"获取一本书的最新有声书任务状态。参数：`book_id` (int)，`library_type` (str, "
-"\"anx\" 或 \"calibre\")"
+"获取一本书的最新有声书任务状态。参数：`book_id` (int)，`library_type` (str, \"anx\" 或 "
+"\"calibre\")"
 
 #: templates/settings.html:251
 msgid "KOReader Sync Settings"
@@ -2013,36 +2011,56 @@ msgstr "管理员密码"
 msgid "Create Admin Account"
 msgstr "创建管理员帐户"
 
-#: templates/stats.html:3 templates/stats.html:17
+#: templates/stats.html:3 templates/stats.html:59
 #, python-format
 msgid "%(username)s's Reading Statistics"
 msgstr "%(username)s 的阅读统计"
 
-#: templates/stats.html:19
+#: templates/stats.html:63
+msgid "Today"
+msgstr "今天"
+
+#: templates/stats.html:68
+msgid "This Week"
+msgstr "本周"
+
+#: templates/stats.html:73
+msgid "This Month"
+msgstr "本月"
+
+#: templates/stats.html:78
+msgid "This Year"
+msgstr "今年"
+
+#: templates/stats.html:83
+msgid "Total"
+msgstr "总计"
+
+#: templates/stats.html:89
 msgid "Reading Heatmap (Last 365 Days)"
 msgstr "阅读热力图（最近 365 天）"
 
-#: templates/stats.html:28
+#: templates/stats.html:101
 msgid "Reading Books"
 msgstr "正在阅读的图书"
 
-#: templates/stats.html:38 templates/stats.html:62
+#: templates/stats.html:111 templates/stats.html:136
 msgid "Not rated"
 msgstr "未评分"
 
-#: templates/stats.html:48
+#: templates/stats.html:122
 msgid "No books currently being read."
 msgstr "当前没有正在阅读的图书。"
 
-#: templates/stats.html:52
+#: templates/stats.html:126
 msgid "Finished Books"
 msgstr "已读完的图书"
 
-#: templates/stats.html:66
+#: templates/stats.html:140
 msgid "Finished!"
 msgstr "已读完！"
 
-#: templates/stats.html:70
+#: templates/stats.html:144
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
 

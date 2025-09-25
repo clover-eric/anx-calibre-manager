@@ -44,9 +44,40 @@ def user_stats(username):
         user_db.row_factory = sqlite3.Row
         cursor = user_db.cursor()
 
-        # 获取一年的阅读时间数据
-        one_year_ago = datetime.datetime.utcnow().date() - datetime.timedelta(days=365)
-        
+        # --- 摘要统计 ---
+        today = datetime.datetime.utcnow().date()
+        start_of_week = today - datetime.timedelta(days=today.weekday())
+        start_of_month = today.replace(day=1)
+        start_of_year = today.replace(month=1, day=1)
+
+        cursor.execute(
+            """
+            SELECT
+                SUM(CASE WHEN date = ? THEN reading_time ELSE 0 END) as today,
+                SUM(CASE WHEN date >= ? THEN reading_time ELSE 0 END) as this_week,
+                SUM(CASE WHEN date >= ? THEN reading_time ELSE 0 END) as this_month,
+                SUM(CASE WHEN date >= ? THEN reading_time ELSE 0 END) as this_year,
+                SUM(reading_time) as total
+            FROM tb_reading_time
+            """,
+            (
+                today.strftime('%Y-%m-%d'),
+                start_of_week.strftime('%Y-%m-%d'),
+                start_of_month.strftime('%Y-%m-%d'),
+                start_of_year.strftime('%Y-%m-%d'),
+            )
+        )
+        summary_data = cursor.fetchone()
+        summary_stats = {
+            'today': format_reading_time(summary_data['today']),
+            'this_week': format_reading_time(summary_data['this_week']),
+            'this_month': format_reading_time(summary_data['this_month']),
+            'this_year': format_reading_time(summary_data['this_year']),
+            'total': format_reading_time(summary_data['total'])
+        }
+
+        # --- 热力图数据 ---
+        one_year_ago = today - datetime.timedelta(days=365)
         cursor.execute(
             """
             SELECT date, SUM(reading_time) as total_time
@@ -100,6 +131,7 @@ def user_stats(username):
 
     return render_template('stats.html',
                            user=user,
+                           summary_stats=summary_stats,
                            heatmap_data=heatmap_data,
                            heatmap_start_date=heatmap_start_date.strftime('%Y-%m-%d'),
                            reading_books=reading_books,

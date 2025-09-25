@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-25 16:56+0800\n"
+"POT-Creation-Date: 2025-09-25 18:38+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -112,45 +112,45 @@ msgstr "La página de estadísticas de este usuario es privada."
 msgid "Anx library not found for this user."
 msgstr "Biblioteca Anx no encontrada para este usuario."
 
-#: blueprints/api/audiobook.py:109 blueprints/api/audiobook.py:251
+#: blueprints/api/audiobook.py:110 blueprints/api/audiobook.py:253
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "Falta 'book_id' o 'library' en la solicitud"
 
-#: blueprints/api/audiobook.py:118
+#: blueprints/api/audiobook.py:119
 msgid "A task for this book is already in progress."
 msgstr "Ya hay una tarea en progreso para este libro."
 
-#: blueprints/api/audiobook.py:178
+#: blueprints/api/audiobook.py:180
 msgid "Invalid 'library' type"
 msgstr "Tipo de 'library' no válido"
 
-#: blueprints/api/audiobook.py:224 static/js/page/translations.js:57
+#: blueprints/api/audiobook.py:226 static/js/page/translations.js:57
 #, python-format
 msgid "File error: %(error)s"
 msgstr "Error de archivo: %(error)s"
 
-#: blueprints/api/audiobook.py:228
+#: blueprints/api/audiobook.py:230
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Ocurrió un error desconocido al iniciar la tarea: %(error)s"
 
-#: blueprints/api/audiobook.py:238 blueprints/api/audiobook.py:268
+#: blueprints/api/audiobook.py:240 blueprints/api/audiobook.py:270
 msgid "Task not found"
 msgstr "Tarea no encontrada"
 
-#: blueprints/api/audiobook.py:272
+#: blueprints/api/audiobook.py:274
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: blueprints/api/audiobook.py:276
+#: blueprints/api/audiobook.py:278
 msgid "Audiobook is not ready for download"
 msgstr "El audiolibro no está listo para descargar"
 
-#: blueprints/api/audiobook.py:281
+#: blueprints/api/audiobook.py:283
 msgid "File not found on server"
 msgstr "Archivo no encontrado en el servidor"
 
-#: blueprints/api/audiobook.py:308
+#: blueprints/api/audiobook.py:310
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "No se pudo enviar el archivo: %(error)s"
@@ -189,7 +189,7 @@ msgstr "Archivo de libro con ID %(book_id)s no encontrado."
 msgid "Error downloading book: %(error)s"
 msgstr "Error al descargar el libro: %(error)s"
 
-#: blueprints/api/books.py:155
+#: blueprints/api/books.py:158
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
@@ -197,30 +197,30 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra en el entorno actual."
 
-#: blueprints/api/books.py:159
+#: blueprints/api/books.py:162
 msgid "Unable to process or convert the book."
 msgstr "No se puede procesar o convertir el libro."
 
-#: blueprints/api/books.py:164 blueprints/api/books.py:246
+#: blueprints/api/books.py:167 blueprints/api/books.py:252
 #: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "Detalles del libro no encontrados."
 
-#: blueprints/api/books.py:175
+#: blueprints/api/books.py:178
 msgid "This book has no available formats."
 msgstr "Este libro no tiene formatos disponibles."
 
-#: blueprints/api/books.py:181
+#: blueprints/api/books.py:184
 msgid "Unable to download the book."
 msgstr "No se puede descargar el libro."
 
-#: blueprints/api/books.py:186
+#: blueprints/api/books.py:189
 msgid "Please configure your Kindle email in user settings first."
 msgstr ""
 "Por favor, configura tu correo electrónico de Kindle en los ajustes de "
 "usuario primero."
 
-#: blueprints/api/books.py:192
+#: blueprints/api/books.py:196
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
@@ -228,11 +228,11 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra. Por favor, instálala en el PATH del sistema."
 
-#: blueprints/api/books.py:195
+#: blueprints/api/books.py:199
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "No se puede obtener o procesar el archivo EPUB para el libro."
 
-#: blueprints/api/books.py:240
+#: blueprints/api/books.py:246
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
@@ -240,19 +240,19 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra."
 
-#: blueprints/api/books.py:253
+#: blueprints/api/books.py:259
 msgid "No pushable format found."
 msgstr "No se encontró formato para enviar."
 
-#: blueprints/api/books.py:258
+#: blueprints/api/books.py:264
 msgid "Error downloading or processing the book."
 msgstr "Error al descargar o procesar el libro."
 
-#: blueprints/api/books.py:264
+#: blueprints/api/books.py:270
 msgid "User directory not configured."
 msgstr "Directorio de usuario no configurado."
 
-#: blueprints/api/books.py:284
+#: blueprints/api/books.py:290
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
@@ -261,7 +261,7 @@ msgstr ""
 "Libro '%(filename)s' enviado. Procesados: %(processed)s, Omitidos: "
 "%(skipped)s."
 
-#: blueprints/api/books.py:309
+#: blueprints/api/books.py:316
 msgid "Missing book ID."
 msgstr "Falta el ID del libro."
 
@@ -792,8 +792,8 @@ msgstr "¡Éxito!"
 msgid "Title"
 msgstr "Título"
 
-#: static/js/page/translations.js:32 templates/stats.html:36
-#: templates/stats.html:60
+#: static/js/page/translations.js:32 templates/stats.html:109
+#: templates/stats.html:134
 msgid "Author"
 msgstr "Autor"
 
@@ -1018,8 +1018,8 @@ msgstr "Ir"
 msgid "Next"
 msgstr "Siguiente"
 
-#: templates/index.html:58 templates/index.html:135 templates/stats.html:38
-#: templates/stats.html:62
+#: templates/index.html:58 templates/index.html:135 templates/stats.html:111
+#: templates/stats.html:136
 msgid "Rating"
 msgstr "Calificación"
 
@@ -1064,7 +1064,7 @@ msgstr "Haz clic para copiar"
 msgid "Reading Progress"
 msgstr "Progreso de lectura"
 
-#: templates/index.html:138 templates/stats.html:39 templates/stats.html:63
+#: templates/index.html:138 templates/stats.html:112 templates/stats.html:137
 msgid "Total Reading Time"
 msgstr "Tiempo total de lectura"
 
@@ -1503,8 +1503,8 @@ msgid ""
 "What is the status of the audiobook generation for 'The Three-Body "
 "Problem'?"
 msgstr ""
-"¿Cuál es el estado de la generación del audiolibro para 'El problema de los "
-"tres cuerpos'?"
+"¿Cuál es el estado de la generación del audiolibro para 'El problema de "
+"los tres cuerpos'?"
 
 #: templates/settings.html:194
 msgid "Content Interaction & Summarization"
@@ -2146,36 +2146,56 @@ msgstr "Contraseña del administrador"
 msgid "Create Admin Account"
 msgstr "Crear cuenta de administrador"
 
-#: templates/stats.html:3 templates/stats.html:17
+#: templates/stats.html:3 templates/stats.html:59
 #, python-format
 msgid "%(username)s's Reading Statistics"
 msgstr "Estadísticas de lectura de %(username)s"
 
-#: templates/stats.html:19
+#: templates/stats.html:63
+msgid "Today"
+msgstr "Hoy"
+
+#: templates/stats.html:68
+msgid "This Week"
+msgstr "Esta semana"
+
+#: templates/stats.html:73
+msgid "This Month"
+msgstr "Este mes"
+
+#: templates/stats.html:78
+msgid "This Year"
+msgstr "Este año"
+
+#: templates/stats.html:83
+msgid "Total"
+msgstr "Total"
+
+#: templates/stats.html:89
 msgid "Reading Heatmap (Last 365 Days)"
 msgstr "Mapa de calor de lectura (últimos 365 días)"
 
-#: templates/stats.html:28
+#: templates/stats.html:101
 msgid "Reading Books"
 msgstr "Libros en lectura"
 
-#: templates/stats.html:38 templates/stats.html:62
+#: templates/stats.html:111 templates/stats.html:136
 msgid "Not rated"
 msgstr "Sin calificar"
 
-#: templates/stats.html:48
+#: templates/stats.html:122
 msgid "No books currently being read."
 msgstr "No hay libros en lectura actualmente."
 
-#: templates/stats.html:52
+#: templates/stats.html:126
 msgid "Finished Books"
 msgstr "Libros terminados"
 
-#: templates/stats.html:66
+#: templates/stats.html:140
 msgid "Finished!"
 msgstr "¡Terminado!"
 
-#: templates/stats.html:70
+#: templates/stats.html:144
 msgid "No finished books yet."
 msgstr "Aún no hay libros terminados."
 
