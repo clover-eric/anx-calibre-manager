@@ -17,6 +17,10 @@
     border-left-color: var(--primary-color);
 }
 
+.dark-mode .mcp-docs a {
+    color: var(--primary-color);
+}
+
 .dark-mode .mcp-docs code {
     background-color: #444;
 }
