@@ -8,7 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/plugins/Tooltip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/de.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/fr.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/zh-cn.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/zh-tw.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.css">
 {% endblock %}
 
@@ -17,7 +22,10 @@
     <h1 class="my-4">{{ _('%(username)s\'s Reading Statistics', username=user.username) }}</h1>
 
     <h2 class="my-4">{{ _('Reading Heatmap (Last 365 Days)') }}</h2>
-    <div id="cal-heatmap-container">
+    <div id="cal-heatmap-container"
+         data-heatmap-data='{{ heatmap_data | tojson | safe }}'
+         data-locale="{{ get_locale() }}"
+         data-start-date="{{ heatmap_start_date }}">
       <div id="cal-heatmap"></div>
     </div>
 
@@ -77,14 +85,24 @@
 {% block scripts %}
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      dayjs.locale('zh-cn');
-      const heatmapData = {{ heatmap_data | tojson | safe }};
-      const cal = new CalHeatmap();
+      const container = document.getElementById('cal-heatmap-container');
+      const heatmapData = JSON.parse(container.dataset.heatmapData);
+      const currentLocale = container.dataset.locale;
+      const startDate = container.dataset.startDate;
 
-      const elevenMonthsAgo = new Date();
-      // 使用UTC时间与后端保持一致
-      elevenMonthsAgo.setUTCMonth(elevenMonthsAgo.getUTCMonth() - 11);
-      elevenMonthsAgo.setUTCDate(1);
+      dayjs.extend(window.dayjs_plugin_utc);
+
+      const localeMap = {
+        'zh_Hans': 'zh-cn',
+        'zh_Hant': 'zh-tw',
+        'es': 'es',
+        'fr': 'fr',
+        'de': 'de'
+      };
+      const dayjsLocale = localeMap[currentLocale] || 'en';
+      dayjs.locale(dayjsLocale);
+
+      const cal = new CalHeatmap();
 
       cal.paint({
         itemSelector: '#cal-heatmap',
@@ -94,11 +112,16 @@
           y: 'value'
         },
         date: {
-          start: elevenMonthsAgo
+          start: new Date(startDate)
         },
         range: 12,
         domain: {
-          type: 'month'
+          type: 'month',
+          label: {
+            text: (timestamp) => dayjs(timestamp).format('MMMM'),
+            textAlign: 'start',
+            position: 'bottom'
+          }
         },
         subDomain: {
           type: 'ghDay'
@@ -118,7 +141,13 @@
             return (entry ? entry.title : (dayjsDate.format('YYYY-MM-DD') + ': 无阅读记录'));
           }
         }]
-      ]);
+      ]).then(() => {
+        setTimeout(() => {
+          if (container.scrollWidth > container.clientWidth) {
+            container.scrollLeft = container.scrollWidth;
+          }
+        }, 0);
+      });
     });
 
     window.onload = function() {

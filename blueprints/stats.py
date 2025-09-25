@@ -45,7 +45,7 @@ def user_stats(username):
         cursor = user_db.cursor()
 
         # 获取一年的阅读时间数据
-        one_year_ago = datetime.date.today() - datetime.timedelta(days=365)
+        one_year_ago = datetime.datetime.utcnow().date() - datetime.timedelta(days=365)
         
         cursor.execute(
             """
@@ -89,10 +89,19 @@ def user_stats(username):
     reading_books = [book for book in books if book['reading_percentage'] < 1]
     finished_books = [book for book in books if book['reading_percentage'] >= 1]
 
+    # Calculate the precise start date for the heatmap (11 months ago, 1st day)
+    today = datetime.datetime.utcnow().date()
+    target_month = today.month - 11
+    target_year = today.year
+    if target_month <= 0:
+        target_month += 12
+        target_year -= 1
+    heatmap_start_date = datetime.date(target_year, target_month, 1)
 
-    return render_template('stats.html', 
+    return render_template('stats.html',
                            user=user,
                            heatmap_data=heatmap_data,
+                           heatmap_start_date=heatmap_start_date.strftime('%Y-%m-%d'),
                            reading_books=reading_books,
                            finished_books=finished_books,
                            no_nav=True)
