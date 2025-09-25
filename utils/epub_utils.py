@@ -107,10 +107,13 @@ def _process_entire_epub(epub_path):
         if next_chapter_start_href and next_chapter_start_href != start_href:
             if next_chapter_start_href in spine_hrefs:
                 end_index = spine_hrefs.index(next_chapter_start_href)
-        else:
-            # If the next chapter is in the same file or this is the last chapter,
+        elif next_anchor_in_same_file:
+            # If the next chapter is just another anchor in the same file,
             # the content is only in the start_href file.
             end_index = start_index + 1
+        else:
+            # If this is the last chapter in the TOC, read until the end of the spine.
+            end_index = len(spine_hrefs)
 
         full_content_html = ""
         for j in range(start_index, end_index):
