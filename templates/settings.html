@@ -183,6 +183,12 @@
                     <div class="prompt-item">
                         <p>"{{ _('Push the book \'Dune\' to my Anx reader.') }}"</p>
                     </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('Generate an audiobook for the book \'The Three-Body Problem\'.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
+                        <p>"{{ _('What is the status of the audiobook generation for \'The Three-Body Problem\'?') }}"</p>
+                    </div>
                 </div>
                 <div class="prompt-card">
                     <h5>{{ _('Content Interaction & Summarization') }}</h5>
@@ -233,6 +239,9 @@
                 <li><strong>get_anx_entire_book_content</strong>: {{ _('Get the entire content of an Anx book. Params: `id` (int)') }}</li>
                 <li><strong>get_calibre_book_word_count_statistics</strong>: {{ _('Get word count statistics for a Calibre book. Params: `book_id` (int)') }}</li>
                 <li><strong>get_anx_book_word_count_statistics</strong>: {{ _('Get word count statistics for an Anx book. Params: `id` (int)') }}</li>
+                <li><strong>generate_audiobook</strong>: {{ _('Generate an audiobook for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
+                <li><strong>get_audiobook_generation_status</strong>: {{ _('Get audiobook generation status by task ID. Parameters: `task_id` (str)') }}</li>
+                <li><strong>get_audiobook_status_by_book</strong>: {{ _('Get the latest audiobook task status for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
             </ul>
         </div>
     </div>

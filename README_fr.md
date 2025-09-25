@@ -259,6 +259,8 @@ Voici quelques exemples de prompts en langage naturel que vous pourriez utiliser
 - **Gestion de Livres**:
   - > "Quels sont les 5 derniers livres ajoutés ? Envoyez le premier à mon Kindle."
   - > "Pousser le livre 'Dune' sur mon lecteur Anx."
+  - > "Générer un livre audio pour le livre 'Le Problème à trois corps'."
+  - > "Quel est le statut de la génération du livre audio pour 'Le Problème à trois corps' ?"
 
 - **Interaction et Résumé de Contenu**:
   - > "Montre-moi la table des matières du livre 'Fondation'."
@@ -308,6 +310,9 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
 -   `get_anx_epub_entire_content`: Obtenir le contenu complet d'un livre de la bibliothèque Anx.
 -   `get_calibre_book_word_count_stats`: Obtenir les statistiques de nombre de mots pour un livre Calibre (total et par chapitre).
 -   `get_anx_book_word_count_stats`: Obtenir les statistiques de nombre de mots pour un livre de la bibliothèque Anx (total et par chapitre).
+-   `generate_audiobook`: Générer un livre audio pour un livre de la bibliothèque Anx ou Calibre.
+-   `get_audiobook_generation_status`: Obtenir le statut d'une tâche de génération de livre audio par son ID de tâche.
+-   `get_audiobook_status_by_book`: Obtenir le statut de la dernière tâche de livre audio pour un livre spécifique par son ID et son type de bibliothèque.
 
 ## 💻 Développement
 

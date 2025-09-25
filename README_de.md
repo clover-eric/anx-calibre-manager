@@ -259,6 +259,8 @@ Hier sind einige Beispiele für natürlichsprachige Prompts, die Sie mit einem K
 - **Buchverwaltung**:
   - > "Was sind die 5 zuletzt hinzugefügten Bücher? Sende das erste an meinen Kindle."
   - > "Schiebe das Buch 'Dune' auf meinen Anx-Reader."
+  - > "Generiere ein Hörbuch für das Buch 'Die drei Sonnen'."
+  - > "Wie ist der Status der Hörbuchgenerierung für 'Die drei Sonnen'?"
 
 - **Inhaltsinteraktion & Zusammenfassung**:
   - > "Zeig mir das Inhaltsverzeichnis für das Buch 'Foundation'."
@@ -308,6 +310,9 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
 -   `get_anx_epub_entire_content`: Ruft den gesamten Inhalt eines Buches aus der Anx-Bibliothek ab.
 -   `get_calibre_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Calibre-Buch ab (Gesamtzahl und pro Kapitel).
 -   `get_anx_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Buch aus der Anx-Bibliothek ab (Gesamtzahl und pro Kapitel).
+-   `generate_audiobook`: Generiert ein Hörbuch für ein Buch aus der Anx- oder Calibre-Bibliothek.
+-   `get_audiobook_generation_status`: Ruft den Status einer Hörbuch-Generierungsaufgabe anhand ihrer Aufgaben-ID ab.
+-   `get_audiobook_status_by_book`: Ruft den Status der neuesten Hörbuch-Aufgabe für ein bestimmtes Buch anhand seiner ID und des Bibliothekstyps ab.
 
 ## 💻 Entwicklung
 

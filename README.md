@@ -258,6 +258,8 @@ Here are a few examples of natural language prompts you could use with an AI age
 - **Book Management**:
   - > "What are the 5 most recently added books? Send the first one to my Kindle."
   - > "Push the book 'Dune' to my Anx reader."
+  - > "Generate an audiobook for the book 'The Three-Body Problem'."
+  - > "What is the status of the audiobook generation for 'The Three-Body Problem'?"
 
 - **Content Interaction & Summarization**:
   - > "Show me the table of contents for the book 'Foundation'."
@@ -307,6 +309,9 @@ You can get a list of all available tools by calling the `tools/list` method. Th
 -   `get_anx_epub_entire_content`: Get the entire content of an Anx library book.
 -   `get_calibre_book_word_count_stats`: Get word count statistics for a Calibre book (total and per-chapter).
 -   `get_anx_book_word_count_stats`: Get word count statistics for an Anx library book (total and per-chapter).
+-   `generate_audiobook`: Generate an audiobook for a book from either the Anx or Calibre library.
+-   `get_audiobook_generation_status`: Get the status of an audiobook generation task by its task ID.
+-   `get_audiobook_status_by_book`: Get the status of the latest audiobook task for a specific book by its ID and library type.
 
 ## 💻 Development
 

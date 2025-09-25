@@ -22,9 +22,11 @@ from .api.calibre import get_calibre_book_details as get_raw_calibre_book_detail
 from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
 from anx_library import get_anx_books, get_anx_book_details
 from utils.epub_utils import _get_text_from_html, _extract_toc_from_epub, _process_entire_epub, _count_words
-
+from blueprints.api.audiobook import generate_audiobook_route
+from utils.audiobook_tasks_db import get_latest_task_for_book
+ 
 mcp_bp = Blueprint('mcp', __name__, url_prefix='/mcp')
-
+ 
 def token_required(f):
     """Decorator to require a valid MCP token."""
     @functools.wraps(f)
@@ -343,9 +345,99 @@ def get_anx_book_word_count_statistics(id: int):
     get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
     return _get_book_word_count_statistics_logic(id, get_epub_func, get_details_func)
 
+
+def generate_audiobook(book_id: int, library_type: str):
+    """
+    为指定的书籍生成有声书。
+    :param book_id: 书籍的 ID
+    :param library_type: 书库类型，'anx' 或 'calibre'
+    """
+    existing_task = get_latest_task_for_book(g.user['id'], book_id, library_type)
+    if existing_task and existing_task['status'] not in ['error', 'completed']:
+        return {'status': 'already_in_progress', 'task_id': existing_task['task_id']}
+
+    from flask import current_app
+    from types import SimpleNamespace
+    
+    # 正确的方法是使用 `data` 参数传递表单数据
+    form_data = {'book_id': str(book_id), 'library': library_type}
+
+    # 捕获外部作用域的 g.user (sqlite3.Row) 并将其转换为支持属性访问的对象
+    user_dict = dict(g.user)
+    user_object_for_context = SimpleNamespace(**user_dict)
+
+    with current_app.test_request_context(method='POST', data=form_data):
+        # 在测试上下文中，g 对象是全新的，所以需要重新赋值
+        g.user = user_object_for_context
+
+        response = generate_audiobook_route()
+
+    # generate_audiobook_route 可能会返回一个 Response 对象，或者一个 (Response, status_code) 的元组
+    response_obj = response
+    if isinstance(response, tuple):
+        response_obj = response[0]
+
+    # 检查响应是否是 JSON 格式
+    if hasattr(response_obj, 'is_json') and response_obj.is_json:
+        return response_obj.get_json()
+    else:
+        status_code = response[1] if isinstance(response, tuple) else response_obj.status_code
+        # 如果不是 JSON，可能是一个重定向或错误页面，我们需要处理它
+        if status_code >= 200 and status_code < 400:
+             # 假设成功，但没有 JSON 返回。检查数据库中的任务以确认。
+             # 这是一个简化的处理方式，理想情况下应该从响应头等信息获取任务ID
+             return {"status": "started_no_json_response", "message": "Request accepted, but no JSON response. Check status later."}
+        else:
+             return {"error": f"Failed with status code {status_code}", "response_data": response_obj.get_data(as_text=True)}
+
+
+def get_audiobook_generation_status(task_id: str):
+    """
+    获取有声书生成任务的状态和进度。
+    :param task_id: 任务的 ID
+    """
+    from utils.audiobook_tasks_db import get_audiobook_task_by_id
+    task = get_audiobook_task_by_id(task_id) # get_audiobook_task_by_id 不需要 user_id
+    if not task:
+        return {'error': 'Task not found.'}
+    
+    # 安全检查：对于 Anx 库的书籍，确保任务属于当前用户
+    if task['library_type'] == 'anx' and task['user_id'] != g.user['id']:
+        return {'error': 'Task not found for this user.'}
+
+    return dict(task)
+
+
+def get_audiobook_status_by_book(book_id: int, library_type: str):
+    """
+    通过 book_id 和 library_type 获取书籍的最新有声书任务状态。
+    :param book_id: 书籍的 ID
+    :param library_type: 书库类型，'anx' 或 'calibre'
+    """
+    task = get_latest_task_for_book(g.user['id'], book_id, library_type)
+    if not task:
+        return {'status': 'not_found', 'message': 'No active or completed task found for this book.'}
+    return dict(task)
+
+
 # --- Main MCP Endpoint ---
 
 TOOLS = {
+    'generate_audiobook': {
+        'function': generate_audiobook,
+        'params': {'book_id': int, 'library_type': str},
+        'description': "为指定的书籍生成有声书。library_type 必须是 'anx' 或 'calibre'。"
+    },
+    'get_audiobook_generation_status': {
+        'function': get_audiobook_generation_status,
+        'params': {'task_id': str},
+        'description': '通过任务 ID 获取有声书生成任务的状态和进度。'
+    },
+    'get_audiobook_status_by_book': {
+        'function': get_audiobook_status_by_book,
+        'params': {'book_id': int, 'library_type': str},
+        'description': "通过书籍 ID 和库类型（'anx' 或 'calibre'）获取最新的有声书任务状态。"
+    },
     'search_calibre_books': {
         'function': search_calibre_books,
         'params': {'search_expression': str, 'limit': int},
@@ -489,13 +581,20 @@ def mcp_endpoint():
             tool_info = TOOLS[tool_name]
             tool_function = tool_info['function']
             
+            # 创建一个只包含目标函数所需参数的新字典，以避免意外的关键字参数错误
+            expected_params = tool_info.get('params', {}).keys()
+            filtered_arguments = {k: v for k, v in arguments.items() if k in expected_params}
+
             if tool_name == 'get_anx_book_details':
                 if 'id' in arguments:
-                    arguments['book_id'] = arguments.pop('id')
-                arguments['username'] = g.user['username']
+                    # 'id' is the expected param, but the function needs 'book_id'
+                    filtered_arguments['book_id'] = arguments.get('id')
+                    if 'id' in filtered_arguments:
+                        del filtered_arguments['id']
+                filtered_arguments['username'] = g.user['username']
 
             try:
-                result = tool_function(**arguments)
+                result = tool_function(**filtered_arguments)
                 result_text = json.dumps(result, indent=2, ensure_ascii=False, default=str)
                 
                 return jsonify({
