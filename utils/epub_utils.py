@@ -120,10 +120,11 @@ def _process_entire_epub(epub_path):
                 try:
                     parser = etree.HTMLParser()
                     doc = etree.fromstring(item.get_content(), parser)
-                    body = doc.find('{http://www.w3.org/1999/xhtml}body')
-                    if body is None: body = doc.find('.//body')
-
-                    if body is not None:
+                    # Use a namespace-agnostic XPath to find the body tag, making it more robust
+                    body_nodes = doc.xpath('//*[local-name()="body"]')
+                    
+                    if body_nodes:
+                        body = body_nodes[0]
                         # Anchor-based slicing logic
                         content_nodes = []
                         if not start_anchor:
@@ -149,6 +150,9 @@ def _process_entire_epub(epub_path):
                         
                         inner_html_parts = [etree.tostring(node, encoding='unicode', method='html') for node in content_nodes]
                         full_content_html += "".join(inner_html_parts).strip()
+                    else:
+                        # Fallback if body is not found (e.g., malformed HTML)
+                        full_content_html += item.get_content().decode('utf-8', 'ignore')
                 except Exception:
                     # Fallback to raw content on parsing error
                     full_content_html += item.get_content().decode('utf-8', 'ignore')
