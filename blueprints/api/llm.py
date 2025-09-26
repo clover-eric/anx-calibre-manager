@@ -5,6 +5,7 @@ from flask import Blueprint, request, jsonify, g, Response, current_app
 from flask_babel import gettext as _
 from contextlib import closing
 import database
+from threading import Lock
 
 # Use a try-except block for cleaner optional import
 try:
@@ -14,6 +15,11 @@ except ImportError:
     MCP_AVAILABLE = False
 
 llm_bp = Blueprint('llm', __name__, url_prefix='/api/llm')
+
+# Simple in-memory cache for book content
+book_content_cache = {}
+cache_lock = Lock()
+MAX_CACHE_SIZE = 20  # Cache up to 20 books to prevent excessive memory usage
 
 def login_required_api(f):
     from functools import wraps
@@ -95,17 +101,16 @@ def chat_with_book():
     base_system_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': book_title}
 
     def generate_chunks():
-        with closing(database.get_db()) as db:
-            message_count = db.execute(
-                'SELECT COUNT(id) FROM llm_chat_messages WHERE session_id = ?', (session_id,)
-            ).fetchone()[0]
-
-        is_first_message = message_count <= 1
-        
         system_prompt = base_system_prompt
-        book_content = ""
+        
+        # --- Get book content with cache ---
+        cache_key = (book_type, book_id)
+        book_content = None
+        with cache_lock:
+            if cache_key in book_content_cache:
+                book_content = book_content_cache[cache_key]
 
-        if is_first_message:
+        if book_content is None:
             if book_type not in ['calibre', 'anx']:
                 error_message = json.dumps({"error": _('Invalid book type.')})
                 yield f"event: error\ndata: {error_message}\n\n"
@@ -130,8 +135,12 @@ def chat_with_book():
                 yield f"event: error\ndata: {error_message}\n\n"
                 return
             
-            system_prompt += _(" Here is the full text of the book:\n\n---BOOK CONTENT---\n%(book_content)s\n---END BOOK CONTENT---") % {'book_content': book_content}
-
+            with cache_lock:
+                if len(book_content_cache) >= MAX_CACHE_SIZE:
+                    # Simple FIFO eviction
+                    del book_content_cache[next(iter(book_content_cache))]
+                book_content_cache[cache_key] = book_content
+        
         # --- Call LLM ---
         if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
             error_message = json.dumps({"error": _('LLM settings are not configured in user settings.')})
@@ -142,6 +151,14 @@ def chat_with_book():
         endpoint = user_info_dict['llm_base_url'].rstrip('/') + '/chat/completions'
         
         messages = [{"role": "system", "content": system_prompt}]
+        
+        # Create a virtual first user message with the book content and a request for summary.
+        # This message is not saved to the database but is always sent to the LLM.
+        book_context_prompt = _(" Here is the full text of the book:\n\n---BOOK CONTENT---\n%(book_content)s\n---END BOOK CONTENT---") % {'book_content': book_content}
+        summary_request_prompt = _("Please provide a comprehensive summary and a profound review of this book.")
+        virtual_user_message_content = f"{book_context_prompt} {summary_request_prompt}"
+        messages.append({"role": "user", "content": virtual_user_message_content})
+
         with closing(database.get_db()) as db:
             history = db.execute(
                 'SELECT role, content FROM llm_chat_messages WHERE session_id = ? ORDER BY created_at ASC',
