@@ -55,5 +55,21 @@ export function initializeTranslations() {
         CHAPTER_CONVERSION_FAILED: _("All chapters are empty or could not be converted to audio."),
         UNKNOWN_ERROR: _("An unknown error occurred: %(error)s"),
         FILE_ERROR: _("File error: %(error)s"),
+
+        // Chat Player
+        failedToFetchChatHistory: _('Failed to fetch chat history.'),
+        errorLoadingHistory: _('Error loading history:'),
+        failedToGetResponse: _('Failed to get a response from the AI.'),
+        anErrorOccurred: _('An error occurred:'),
+        initialChatPrompt: _("Please provide a comprehensive summary and a profound review of this book."),
+        yearsAgo: _('years ago'),
+        monthsAgo: _('months ago'),
+        daysAgo: _('days ago'),
+        hoursAgo: _('hours ago'),
+        minutesAgo: _('minutes ago'),
+        justNow: _('just now'),
+        confirmDeleteChat: _('Are you sure you want to delete this chat session? This action cannot be undone.'),
+        failedToDeleteSession: _('Failed to delete the session.'),
+        errorLabel: _('Error:'),
     });
 }

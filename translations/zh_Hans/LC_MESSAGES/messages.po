@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 18:13+0800\n"
+"POT-Creation-Date: 2025-09-26 20:18+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -376,35 +376,81 @@ msgstr "邀请码已存在"
 msgid "Operation failed"
 msgstr "操作失败"
 
-#: blueprints/api/llm.py:13
+#: blueprints/api/llm.py:22
 msgid "Authentication required."
 msgstr "需要身份验证。"
 
-#: blueprints/api/llm.py:20
+#: blueprints/api/llm.py:33
+msgid "Book ID and type are required."
+msgstr "书籍 ID 和类型是必需的。"
+
+#: blueprints/api/llm.py:42
+msgid "No history found for this book."
+msgstr "未找到该书籍的曆史记录。"
+
+#: blueprints/api/llm.py:58
+msgid "MCP module is not available, cannot process book content."
+msgstr "MCP 模块不可用，无法处理书籍内容。"
+
+#: blueprints/api/llm.py:68
+msgid "Missing required fields."
+msgstr "缺少必填字段。"
+
+#: blueprints/api/llm.py:92
+msgid "Invalid book type."
+msgstr "无效的书籍类型。"
+
+#: blueprints/api/llm.py:112
+#, python-format
+msgid "Failed to get book content: %(error)s"
+msgstr "获取书籍内容失败：%(error)s"
+
+#: blueprints/api/llm.py:116
+msgid "Could not extract text from the book."
+msgstr "无法从书籍中提取文本。"
+
+#: blueprints/api/llm.py:120
+msgid "LLM settings are not configured in user settings."
+msgstr "用户设置中未配置 LLM。"
+
+#: blueprints/api/llm.py:144
+#, python-format
+msgid "Failed to communicate with LLM provider: %(error)s"
+msgstr "与 LLM 提供商通信失败：%(error)s"
+
+#: blueprints/api/llm.py:165
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:45
+#: blueprints/api/llm.py:181
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:50
+#: blueprints/api/llm.py:186
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:52
+#: blueprints/api/llm.py:188
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:54
+#: blueprints/api/llm.py:190
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:56
+#: blueprints/api/llm.py:192
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
+
+#: blueprints/api/llm.py:205
+msgid "Session not found or permission denied."
+msgstr "会话未找到或权限被拒绝。"
+
+#: blueprints/api/llm.py:211
+msgid "Chat session deleted successfully."
+msgstr "聊天会话已成功删除。"
 
 #: blueprints/api/settings.py:85
 msgid "User settings updated."
@@ -501,7 +547,7 @@ msgid "Comment"
 msgstr "评论"
 
 #: static/js/audio_player.js:172 static/js/page/translations.js:36
-#: templates/index.html:70 templates/index.html:143
+#: templates/index.html:73 templates/index.html:149
 msgid "Description"
 msgstr "描述"
 
@@ -614,7 +660,7 @@ msgstr "没有可用的令牌。"
 msgid "Created at"
 msgstr "创建时间"
 
-#: static/js/settings.js:21 templates/index.html:150
+#: static/js/settings.js:21 templates/index.html:156
 msgid "Delete"
 msgstr "删除"
 
@@ -648,7 +694,7 @@ msgstr "发生错误"
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings.js:29 templates/index.html:81 templates/index.html:149
+#: static/js/settings.js:29 templates/index.html:84 templates/index.html:155
 msgid "Edit"
 msgstr "编辑"
 
@@ -820,12 +866,12 @@ msgid ""
 " to apply."
 msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间才能生效。"
 
-#: static/js/page/translations.js:39 templates/index.html:60
-#: templates/index.html:136
+#: static/js/page/translations.js:39 templates/index.html:63
+#: templates/index.html:142
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/translations.js:40 templates/index.html:61
+#: static/js/page/translations.js:40 templates/index.html:64
 msgid "Publication Date"
 msgstr "出版日期"
 
@@ -887,11 +933,69 @@ msgstr "所有章节均为空或无法转换为音频。"
 msgid "An unknown error occurred: %(error)s"
 msgstr "发生未知错误：%(error)s"
 
+#: static/js/page/translations.js:60
+msgid "Failed to fetch chat history."
+msgstr "获取聊天记录失败。"
+
+#: static/js/page/translations.js:61
+msgid "Error loading history:"
+msgstr "加载历史记录时出错："
+
+#: static/js/page/translations.js:62
+msgid "Failed to get a response from the AI."
+msgstr "未能从 AI 处获得回应。"
+
+#: static/js/page/translations.js:63
+msgid "An error occurred:"
+msgstr "发生错误："
+
+#: static/js/page/translations.js:64
+msgid "Please provide a comprehensive summary and a profound review of this book."
+msgstr "请对这本书进行全面总结和深刻评论。"
+
+#: static/js/page/translations.js:65
+msgid "years ago"
+msgstr "年前"
+
+#: static/js/page/translations.js:66
+msgid "months ago"
+msgstr "个月前"
+
+#: static/js/page/translations.js:67
+msgid "days ago"
+msgstr "天前"
+
+#: static/js/page/translations.js:68
+msgid "hours ago"
+msgstr "小时前"
+
+#: static/js/page/translations.js:69
+msgid "minutes ago"
+msgstr "分钟前"
+
+#: static/js/page/translations.js:70
+msgid "just now"
+msgstr "刚刚"
+
+#: static/js/page/translations.js:71
+msgid ""
+"Are you sure you want to delete this chat session? This action cannot be "
+"undone."
+msgstr "您确定要删除此聊天会话吗？此操作无法撤消。"
+
+#: static/js/page/translations.js:72
+msgid "Failed to delete the session."
+msgstr "删除会话失败。"
+
+#: static/js/page/translations.js:73
+msgid "Error:"
+msgstr "错误："
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "有声书播放器"
 
-#: templates/audio_player.html:21
+#: templates/audio_player.html:21 templates/chat_player.html:41
 msgid "Back to main library"
 msgstr "返回主书库"
 
@@ -899,7 +1003,7 @@ msgstr "返回主书库"
 msgid "Calibre Library"
 msgstr "Calibre 书库"
 
-#: templates/audio_player.html:26 templates/index.html:113
+#: templates/audio_player.html:26 templates/index.html:116
 msgid "Anx Library"
 msgstr "Anx 书库"
 
@@ -935,46 +1039,83 @@ msgstr "下一章"
 msgid "Now Playing"
 msgstr "正在播放"
 
-#: templates/base.html:6 templates/base.html:86
+#: templates/base.html:6 templates/base.html:87
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
 
-#: templates/base.html:89 templates/base.html:114 templates/settings.html:3
+#: templates/base.html:90 templates/base.html:115 templates/settings.html:3
 #: templates/settings.html:13
 msgid "Settings"
 msgstr "设置"
 
-#: templates/base.html:90
+#: templates/base.html:91
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:64
+#: templates/base.html:107 templates/index.html:3 templates/index.html:67
 msgid "Library"
 msgstr "书库"
 
-#: templates/base.html:110 templates/index.html:77
+#: templates/base.html:111 templates/chat_player.html:46
+#: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
 
-#: templates/base.html:220
+#: templates/base.html:222
 msgid "Having issues or suggestions?"
 msgstr "有任何问题或建议吗？"
 
-#: templates/base.html:220
+#: templates/base.html:222
 msgid "Submit an issue on GitHub"
 msgstr "在 GitHub 上提交问题"
 
-#: templates/base.html:221
+#: templates/base.html:223
 msgid "Find This Helpful?"
 msgstr "觉得这个有帮助吗？"
 
-#: templates/base.html:221
+#: templates/base.html:223
 msgid "Buy me a Coffee ☕"
 msgstr "请我喝杯咖啡 ☕"
 
-#: templates/base.html:222
+#: templates/base.html:224
 msgid "Anx Calibre Manager by"
 msgstr "Anx Calibre Manager by"
+
+#: templates/chat_player.html:6
+msgid "AI Chat"
+msgstr "AI 聊天"
+
+#: templates/chat_player.html:45
+msgid "Calibre"
+msgstr "Calibre"
+
+#: templates/chat_player.html:56 templates/chat_player.html:69
+msgid "Updated"
+msgstr "已更新"
+
+#: templates/chat_player.html:58 templates/chat_player.html:71
+msgid "Delete Chat"
+msgstr "删除聊天"
+
+#: templates/chat_player.html:61
+msgid "No chats in Calibre."
+msgstr "Calibre 中没有聊天记录。"
+
+#: templates/chat_player.html:74
+msgid "No chats in Anx."
+msgstr "Anx 中没有聊天记录。"
+
+#: templates/chat_player.html:84
+msgid "Select a conversation to begin."
+msgstr "选择一个对话以开始。"
+
+#: templates/chat_player.html:94
+msgid "Type your message..."
+msgstr "输入您的消息..."
+
+#: templates/chat_player.html:95
+msgid "Send"
+msgstr "发送"
 
 #: templates/index.html:19
 msgid "Home"
@@ -984,124 +1125,128 @@ msgstr "主页"
 msgid "Search Calibre books..."
 msgstr "搜索 Calibre 图书..."
 
-#: templates/index.html:24 templates/index.html:183
+#: templates/index.html:24 templates/index.html:189
 msgid "Upload"
 msgstr "上传"
 
-#: templates/index.html:28 templates/index.html:94
+#: templates/index.html:28 templates/index.html:97
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "共 %(total_books)s 本书 (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:33 templates/index.html:99
+#: templates/index.html:33 templates/index.html:102
 msgid "20/page"
 msgstr "20/页"
 
-#: templates/index.html:34 templates/index.html:100
+#: templates/index.html:34 templates/index.html:103
 msgid "50/page"
 msgstr "50/页"
 
-#: templates/index.html:35 templates/index.html:101
+#: templates/index.html:35 templates/index.html:104
 msgid "100/page"
 msgstr "100/页"
 
-#: templates/index.html:37 templates/index.html:103
+#: templates/index.html:37 templates/index.html:106
 msgid "Previous"
 msgstr "上一页"
 
-#: templates/index.html:39 templates/index.html:105
+#: templates/index.html:39 templates/index.html:108
 msgid "Go"
 msgstr "前往"
 
-#: templates/index.html:40 templates/index.html:106
+#: templates/index.html:40 templates/index.html:109
 msgid "Next"
 msgstr "下一页"
 
-#: templates/index.html:58 templates/index.html:135 templates/stats.html:125
+#: templates/index.html:55 templates/index.html:135
+msgid "Ask AI"
+msgstr "询问 AI"
+
+#: templates/index.html:61 templates/index.html:141 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "评分"
 
-#: templates/index.html:59
+#: templates/index.html:62
 msgid "Formats"
 msgstr "格式"
 
-#: templates/index.html:68
+#: templates/index.html:71
 msgid "Read Date"
 msgstr "阅读日期"
 
-#: templates/index.html:75 templates/index.html:148
+#: templates/index.html:78 templates/index.html:154
 msgid "Download"
 msgstr "下载"
 
-#: templates/index.html:76
+#: templates/index.html:79
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:85 templates/index.html:153
+#: templates/index.html:88 templates/index.html:159
 msgid "Generate Audiobook"
 msgstr "生成有声书"
 
-#: templates/index.html:90
+#: templates/index.html:93
 msgid "No books in Calibre library."
 msgstr "Calibre 书库中没有图书。"
 
-#: templates/index.html:116
+#: templates/index.html:119
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:116 templates/settings.html:285
+#: templates/index.html:119 templates/settings.html:285
 msgid "Click to copy"
 msgstr "点击复制"
 
-#: templates/index.html:137
+#: templates/index.html:143
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: templates/index.html:138 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:144 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
-#: templates/index.html:139
+#: templates/index.html:145
 msgid "Note Count"
 msgstr "笔记数量"
 
-#: templates/index.html:140
+#: templates/index.html:146
 msgid "Creation Time"
 msgstr "创建时间"
 
-#: templates/index.html:141
+#: templates/index.html:147
 msgid "Update Time"
 msgstr "更新时间"
 
-#: templates/index.html:142
+#: templates/index.html:148
 msgid "Producer"
 msgstr "制作者"
 
-#: templates/index.html:159
+#: templates/index.html:165
 msgid "No books in Anx library."
 msgstr "Anx 书库中没有图书。"
 
-#: templates/index.html:171
+#: templates/index.html:177
 msgid "Upload Books"
 msgstr "上传图书"
 
-#: templates/index.html:177
+#: templates/index.html:183
 msgid "Select files:"
 msgstr "选择文件："
 
-#: templates/index.html:182 templates/index.html:199
+#: templates/index.html:188 templates/index.html:205
 #: templates/settings.html:168 templates/settings.html:445
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:192
+#: templates/index.html:198
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:200 templates/settings.html:444
+#: templates/index.html:206 templates/settings.html:444
 msgid "Save"
 msgstr "保存"
 
@@ -2129,4 +2274,13 @@ msgstr "已读完！"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
+
+#~ msgid "Thinking..."
+#~ msgstr "思考中..."
+
+#~ msgid "Loading history..."
+#~ msgstr "正在加载历史记录..."
+
+#~ msgid "Generating summary..."
+#~ msgstr "正在生成摘要..."
 

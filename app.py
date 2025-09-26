@@ -139,6 +139,7 @@ def create_app():
     from blueprints.mcp import mcp_bp
     from blueprints.koreader import koreader_bp
     from blueprints.stats import bp as stats_bp
+    from blueprints.chat import chat_bp
     
     # Import new modular blueprints
     from blueprints.api.users import users_bp
@@ -159,6 +160,7 @@ def create_app():
     app.register_blueprint(mcp_bp)
     app.register_blueprint(stats_bp)
     app.register_blueprint(koreader_bp)
+    app.register_blueprint(chat_bp)
     
     # Register new modular blueprints
     app.register_blueprint(users_bp)

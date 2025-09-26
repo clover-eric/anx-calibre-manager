@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 18:13+0800\n"
+"POT-Creation-Date: 2025-09-26 20:18+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -391,35 +391,83 @@ msgstr "Le code d'invitation existe déjà"
 msgid "Operation failed"
 msgstr "L'opération a échoué"
 
-#: blueprints/api/llm.py:13
+#: blueprints/api/llm.py:22
 msgid "Authentication required."
 msgstr "Authentification requise."
 
-#: blueprints/api/llm.py:20
+#: blueprints/api/llm.py:33
+msgid "Book ID and type are required."
+msgstr "L'ID et le type du livre sont requis."
+
+#: blueprints/api/llm.py:42
+msgid "No history found for this book."
+msgstr "Aucun historique trouvé pour ce livre."
+
+#: blueprints/api/llm.py:58
+msgid "MCP module is not available, cannot process book content."
+msgstr "Le module MCP n'est pas disponible, impossible de traiter le contenu du livre."
+
+#: blueprints/api/llm.py:68
+msgid "Missing required fields."
+msgstr "Champs obligatoires manquants."
+
+#: blueprints/api/llm.py:92
+msgid "Invalid book type."
+msgstr "Type de livre invalide."
+
+#: blueprints/api/llm.py:112
+#, python-format
+msgid "Failed to get book content: %(error)s"
+msgstr "Échec de la récupération du contenu du livre : %(error)s"
+
+#: blueprints/api/llm.py:116
+msgid "Could not extract text from the book."
+msgstr "Impossible d'extraire le texte du livre."
+
+#: blueprints/api/llm.py:120
+msgid "LLM settings are not configured in user settings."
+msgstr "Les paramètres LLM ne sont pas configurés dans les paramètres utilisateur."
+
+#: blueprints/api/llm.py:144
+#, python-format
+msgid "Failed to communicate with LLM provider: %(error)s"
+msgstr "Échec de la communication avec le fournisseur LLM : %(error)s"
+
+#: blueprints/api/llm.py:165
 msgid "Base URL and API Key are required."
 msgstr "L'URL de base et la clé API sont requises."
 
-#: blueprints/api/llm.py:45
+#: blueprints/api/llm.py:181
 msgid "Unexpected response format from model provider."
 msgstr "Format de réponse inattendu du fournisseur de modèle."
 
-#: blueprints/api/llm.py:50
+#: blueprints/api/llm.py:186
 msgid "Authentication error. Please check your API Key."
 msgstr "Erreur d'authentification. Veuillez vérifier votre clé API."
 
-#: blueprints/api/llm.py:52
+#: blueprints/api/llm.py:188
 msgid "Invalid API endpoint. Please check your Base URL."
-msgstr "Point de terminaison d'API non valide. Veuillez vérifier votre URL de base."
+msgstr ""
+"Point de terminaison d'API non valide. Veuillez vérifier votre URL de "
+"base."
 
-#: blueprints/api/llm.py:54
+#: blueprints/api/llm.py:190
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Impossible de se connecter au fournisseur de modèle : %(error)s"
 
-#: blueprints/api/llm.py:56
+#: blueprints/api/llm.py:192
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Une erreur inattendue est survenue : %(error)s"
+
+#: blueprints/api/llm.py:205
+msgid "Session not found or permission denied."
+msgstr "Session non trouvée ou permission refusée."
+
+#: blueprints/api/llm.py:211
+msgid "Chat session deleted successfully."
+msgstr "Session de discussion supprimée avec succès."
 
 #: blueprints/api/settings.py:85
 msgid "User settings updated."
@@ -520,7 +568,7 @@ msgid "Comment"
 msgstr "Commentaire"
 
 #: static/js/audio_player.js:172 static/js/page/translations.js:36
-#: templates/index.html:70 templates/index.html:143
+#: templates/index.html:73 templates/index.html:149
 msgid "Description"
 msgstr "Description"
 
@@ -635,7 +683,7 @@ msgstr "Aucun jeton disponible."
 msgid "Created at"
 msgstr "Créé à"
 
-#: static/js/settings.js:21 templates/index.html:150
+#: static/js/settings.js:21 templates/index.html:156
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -671,7 +719,7 @@ msgstr "Une erreur est survenue"
 msgid "Please enter a test recipient email address."
 msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
 
-#: static/js/settings.js:29 templates/index.html:81 templates/index.html:149
+#: static/js/settings.js:29 templates/index.html:84 templates/index.html:155
 msgid "Edit"
 msgstr "Modifier"
 
@@ -849,12 +897,12 @@ msgstr ""
 "Les mises à jour de métadonnées pour les livres Calibre sont asynchrones "
 "et peuvent prendre un moment à s'appliquer."
 
-#: static/js/page/translations.js:39 templates/index.html:60
-#: templates/index.html:136
+#: static/js/page/translations.js:39 templates/index.html:63
+#: templates/index.html:142
 msgid "Publisher"
 msgstr "Éditeur"
 
-#: static/js/page/translations.js:40 templates/index.html:61
+#: static/js/page/translations.js:40 templates/index.html:64
 msgid "Publication Date"
 msgstr "Date de publication"
 
@@ -916,11 +964,73 @@ msgstr "Tous les chapitres sont vides ou n'ont pas pu être convertis en audio."
 msgid "An unknown error occurred: %(error)s"
 msgstr "Une erreur inconnue est survenue : %(error)s"
 
+#: static/js/page/translations.js:60
+msgid "Failed to fetch chat history."
+msgstr "Échec de la récupération de l'historique des discussions."
+
+#: static/js/page/translations.js:61
+msgid "Error loading history:"
+msgstr "Erreur lors du chargement de l'historique :"
+
+#: static/js/page/translations.js:62
+msgid "Failed to get a response from the AI."
+msgstr "Impossible d'obtenir une réponse de l'IA."
+
+#: static/js/page/translations.js:63
+msgid "An error occurred:"
+msgstr "Une erreur est survenue :"
+
+#: static/js/page/translations.js:64
+msgid "Please provide a comprehensive summary and a profound review of this book."
+msgstr ""
+"Veuillez fournir un résumé complet et une critique approfondie de ce "
+"livre."
+
+#: static/js/page/translations.js:65
+msgid "years ago"
+msgstr "ans"
+
+#: static/js/page/translations.js:66
+msgid "months ago"
+msgstr "mois"
+
+#: static/js/page/translations.js:67
+msgid "days ago"
+msgstr "jours"
+
+#: static/js/page/translations.js:68
+msgid "hours ago"
+msgstr "heures"
+
+#: static/js/page/translations.js:69
+msgid "minutes ago"
+msgstr "minutes"
+
+#: static/js/page/translations.js:70
+msgid "just now"
+msgstr "à l'instant"
+
+#: static/js/page/translations.js:71
+msgid ""
+"Are you sure you want to delete this chat session? This action cannot be "
+"undone."
+msgstr ""
+"Êtes-vous sûr de vouloir supprimer cette session de discussion ? Cette action "
+"est irréversible."
+
+#: static/js/page/translations.js:72
+msgid "Failed to delete the session."
+msgstr "Échec de la suppression de la session."
+
+#: static/js/page/translations.js:73
+msgid "Error:"
+msgstr "Erreur :"
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "Lecteur de livres audio"
 
-#: templates/audio_player.html:21
+#: templates/audio_player.html:21 templates/chat_player.html:41
 msgid "Back to main library"
 msgstr "Retour à la bibliothèque principale"
 
@@ -928,7 +1038,7 @@ msgstr "Retour à la bibliothèque principale"
 msgid "Calibre Library"
 msgstr "Bibliothèque Calibre"
 
-#: templates/audio_player.html:26 templates/index.html:113
+#: templates/audio_player.html:26 templates/index.html:116
 msgid "Anx Library"
 msgstr "Bibliothèque Anx"
 
@@ -964,46 +1074,83 @@ msgstr "Chapitre suivant"
 msgid "Now Playing"
 msgstr "En cours de lecture"
 
-#: templates/base.html:6 templates/base.html:86
+#: templates/base.html:6 templates/base.html:87
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
 
-#: templates/base.html:89 templates/base.html:114 templates/settings.html:3
+#: templates/base.html:90 templates/base.html:115 templates/settings.html:3
 #: templates/settings.html:13
 msgid "Settings"
 msgstr "Paramètres"
 
-#: templates/base.html:90
+#: templates/base.html:91
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:64
+#: templates/base.html:107 templates/index.html:3 templates/index.html:67
 msgid "Library"
 msgstr "Bibliothèque"
 
-#: templates/base.html:110 templates/index.html:77
+#: templates/base.html:111 templates/chat_player.html:46
+#: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
 
-#: templates/base.html:220
+#: templates/base.html:222
 msgid "Having issues or suggestions?"
 msgstr "Vous avez des problèmes ou des suggestions ?"
 
-#: templates/base.html:220
+#: templates/base.html:222
 msgid "Submit an issue on GitHub"
 msgstr "Signaler un problème sur GitHub"
 
-#: templates/base.html:221
+#: templates/base.html:223
 msgid "Find This Helpful?"
 msgstr "Trouvez-vous cela utile ?"
 
-#: templates/base.html:221
+#: templates/base.html:223
 msgid "Buy me a Coffee ☕"
 msgstr "Offrez-moi un café ☕"
 
-#: templates/base.html:222
+#: templates/base.html:224
 msgid "Anx Calibre Manager by"
 msgstr "Anx Calibre Manager par"
+
+#: templates/chat_player.html:6
+msgid "AI Chat"
+msgstr "Chat IA"
+
+#: templates/chat_player.html:45
+msgid "Calibre"
+msgstr "Calibre"
+
+#: templates/chat_player.html:56 templates/chat_player.html:69
+msgid "Updated"
+msgstr "Mis à jour"
+
+#: templates/chat_player.html:58 templates/chat_player.html:71
+msgid "Delete Chat"
+msgstr "Supprimer la discussion"
+
+#: templates/chat_player.html:61
+msgid "No chats in Calibre."
+msgstr "Aucune discussion dans Calibre."
+
+#: templates/chat_player.html:74
+msgid "No chats in Anx."
+msgstr "Aucune discussion dans Anx."
+
+#: templates/chat_player.html:84
+msgid "Select a conversation to begin."
+msgstr "Sélectionnez une conversation pour commencer."
+
+#: templates/chat_player.html:94
+msgid "Type your message..."
+msgstr "Tapez votre message..."
+
+#: templates/chat_player.html:95
+msgid "Send"
+msgstr "Envoyer"
 
 #: templates/index.html:19
 msgid "Home"
@@ -1013,69 +1160,73 @@ msgstr "Accueil"
 msgid "Search Calibre books..."
 msgstr "Rechercher des livres Calibre..."
 
-#: templates/index.html:24 templates/index.html:183
+#: templates/index.html:24 templates/index.html:189
 msgid "Upload"
 msgstr "Téléverser"
 
-#: templates/index.html:28 templates/index.html:94
+#: templates/index.html:28 templates/index.html:97
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "Total %(total_books)s livres (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:33 templates/index.html:99
+#: templates/index.html:33 templates/index.html:102
 msgid "20/page"
 msgstr "20/page"
 
-#: templates/index.html:34 templates/index.html:100
+#: templates/index.html:34 templates/index.html:103
 msgid "50/page"
 msgstr "50/page"
 
-#: templates/index.html:35 templates/index.html:101
+#: templates/index.html:35 templates/index.html:104
 msgid "100/page"
 msgstr "100/page"
 
-#: templates/index.html:37 templates/index.html:103
+#: templates/index.html:37 templates/index.html:106
 msgid "Previous"
 msgstr "Précédent"
 
-#: templates/index.html:39 templates/index.html:105
+#: templates/index.html:39 templates/index.html:108
 msgid "Go"
 msgstr "Aller"
 
-#: templates/index.html:40 templates/index.html:106
+#: templates/index.html:40 templates/index.html:109
 msgid "Next"
 msgstr "Suivant"
 
-#: templates/index.html:58 templates/index.html:135 templates/stats.html:125
+#: templates/index.html:55 templates/index.html:135
+msgid "Ask AI"
+msgstr "Demander à l'IA"
+
+#: templates/index.html:61 templates/index.html:141 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Note"
 
-#: templates/index.html:59
+#: templates/index.html:62
 msgid "Formats"
 msgstr "Formats"
 
-#: templates/index.html:68
+#: templates/index.html:71
 msgid "Read Date"
 msgstr "Date de lecture"
 
-#: templates/index.html:75 templates/index.html:148
+#: templates/index.html:78 templates/index.html:154
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/index.html:76
+#: templates/index.html:79
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:85 templates/index.html:153
+#: templates/index.html:88 templates/index.html:159
 msgid "Generate Audiobook"
 msgstr "Générer un livre audio"
 
-#: templates/index.html:90
+#: templates/index.html:93
 msgid "No books in Calibre library."
 msgstr "Aucun livre dans la bibliothèque Calibre."
 
-#: templates/index.html:116
+#: templates/index.html:119
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -1084,56 +1235,56 @@ msgstr ""
 "synchroniser (le nom d'utilisateur et le mot de passe sont vos "
 "identifiants de connexion) :"
 
-#: templates/index.html:116 templates/settings.html:285
+#: templates/index.html:119 templates/settings.html:285
 msgid "Click to copy"
 msgstr "Cliquez pour copier"
 
-#: templates/index.html:137
+#: templates/index.html:143
 msgid "Reading Progress"
 msgstr "Progression de la lecture"
 
-#: templates/index.html:138 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:144 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Temps de lecture total"
 
-#: templates/index.html:139
+#: templates/index.html:145
 msgid "Note Count"
 msgstr "Nombre de notes"
 
-#: templates/index.html:140
+#: templates/index.html:146
 msgid "Creation Time"
 msgstr "Date de création"
 
-#: templates/index.html:141
+#: templates/index.html:147
 msgid "Update Time"
 msgstr "Date de mise à jour"
 
-#: templates/index.html:142
+#: templates/index.html:148
 msgid "Producer"
 msgstr "Producteur"
 
-#: templates/index.html:159
+#: templates/index.html:165
 msgid "No books in Anx library."
 msgstr "Aucun livre dans la bibliothèque Anx."
 
-#: templates/index.html:171
+#: templates/index.html:177
 msgid "Upload Books"
 msgstr "Téléverser des livres"
 
-#: templates/index.html:177
+#: templates/index.html:183
 msgid "Select files:"
 msgstr "Sélectionner des fichiers :"
 
-#: templates/index.html:182 templates/index.html:199
+#: templates/index.html:188 templates/index.html:205
 #: templates/settings.html:168 templates/settings.html:445
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/index.html:192
+#: templates/index.html:198
 msgid "Edit Book Information"
 msgstr "Modifier les informations du livre"
 
-#: templates/index.html:200 templates/settings.html:444
+#: templates/index.html:206 templates/settings.html:444
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -2267,4 +2418,13 @@ msgstr "Terminé !"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Aucun livre terminé pour le moment."
+
+#~ msgid "Thinking..."
+#~ msgstr "Réflexion..."
+
+#~ msgid "Loading history..."
+#~ msgstr "Chargement de l'historique..."
+
+#~ msgid "Generating summary..."
+#~ msgstr "Génération du résumé..."
 

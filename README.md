@@ -22,6 +22,7 @@ A modern, mobile-first web application to manage your ebook library, integrating
 - **In-Browser Book Previewer**: Preview E-Book directly in your browser. Features Text-to-Speech (TTS).
 - **Audiobook Generation**: Convert EPUB books into M4B audiobooks with chapter markers, using configurable Text-to-Speech (TTS) providers (e.g., Microsoft Edge TTS). The generated M4B files are fully compatible with audiobook servers like [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Online Audiobook Player**: Listen to your generated M4B audiobooks directly in the browser. Your listening progress is automatically saved and synced.
+- **Ask AI**: Engage in conversations with your books. This feature allows you to chat with any book in your library, ask questions about its content, get summaries, or explore themes through an AI-powered interface.
 - **Calibre Integration**: Connects to your existing Calibre server to browse and search your library.
 - **KOReader Sync**: Sync your reading progress and reading time with KOReader devices.
 - **Smart Send to Kindle**: Automatically handles formats when sending to your Kindle. If an EPUB exists, it's sent directly. If not, the app **converts the best available format to EPUB** based on your preferences before sending, ensuring optimal compatibility.

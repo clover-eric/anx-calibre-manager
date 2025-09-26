@@ -22,6 +22,7 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
 - **Visualizador de libros en el navegador**: Previsualiza libros electrónicos directamente en tu navegador. Incluye función de texto a voz (TTS).
 - **Generación de Audiolibros**: Convierte libros EPUB en audiolibros M4B con marcadores de capítulo, utilizando proveedores de Texto a Voz (TTS) configurables (por ejemplo, Microsoft Edge TTS). Los archivos M4B generados son totalmente compatibles con servidores de audiolibros como [Audiobookshelf](https://www.audiobookshelf.org/).
 - **Reproductor de Audiolibros en Línea**: Escucha tus audiolibros M4B generados directamente en el navegador. Tu progreso de escucha se guarda y sincroniza automáticamente.
+- **Preguntar a la IA**: Mantén conversaciones con tus libros. Esta función te permite chatear con cualquier libro de tu biblioteca, hacer preguntas sobre su contenido, obtener resúmenes o explorar temas a través de una interfaz impulsada por IA.
 - **Integración con Calibre**: Se conecta a tu servidor Calibre existente para navegar y buscar en tu biblioteca.
 - **Sincronización con KOReader**: Sincroniza tu progreso de lectura y tiempo de lectura con dispositivos KOReader.
 - **Envío Inteligente a Kindle**: Maneja automáticamente los formatos al enviar a tu Kindle. Si existe un EPUB, se envía directamente. Si no, la aplicación **convierte el mejor formato disponible a EPUB** según tus preferencias antes de enviarlo, asegurando una compatibilidad óptima.

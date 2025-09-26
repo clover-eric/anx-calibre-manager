@@ -148,6 +148,19 @@ def update_schema_if_needed(db):
             print("Migrating database: adding 'playback_rate' column to audiobook_progress table.")
             cursor.execute("ALTER TABLE audiobook_progress ADD COLUMN playback_rate REAL DEFAULT 1.0")
             db.commit()
+    
+        # 检查 LLM 聊天表是否存在
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='llm_chat_sessions'")
+        if cursor.fetchone() is None:
+            print("Migrating database: creating 'llm_chat_sessions' table.")
+            create_llm_chat_sessions_table(cursor)
+            db.commit()
+    
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='llm_chat_messages'")
+        if cursor.fetchone() is None:
+            print("Migrating database: creating 'llm_chat_messages' table.")
+            create_llm_chat_messages_table(cursor)
+            db.commit()
 
 
 def create_audiobook_progress_table(cursor):
@@ -175,6 +188,42 @@ def create_audiobook_progress_table(cursor):
     #         UPDATE audiobook_progress SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
     #     END;
     # ''')
+
+def create_llm_chat_sessions_table(cursor):
+    """创建 LLM 聊天会话表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE llm_chat_sessions (
+            id TEXT PRIMARY KEY,
+            user_id INTEGER NOT NULL,
+            book_id INTEGER NOT NULL,
+            book_type TEXT NOT NULL,
+            book_title TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        );
+    ''')
+    cursor.execute('''
+        CREATE TRIGGER update_llm_chat_sessions_updated_at
+        AFTER UPDATE ON llm_chat_sessions
+        FOR EACH ROW
+        BEGIN
+            UPDATE llm_chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+        END;
+    ''')
+
+def create_llm_chat_messages_table(cursor):
+    """创建 LLM 聊天消息表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE llm_chat_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (session_id) REFERENCES llm_chat_sessions (id) ON DELETE CASCADE
+        );
+    ''')
 
 def create_audiobook_tasks_table(cursor):
     """创建有声书任务表的辅助函数"""
@@ -288,6 +337,8 @@ def create_schema():
                     create_invite_codes_table(cursor)
                     create_audiobook_tasks_table(cursor)
                     create_audiobook_progress_table(cursor)
+                    create_llm_chat_sessions_table(cursor)
+                    create_llm_chat_messages_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

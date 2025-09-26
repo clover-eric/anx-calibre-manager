@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="{{ g.user.language if g.user and g.user.language else 'zh_Hans' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{{ _('AI Chat') }}</title>
+    
+    <!-- Standalone Translations & Theme Scripts (Copied from audio_player.html logic) -->
+    <script id="js-translations" type="application/json">{{ get_js_translations() | tojson | safe }}</script>
+    <script>
+        window.translations = JSON.parse(document.getElementById('js-translations').textContent);
+        function _(text) { return window.translations[text] || text; }
+    </script>
+    <script>
+        (function() {
+            const theme = '{{ theme }}'; // Passed from backend
+            if (theme === 'dark') {
+                document.documentElement.classList.add('theme-dark');
+            } else if (theme === 'light') {
+                document.documentElement.classList.add('theme-light');
+            } else { // auto
+                document.documentElement.classList.add('theme-auto');
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/chat_player.css') }}?v={{ cache_buster }}">
+</head>
+<body class="theme-{{ theme }}"
+      data-active-library="{{ active_library }}" 
+      data-initial-book-id="{{ initial_chat.book_id or '' }}"
+      data-initial-book-type="{{ initial_chat.book_type or '' }}"
+      data-initial-book-title="{{ initial_chat.book_title or '' }}">
+
+    <div class="chat-player-container">
+        <!-- Left Panel / Mobile: Full View -->
+        <div class="list-view">
+            <header class="list-header">
+                <a href="{{ url_for('main.index') }}" class="back-button" title="{{ _('Back to main library') }}">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="library-toggle">
+                    <button class="button" data-library="calibre">{{ _('Calibre') }} ({{ calibre_sessions|length }})</button>
+                    <button class="button" data-library="anx">{{ _('Anx') }} ({{ anx_sessions|length }})</button>
+                </div>
+            </header>
+            
+            <div class="session-list-container">
+                <div id="calibre-list" class="session-list">
+                    {% for session in calibre_sessions %}
+                        <div class="session-item" data-session-id="{{ session.id }}" data-book-id="{{ session.book_id }}" data-book-type="{{ session.book_type }}" data-book-title="{{ session.book_title }}">
+                            <div class="session-info">
+                                <h4 class="marquee"><span>{{ session.book_title }}</span></h4>
+                                <p>{{ _('Updated') }} <span class="time-ago" data-timestamp="{{ session.updated_at }}"></span></p>
+                            </div>
+                            <button class="delete-session-btn" title="{{ _('Delete Chat') }}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    {% else %}
+                        <div class="empty-list-message"><i class="fas fa-comment-slash"></i><p>{{ _('No chats in Calibre.') }}</p></div>
+                    {% endfor %}
+                </div>
+                <div id="anx-list" class="session-list">
+                     {% for session in anx_sessions %}
+                        <div class="session-item" data-session-id="{{ session.id }}" data-book-id="{{ session.book_id }}" data-book-type="{{ session.book_type }}" data-book-title="{{ session.book_title }}">
+                            <div class="session-info">
+                                <h4 class="marquee"><span>{{ session.book_title }}</span></h4>
+                                <p>{{ _('Updated') }} <span class="time-ago" data-timestamp="{{ session.updated_at }}"></span></p>
+                            </div>
+                            <button class="delete-session-btn" title="{{ _('Delete Chat') }}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    {% else %}
+                        <div class="empty-list-message"><i class="fas fa-comment-slash"></i><p>{{ _('No chats in Anx.') }}</p></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel / Mobile: Hidden Overlay -->
+        <div class="detail-view">
+            <div class="placeholder-view">
+                <i class="fas fa-comments"></i>
+                <p>{{ _('Select a conversation to begin.') }}</p>
+            </div>
+            <div class="chat-content-view hidden">
+                <header class="chat-header">
+                    <button class="back-to-list-btn"><i class="fas fa-arrow-left"></i></button>
+                    <h3 class="chat-title marquee"><span></span></h3>
+                </header>
+                <div class="messages-container"></div>
+                <footer class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <textarea id="chat-input" placeholder="{{ _('Type your message...') }}" rows="1"></textarea>
+                        <button id="send-button" title="{{ _('Send') }}"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/page/chat_player.js') }}?v={{ cache_buster }}"></script>
+</body>
+</html>
