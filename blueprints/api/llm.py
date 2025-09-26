@@ -156,15 +156,15 @@ def chat_with_book():
             "stream": True
         }
 
+        # Send session_id as the first event, BEFORE any time-consuming operations
+        session_event = json.dumps({"session_id": session_id})
+        yield f"event: session_start\ndata: {session_event}\n\n"
+
         try:
             response = requests.post(endpoint, headers=headers, json=payload, timeout=300, stream=True)
             response.raise_for_status()
 
             full_response_content = []
-            
-            # Send session_id as the first event
-            session_event = json.dumps({"session_id": session_id})
-            yield f"event: session_start\ndata: {session_event}\n\n"
 
             for line in response.iter_lines():
                 if line:

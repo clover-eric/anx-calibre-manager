@@ -98,8 +98,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = JSON.parse(dataStr);
 
                         if (eventType === 'session_start') {
+                            const isNewSession = !currentSession.sessionId;
                             currentSession.sessionId = data.session_id;
+
+                            if (isNewSession) {
+                                addSessionToListUI(currentSession);
+                            }
                         } else if (eventType === 'end') {
+                            // Find the session item and update its timestamp
+                            const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
+                            if (sessionItem) {
+                                const timeAgoEl = sessionItem.querySelector('.time-ago');
+                                if (timeAgoEl) {
+                                    timeAgoEl.textContent = t.justNow;
+                                    timeAgoEl.dataset.timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                                }
+                            }
                             return; // Stream finished
                         } else if (eventType === 'error') {
                             throw new Error(data.error || t.anErrorOccurred);
@@ -246,6 +260,55 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.messagesContainer.appendChild(messageWrapper);
         dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
         return messageWrapper;
+    };
+
+    const addSessionToListUI = (session) => {
+        const listId = `${session.bookType}-list`;
+        const listEl = document.getElementById(listId);
+        if (!listEl) return;
+
+        // Remove placeholder if it exists
+        const placeholder = listEl.querySelector('.no-sessions-placeholder');
+        if (placeholder) {
+            placeholder.remove();
+        }
+
+        // Create the new session item element
+        const newItem = document.createElement('div');
+        newItem.className = 'session-item';
+        newItem.dataset.bookId = session.bookId;
+        newItem.dataset.bookType = session.bookType;
+        newItem.dataset.bookTitle = session.bookTitle;
+        newItem.dataset.sessionId = session.sessionId;
+
+        newItem.innerHTML = `
+            <div class="session-info">
+                <h4 class="marquee"><span>${session.bookTitle}</span></h4>
+                <p>${t.updated} <span class="time-ago" data-timestamp="${new Date().toISOString().slice(0, 19).replace('T', ' ')}">${t.justNow}</span></p>
+            </div>
+            <button class="delete-session-btn" title="${t.deleteChat}">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        `;
+
+        // Add event listeners
+        newItem.addEventListener('click', () => handleSessionClick(newItem));
+        newItem.querySelector('.delete-session-btn').addEventListener('click', handleDeleteSession);
+
+        // Add to list and update dom.sessionItems
+        listEl.prepend(newItem);
+        dom.sessionItems = document.querySelectorAll('.session-item'); // Refresh the list
+
+        // Update tab count robustly
+        const tabButton = document.querySelector(`.library-toggle .button[data-library="${session.bookType}"]`);
+        if (tabButton) {
+            const countMatch = tabButton.textContent.match(/\((\d+)\)/);
+            const currentCount = countMatch ? parseInt(countMatch[1], 10) : 0;
+            const baseText = tabButton.textContent.replace(/\s*\(\d+\)/, '').trim();
+            tabButton.textContent = `${baseText} (${currentCount + 1})`;
+        }
+        
+        updateActiveItem(newItem);
     };
 
     const handleSessionClick = async (item) => {

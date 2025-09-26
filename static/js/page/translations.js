@@ -57,6 +57,8 @@ export function initializeTranslations() {
         FILE_ERROR: _("File error: %(error)s"),
 
         // Chat Player
+        updated: _('Updated'),
+        deleteChat: _('Delete Chat'),
         failedToFetchChatHistory: _('Failed to fetch chat history.'),
         errorLoadingHistory: _('Error loading history:'),
         failedToGetResponse: _('Failed to get a response from the AI.'),
