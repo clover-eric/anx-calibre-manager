@@ -111,7 +111,7 @@
                 {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
                 {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
-              <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+              <p class="description" style="white-space: pre-wrap;">{{ book.description }}</p>
               {% set progress_percent = book.reading_percentage * 100 %}
               <div class="progress mt-2">
                 <div class="progress-bar dynamic-progress" role="progressbar" data-progress="{{ progress_percent }}" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">{{ "%.2f"|format(progress_percent) }}%</div>
@@ -136,7 +136,7 @@
                 {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
                 {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
-              <p class="description" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+              <p class="description" style="white-space: pre-wrap;">{{ book.description }}</p>
               <p><strong>{{ _('Finished!') }}</strong></p>
             </div>
           </div>
