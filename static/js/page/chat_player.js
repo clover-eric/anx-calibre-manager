@@ -48,8 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
         autoResizeTextarea();
         dom.sendButton.disabled = true;
 
-        const modelMessageElement = addMessageToUI({ role: 'model', content: '' });
-        modelMessageElement.innerHTML = '<div class="spinner"></div>'; // Show spinner initially
+        const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
+        const modelMessageContent = modelMessageWrapper.querySelector('.message-content');
+        if (!modelMessageContent) {
+            console.error("Could not find message content element to stream response.");
+            return;
+        }
+        modelMessageContent.innerHTML = '<div class="spinner"></div>'; // Show spinner initially
         let fullResponse = '';
         let buffer = '';
 
@@ -101,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else if (dataMatch) {
                         if (!firstChunkReceived) {
-                            modelMessageElement.innerHTML = ''; // Clear spinner
+                            modelMessageContent.innerHTML = ''; // Clear spinner
                             firstChunkReceived = true;
                         }
                         const data = JSON.parse(dataMatch[1]);
                         if (data.chunk) {
                             fullResponse += data.chunk;
-                            modelMessageElement.innerHTML = marked.parse(fullResponse);
+                            modelMessageContent.innerHTML = marked.parse(fullResponse);
                             dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
                         }
                     }
@@ -115,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error(error);
-            modelMessageElement.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
+            modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         } finally {
             dom.sendButton.disabled = false;
         }
