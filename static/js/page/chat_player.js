@@ -216,10 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentMessageId = messageWrapper.dataset.messageId;
             if (!currentMessageId) return;
 
-            if (!confirm(t.confirmDeleteMessage)) {
-                return;
-            }
-
             try {
                 const response = await fetch(`/api/llm/message/${currentMessageId}`, { method: 'DELETE' });
                 const data = await response.json();

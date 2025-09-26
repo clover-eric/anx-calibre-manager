@@ -118,6 +118,12 @@ async function populateForms() {
     document.getElementById('tts_volume').value = userData.tts_volume || '+0%';
     document.getElementById('tts_pitch').value = userData.tts_pitch || '+0Hz';
 
+    // Populate LLM settings
+    document.getElementById('llm_provider').value = userData.llm_provider || 'openai';
+    document.getElementById('llm_base_url').value = userData.llm_base_url || '';
+    document.getElementById('llm_api_key').value = userData.llm_api_key || '';
+    document.getElementById('llm_model').value = userData.llm_model || '';
+
     const statsEnabledCheckbox = document.getElementById('stats_enabled');
     const statsUrlContainer = document.getElementById('stats_url_container');
     const statsUrlLink = document.getElementById('stats_url');
