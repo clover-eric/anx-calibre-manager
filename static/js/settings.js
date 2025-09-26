@@ -180,6 +180,22 @@ async function populateForms() {
     document.getElementById('userSettings').classList.add('visible');
     
     updateTTS_UI();
+    toggleLLMSettings(); // Initial toggle for LLM settings
+    
+    // Populate LLM settings with defaults if empty
+    if (isAdmin) {
+        const globalRes = await fetch('/api/global_settings');
+        const globalData = await globalRes.json();
+        if (!document.getElementById('llm_base_url').value) {
+            document.getElementById('llm_base_url').value = globalData.DEFAULT_LLM_BASE_URL || '';
+        }
+        if (!document.getElementById('llm_model').value) {
+            document.getElementById('llm_model').value = globalData.DEFAULT_LLM_MODEL || '';
+        }
+    }
+    
+    // Fetch LLM models on initial load if credentials exist
+    fetchLLMModels();
 }
 
 function toggleTTSSettings() {
@@ -201,6 +217,19 @@ function toggleTTSSettings() {
         openaiSettings.forEach(el => el.style.display = 'block');
     } else { // Default to edge
         edgeSettings.forEach(el => el.style.display = 'block');
+    }
+}
+
+function toggleLLMSettings() {
+    const provider = document.getElementById('llm_provider').value;
+    const openaiSettings = document.querySelectorAll('.openai-llm-setting');
+
+    document.querySelectorAll('.llm-setting').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    if (provider === 'openai') {
+        openaiSettings.forEach(el => el.style.display = 'block');
     }
 }
 
@@ -501,6 +530,41 @@ window.deleteUser = async function(userId) {
 }
 
 // --- Initializer ---
+async function fetchLLMModels() {
+    const baseUrl = document.getElementById('llm_base_url').value;
+    const apiKey = document.getElementById('llm_api_key').value;
+    const datalist = document.getElementById('llm_model_list');
+
+    if (!baseUrl || !apiKey) {
+        datalist.innerHTML = ''; // Clear list if credentials are not set
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/llm/models', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ base_url: baseUrl, api_key: apiKey })
+        });
+
+        datalist.innerHTML = ''; // Clear previous options
+
+        if (response.ok) {
+            const models = await response.json();
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                datalist.appendChild(option);
+            });
+        } else {
+            const result = await response.json();
+            console.error('Failed to fetch LLM models:', result.error);
+        }
+    } catch (error) {
+        console.error('Error fetching LLM models:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/api/audiobook/tts_voices');
@@ -517,6 +581,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('tts_provider').addEventListener('change', updateTTS_UI);
+    document.getElementById('llm_provider').addEventListener('change', toggleLLMSettings);
+    document.getElementById('llm_base_url').addEventListener('input', fetchLLMModels);
+    document.getElementById('llm_api_key').addEventListener('input', fetchLLMModels);
 
     await populateForms();
 

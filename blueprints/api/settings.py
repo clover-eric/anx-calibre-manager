@@ -49,7 +49,11 @@ def user_settings_api():
                 'tts_model': 'tts_model',
                 'tts_rate': 'tts_rate',
                 'tts_volume': 'tts_volume',
-                'tts_pitch': 'tts_pitch'
+                'tts_pitch': 'tts_pitch',
+                'llm_provider': 'llm_provider',
+                'llm_api_key': 'llm_api_key',
+                'llm_base_url': 'llm_base_url',
+                'llm_model': 'llm_model'
             }
             for key, column in field_map.items():
                 if key in data:
@@ -105,6 +109,18 @@ def user_settings_api():
             'tts_model', 'tts_rate', 'tts_volume', 'tts_pitch'
         ]
         for field in tts_fields:
+            user_value = getattr(g.user, field, None)
+            if user_value is not None and user_value != '':
+                user_settings[field] = user_value
+            else:
+                default_key = f"DEFAULT_{field.upper()}"
+                user_settings[field] = config_manager.config.get(default_key)
+
+        # Load LLM settings, falling back to global defaults
+        llm_fields = [
+            'llm_provider', 'llm_api_key', 'llm_base_url', 'llm_model'
+        ]
+        for field in llm_fields:
             user_value = getattr(g.user, field, None)
             if user_value is not None and user_value != '':
                 user_settings[field] = user_value

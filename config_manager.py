@@ -53,6 +53,12 @@ DEFAULT_CONFIG = {
 
     # Audiobook file cleanup settings
     'AUDIOBOOK_CLEANUP_DAYS': {'env': 'AUDIOBOOK_CLEANUP_DAYS', 'default': 7}, # 0 means do not clean up
+
+    # Large Language Model (LLM) settings for MCP
+    'DEFAULT_LLM_PROVIDER': {'env': 'DEFAULT_LLM_PROVIDER', 'default': 'openai'},
+    'DEFAULT_LLM_API_KEY': {'env': 'DEFAULT_LLM_API_KEY', 'default': ''},
+    'DEFAULT_LLM_BASE_URL': {'env': 'DEFAULT_LLM_BASE_URL', 'default': 'https://api.openai.com/v1'},
+    'DEFAULT_LLM_MODEL': {'env': 'DEFAULT_LLM_MODEL', 'default': 'gpt-4o'},
 }
 
 # Initialize config as a dictionary first to avoid NameError during initial load

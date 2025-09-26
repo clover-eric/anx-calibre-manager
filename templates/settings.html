@@ -111,6 +111,33 @@
                 <small>{{ _('Speaking pitch. e.g., +10Hz or -10Hz.') }}</small>
             </div>
 
+            <h3>{{ _('LLM Provider Settings') }}</h3>
+            <div class="form-group">
+                <label for="llm_provider">{{ _('LLM Provider') }}</label>
+                <select id="llm_provider" name="llm_provider">
+                    <option value="openai">OpenAI Compatible</option>
+                </select>
+                <small>{{ _('The Large Language Model provider to use for MCP.') }}</small>
+            </div>
+            <div class="form-group llm-setting openai-llm-setting">
+                <label for="llm_base_url">{{ _('Base URL') }}</label>
+                <input type="url" id="llm_base_url" name="llm_base_url">
+                <small>{{ _('Custom base URL for the API (e.g., for proxies or self-hosted models).') }}</small>
+            </div>
+            <div class="form-group llm-setting openai-llm-setting">
+                <label for="llm_api_key">{{ _('API Key') }}</label>
+                <input type="password" id="llm_api_key" name="llm_api_key" autocomplete="new-password">
+                <small>{{ _('API key for the selected provider.') }}</small>
+            </div>
+            <div class="form-group llm-setting openai-llm-setting">
+                <label for="llm_model">{{ _('Model') }}</label>
+                <input type="text" id="llm_model" name="llm_model" list="llm_model_list" placeholder="{{ _('Select or type a model') }}">
+                <datalist id="llm_model_list">
+                    <!-- Options will be dynamically populated by JavaScript -->
+                </datalist>
+                <small>{{ _('The specific model to use, e.g., gpt-4o.') }}</small>
+            </div>
+
             <h3>{{ _('Statistics Settings') }}</h3>
             <div class="form-group">
                 <input type="checkbox" id="stats_enabled" name="stats_enabled" value="true" style="width: auto; margin-right: 5px;">

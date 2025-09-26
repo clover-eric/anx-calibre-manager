@@ -99,6 +99,19 @@ def update_schema_if_needed(db):
             cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
             db.commit()
 
+    # Add LLM settings columns
+    llm_columns = {
+        'llm_provider': "TEXT DEFAULT 'openai'",
+        'llm_api_key': "TEXT",
+        'llm_base_url': "TEXT",
+        'llm_model': "TEXT"
+    }
+    for col, col_type in llm_columns.items():
+        if col not in columns:
+            print(f"Migrating database: adding '{col}' column to users table.")
+            cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
+            db.commit()
+
     # 检查 audiobook_tasks 表是否存在
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audiobook_tasks'")
     if cursor.fetchone() is None:
@@ -263,7 +276,11 @@ def create_schema():
                             tts_model TEXT,
                             tts_rate TEXT DEFAULT '+0%',
                             tts_volume TEXT DEFAULT '+0%',
-                            tts_pitch TEXT DEFAULT '+0Hz'
+                            tts_pitch TEXT DEFAULT '+0Hz',
+                            llm_provider TEXT DEFAULT 'openai',
+                            llm_api_key TEXT,
+                            llm_base_url TEXT,
+                            llm_model TEXT
                         );
                     ''')
                     # MCP Tokens Table
