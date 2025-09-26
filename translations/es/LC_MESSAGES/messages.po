@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 20:18+0800\n"
+"POT-Creation-Date: 2025-09-26 21:01+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -392,82 +392,103 @@ msgstr "El código de invitación ya existe"
 msgid "Operation failed"
 msgstr "Operación fallida"
 
-#: blueprints/api/llm.py:22
+#: blueprints/api/llm.py:23
 msgid "Authentication required."
 msgstr "Autenticación requerida."
 
-#: blueprints/api/llm.py:33
-#, fuzzy
+#: blueprints/api/llm.py:34
 msgid "Book ID and type are required."
-msgstr "Se requiere ID de usuario y nombre de usuario."
+msgstr "Se requiere el ID y el tipo de libro."
 
-#: blueprints/api/llm.py:42
-#, fuzzy
+#: blueprints/api/llm.py:43
 msgid "No history found for this book."
-msgstr "Biblioteca Anx no encontrada para este usuario."
+msgstr "No se encontró historial para este libro."
 
-#: blueprints/api/llm.py:58
+#: blueprints/api/llm.py:59
 msgid "MCP module is not available, cannot process book content."
-msgstr "El módulo MCP no está disponible, no se puede procesar el contenido del libro."
+msgstr ""
+"El módulo MCP no está disponible, no se puede procesar el contenido del "
+"libro."
 
-#: blueprints/api/llm.py:68
+#: blueprints/api/llm.py:69
 msgid "Missing required fields."
 msgstr "Faltan campos obligatorios."
 
-#: blueprints/api/llm.py:92
-#, fuzzy
-msgid "Invalid book type."
-msgstr "Se ha especificado un tipo de libro no válido."
+#: blueprints/api/llm.py:95
+#, python-format
+msgid ""
+"You are a helpful assistant. The user is asking about the book "
+"'%(book_title)s'."
+msgstr "Eres un asistente útil. El usuario está preguntando sobre el libro '%(book_title)s'."
 
-#: blueprints/api/llm.py:112
+#: blueprints/api/llm.py:110
+msgid "Invalid book type."
+msgstr "Tipo de libro no válido."
+
+#: blueprints/api/llm.py:123
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Error al obtener el contenido del libro: %(error)s"
 
-#: blueprints/api/llm.py:116
+#: blueprints/api/llm.py:129
 msgid "Could not extract text from the book."
 msgstr "No se pudo extraer el texto del libro."
 
-#: blueprints/api/llm.py:120
+#: blueprints/api/llm.py:133
+#, python-format
+msgid ""
+" Here is the full text of the book:\n"
+"\n"
+"---BOOK CONTENT---\n"
+"%(book_content)s\n"
+"---END BOOK CONTENT---"
+msgstr ""
+" Aquí está el texto completo del libro:\n"
+"\n"
+"---CONTENIDO DEL LIBRO---\n"
+"%(book_content)s\n"
+"---FIN DEL CONTENIDO DEL LIBRO---"
+
+#: blueprints/api/llm.py:137
 msgid "LLM settings are not configured in user settings."
 msgstr "La configuración de LLM no está configurada en los ajustes de usuario."
 
-#: blueprints/api/llm.py:144
+#: blueprints/api/llm.py:196
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Error al comunicarse con el proveedor de LLM: %(error)s"
 
-#: blueprints/api/llm.py:165
+#: blueprints/api/llm.py:210
 msgid "Base URL and API Key are required."
 msgstr "Se requieren la URL base y la clave de API."
 
-#: blueprints/api/llm.py:181
+#: blueprints/api/llm.py:226
 msgid "Unexpected response format from model provider."
 msgstr "Formato de respuesta inesperado del proveedor del modelo."
 
-#: blueprints/api/llm.py:186
+#: blueprints/api/llm.py:231
 msgid "Authentication error. Please check your API Key."
 msgstr "Error de autenticación. Por favor, comprueba tu clave de API."
 
-#: blueprints/api/llm.py:188
+#: blueprints/api/llm.py:233
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Punto final de la API no válido. Por favor, comprueba tu URL base."
 
-#: blueprints/api/llm.py:190
+#: blueprints/api/llm.py:235
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "No se pudo conectar con el proveedor del modelo: %(error)s"
 
-#: blueprints/api/llm.py:192
+#: blueprints/api/llm.py:237
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ocurrió un error inesperado: %(error)s"
 
-#: blueprints/api/llm.py:205
+#: blueprints/api/llm.py:250
 msgid "Session not found or permission denied."
 msgstr "Sesión no encontrada o permiso denegado."
 
-#: blueprints/api/llm.py:211
+#: blueprints/api/llm.py:256
 msgid "Chat session deleted successfully."
 msgstr "Sesión de chat eliminada correctamente."
 
@@ -1018,8 +1039,8 @@ msgid ""
 "Are you sure you want to delete this chat session? This action cannot be "
 "undone."
 msgstr ""
-"¿Estás seguro de que quieres eliminar esta sesión de chat? Esta acción no se "
-"puede deshacer."
+"¿Estás seguro de que quieres eliminar esta sesión de chat? Esta acción no"
+" se puede deshacer."
 
 #: static/js/page/translations.js:72
 msgid "Failed to delete the session."
@@ -1033,7 +1054,7 @@ msgstr "Error:"
 msgid "Audiobook Player"
 msgstr "Reproductor de Audiolibros"
 
-#: templates/audio_player.html:21 templates/chat_player.html:41
+#: templates/audio_player.html:21 templates/chat_player.html:42
 msgid "Back to main library"
 msgstr "Volver a la biblioteca principal"
 
@@ -1094,7 +1115,7 @@ msgstr "Cerrar sesión"
 msgid "Library"
 msgstr "Biblioteca"
 
-#: templates/base.html:111 templates/chat_player.html:46
+#: templates/base.html:111 templates/chat_player.html:47
 #: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
@@ -1123,35 +1144,35 @@ msgstr "Anx Calibre Manager por"
 msgid "AI Chat"
 msgstr "Chat de IA"
 
-#: templates/chat_player.html:45
+#: templates/chat_player.html:46
 msgid "Calibre"
 msgstr "Calibre"
 
-#: templates/chat_player.html:56 templates/chat_player.html:69
+#: templates/chat_player.html:57 templates/chat_player.html:70
 msgid "Updated"
 msgstr "Actualizado"
 
-#: templates/chat_player.html:58 templates/chat_player.html:71
+#: templates/chat_player.html:59 templates/chat_player.html:72
 msgid "Delete Chat"
 msgstr "Eliminar chat"
 
-#: templates/chat_player.html:61
+#: templates/chat_player.html:62
 msgid "No chats in Calibre."
 msgstr "No hay chats en Calibre."
 
-#: templates/chat_player.html:74
+#: templates/chat_player.html:75
 msgid "No chats in Anx."
 msgstr "No hay chats en Anx."
 
-#: templates/chat_player.html:84
+#: templates/chat_player.html:85
 msgid "Select a conversation to begin."
 msgstr "Selecciona una conversación para comenzar."
 
-#: templates/chat_player.html:94
+#: templates/chat_player.html:95
 msgid "Type your message..."
 msgstr "Escribe tu mensaje..."
 
-#: templates/chat_player.html:95
+#: templates/chat_player.html:96
 msgid "Send"
 msgstr "Enviar"
 

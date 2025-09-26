@@ -1,6 +1,7 @@
 import requests
 import uuid
-from flask import Blueprint, request, jsonify, g
+import json
+from flask import Blueprint, request, jsonify, g, Response, current_app
 from flask_babel import gettext as _
 from contextlib import closing
 import database
@@ -84,74 +85,118 @@ def chat_with_book():
         )
         db.commit()
 
-    # --- Get book content ---
-    # This is a long-running operation
-
-    # First, handle invalid book type to simplify logic below.
-    if book_type not in ['calibre', 'anx']:
-        return jsonify({'error': _('Invalid book type.')}), 400
-
-    # mcp.py's functions expect g.user to be a dict-like object (like sqlite3.Row),
-    # but in this web context, it's a User class instance. We must create a temporary,
-    # compatible dict for ALL calls into mcp.py, and restore the original g.user afterwards.
-    original_user = g.user
-    g.user = {key: getattr(original_user, key, None) for key in
-              ['id', 'username', 'language', 'kindle_email', 'anx_token', 'anx_url']}
-
-    content_result = {}
-    try:
-        if book_type == 'calibre':
-            content_result = get_calibre_entire_book_content(book_id)
-        elif book_type == 'anx':
-            content_result = get_anx_entire_book_content(book_id)
-    finally:
-        # CRITICAL: Restore g.user to prevent side effects in the rest of the request.
-        g.user = original_user
-
-    if 'error' in content_result:
-        return jsonify({'error': _('Failed to get book content: %(error)s', error=content_result['error'])}), 500
+    # Extract all necessary data from g.user within the request context
+    user_info_dict = {key: getattr(g.user, key, None) for key in
+                      ['id', 'username', 'language', 'kindle_email', 'anx_token', 'anx_url',
+                       'llm_base_url', 'llm_api_key', 'llm_model']}
+    app = current_app._get_current_object()
     
-    book_content = content_result.get('full_text', '')
-    if not book_content:
-        return jsonify({'error': _('Could not extract text from the book.')}), 500
+    # Prepare the translated system prompt within the request context
+    base_system_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': book_title}
 
-    # --- Call LLM ---
-    if not all([g.user.llm_base_url, g.user.llm_api_key, g.user.llm_model]):
-        return jsonify({'error': _('LLM settings are not configured in user settings.')}), 412
+    def generate_chunks():
+        with closing(database.get_db()) as db:
+            message_count = db.execute(
+                'SELECT COUNT(id) FROM llm_chat_messages WHERE session_id = ?', (session_id,)
+            ).fetchone()[0]
 
-    headers = {'Authorization': f'Bearer {g.user.llm_api_key}', 'Content-Type': 'application/json'}
-    endpoint = g.user.llm_base_url
-    if not endpoint.endswith('/'):
-        endpoint += '/'
-    endpoint += 'chat/completions'
+        is_first_message = message_count <= 1
+        
+        system_prompt = base_system_prompt
+        book_content = ""
 
-    system_prompt = f"You are a helpful assistant. The user is asking about the book '{book_title}'. Here is the full text of the book:\n\n---BOOK CONTENT---\n{book_content}\n---END BOOK CONTENT---"
-    
-    payload = {
-        "model": g.user.llm_model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message}
-        ]
-    }
+        if is_first_message:
+            if book_type not in ['calibre', 'anx']:
+                error_message = json.dumps({"error": _('Invalid book type.')})
+                yield f"event: error\ndata: {error_message}\n\n"
+                return
 
-    try:
-        response = requests.post(endpoint, headers=headers, json=payload, timeout=300)
-        response.raise_for_status()
-        llm_response_data = response.json()
-        model_response = llm_response_data['choices'][0]['message']['content']
-    except Exception as e:
-        return jsonify({'error': _('Failed to communicate with LLM provider: %(error)s', error=str(e))}), 500
+            content_result = {}
+            with app.app_context():
+                g.user = user_info_dict
+                if book_type == 'calibre':
+                    content_result = get_calibre_entire_book_content(book_id)
+                elif book_type == 'anx':
+                    content_result = get_anx_entire_book_content(book_id)
 
-    # Save model response
-    with closing(database.get_db()) as db:
-        db.execute(
-            'INSERT INTO llm_chat_messages (session_id, role, content) VALUES (?, ?, ?)',
-            (session_id, 'model', model_response)
-        )
-        db.commit()
+            if 'error' in content_result:
+                error_message = json.dumps({"error": _('Failed to get book content: %(error)s', error=content_result['error'])})
+                yield f"event: error\ndata: {error_message}\n\n"
+                return
+            
+            book_content = content_result.get('full_text', '')
+            if not book_content:
+                error_message = json.dumps({"error": _('Could not extract text from the book.')})
+                yield f"event: error\ndata: {error_message}\n\n"
+                return
+            
+            system_prompt += _(" Here is the full text of the book:\n\n---BOOK CONTENT---\n%(book_content)s\n---END BOOK CONTENT---") % {'book_content': book_content}
 
-    return jsonify({'session_id': session_id, 'response': model_response})
+        # --- Call LLM ---
+        if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
+            error_message = json.dumps({"error": _('LLM settings are not configured in user settings.')})
+            yield f"event: error\ndata: {error_message}\n\n"
+            return
+
+        headers = {'Authorization': f"Bearer {user_info_dict['llm_api_key']}", 'Content-Type': 'application/json'}
+        endpoint = user_info_dict['llm_base_url'].rstrip('/') + '/chat/completions'
+        
+        messages = [{"role": "system", "content": system_prompt}]
+        with closing(database.get_db()) as db:
+            history = db.execute(
+                'SELECT role, content FROM llm_chat_messages WHERE session_id = ? ORDER BY created_at ASC',
+                (session_id,)
+            ).fetchall()
+            for msg in history:
+                messages.append({"role": msg['role'], "content": msg['content']})
+
+        payload = {
+            "model": user_info_dict['llm_model'],
+            "messages": messages,
+            "stream": True
+        }
+
+        try:
+            response = requests.post(endpoint, headers=headers, json=payload, timeout=300, stream=True)
+            response.raise_for_status()
+
+            full_response_content = []
+            
+            # Send session_id as the first event
+            session_event = json.dumps({"session_id": session_id})
+            yield f"event: session_start\ndata: {session_event}\n\n"
+
+            for line in response.iter_lines():
+                if line:
+                    decoded_line = line.decode('utf-8')
+                    if decoded_line.startswith('data: '):
+                        json_str = decoded_line[6:]
+                        if json_str.strip() == '[DONE]':
+                            break
+                        
+                        data = json.loads(json_str)
+                        if 'choices' in data and data['choices'][0].get('delta', {}).get('content'):
+                            chunk = data['choices'][0]['delta']['content']
+                            full_response_content.append(chunk)
+                            
+                            sse_data = json.dumps({"chunk": chunk})
+                            yield f"data: {sse_data}\n\n"
+            
+            final_text = "".join(full_response_content)
+            with closing(database.get_db()) as db:
+                db.execute(
+                    'INSERT INTO llm_chat_messages (session_id, role, content) VALUES (?, ?, ?)',
+                    (session_id, 'model', final_text)
+                )
+                db.commit()
+
+            yield "event: end\ndata: {}\n\n"
+
+        except Exception as e:
+            error_message = json.dumps({"error": _('Failed to communicate with LLM provider: %(error)s', error=str(e))})
+            yield f"event: error\ndata: {error_message}\n\n"
+
+    return Response(generate_chunks(), mimetype='text/event-stream')
 
 
 @llm_bp.route('/models', methods=['POST'])

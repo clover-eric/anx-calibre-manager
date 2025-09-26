@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 20:18+0800\n"
+"POT-Creation-Date: 2025-09-26 21:01+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -392,80 +392,103 @@ msgstr "Einladungscode existiert bereits"
 msgid "Operation failed"
 msgstr "Vorgang fehlgeschlagen"
 
-#: blueprints/api/llm.py:22
+#: blueprints/api/llm.py:23
 msgid "Authentication required."
 msgstr "Authentifizierung erforderlich."
 
-#: blueprints/api/llm.py:33
+#: blueprints/api/llm.py:34
 msgid "Book ID and type are required."
 msgstr "Buch-ID und Typ sind erforderlich."
 
-#: blueprints/api/llm.py:42
+#: blueprints/api/llm.py:43
 msgid "No history found for this book."
 msgstr "Kein Verlauf für dieses Buch gefunden."
 
-#: blueprints/api/llm.py:58
+#: blueprints/api/llm.py:59
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP-Modul ist nicht verfügbar, Buchinhalt kann nicht verarbeitet werden."
 
-#: blueprints/api/llm.py:68
+#: blueprints/api/llm.py:69
 msgid "Missing required fields."
 msgstr "Fehlende erforderliche Felder."
 
-#: blueprints/api/llm.py:92
+#: blueprints/api/llm.py:95
+#, python-format
+msgid ""
+"You are a helpful assistant. The user is asking about the book "
+"'%(book_title)s'."
+msgstr ""
+"Du bist ein hilfreicher Assistent. Der Benutzer fragt nach dem Buch "
+"'%(book_title)s'."
+
+#: blueprints/api/llm.py:110
 msgid "Invalid book type."
 msgstr "Ungültiger Buchtyp."
 
-#: blueprints/api/llm.py:112
-#, fuzzy, python-format
+#: blueprints/api/llm.py:123
+#, python-format
 msgid "Failed to get book content: %(error)s"
-msgstr "Fehler beim Generieren: {error}"
+msgstr "Fehler beim Abrufen des Buchinhalts: %(error)s"
 
-#: blueprints/api/llm.py:116
+#: blueprints/api/llm.py:129
 msgid "Could not extract text from the book."
 msgstr "Text konnte nicht aus dem Buch extrahiert werden."
 
-#: blueprints/api/llm.py:120
+#: blueprints/api/llm.py:133
+#, python-format
+msgid ""
+" Here is the full text of the book:\n"
+"\n"
+"---BOOK CONTENT---\n"
+"%(book_content)s\n"
+"---END BOOK CONTENT---"
+msgstr ""
+" Hier ist der vollständige Text des Buches:\n"
+"\n"
+"---BUCHINHALT---\n"
+"%(book_content)s\n"
+"---ENDE BUCHINHALT---"
+
+#: blueprints/api/llm.py:137
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM-Einstellungen sind in den Benutzereinstellungen nicht konfiguriert."
 
-#: blueprints/api/llm.py:144
+#: blueprints/api/llm.py:196
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Kommunikation mit dem LLM-Anbieter fehlgeschlagen: %(error)s"
 
-#: blueprints/api/llm.py:165
+#: blueprints/api/llm.py:210
 msgid "Base URL and API Key are required."
 msgstr "Basis-URL und API-Schlüssel sind erforderlich."
 
-#: blueprints/api/llm.py:181
+#: blueprints/api/llm.py:226
 msgid "Unexpected response format from model provider."
 msgstr "Unerwartetes Antwortformat vom Modellanbieter."
 
-#: blueprints/api/llm.py:186
+#: blueprints/api/llm.py:231
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentifizierungsfehler. Bitte überprüfen Sie Ihren API-Schlüssel."
 
-#: blueprints/api/llm.py:188
+#: blueprints/api/llm.py:233
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Ungültiger API-Endpunkt. Bitte überprüfen Sie Ihre Basis-URL."
 
-#: blueprints/api/llm.py:190
+#: blueprints/api/llm.py:235
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Verbindung zum Modellanbieter konnte nicht hergestellt werden: %(error)s"
 
-#: blueprints/api/llm.py:192
+#: blueprints/api/llm.py:237
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %(error)s"
 
-#: blueprints/api/llm.py:205
+#: blueprints/api/llm.py:250
 msgid "Session not found or permission denied."
 msgstr "Sitzung nicht gefunden oder Zugriff verweigert."
 
-#: blueprints/api/llm.py:211
-#, fuzzy
+#: blueprints/api/llm.py:256
 msgid "Chat session deleted successfully."
 msgstr "Chat-Sitzung erfolgreich gelöscht."
 
@@ -1029,7 +1052,7 @@ msgstr "Fehler:"
 msgid "Audiobook Player"
 msgstr "Hörbuch-Player"
 
-#: templates/audio_player.html:21 templates/chat_player.html:41
+#: templates/audio_player.html:21 templates/chat_player.html:42
 msgid "Back to main library"
 msgstr "Zurück zur Hauptbibliothek"
 
@@ -1090,7 +1113,7 @@ msgstr "Abmelden"
 msgid "Library"
 msgstr "Bibliothek"
 
-#: templates/base.html:111 templates/chat_player.html:46
+#: templates/base.html:111 templates/chat_player.html:47
 #: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
@@ -1119,35 +1142,35 @@ msgstr "Anx Calibre Manager von"
 msgid "AI Chat"
 msgstr "KI-Chat"
 
-#: templates/chat_player.html:45
+#: templates/chat_player.html:46
 msgid "Calibre"
 msgstr "Calibre"
 
-#: templates/chat_player.html:56 templates/chat_player.html:69
+#: templates/chat_player.html:57 templates/chat_player.html:70
 msgid "Updated"
 msgstr "Aktualisiert"
 
-#: templates/chat_player.html:58 templates/chat_player.html:71
+#: templates/chat_player.html:59 templates/chat_player.html:72
 msgid "Delete Chat"
 msgstr "Chat löschen"
 
-#: templates/chat_player.html:61
+#: templates/chat_player.html:62
 msgid "No chats in Calibre."
 msgstr "Keine Chats in Calibre."
 
-#: templates/chat_player.html:74
+#: templates/chat_player.html:75
 msgid "No chats in Anx."
 msgstr "Keine Chats in Anx."
 
-#: templates/chat_player.html:84
+#: templates/chat_player.html:85
 msgid "Select a conversation to begin."
 msgstr "Wählen Sie ein Gespräch aus, um zu beginnen."
 
-#: templates/chat_player.html:94
+#: templates/chat_player.html:95
 msgid "Type your message..."
 msgstr "Geben Sie Ihre Nachricht ein..."
 
-#: templates/chat_player.html:95
+#: templates/chat_player.html:96
 msgid "Send"
 msgstr "Senden"
 

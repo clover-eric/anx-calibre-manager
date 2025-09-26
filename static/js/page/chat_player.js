@@ -48,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         autoResizeTextarea();
         dom.sendButton.disabled = true;
 
-        const loadingIndicator = addMessageToUI({ role: 'model', content: '<div class="spinner"></div>' }, true);
+        const modelMessageElement = addMessageToUI({ role: 'model', content: '' });
+        modelMessageElement.innerHTML = '<div class="spinner"></div>'; // Show spinner initially
+        let fullResponse = '';
+        let buffer = '';
 
         try {
             const response = await fetch('/api/llm/chat', {
@@ -63,20 +66,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
 
-            loadingIndicator.remove();
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || t.failedToGetResponse);
             }
-            
-            const data = await response.json();
-            currentSession.sessionId = data.session_id;
-            addMessageToUI({ role: 'model', content: data.response });
 
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let firstChunkReceived = false;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n\n');
+                buffer = lines.pop(); // Keep the last (potentially incomplete) message in buffer
+
+                for (const block of lines) {
+                    const eventMatch = block.match(/^event: (.*)$/m);
+                    const dataMatch = block.match(/^data: (.*)$/m);
+
+                    if (eventMatch) {
+                        const eventType = eventMatch[1];
+                        const dataStr = dataMatch ? dataMatch[1] : '{}';
+                        const data = JSON.parse(dataStr);
+
+                        if (eventType === 'session_start') {
+                            currentSession.sessionId = data.session_id;
+                        } else if (eventType === 'end') {
+                            return; // Stream finished
+                        } else if (eventType === 'error') {
+                            throw new Error(data.error || t.anErrorOccurred);
+                        }
+                    } else if (dataMatch) {
+                        if (!firstChunkReceived) {
+                            modelMessageElement.innerHTML = ''; // Clear spinner
+                            firstChunkReceived = true;
+                        }
+                        const data = JSON.parse(dataMatch[1]);
+                        if (data.chunk) {
+                            fullResponse += data.chunk;
+                            modelMessageElement.innerHTML = marked.parse(fullResponse);
+                            dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
+                        }
+                    }
+                }
+            }
         } catch (error) {
-            loadingIndicator.remove();
             console.error(error);
-            addMessageToUI({ role: 'model', content: `${t.anErrorOccurred} ${error.message}` });
+            modelMessageElement.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         } finally {
             dom.sendButton.disabled = false;
         }
