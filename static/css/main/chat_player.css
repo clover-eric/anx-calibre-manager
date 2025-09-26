@@ -198,9 +198,29 @@ body.theme-dark .library-toggle .button.active,
 .chat-header h3 { margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .messages-container { flex-grow: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.message { max-width: 80%; padding: 0.75rem 1rem; border-radius: var(--border-radius-large); line-height: 1.5; word-wrap: break-word; }
-.message.user { background-color: var(--user-message-bg); color: var(--user-message-text); align-self: flex-end; border-bottom-right-radius: 4px; }
-.message.model { background-color: var(--model-message-bg); color: var(--model-message-text); align-self: flex-start; border-bottom-left-radius: 4px; }
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+}
+.message.user { align-self: flex-end; }
+.message.model { align-self: flex-start; }
+
+.message-content {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-large);
+    word-wrap: break-word;
+}
+.message.user .message-content {
+    background-color: var(--user-message-bg);
+    color: var(--user-message-text);
+    border-bottom-right-radius: 4px;
+}
+.message.model .message-content {
+    background-color: var(--model-message-bg);
+    color: var(--model-message-text);
+    border-bottom-left-radius: 4px;
+}
 .message.loading {
     display: flex;
     align-items: center;
@@ -303,4 +323,50 @@ body.theme-dark .library-toggle .button.active,
 }
 .message.model th {
     background-color: var(--background-color-alt);
+}
+
+/* --- Message Actions (Copy/Delete) --- */
+.message-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    height: 1.75rem;
+}
+
+.message.model .message-actions {
+    justify-content: flex-start;
+}
+
+.message.user .message-actions {
+    justify-content: flex-end;
+}
+
+.message-actions button {
+    background: none;
+    border: none;
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.message-actions button:hover {
+    background-color: var(--hover-color);
+    color: var(--text-color);
+}
+
+/* On Desktop, actions are part of the message flow but invisible until hover */
+@media (min-width: 769px) {
+    .message-actions {
+        visibility: hidden;
+    }
+    .message:hover .message-actions {
+        visibility: visible;
+    }
 }

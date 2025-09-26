@@ -43,7 +43,7 @@ def get_chat_history():
             return jsonify({'error': _('No history found for this book.')}), 404
 
         messages = db.execute(
-            'SELECT role, content FROM llm_chat_messages WHERE session_id = ? ORDER BY created_at ASC',
+            'SELECT id, role, content FROM llm_chat_messages WHERE session_id = ? ORDER BY created_at ASC',
             (session['id'],)
         ).fetchall()
 
@@ -254,3 +254,28 @@ def delete_chat_session(session_id):
         db.commit()
 
     return jsonify({'success': True, 'message': _('Chat session deleted successfully.')})
+
+
+@llm_bp.route('/message/<int:message_id>', methods=['DELETE'])
+@login_required_api
+def delete_message(message_id):
+    db = database.get_db()
+    # First, verify that the message belongs to a session owned by the current user
+    message = db.execute(
+        'SELECT s.user_id FROM llm_chat_messages m '
+        'JOIN llm_chat_sessions s ON m.session_id = s.id '
+        'WHERE m.id = ?',
+        (message_id,)
+    ).fetchone()
+
+    if message is None:
+        return jsonify({'status': 'error', 'message': 'Message not found'}), 404
+
+    if message['user_id'] != g.user.id:
+        return jsonify({'status': 'error', 'message': 'Forbidden'}), 403
+
+    # If verification passes, delete the message
+    db.execute('DELETE FROM llm_chat_messages WHERE id = ?', (message_id,))
+    db.commit()
+
+    return jsonify({'status': 'success', 'message': 'Message deleted successfully'})

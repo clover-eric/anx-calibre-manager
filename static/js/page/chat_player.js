@@ -122,28 +122,129 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Render & UI Logic ---
-    const addMessageToUI = (message, isHtml = false) => {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', message.role);
+    const addMessageToUI = (message, isHtml = false, messageId = null) => {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.classList.add('message', message.role);
+        if (messageId) {
+            messageWrapper.dataset.messageId = messageId;
+        }
+        
+        const messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
 
         if (isHtml) { // Used for the loading spinner
-            messageElement.innerHTML = message.content;
+            messageContent.innerHTML = message.content;
         } else if (message.role === 'model') {
-            // Use marked to render Markdown for model responses
-            // Note: For production, consider a sanitizer like DOMPurify if the source isn't fully trusted.
-            messageElement.innerHTML = marked.parse(message.content || '');
+            messageContent.innerHTML = marked.parse(message.content || '');
         } else { // 'user' role
-            // Use textContent for user messages to prevent XSS
-            messageElement.textContent = message.content;
+            messageContent.textContent = message.content;
         }
 
         if (message.role === 'model' && message.content.includes('spinner')) {
-            messageElement.classList.add('loading');
+            messageWrapper.classList.add('loading');
         }
         
-        dom.messagesContainer.appendChild(messageElement);
+        // Add actions menu
+        const actionsContainer = document.createElement('div');
+        actionsContainer.classList.add('message-actions');
+        
+        const copyButton = document.createElement('button');
+        copyButton.title = t.copy;
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.classList.add('copy-btn');
+        copyButton.addEventListener('click', () => {
+            const textToCopy = message.content;
+            const icon = copyButton.querySelector('i');
+
+            const copySuccess = () => {
+                icon.classList.remove('fa-copy');
+                icon.classList.add('fa-check');
+                copyButton.title = t.copied;
+                setTimeout(() => {
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-copy');
+                    copyButton.title = t.copy;
+                }, 1500);
+            };
+
+            // Fallback method using execCommand
+            const fallbackCopy = () => {
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                textArea.style.position = 'fixed';
+                textArea.style.top = '-9999px';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        copySuccess();
+                    } else {
+                        throw new Error('Copy command was not successful');
+                    }
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                    alert(t.copyFailed);
+                }
+                document.body.removeChild(textArea);
+            };
+
+            // Use modern clipboard API if available and in a secure context, otherwise use fallback
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(copySuccess).catch((err) => {
+                    console.warn('Clipboard API failed, trying fallback:', err);
+                    fallbackCopy();
+                });
+            } else {
+                fallbackCopy();
+            }
+        });
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.title = t.delete;
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        deleteButton.classList.add('delete-btn');
+        
+        if (!messageId) {
+            deleteButton.disabled = true;
+            deleteButton.title = t.deleteNotAvailable;
+        }
+
+        deleteButton.addEventListener('click', async () => {
+            const currentMessageId = messageWrapper.dataset.messageId;
+            if (!currentMessageId) return;
+
+            if (!confirm(t.confirmDeleteMessage)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/llm/message/${currentMessageId}`, { method: 'DELETE' });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || t.failedToDeleteMessage);
+                }
+                
+                messageWrapper.remove();
+
+            } catch (error) {
+                console.error('Error deleting message:', error);
+            }
+        });
+
+
+        actionsContainer.appendChild(copyButton);
+        actionsContainer.appendChild(deleteButton);
+        
+        messageWrapper.appendChild(messageContent);
+        messageWrapper.appendChild(actionsContainer);
+
+        dom.messagesContainer.appendChild(messageWrapper);
         dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
-        return messageElement;
+        return messageWrapper;
     };
 
     const handleSessionClick = async (item) => {
@@ -165,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         dom.messagesContainer.innerHTML = '';
         if (history.messages && history.messages.length > 0) {
-            history.messages.forEach(msg => addMessageToUI(msg));
+            history.messages.forEach(msg => addMessageToUI({ role: msg.role, content: msg.content }, false, msg.id));
         } else {
             const initialPrompt = t.initialChatPrompt;
             sendMessage(initialPrompt);
