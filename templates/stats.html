@@ -51,6 +51,20 @@
       font-size: 1rem;
       white-space: nowrap;
     }
+    .expandable-text .short-text {
+      white-space: pre-wrap;
+    }
+    .expandable-text .full-text {
+      display: none;
+      white-space: pre-wrap;
+    }
+    .expand-btn {
+      cursor: pointer;
+      color: var(--bs-link-color);
+      text-decoration: underline;
+      margin-top: 5px;
+      display: inline-block;
+    }
   </style>
 {% endblock %}
 
@@ -111,7 +125,13 @@
                 {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
                 {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
-              <p class="description" style="white-space: pre-wrap;">{{ book.description }}</p>
+              <div class="expandable-text">
+                <p class="short-text" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+                <p class="full-text" style="white-space: pre-wrap;">{{ book.description }}</p>
+                {% if book.description|length > 150 %}
+                  <span class="expand-btn" data-show-more="{{ _('Show more') }}" data-show-less="{{ _('Show less') }}"></span>
+                {% endif %}
+              </div>
               {% set progress_percent = book.reading_percentage * 100 %}
               <div class="progress mt-2">
                 <div class="progress-bar dynamic-progress" role="progressbar" data-progress="{{ progress_percent }}" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">{{ "%.2f"|format(progress_percent) }}%</div>
@@ -136,7 +156,13 @@
                 {{ _('Rating') }}: {{ book.rating if book.rating > 0 else _('Not rated') }} <br>
                 {{ _('Total Reading Time') }}: {{ book.formatted_reading_time }}
               </p>
-              <p class="description" style="white-space: pre-wrap;">{{ book.description }}</p>
+              <div class="expandable-text">
+                <p class="short-text" style="white-space: pre-wrap;">{{ book.description | truncate(150) }}</p>
+                <p class="full-text" style="white-space: pre-wrap;">{{ book.description }}</p>
+                {% if book.description|length > 150 %}
+                  <span class="expand-btn" data-show-more="{{ _('Show more') }}" data-show-less="{{ _('Show less') }}"></span>
+                {% endif %}
+              </div>
               <p><strong>{{ _('Finished!') }}</strong></p>
             </div>
           </div>
@@ -221,6 +247,26 @@
             container.scrollLeft = container.scrollWidth;
           }
         }, 0);
+      });
+
+      // --- Expandable text ---
+      document.querySelectorAll('.expand-btn').forEach(btn => {
+        btn.textContent = btn.dataset.showMore;
+        btn.addEventListener('click', function() {
+          const container = this.closest('.expandable-text');
+          const shortText = container.querySelector('.short-text');
+          const fullText = container.querySelector('.full-text');
+
+          if (fullText.style.display === 'none' || fullText.style.display === '') {
+            shortText.style.display = 'none';
+            fullText.style.display = 'block';
+            this.textContent = this.dataset.showLess;
+          } else {
+            shortText.style.display = 'block';
+            fullText.style.display = 'none';
+            this.textContent = this.dataset.showMore;
+          }
+        });
       });
     });
 

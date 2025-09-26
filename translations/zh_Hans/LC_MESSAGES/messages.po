@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-25 18:38+0800\n"
+"POT-Creation-Date: 2025-09-26 17:50+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -763,8 +763,8 @@ msgstr "成功！"
 msgid "Title"
 msgstr "标题"
 
-#: static/js/page/translations.js:32 templates/stats.html:109
-#: templates/stats.html:134
+#: static/js/page/translations.js:32 templates/stats.html:123
+#: templates/stats.html:154
 msgid "Author"
 msgstr "作者"
 
@@ -987,8 +987,8 @@ msgstr "前往"
 msgid "Next"
 msgstr "下一页"
 
-#: templates/index.html:58 templates/index.html:135 templates/stats.html:111
-#: templates/stats.html:136
+#: templates/index.html:58 templates/index.html:135 templates/stats.html:125
+#: templates/stats.html:156
 msgid "Rating"
 msgstr "评分"
 
@@ -1030,7 +1030,7 @@ msgstr "点击复制"
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: templates/index.html:138 templates/stats.html:112 templates/stats.html:137
+#: templates/index.html:138 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
@@ -2011,56 +2011,64 @@ msgstr "管理员密码"
 msgid "Create Admin Account"
 msgstr "创建管理员帐户"
 
-#: templates/stats.html:3 templates/stats.html:59
+#: templates/stats.html:3 templates/stats.html:73
 #, python-format
 msgid "%(username)s's Reading Statistics"
 msgstr "%(username)s 的阅读统计"
 
-#: templates/stats.html:63
+#: templates/stats.html:77
 msgid "Today"
 msgstr "今天"
 
-#: templates/stats.html:68
+#: templates/stats.html:82
 msgid "This Week"
 msgstr "本周"
 
-#: templates/stats.html:73
+#: templates/stats.html:87
 msgid "This Month"
 msgstr "本月"
 
-#: templates/stats.html:78
+#: templates/stats.html:92
 msgid "This Year"
 msgstr "今年"
 
-#: templates/stats.html:83
+#: templates/stats.html:97
 msgid "Total"
 msgstr "总计"
 
-#: templates/stats.html:89
+#: templates/stats.html:103
 msgid "Reading Heatmap (Last 365 Days)"
 msgstr "阅读热力图（最近 365 天）"
 
-#: templates/stats.html:101
+#: templates/stats.html:115
 msgid "Reading Books"
 msgstr "正在阅读的图书"
 
-#: templates/stats.html:111 templates/stats.html:136
+#: templates/stats.html:125 templates/stats.html:156
 msgid "Not rated"
 msgstr "未评分"
 
-#: templates/stats.html:122
+#: templates/stats.html:132 templates/stats.html:163
+msgid "Show more"
+msgstr "展开"
+
+#: templates/stats.html:132 templates/stats.html:163
+msgid "Show less"
+msgstr "收起"
+
+#: templates/stats.html:142
 msgid "No books currently being read."
 msgstr "当前没有正在阅读的图书。"
 
-#: templates/stats.html:126
+#: templates/stats.html:146
 msgid "Finished Books"
 msgstr "已读完的图书"
 
-#: templates/stats.html:140
+#: templates/stats.html:166
 msgid "Finished!"
 msgstr "已读完！"
 
-#: templates/stats.html:144
+#: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
 
