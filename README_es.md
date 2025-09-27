@@ -199,6 +199,9 @@ La aplicación se configura a través de variables de entorno.
 | `DEFAULT_OPENAI_API_KEY` | Tu clave de API de OpenAI (requerida si se usa `openai_tts`). | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | URL base personalizada para APIs compatibles con OpenAI. | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | El modelo de OpenAI a utilizar para TTS (por ejemplo, `tts-1`). | `tts-1` |
+| `DEFAULT_LLM_BASE_URL` | La URL base para la API del Modelo de Lenguaje Grande (LLM), compatible con el formato de la API de OpenAI. | `""` |
+| `DEFAULT_LLM_API_KEY` | La clave de API para el servicio LLM. | `""` |
+| `DEFAULT_LLM_MODEL` | El modelo predeterminado a utilizar para el servicio LLM (por ejemplo, `gpt-4`). | `""` |
 
 ## 📖 Sincronización con KOReader
 

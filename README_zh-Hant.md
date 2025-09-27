@@ -190,6 +190,9 @@
 | `SMTP_USERNAME` | SMTP 使用者名稱。 | `""` |
 | `SMTP_PASSWORD` | SMTP 密碼。 | `""` |
 | `SMTP_ENCRYPTION` | SMTP 加密類型 (`ssl`, `starttls`, `none`)。 | `ssl` |
+| `DEFAULT_LLM_BASE_URL` | 大型語言模型 (LLM) API 的基礎 URL，需與 OpenAI API 格式相容。 | `""` |
+| `DEFAULT_LLM_API_KEY` | LLM 服務的 API 金鑰。 | `""` |
+| `DEFAULT_LLM_MODEL` | LLM 服務預設使用的模型 (例如, `gpt-4`)。 | `""` |
 
 ## 📖 KOReader 同步
 

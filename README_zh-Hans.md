@@ -198,6 +198,9 @@
 | `DEFAULT_OPENAI_API_KEY` | 您的 OpenAI API 密钥 (如果使用 `openai_tts` 则为必需)。 | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | 用于 OpenAI 兼容 API 的自定义基础 URL。 | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | 用于 TTS 的 OpenAI 模型 (例如, `tts-1`)。 | `tts-1` |
+| `DEFAULT_LLM_BASE_URL` | 大语言模型 (LLM) API 的基础 URL，需与 OpenAI API 格式兼容。 | `""` |
+| `DEFAULT_LLM_API_KEY` | LLM 服务的 API 密钥。 | `""` |
+| `DEFAULT_LLM_MODEL` | LLM 服务默认使用的模型 (例如, `gpt-4`)。 | `""` |
 
 ## 📖 KOReader 同步
 
