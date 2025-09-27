@@ -1,6 +1,8 @@
 import requests
 import uuid
 import json
+import os
+import time
 from flask import Blueprint, request, jsonify, g, Response, current_app
 from flask_babel import gettext as _
 from contextlib import closing
@@ -16,10 +18,13 @@ except ImportError:
 
 llm_bp = Blueprint('llm', __name__, url_prefix='/api/llm')
 
-# Simple in-memory cache for book content
-book_content_cache = {}
+# File-based cache settings
+CACHE_DIR = "/tmp/anx_book_cache"
+MAX_CACHE_SIZE = 20  # Max number of book files to cache
 cache_lock = Lock()
-MAX_CACHE_SIZE = 20  # Cache up to 20 books to prevent excessive memory usage
+
+# Ensure cache directory exists
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 def login_required_api(f):
     from functools import wraps
@@ -30,17 +35,36 @@ def login_required_api(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def _manage_cache():
+    """Clean up cache based on LRU (access time)."""
+    try:
+        files = [os.path.join(CACHE_DIR, f) for f in os.listdir(CACHE_DIR)]
+        if len(files) > MAX_CACHE_SIZE:
+            files.sort(key=lambda x: os.path.getatime(x))
+            os.remove(files[0])
+    except OSError:
+        # Ignore errors during cleanup (e.g., file removed by another process)
+        pass
+
 def _generate_llm_response(session_id, book_id, book_type, user_info_dict, translated_strings, app, user_message_id=None):
     """
     Internal generator function to handle LLM response generation.
     It receives all necessary data as arguments to avoid working outside of an application context.
     """
-    # --- Get book content with cache ---
-    cache_key = (book_type, book_id)
+    # --- Get book content with file-based cache ---
+    cache_filename = f"{book_type}_{book_id}.txt"
+    cache_filepath = os.path.join(CACHE_DIR, cache_filename)
     book_content = None
+
     with cache_lock:
-        if cache_key in book_content_cache:
-            book_content = book_content_cache[cache_key]
+        if os.path.exists(cache_filepath):
+            try:
+                with open(cache_filepath, 'r', encoding='utf-8') as f:
+                    book_content = f.read()
+                # Update access time for LRU
+                os.utime(cache_filepath, None)
+            except IOError:
+                book_content = None # File might be gone, proceed to fetch
 
     if book_content is None:
         if book_type not in ['calibre', 'anx']:
@@ -50,7 +74,6 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
 
         content_result = {}
         with app.app_context():
-            # Temporarily push a g object for the content fetching functions
             g.user = user_info_dict
             if book_type == 'calibre':
                 content_result = get_calibre_entire_book_content(book_id)
@@ -70,9 +93,13 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
             return
         
         with cache_lock:
-            if len(book_content_cache) >= MAX_CACHE_SIZE:
-                del book_content_cache[next(iter(book_content_cache))]
-            book_content_cache[cache_key] = book_content
+            _manage_cache()
+            try:
+                with open(cache_filepath, 'w', encoding='utf-8') as f:
+                    f.write(book_content)
+            except IOError:
+                # If writing fails, we just proceed without caching
+                pass
     
     # --- Call LLM ---
     if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
@@ -91,20 +118,13 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
             (session_id,)
         ).fetchall()
 
-    # Smartly inject book context
     book_context_prompt = translated_strings['book_context_prompt_template'] % {'book_content': book_content}
     
-    # If history is empty (first turn), inject the summary request as well.
-    # Otherwise, just provide the book content as context.
     if not history:
         summary_request_prompt = translated_strings['summary_request_prompt']
         virtual_user_message_content = f"{book_context_prompt} {summary_request_prompt}"
         messages.append({"role": "user", "content": virtual_user_message_content})
     else:
-        # For subsequent turns, add the book content as a less intrusive system-like message
-        # or just prepend it to the history. Let's add it as the first user message for context.
-        # A better approach might be a dedicated context message type if the model supports it.
-        # For now, we place it before the actual history.
         messages.append({"role": "user", "content": book_context_prompt})
 
     for msg in history:
