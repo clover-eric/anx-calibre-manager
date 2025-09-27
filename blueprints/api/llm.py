@@ -342,6 +342,8 @@ def delete_chat_session(session_id):
         if not session:
             return jsonify({'error': _('Session not found or permission denied.')}), 404
 
+        # Manually delete messages first to ensure data integrity
+        db.execute('DELETE FROM llm_chat_messages WHERE session_id = ?', (session_id,))
         db.execute('DELETE FROM llm_chat_sessions WHERE id = ?', (session_id,))
         db.commit()
 
