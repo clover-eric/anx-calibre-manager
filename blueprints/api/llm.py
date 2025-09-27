@@ -244,8 +244,13 @@ def chat_with_book():
 
     app = current_app._get_current_object()
     user_info_dict = {key: getattr(g.user, key, None) for key in
-                      ['id', 'username', 'language', 'kindle_email', 'anx_token', 'anx_url',
-                       'llm_base_url', 'llm_api_key', 'llm_model']}
+                      ['id', 'username', 'language', 'kindle_email', 'anx_token', 'anx_url']}
+
+    # Load LLM settings with fallback to global defaults
+    from config_manager import config
+    user_info_dict['llm_base_url'] = g.user.llm_base_url or config.get('DEFAULT_LLM_BASE_URL')
+    user_info_dict['llm_api_key'] = g.user.llm_api_key or config.get('DEFAULT_LLM_API_KEY')
+    user_info_dict['llm_model'] = g.user.llm_model or config.get('DEFAULT_LLM_MODEL')
     
     translated_strings = {
         'base_system_prompt': _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': book_title},
@@ -291,7 +296,13 @@ def regenerate_chat_response():
     
     app = current_app._get_current_object()
     user_obj = database.get_db().execute('SELECT * FROM users WHERE id = ?', (msg_info['user_id'],)).fetchone()
-    user_info_dict = {key: user_obj[key] for key in user_obj.keys()}
+    user_info_dict = {key: user_obj[key] for key in user_obj.keys() if key not in ['llm_base_url', 'llm_api_key', 'llm_model']}
+
+    # Load LLM settings with fallback to global defaults
+    from config_manager import config
+    user_info_dict['llm_base_url'] = user_obj['llm_base_url'] or config.get('DEFAULT_LLM_BASE_URL')
+    user_info_dict['llm_api_key'] = user_obj['llm_api_key'] or config.get('DEFAULT_LLM_API_KEY')
+    user_info_dict['llm_model'] = user_obj['llm_model'] or config.get('DEFAULT_LLM_MODEL')
     
     translated_strings = {
         'base_system_prompt': _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': msg_info['book_title']},
