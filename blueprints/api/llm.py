@@ -85,19 +85,30 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     
     messages = [{"role": "system", "content": translated_strings['base_system_prompt']}]
     
-    book_context_prompt = translated_strings['book_context_prompt_template'] % {'book_content': book_content}
-    summary_request_prompt = translated_strings['summary_request_prompt']
-    
-    virtual_user_message_content = f"{book_context_prompt} {summary_request_prompt}"
-    messages.append({"role": "user", "content": virtual_user_message_content})
-
     with closing(database.get_db()) as db:
         history = db.execute(
             'SELECT role, content FROM llm_chat_messages WHERE session_id = ? ORDER BY created_at ASC',
             (session_id,)
         ).fetchall()
-        for msg in history:
-            messages.append({"role": msg['role'], "content": msg['content']})
+
+    # Smartly inject book context
+    book_context_prompt = translated_strings['book_context_prompt_template'] % {'book_content': book_content}
+    
+    # If history is empty (first turn), inject the summary request as well.
+    # Otherwise, just provide the book content as context.
+    if not history:
+        summary_request_prompt = translated_strings['summary_request_prompt']
+        virtual_user_message_content = f"{book_context_prompt} {summary_request_prompt}"
+        messages.append({"role": "user", "content": virtual_user_message_content})
+    else:
+        # For subsequent turns, add the book content as a less intrusive system-like message
+        # or just prepend it to the history. Let's add it as the first user message for context.
+        # A better approach might be a dedicated context message type if the model supports it.
+        # For now, we place it before the actual history.
+        messages.append({"role": "user", "content": book_context_prompt})
+
+    for msg in history:
+        messages.append({"role": msg['role'], "content": msg['content']})
 
     payload = {
         "model": user_info_dict['llm_model'],
