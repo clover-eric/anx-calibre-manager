@@ -46,7 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Could not find message content element to stream response.");
             return;
         }
-        modelMessageContent.innerHTML = '<div class="spinner"></div>';
+        modelMessageContent.innerHTML = `
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <span class="loading-status"></span>
+            </div>
+        `;
         let fullResponse = '';
         let buffer = '';
 
@@ -92,6 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                     if (regenerateBtn) regenerateBtn.disabled = false;
                                     if (deleteBtn) deleteBtn.disabled = false;
                                 }
+                            }
+                        } else if (eventType === 'stage_update') {
+                            const statusSpan = modelMessageWrapper.querySelector('.loading-status');
+                            if (statusSpan) {
+                                statusSpan.textContent = data.message;
                             }
                         } else if (eventType === 'end') {
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);

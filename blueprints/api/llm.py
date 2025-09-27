@@ -67,6 +67,9 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
                 book_content = None # File might be gone, proceed to fetch
 
     if book_content is None:
+        stage_message = json.dumps({"message": translated_strings['extracting_book_content']})
+        yield f"event: stage_update\ndata: {stage_message}\n\n"
+
         if book_type not in ['calibre', 'anx']:
             error_message = json.dumps({"error": translated_strings['invalid_book_type']})
             yield f"event: error\ndata: {error_message}\n\n"
@@ -102,6 +105,9 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
                 pass
     
     # --- Call LLM ---
+    stage_message = json.dumps({"message": translated_strings['waiting_for_model']})
+    yield f"event: stage_update\ndata: {stage_message}\n\n"
+    
     if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
         error_message = json.dumps({"error": translated_strings['llm_settings_not_configured']})
         yield f"event: error\ndata: {error_message}\n\n"
@@ -260,7 +266,9 @@ def chat_with_book():
         'llm_settings_not_configured': _('LLM settings are not configured in user settings.'),
         'book_context_prompt_template': _(" Here is the full text of the book:\n\n---BOOK CONTENT---\n%(book_content)s\n---END BOOK CONTENT---"),
         'summary_request_prompt': _("Please provide a comprehensive summary and a profound review of this book."),
-        'llm_communication_failed': _('Failed to communicate with LLM provider: %(error)s')
+        'llm_communication_failed': _('Failed to communicate with LLM provider: %(error)s'),
+        'extracting_book_content': _('Extracting entire book content...'),
+        'waiting_for_model': _('Thinking...'),
     }
 
     generator = _generate_llm_response(session_id, book_id, book_type, user_info_dict, translated_strings, app, user_message_id=user_message_id)
@@ -312,7 +320,9 @@ def regenerate_chat_response():
         'llm_settings_not_configured': _('LLM settings are not configured in user settings.'),
         'book_context_prompt_template': _(" Here is the full text of the book:\n\n---BOOK CONTENT---\n%(book_content)s\n---END BOOK CONTENT---"),
         'summary_request_prompt': _("Please provide a comprehensive summary and a profound review of this book."),
-        'llm_communication_failed': _('Failed to communicate with LLM provider: %(error)s')
+        'llm_communication_failed': _('Failed to communicate with LLM provider: %(error)s'),
+        'extracting_book_content': _('Extracting entire book content...'),
+        'waiting_for_model': _('Thinking...'),
     }
 
     generator = _generate_llm_response(

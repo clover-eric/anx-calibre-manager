@@ -57,6 +57,8 @@ export function initializeTranslations() {
         FILE_ERROR: _("File error: %(error)s"),
 
         // Chat Player
+        extractingBookContent: _('Extracting entire book content...'),
+        thinking: _('Thinking...'),
         updated: _('Updated'),
         deleteChat: _('Delete Chat'),
         failedToFetchChatHistory: _('Failed to fetch chat history.'),

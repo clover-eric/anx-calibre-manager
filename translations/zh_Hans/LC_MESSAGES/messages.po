@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 21:01+0800\n"
+"POT-Creation-Date: 2025-09-27 15:21+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -376,47 +376,51 @@ msgstr "邀请码已存在"
 msgid "Operation failed"
 msgstr "操作失败"
 
-#: blueprints/api/llm.py:23
+#: blueprints/api/llm.py:34
 msgid "Authentication required."
 msgstr "需要身份验证。"
 
-#: blueprints/api/llm.py:34
+#: blueprints/api/llm.py:198
 msgid "Book ID and type are required."
 msgstr "书籍 ID 和类型是必需的。"
 
-#: blueprints/api/llm.py:43
+#: blueprints/api/llm.py:207
 msgid "No history found for this book."
 msgstr "未找到该书籍的曆史记录。"
 
-#: blueprints/api/llm.py:59
+#: blueprints/api/llm.py:223
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP 模块不可用，无法处理书籍内容。"
 
-#: blueprints/api/llm.py:69
+#: blueprints/api/llm.py:233
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:95
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:316
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:110
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:317
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:123
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:318
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:129
+#: blueprints/api/llm.py:265 blueprints/api/llm.py:319
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:133
+#: blueprints/api/llm.py:266 blueprints/api/llm.py:320
+msgid "LLM settings are not configured in user settings."
+msgstr "用户设置中未配置 LLM。"
+
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:321
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -431,46 +435,67 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:137
-msgid "LLM settings are not configured in user settings."
-msgstr "用户设置中未配置 LLM。"
+#: blueprints/api/llm.py:268 blueprints/api/llm.py:322
+#: static/js/page/translations.js:68
+msgid "Please provide a comprehensive summary and a profound review of this book."
+msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:196
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:323
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:210
+#: blueprints/api/llm.py:270 static/js/page/translations.js:60
+msgid "Extracting entire book content..."
+msgstr "正在提取整本书的内容..."
+
+#: blueprints/api/llm.py:271 static/js/page/translations.js:61
+msgid "Thinking..."
+msgstr "思考中..."
+
+#: blueprints/api/llm.py:284
+msgid "Message ID is required."
+msgstr "消息 ID 是必需的。"
+
+#: blueprints/api/llm.py:295
+msgid "Message not found."
+msgstr "消息未找到。"
+
+#: blueprints/api/llm.py:297
+msgid "Permission denied."
+msgstr "权限被拒绝。"
+
+#: blueprints/api/llm.py:344
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:226
+#: blueprints/api/llm.py:360
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:231
+#: blueprints/api/llm.py:365
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:233
+#: blueprints/api/llm.py:367
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:235
+#: blueprints/api/llm.py:369
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:237
+#: blueprints/api/llm.py:371
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:250
+#: blueprints/api/llm.py:383
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:256
+#: blueprints/api/llm.py:390
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
@@ -955,61 +980,67 @@ msgstr "所有章节均为空或无法转换为音频。"
 msgid "An unknown error occurred: %(error)s"
 msgstr "发生未知错误：%(error)s"
 
-#: static/js/page/translations.js:60
+#: static/js/page/translations.js:62 templates/chat_player.html:57
+#: templates/chat_player.html:70
+msgid "Updated"
+msgstr "已更新"
+
+#: static/js/page/translations.js:63 templates/chat_player.html:59
+#: templates/chat_player.html:72
+msgid "Delete Chat"
+msgstr "删除聊天"
+
+#: static/js/page/translations.js:64
 msgid "Failed to fetch chat history."
 msgstr "获取聊天记录失败。"
 
-#: static/js/page/translations.js:61
+#: static/js/page/translations.js:65
 msgid "Error loading history:"
 msgstr "加载历史记录时出错："
 
-#: static/js/page/translations.js:62
+#: static/js/page/translations.js:66
 msgid "Failed to get a response from the AI."
 msgstr "未能从 AI 处获得回应。"
 
-#: static/js/page/translations.js:63
+#: static/js/page/translations.js:67
 msgid "An error occurred:"
 msgstr "发生错误："
 
-#: static/js/page/translations.js:64
-msgid "Please provide a comprehensive summary and a profound review of this book."
-msgstr "请对这本书进行全面总结和深刻评论。"
-
-#: static/js/page/translations.js:65
+#: static/js/page/translations.js:69
 msgid "years ago"
 msgstr "年前"
 
-#: static/js/page/translations.js:66
+#: static/js/page/translations.js:70
 msgid "months ago"
 msgstr "个月前"
 
-#: static/js/page/translations.js:67
+#: static/js/page/translations.js:71
 msgid "days ago"
 msgstr "天前"
 
-#: static/js/page/translations.js:68
+#: static/js/page/translations.js:72
 msgid "hours ago"
 msgstr "小时前"
 
-#: static/js/page/translations.js:69
+#: static/js/page/translations.js:73
 msgid "minutes ago"
 msgstr "分钟前"
 
-#: static/js/page/translations.js:70
+#: static/js/page/translations.js:74
 msgid "just now"
 msgstr "刚刚"
 
-#: static/js/page/translations.js:71
+#: static/js/page/translations.js:75
 msgid ""
 "Are you sure you want to delete this chat session? This action cannot be "
 "undone."
 msgstr "您确定要删除此聊天会话吗？此操作无法撤消。"
 
-#: static/js/page/translations.js:72
+#: static/js/page/translations.js:76
 msgid "Failed to delete the session."
 msgstr "删除会话失败。"
 
-#: static/js/page/translations.js:73
+#: static/js/page/translations.js:77
 msgid "Error:"
 msgstr "错误："
 
@@ -1061,45 +1092,45 @@ msgstr "下一章"
 msgid "Now Playing"
 msgstr "正在播放"
 
-#: templates/base.html:6 templates/base.html:87
+#: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
 
-#: templates/base.html:90 templates/base.html:115 templates/settings.html:3
+#: templates/base.html:89 templates/base.html:114 templates/settings.html:3
 #: templates/settings.html:13
 msgid "Settings"
 msgstr "设置"
 
-#: templates/base.html:91
+#: templates/base.html:90
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:107 templates/index.html:3 templates/index.html:67
+#: templates/base.html:106 templates/index.html:3 templates/index.html:67
 msgid "Library"
 msgstr "书库"
 
-#: templates/base.html:111 templates/chat_player.html:47
+#: templates/base.html:110 templates/chat_player.html:47
 #: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
 
-#: templates/base.html:222
+#: templates/base.html:221
 msgid "Having issues or suggestions?"
 msgstr "有任何问题或建议吗？"
 
-#: templates/base.html:222
+#: templates/base.html:221
 msgid "Submit an issue on GitHub"
 msgstr "在 GitHub 上提交问题"
 
-#: templates/base.html:223
+#: templates/base.html:222
 msgid "Find This Helpful?"
 msgstr "觉得这个有帮助吗？"
 
-#: templates/base.html:223
+#: templates/base.html:222
 msgid "Buy me a Coffee ☕"
 msgstr "请我喝杯咖啡 ☕"
 
-#: templates/base.html:224
+#: templates/base.html:223
 msgid "Anx Calibre Manager by"
 msgstr "Anx Calibre Manager by"
 
@@ -1110,14 +1141,6 @@ msgstr "AI 聊天"
 #: templates/chat_player.html:46
 msgid "Calibre"
 msgstr "Calibre"
-
-#: templates/chat_player.html:57 templates/chat_player.html:70
-msgid "Updated"
-msgstr "已更新"
-
-#: templates/chat_player.html:59 templates/chat_player.html:72
-msgid "Delete Chat"
-msgstr "删除聊天"
 
 #: templates/chat_player.html:62
 msgid "No chats in Calibre."

@@ -375,3 +375,13 @@ body.theme-dark .library-toggle .button.active,
         visibility: visible;
     }
 }
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.loading-status {
+    font-style: italic;
+    color: var(--text-color-secondary);
+}

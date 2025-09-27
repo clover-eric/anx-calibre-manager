@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 21:01+0800\n"
+"POT-Creation-Date: 2025-09-27 15:21+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -392,49 +392,55 @@ msgstr "El código de invitación ya existe"
 msgid "Operation failed"
 msgstr "Operación fallida"
 
-#: blueprints/api/llm.py:23
+#: blueprints/api/llm.py:34
 msgid "Authentication required."
 msgstr "Autenticación requerida."
 
-#: blueprints/api/llm.py:34
+#: blueprints/api/llm.py:198
 msgid "Book ID and type are required."
 msgstr "Se requiere el ID y el tipo de libro."
 
-#: blueprints/api/llm.py:43
+#: blueprints/api/llm.py:207
 msgid "No history found for this book."
 msgstr "No se encontró historial para este libro."
 
-#: blueprints/api/llm.py:59
+#: blueprints/api/llm.py:223
 msgid "MCP module is not available, cannot process book content."
 msgstr ""
 "El módulo MCP no está disponible, no se puede procesar el contenido del "
 "libro."
 
-#: blueprints/api/llm.py:69
+#: blueprints/api/llm.py:233
 msgid "Missing required fields."
 msgstr "Faltan campos obligatorios."
 
-#: blueprints/api/llm.py:95
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:316
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
-msgstr "Eres un asistente útil. El usuario está preguntando sobre el libro '%(book_title)s'."
+msgstr ""
+"Eres un asistente útil. El usuario está preguntando sobre el libro "
+"'%(book_title)s'."
 
-#: blueprints/api/llm.py:110
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:317
 msgid "Invalid book type."
 msgstr "Tipo de libro no válido."
 
-#: blueprints/api/llm.py:123
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:318
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Error al obtener el contenido del libro: %(error)s"
 
-#: blueprints/api/llm.py:129
+#: blueprints/api/llm.py:265 blueprints/api/llm.py:319
 msgid "Could not extract text from the book."
 msgstr "No se pudo extraer el texto del libro."
 
-#: blueprints/api/llm.py:133
+#: blueprints/api/llm.py:266 blueprints/api/llm.py:320
+msgid "LLM settings are not configured in user settings."
+msgstr "La configuración de LLM no está configurada en los ajustes de usuario."
+
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:321
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -449,46 +455,69 @@ msgstr ""
 "%(book_content)s\n"
 "---FIN DEL CONTENIDO DEL LIBRO---"
 
-#: blueprints/api/llm.py:137
-msgid "LLM settings are not configured in user settings."
-msgstr "La configuración de LLM no está configurada en los ajustes de usuario."
+#: blueprints/api/llm.py:268 blueprints/api/llm.py:322
+#: static/js/page/translations.js:68
+msgid "Please provide a comprehensive summary and a profound review of this book."
+msgstr ""
+"Por favor, proporcione un resumen completo y una reseña profunda de este "
+"libro."
 
-#: blueprints/api/llm.py:196
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:323
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Error al comunicarse con el proveedor de LLM: %(error)s"
 
-#: blueprints/api/llm.py:210
+#: blueprints/api/llm.py:270 static/js/page/translations.js:60
+msgid "Extracting entire book content..."
+msgstr "Extrayendo todo el contenido del libro..."
+
+#: blueprints/api/llm.py:271 static/js/page/translations.js:61
+msgid "Thinking..."
+msgstr "Pensando..."
+
+#: blueprints/api/llm.py:284
+msgid "Message ID is required."
+msgstr "Se requiere el ID del mensaje."
+
+#: blueprints/api/llm.py:295
+msgid "Message not found."
+msgstr "Mensaje no encontrado."
+
+#: blueprints/api/llm.py:297
+msgid "Permission denied."
+msgstr "Permiso denegado."
+
+#: blueprints/api/llm.py:344
 msgid "Base URL and API Key are required."
 msgstr "Se requieren la URL base y la clave de API."
 
-#: blueprints/api/llm.py:226
+#: blueprints/api/llm.py:360
 msgid "Unexpected response format from model provider."
 msgstr "Formato de respuesta inesperado del proveedor del modelo."
 
-#: blueprints/api/llm.py:231
+#: blueprints/api/llm.py:365
 msgid "Authentication error. Please check your API Key."
 msgstr "Error de autenticación. Por favor, comprueba tu clave de API."
 
-#: blueprints/api/llm.py:233
+#: blueprints/api/llm.py:367
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Punto final de la API no válido. Por favor, comprueba tu URL base."
 
-#: blueprints/api/llm.py:235
+#: blueprints/api/llm.py:369
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "No se pudo conectar con el proveedor del modelo: %(error)s"
 
-#: blueprints/api/llm.py:237
+#: blueprints/api/llm.py:371
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ocurrió un error inesperado: %(error)s"
 
-#: blueprints/api/llm.py:250
+#: blueprints/api/llm.py:383
 msgid "Session not found or permission denied."
 msgstr "Sesión no encontrada o permiso denegado."
 
-#: blueprints/api/llm.py:256
+#: blueprints/api/llm.py:390
 msgid "Chat session deleted successfully."
 msgstr "Sesión de chat eliminada correctamente."
 
@@ -988,53 +1017,57 @@ msgstr "Todos los capítulos están vacíos o no se pudieron convertir a audio."
 msgid "An unknown error occurred: %(error)s"
 msgstr "Ocurrió un error desconocido: %(error)s"
 
-#: static/js/page/translations.js:60
+#: static/js/page/translations.js:62 templates/chat_player.html:57
+#: templates/chat_player.html:70
+msgid "Updated"
+msgstr "Actualizado"
+
+#: static/js/page/translations.js:63 templates/chat_player.html:59
+#: templates/chat_player.html:72
+msgid "Delete Chat"
+msgstr "Eliminar chat"
+
+#: static/js/page/translations.js:64
 msgid "Failed to fetch chat history."
 msgstr "Error al obtener el historial de chat."
 
-#: static/js/page/translations.js:61
+#: static/js/page/translations.js:65
 msgid "Error loading history:"
 msgstr "Error al cargar el historial:"
 
-#: static/js/page/translations.js:62
+#: static/js/page/translations.js:66
 msgid "Failed to get a response from the AI."
 msgstr "No se pudo obtener una respuesta de la IA."
 
-#: static/js/page/translations.js:63
+#: static/js/page/translations.js:67
 msgid "An error occurred:"
 msgstr "Ocurrió un error:"
 
-#: static/js/page/translations.js:64
-msgid "Please provide a comprehensive summary and a profound review of this book."
-msgstr ""
-"Por favor, proporcione un resumen completo y una reseña profunda de este "
-"libro."
-
-#: static/js/page/translations.js:65
+#: static/js/page/translations.js:69
 msgid "years ago"
 msgstr "años"
 
-#: static/js/page/translations.js:66
+#: static/js/page/translations.js:70
 msgid "months ago"
 msgstr "meses"
 
-#: static/js/page/translations.js:67
+#: static/js/page/translations.js:71
 msgid "days ago"
 msgstr "días"
 
-#: static/js/page/translations.js:68
+#: static/js/page/translations.js:72
 msgid "hours ago"
 msgstr "horas"
 
-#: static/js/page/translations.js:69
+#: static/js/page/translations.js:73
 msgid "minutes ago"
 msgstr "minutos"
 
-#: static/js/page/translations.js:70
+#: static/js/page/translations.js:74
 msgid "just now"
 msgstr "justo ahora"
 
-#: static/js/page/translations.js:71
+#: static/js/page/translations.js:75
 msgid ""
 "Are you sure you want to delete this chat session? This action cannot be "
 "undone."
@@ -1042,11 +1075,11 @@ msgstr ""
 "¿Estás seguro de que quieres eliminar esta sesión de chat? Esta acción no"
 " se puede deshacer."
 
-#: static/js/page/translations.js:72
+#: static/js/page/translations.js:76
 msgid "Failed to delete the session."
 msgstr "Error al eliminar la sesión."
 
-#: static/js/page/translations.js:73
+#: static/js/page/translations.js:77
 msgid "Error:"
 msgstr "Error:"
 
@@ -1098,45 +1131,45 @@ msgstr "Siguiente capítulo"
 msgid "Now Playing"
 msgstr "Reproduciendo Ahora"
 
-#: templates/base.html:6 templates/base.html:87
+#: templates/base.html:6 templates/base.html:86
 msgid "Anx Calibre Manager"
 msgstr "Anx Calibre Manager"
 
-#: templates/base.html:90 templates/base.html:115 templates/settings.html:3
+#: templates/base.html:89 templates/base.html:114 templates/settings.html:3
 #: templates/settings.html:13
 msgid "Settings"
 msgstr "Ajustes"
 
-#: templates/base.html:91
+#: templates/base.html:90
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: templates/base.html:107 templates/index.html:3 templates/index.html:67
+#: templates/base.html:106 templates/index.html:3 templates/index.html:67
 msgid "Library"
 msgstr "Biblioteca"
 
-#: templates/base.html:111 templates/chat_player.html:47
+#: templates/base.html:110 templates/chat_player.html:47
 #: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
 
-#: templates/base.html:222
+#: templates/base.html:221
 msgid "Having issues or suggestions?"
 msgstr "¿Tienes problemas o sugerencias?"
 
-#: templates/base.html:222
+#: templates/base.html:221
 msgid "Submit an issue on GitHub"
 msgstr "Enviar un problema en GitHub"
 
-#: templates/base.html:223
+#: templates/base.html:222
 msgid "Find This Helpful?"
 msgstr "¿Te resulta útil?"
 
-#: templates/base.html:223
+#: templates/base.html:222
 msgid "Buy me a Coffee ☕"
 msgstr "Cómprame un café ☕"
 
-#: templates/base.html:224
+#: templates/base.html:223
 msgid "Anx Calibre Manager by"
 msgstr "Anx Calibre Manager por"
 
@@ -1147,14 +1180,6 @@ msgstr "Chat de IA"
 #: templates/chat_player.html:46
 msgid "Calibre"
 msgstr "Calibre"
-
-#: templates/chat_player.html:57 templates/chat_player.html:70
-msgid "Updated"
-msgstr "Actualizado"
-
-#: templates/chat_player.html:59 templates/chat_player.html:72
-msgid "Delete Chat"
-msgstr "Eliminar chat"
 
 #: templates/chat_player.html:62
 msgid "No chats in Calibre."
