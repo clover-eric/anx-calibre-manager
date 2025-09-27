@@ -156,7 +156,8 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
                         break
                     
                     data = json.loads(json_str)
-                    if 'choices' in data and data['choices'][0].get('delta', {}).get('content'):
+                    # Add a check to ensure 'choices' is not an empty list
+                    if 'choices' in data and data['choices'] and data['choices'][0].get('delta', {}).get('content'):
                         chunk = data['choices'][0]['delta']['content']
                         full_response_content.append(chunk)
                         
