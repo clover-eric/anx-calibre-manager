@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!listEl) return;
 
         // Remove placeholder if it exists
-        const placeholder = listEl.querySelector('.no-sessions-placeholder');
+        const placeholder = listEl.querySelector('.empty-list-message');
         if (placeholder) {
             placeholder.remove();
         }
