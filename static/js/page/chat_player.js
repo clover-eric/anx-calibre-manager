@@ -40,37 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const sendMessage = async (message) => {
-        if (!currentSession.bookId || !message.trim()) return;
-
-        addMessageToUI({ role: 'user', content: message });
-        dom.chatInput.value = '';
-        autoResizeTextarea();
-        dom.sendButton.disabled = true;
-
-        const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
+    const streamAndRenderResponse = async (response, modelMessageWrapper, userMessageWrapper = null) => {
         const modelMessageContent = modelMessageWrapper.querySelector('.message-content');
         if (!modelMessageContent) {
             console.error("Could not find message content element to stream response.");
             return;
         }
-        modelMessageContent.innerHTML = '<div class="spinner"></div>'; // Show spinner initially
+        modelMessageContent.innerHTML = '<div class="spinner"></div>';
         let fullResponse = '';
         let buffer = '';
 
         try {
-            const response = await fetch('/api/llm/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    session_id: currentSession.sessionId,
-                    book_id: currentSession.bookId,
-                    book_type: currentSession.bookType,
-                    book_title: currentSession.bookTitle,
-                    message: message,
-                }),
-            });
-
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || t.failedToGetResponse);
@@ -86,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n\n');
-                buffer = lines.pop(); // Keep the last (potentially incomplete) message in buffer
+                buffer = lines.pop();
 
                 for (const block of lines) {
                     const eventMatch = block.match(/^event: (.*)$/m);
@@ -100,12 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (eventType === 'session_start') {
                             const isNewSession = !currentSession.sessionId;
                             currentSession.sessionId = data.session_id;
+                            if (isNewSession) addSessionToListUI(currentSession);
 
-                            if (isNewSession) {
-                                addSessionToListUI(currentSession);
+                            if (data.user_message_id && userMessageWrapper) {
+                                if (!userMessageWrapper.dataset.messageId) {
+                                    userMessageWrapper.dataset.messageId = data.user_message_id;
+                                    
+                                    const regenerateBtn = userMessageWrapper.querySelector('.regenerate-btn');
+                                    const deleteBtn = userMessageWrapper.querySelector('.delete-btn');
+                                    
+                                    if (regenerateBtn) regenerateBtn.disabled = false;
+                                    if (deleteBtn) deleteBtn.disabled = false;
+                                }
                             }
                         } else if (eventType === 'end') {
-                            // Find the session item and update its timestamp
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
                             if (sessionItem) {
                                 const timeAgoEl = sessionItem.querySelector('.time-ago');
@@ -114,13 +102,22 @@ document.addEventListener('DOMContentLoaded', () => {
                                     timeAgoEl.dataset.timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
                                 }
                             }
-                            return; // Stream finished
+                            
+                            if (data.model_message_id && modelMessageWrapper) {
+                                modelMessageWrapper.dataset.messageId = data.model_message_id;
+                                const actionsContainer = modelMessageWrapper.querySelector('.message-actions');
+                                if (actionsContainer) {
+                                    const deleteButton = createActionButton(t.delete, 'fa-trash-alt', 'delete-btn', () => deleteMessageHandler(modelMessageWrapper));
+                                    actionsContainer.appendChild(deleteButton);
+                                }
+                            }
+                            return;
                         } else if (eventType === 'error') {
                             throw new Error(data.error || t.anErrorOccurred);
                         }
                     } else if (dataMatch) {
                         if (!firstChunkReceived) {
-                            modelMessageContent.innerHTML = ''; // Clear spinner
+                            modelMessageContent.innerHTML = '';
                             firstChunkReceived = true;
                         }
                         const data = JSON.parse(dataMatch[1]);
@@ -135,10 +132,145 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(error);
             modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
+        }
+    };
+
+    const handleRegenerate = async (messageWrapper) => {
+        const messageId = messageWrapper.dataset.messageId;
+        if (!messageId) return;
+
+        let nextSibling = messageWrapper.nextElementSibling;
+        while (nextSibling) {
+            const toRemove = nextSibling;
+            nextSibling = nextSibling.nextElementSibling;
+            toRemove.remove();
+        }
+
+        dom.sendButton.disabled = true;
+        const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
+
+        try {
+            const response = await fetch('/api/llm/regenerate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message_id: parseInt(messageId) }),
+            });
+            await streamAndRenderResponse(response, modelMessageWrapper);
+        } catch (error) {
+            console.error('Regeneration fetch failed:', error);
+            const contentEl = modelMessageWrapper.querySelector('.message-content');
+            if (contentEl) contentEl.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         } finally {
             dom.sendButton.disabled = false;
         }
     };
+
+    const sendMessage = async (message) => {
+        if (!currentSession.bookId || !message.trim()) return;
+
+        const userMessageWrapper = addMessageToUI({ role: 'user', content: message });
+        dom.chatInput.value = '';
+        autoResizeTextarea();
+        dom.sendButton.disabled = true;
+
+        const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
+
+        try {
+            const response = await fetch('/api/llm/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    session_id: currentSession.sessionId,
+                    book_id: currentSession.bookId,
+                    book_type: currentSession.bookType,
+                    book_title: currentSession.bookTitle,
+                    message: message,
+                }),
+            });
+            await streamAndRenderResponse(response, modelMessageWrapper, userMessageWrapper);
+        } catch (error) {
+            console.error('Send message fetch failed:', error);
+            const contentEl = modelMessageWrapper.querySelector('.message-content');
+            if (contentEl) contentEl.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
+        } finally {
+            dom.sendButton.disabled = false;
+        }
+    };
+
+    // --- Helper functions for creating UI elements ---
+    const createActionButton = (title, iconClass, btnClass, onClick) => {
+        const button = document.createElement('button');
+        button.title = title;
+        button.innerHTML = `<i class="fas ${iconClass}"></i>`;
+        button.classList.add(btnClass);
+        button.addEventListener('click', onClick);
+        return button;
+    };
+
+    const copyMessageHandler = (messageWrapper) => {
+        const textToCopy = messageWrapper.querySelector('.message-content').textContent;
+        const copyButton = messageWrapper.querySelector('.copy-btn');
+        const icon = copyButton.querySelector('i');
+
+        const copySuccess = () => {
+            icon.classList.remove('fa-copy');
+            icon.classList.add('fa-check');
+            copyButton.title = t.copied;
+            setTimeout(() => {
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-copy');
+                copyButton.title = t.copy;
+            }, 1500);
+        };
+
+        const fallbackCopy = () => {
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                if (document.execCommand('copy')) {
+                    copySuccess();
+                } else {
+                    throw new Error('Copy command was not successful');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                alert(t.copyFailed);
+            }
+            document.body.removeChild(textArea);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(copySuccess).catch((err) => {
+                console.warn('Clipboard API failed, trying fallback:', err);
+                fallbackCopy();
+            });
+        } else {
+            fallbackCopy();
+        }
+    };
+
+    const deleteMessageHandler = async (messageWrapper) => {
+        const messageId = messageWrapper.dataset.messageId;
+        if (!messageId) return;
+
+        try {
+            const response = await fetch(`/api/llm/message/${messageId}`, { method: 'DELETE' });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || t.failedToDeleteMessage);
+            }
+            messageWrapper.remove();
+        } catch (error) {
+            console.error('Error deleting message:', error);
+        }
+    };
+
 
     // --- Render & UI Logic ---
     const addMessageToUI = (message, isHtml = false, messageId = null) => {
@@ -151,11 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageContent = document.createElement('div');
         messageContent.classList.add('message-content');
 
-        if (isHtml) { // Used for the loading spinner
+        if (isHtml) {
             messageContent.innerHTML = message.content;
         } else if (message.role === 'model') {
             messageContent.innerHTML = marked.parse(message.content || '');
-        } else { // 'user' role
+        } else {
             messageContent.textContent = message.content;
         }
 
@@ -163,96 +295,29 @@ document.addEventListener('DOMContentLoaded', () => {
             messageWrapper.classList.add('loading');
         }
         
-        // Add actions menu
         const actionsContainer = document.createElement('div');
         actionsContainer.classList.add('message-actions');
         
-        const copyButton = document.createElement('button');
-        copyButton.title = t.copy;
-        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-        copyButton.classList.add('copy-btn');
-        copyButton.addEventListener('click', () => {
-            const textToCopy = message.content;
-            const icon = copyButton.querySelector('i');
+        const copyButton = createActionButton(t.copy, 'fa-copy', 'copy-btn', () => copyMessageHandler(messageWrapper));
+        actionsContainer.appendChild(copyButton);
 
-            const copySuccess = () => {
-                icon.classList.remove('fa-copy');
-                icon.classList.add('fa-check');
-                copyButton.title = t.copied;
-                setTimeout(() => {
-                    icon.classList.remove('fa-check');
-                    icon.classList.add('fa-copy');
-                    copyButton.title = t.copy;
-                }, 1500);
-            };
-
-            // Fallback method using execCommand
-            const fallbackCopy = () => {
-                const textArea = document.createElement('textarea');
-                textArea.value = textToCopy;
-                textArea.style.position = 'fixed';
-                textArea.style.top = '-9999px';
-                textArea.style.left = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    const successful = document.execCommand('copy');
-                    if (successful) {
-                        copySuccess();
-                    } else {
-                        throw new Error('Copy command was not successful');
-                    }
-                } catch (err) {
-                    console.error('Fallback copy failed:', err);
-                    alert(t.copyFailed);
-                }
-                document.body.removeChild(textArea);
-            };
-
-            // Use modern clipboard API if available and in a secure context, otherwise use fallback
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(copySuccess).catch((err) => {
-                    console.warn('Clipboard API failed, trying fallback:', err);
-                    fallbackCopy();
-                });
-            } else {
-                fallbackCopy();
+        if (message.role === 'user') {
+            const regenerateButton = createActionButton(t.regenerate || 'Regenerate', 'fa-sync-alt', 'regenerate-btn', () => handleRegenerate(messageWrapper));
+            const deleteButton = createActionButton(t.delete, 'fa-trash-alt', 'delete-btn', () => deleteMessageHandler(messageWrapper));
+            
+            if (!messageId) {
+                regenerateButton.disabled = true;
+                deleteButton.disabled = true;
             }
-        });
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.title = t.delete;
-        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteButton.classList.add('delete-btn');
-        
-        if (!messageId) {
-            deleteButton.disabled = true;
-            deleteButton.title = t.deleteNotAvailable;
+            
+            actionsContainer.appendChild(regenerateButton);
+            actionsContainer.appendChild(deleteButton);
         }
 
-        deleteButton.addEventListener('click', async () => {
-            const currentMessageId = messageWrapper.dataset.messageId;
-            if (!currentMessageId) return;
-
-            try {
-                const response = await fetch(`/api/llm/message/${currentMessageId}`, { method: 'DELETE' });
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || t.failedToDeleteMessage);
-                }
-                
-                messageWrapper.remove();
-
-            } catch (error) {
-                console.error('Error deleting message:', error);
-            }
-        });
-
-
-        actionsContainer.appendChild(copyButton);
-        actionsContainer.appendChild(deleteButton);
+        if (message.role === 'model' && messageId) {
+            const deleteButton = createActionButton(t.delete, 'fa-trash-alt', 'delete-btn', () => deleteMessageHandler(messageWrapper));
+            actionsContainer.appendChild(deleteButton);
+        }
         
         messageWrapper.appendChild(messageContent);
         messageWrapper.appendChild(actionsContainer);
