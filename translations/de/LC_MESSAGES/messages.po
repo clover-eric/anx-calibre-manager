@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-27 15:21+0800\n"
+"POT-Creation-Date: 2025-09-27 15:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -412,7 +412,12 @@ msgstr "MCP-Modul ist nicht verfügbar, Buchinhalt kann nicht verarbeitet werden
 msgid "Missing required fields."
 msgstr "Fehlende erforderliche Felder."
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:316
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:320
+#, python-format
+msgid "Current time is %(current_time)s."
+msgstr "Aktuelle Uhrzeit ist %(current_time)s."
+
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:321
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -421,24 +426,24 @@ msgstr ""
 "Du bist ein hilfreicher Assistent. Der Benutzer fragt nach dem Buch "
 "'%(book_title)s'."
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:317
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:325
 msgid "Invalid book type."
 msgstr "Ungültiger Buchtyp."
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:318
+#: blueprints/api/llm.py:268 blueprints/api/llm.py:326
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Fehler beim Abrufen des Buchinhalts: %(error)s"
 
-#: blueprints/api/llm.py:265 blueprints/api/llm.py:319
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:327
 msgid "Could not extract text from the book."
 msgstr "Text konnte nicht aus dem Buch extrahiert werden."
 
-#: blueprints/api/llm.py:266 blueprints/api/llm.py:320
+#: blueprints/api/llm.py:270 blueprints/api/llm.py:328
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM-Einstellungen sind in den Benutzereinstellungen nicht konfiguriert."
 
-#: blueprints/api/llm.py:267 blueprints/api/llm.py:321
+#: blueprints/api/llm.py:271 blueprints/api/llm.py:329
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -453,69 +458,71 @@ msgstr ""
 "%(book_content)s\n"
 "---ENDE BUCHINHALT---"
 
-#: blueprints/api/llm.py:268 blueprints/api/llm.py:322
+#: blueprints/api/llm.py:272 blueprints/api/llm.py:330
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Bitte geben Sie eine umfassende Zusammenfassung und eine tiefgründige "
 "Rezension dieses Buches ab."
 
-#: blueprints/api/llm.py:269 blueprints/api/llm.py:323
+#: blueprints/api/llm.py:273 blueprints/api/llm.py:331
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Kommunikation mit dem LLM-Anbieter fehlgeschlagen: %(error)s"
 
-#: blueprints/api/llm.py:270 static/js/page/translations.js:60
+#: blueprints/api/llm.py:274 blueprints/api/llm.py:332
+#: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Gesamter Buchinhalt wird extrahiert..."
 
-#: blueprints/api/llm.py:271 static/js/page/translations.js:61
+#: blueprints/api/llm.py:275 blueprints/api/llm.py:333
+#: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Denken..."
 
-#: blueprints/api/llm.py:284
+#: blueprints/api/llm.py:288
 msgid "Message ID is required."
 msgstr "Nachrichten-ID ist erforderlich."
 
-#: blueprints/api/llm.py:295
+#: blueprints/api/llm.py:299
 msgid "Message not found."
 msgstr "Nachricht nicht gefunden."
 
-#: blueprints/api/llm.py:297
+#: blueprints/api/llm.py:301
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: blueprints/api/llm.py:344
+#: blueprints/api/llm.py:354
 msgid "Base URL and API Key are required."
 msgstr "Basis-URL und API-Schlüssel sind erforderlich."
 
-#: blueprints/api/llm.py:360
+#: blueprints/api/llm.py:370
 msgid "Unexpected response format from model provider."
 msgstr "Unerwartetes Antwortformat vom Modellanbieter."
 
-#: blueprints/api/llm.py:365
+#: blueprints/api/llm.py:375
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentifizierungsfehler. Bitte überprüfen Sie Ihren API-Schlüssel."
 
-#: blueprints/api/llm.py:367
+#: blueprints/api/llm.py:377
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Ungültiger API-Endpunkt. Bitte überprüfen Sie Ihre Basis-URL."
 
-#: blueprints/api/llm.py:369
+#: blueprints/api/llm.py:379
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Verbindung zum Modellanbieter konnte nicht hergestellt werden: %(error)s"
 
-#: blueprints/api/llm.py:371
+#: blueprints/api/llm.py:381
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %(error)s"
 
-#: blueprints/api/llm.py:383
+#: blueprints/api/llm.py:393
 msgid "Session not found or permission denied."
 msgstr "Sitzung nicht gefunden oder Zugriff verweigert."
 
-#: blueprints/api/llm.py:390
+#: blueprints/api/llm.py:400
 msgid "Chat session deleted successfully."
 msgstr "Chat-Sitzung erfolgreich gelöscht."
 

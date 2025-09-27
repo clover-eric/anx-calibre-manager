@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-27 15:21+0800\n"
+"POT-Creation-Date: 2025-09-27 15:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -396,31 +396,36 @@ msgstr "MCP 模块不可用，无法处理书籍内容。"
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:316
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:320
+#, python-format
+msgid "Current time is %(current_time)s."
+msgstr "当前时间是 %(current_time)s。"
+
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:321
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:317
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:325
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:318
+#: blueprints/api/llm.py:268 blueprints/api/llm.py:326
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:265 blueprints/api/llm.py:319
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:327
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:266 blueprints/api/llm.py:320
+#: blueprints/api/llm.py:270 blueprints/api/llm.py:328
 msgid "LLM settings are not configured in user settings."
 msgstr "用户设置中未配置 LLM。"
 
-#: blueprints/api/llm.py:267 blueprints/api/llm.py:321
+#: blueprints/api/llm.py:271 blueprints/api/llm.py:329
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -435,67 +440,69 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:268 blueprints/api/llm.py:322
+#: blueprints/api/llm.py:272 blueprints/api/llm.py:330
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:269 blueprints/api/llm.py:323
+#: blueprints/api/llm.py:273 blueprints/api/llm.py:331
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:270 static/js/page/translations.js:60
+#: blueprints/api/llm.py:274 blueprints/api/llm.py:332
+#: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
-#: blueprints/api/llm.py:271 static/js/page/translations.js:61
+#: blueprints/api/llm.py:275 blueprints/api/llm.py:333
+#: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:284
+#: blueprints/api/llm.py:288
 msgid "Message ID is required."
 msgstr "消息 ID 是必需的。"
 
-#: blueprints/api/llm.py:295
+#: blueprints/api/llm.py:299
 msgid "Message not found."
 msgstr "消息未找到。"
 
-#: blueprints/api/llm.py:297
+#: blueprints/api/llm.py:301
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: blueprints/api/llm.py:344
+#: blueprints/api/llm.py:354
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:360
+#: blueprints/api/llm.py:370
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:365
+#: blueprints/api/llm.py:375
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:367
+#: blueprints/api/llm.py:377
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:369
+#: blueprints/api/llm.py:379
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:371
+#: blueprints/api/llm.py:381
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:383
+#: blueprints/api/llm.py:393
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:390
+#: blueprints/api/llm.py:400
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
