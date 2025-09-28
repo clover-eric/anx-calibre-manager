@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 22:57+0800\n"
+"POT-Creation-Date: 2025-09-29 00:07+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -414,38 +414,44 @@ msgid ""
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 語法來繪製圖表。"
 
-#: blueprints/api/llm.py:267 blueprints/api/llm.py:335
-#, python-format
+#: blueprints/api/llm.py:267
 msgid ""
-"IMPORTANT Mermaid Rules: 1. Node IDs must be single words (no spaces or "
-"special characters). 2. Avoid special characters like %(special_chars)s "
-"inside node labels [...] and subgraph titles. 3. If a node ID or title is"
-" a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). 4. Use "
-"valid arrow types: -->, ---, ==>.5. Do not use 'style' or 'linkStyle' "
-"definitions; the theme is handled automatically."
+"IMPORTANT Mermaid Rules:\n"
+"1. Node IDs must be single words (no spaces or special characters).\n"
+"2. Titles and all kinds of descriptive texts containing special "
+"characters like `():;\"` MUST be in quotes: `\"text\"`.\n"
+"3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: "
+"text`. This is invalid.** Instead, define the node label separately: `A "
+"--> B; B[\"text\"]`.\n"
+"4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+"5. Do not use `style` or `linkStyle` definitions; the theme is handled "
+"automatically."
 msgstr ""
-"重要 Mermaid 規則： 1. 節點 ID 必須是單個單詞（不含空格或特殊字元）。 2. 在節點標籤 [...] "
-"和子圖標題中，避免使用 %(special_chars)s 等特殊字元。 3. 如果節點 ID 或標題是關鍵字（如 'end'），請用引號括起來（例如，\"end\"）。 4. "
-"使用有效的箭頭類型：-->、---、==>。 5. 不要使用 'style' 或 'linkStyle' 定義；主題會自動處理。"
+"重要的 Mermaid 規則：\n"
+"1. 節點 ID 必須是單一詞（不能有空格或特殊字元）。\n"
+"2. 包含特殊字元（如 `():;\"`）的標題和各種描述性文字必須放在引號中：`\"text\"`。\n"
+"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> B; B[\"text\"]`。\n"
+"4. 使用有效的箭頭類型：`-->`、`---`、`==>`。\n"
+"5. 不要使用 `style` 或 `linkStyle` 定義；主題會自動處理。"
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
 msgid "Invalid book type."
 msgstr "無效的書籍類型。"
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "取得書籍內容失敗：%(error)s"
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
 msgid "Could not extract text from the book."
 msgstr "無法從書中擷取文字。"
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
 msgid "LLM settings are not configured in user settings."
 msgstr "使用者設定中未設定 LLM。"
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -460,22 +466,22 @@ msgstr ""
 "%(book_content)s\n"
 "---書籍內容結束---"
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:350
+#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "請提供本書的全面摘要和深刻評論。"
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:351
+#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "與 LLM 提供者通訊失敗：%(error)s"
 
-#: blueprints/api/llm.py:284 blueprints/api/llm.py:352
+#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "正在擷取整本書的內容..."
 
-#: blueprints/api/llm.py:285 blueprints/api/llm.py:353
+#: blueprints/api/llm.py:285 blueprints/api/llm.py:352
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "思考中..."
@@ -492,37 +498,57 @@ msgstr "訊息未找到。"
 msgid "Permission denied."
 msgstr "權限遭拒。"
 
-#: blueprints/api/llm.py:374
+#: blueprints/api/llm.py:334
+msgid ""
+"IMPORTANT Mermaid Rules:\n"
+"1. Node IDs must be single words (no spaces or special characters).\n"
+"2. Descriptive text containing special characters like `():;\"` MUST be "
+"in quotes: `\"text\"`.\n"
+"3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: "
+"text`. This is invalid.** Instead, define the node label separately: `A "
+"--> B; B[\"text\"]`.\n"
+"4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+"5. Do not use `style` or `linkStyle` definitions; the theme is handled "
+"automatically."
+msgstr ""
+"重要的 Mermaid 規則：\n"
+"1. 節點 ID 必須是單一詞（不能有空格或特殊字元）。\n"
+"2. 包含特殊字元（如 `():;\"`）的描述性文字必須放在引號中：`\"text\"`。\n"
+"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> B; B[\"text\"]`。\n"
+"4. 使用有效的箭頭類型：`-->`、`---`、`==>`。\n"
+"5. 不要使用 `style` 或 `linkStyle` 定義；主題會自動處理。"
+
+#: blueprints/api/llm.py:373
 msgid "Base URL and API Key are required."
 msgstr "需要提供基礎 URL 和 API 金鑰。"
 
-#: blueprints/api/llm.py:390
+#: blueprints/api/llm.py:389
 msgid "Unexpected response format from model provider."
 msgstr "模型提供者傳回了非預期的回應格式。"
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:394
 msgid "Authentication error. Please check your API Key."
 msgstr "身分驗證錯誤。請檢查您的 API 金鑰。"
 
-#: blueprints/api/llm.py:397
+#: blueprints/api/llm.py:396
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "無效的 API 端點。請檢查您的基礎 URL。"
 
-#: blueprints/api/llm.py:399
+#: blueprints/api/llm.py:398
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "無法連線至模型提供者：%(error)s"
 
-#: blueprints/api/llm.py:401
+#: blueprints/api/llm.py:400
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "發生非預期的錯誤：%(error)s"
 
-#: blueprints/api/llm.py:413
+#: blueprints/api/llm.py:412
 msgid "Session not found or permission denied."
 msgstr "會話未找到或權限被拒絕。"
 
-#: blueprints/api/llm.py:420
+#: blueprints/api/llm.py:419
 msgid "Chat session deleted successfully."
 msgstr "聊天會話已成功刪除。"
 
@@ -2366,19 +2392,4 @@ msgstr "已讀完！"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "還沒有已讀完的書籍。"
-
-#~ msgid "Thinking..."
-#~ msgstr "思考中..."
-
-#~ msgid "Loading history..."
-#~ msgstr "正在載入歷史記錄..."
-
-#~ msgid "Generating summary..."
-#~ msgstr "正在產生摘要..."
-
-#~ msgid ""
-#~ "Please avoid using  and () and :"
-#~ " inside the [] in a Mermaid "
-#~ "diagram to not break it."
-#~ msgstr "請避免在 Mermaid 圖表的 [] 內使用  和 () 和 :，以免破壞圖表。"
 

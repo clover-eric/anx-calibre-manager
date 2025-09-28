@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 22:57+0800\n"
+"POT-Creation-Date: 2025-09-29 00:07+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -435,42 +435,48 @@ msgstr ""
 "Vous pouvez utiliser la syntaxe mermaid pour les diagrammes en "
 "l'entourant de ```mermaid ... ```."
 
-#: blueprints/api/llm.py:267 blueprints/api/llm.py:335
-#, python-format
+#: blueprints/api/llm.py:267
 msgid ""
-"IMPORTANT Mermaid Rules: 1. Node IDs must be single words (no spaces or "
-"special characters). 2. Avoid special characters like %(special_chars)s "
-"inside node labels [...] and subgraph titles. 3. If a node ID or title is"
-" a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). 4. Use "
-"valid arrow types: -->, ---, ==>.5. Do not use 'style' or 'linkStyle' "
-"definitions; the theme is handled automatically."
+"IMPORTANT Mermaid Rules:\n"
+"1. Node IDs must be single words (no spaces or special characters).\n"
+"2. Titles and all kinds of descriptive texts containing special "
+"characters like `():;\"` MUST be in quotes: `\"text\"`.\n"
+"3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: "
+"text`. This is invalid.** Instead, define the node label separately: `A "
+"--> B; B[\"text\"]`.\n"
+"4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+"5. Do not use `style` or `linkStyle` definitions; the theme is handled "
+"automatically."
 msgstr ""
-"RÈGLES IMPORTANTES de Mermaid : 1. Les ID de nœud doivent être des mots "
-"uniques (sans espaces ni caractères spéciaux). 2. Évitez les caractères "
-"spéciaux comme %(special_chars)s à l'intérieur des étiquettes de nœud [...] "
-"et des titres de sous-graphes. 3. Si un ID de nœud ou un titre est un "
-"mot-clé (comme 'end'), mettez-le entre guillemets (par exemple, \"end\"). "
-"4. Utilisez des types de flèches valides : -->, ---, ==>. 5. N'utilisez pas "
-"de définitions 'style' ou 'linkStyle' ; le thème est géré automatiquement."
+"RÈGLES IMPORTANTES de Mermaid :\\n1. Les ID de nœud doivent être des mots"
+" uniques (sans espaces ni caractères spéciaux).\\n2. Les titres et tous "
+"les types de textes descriptifs contenant des caractères spéciaux comme "
+"`():;\\\"` DOIVENT être entre guillemets : `\\\"texte\\\"`.\\n3. "
+"**Crucial : N'utilisez PAS de deux-points pour ajouter des étiquettes aux"
+" nœuds, comme `A --> B: texte`. C'est invalide.** Définissez plutôt "
+"l'étiquette du nœud séparément : `A --> B; B[\\\"texte\\\"]`.\\n4. "
+"Utilisez des types de flèches valides : `-->`, `---`, `==>`.\\n5. "
+"N'utilisez pas de définitions `style` ou `linkStyle` ; le thème est géré "
+"automatiquement."
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
 msgid "Invalid book type."
 msgstr "Type de livre invalide."
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Échec de la récupération du contenu du livre : %(error)s"
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
 msgid "Could not extract text from the book."
 msgstr "Impossible d'extraire le texte du livre."
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
 msgid "LLM settings are not configured in user settings."
 msgstr "Les paramètres LLM ne sont pas configurés dans les paramètres utilisateur."
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -485,24 +491,24 @@ msgstr ""
 "%(book_content)s\n"
 "---FIN DU CONTENU DU LIVRE---"
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:350
+#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Veuillez fournir un résumé complet et une critique approfondie de ce "
 "livre."
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:351
+#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Échec de la communication avec le fournisseur LLM : %(error)s"
 
-#: blueprints/api/llm.py:284 blueprints/api/llm.py:352
+#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Extraction du contenu complet du livre..."
 
-#: blueprints/api/llm.py:285 blueprints/api/llm.py:353
+#: blueprints/api/llm.py:285 blueprints/api/llm.py:352
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Réflexion..."
@@ -519,39 +525,62 @@ msgstr "Message non trouvé."
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: blueprints/api/llm.py:374
+#: blueprints/api/llm.py:334
+msgid ""
+"IMPORTANT Mermaid Rules:\n"
+"1. Node IDs must be single words (no spaces or special characters).\n"
+"2. Descriptive text containing special characters like `():;\"` MUST be "
+"in quotes: `\"text\"`.\n"
+"3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: "
+"text`. This is invalid.** Instead, define the node label separately: `A "
+"--> B; B[\"text\"]`.\n"
+"4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+"5. Do not use `style` or `linkStyle` definitions; the theme is handled "
+"automatically."
+msgstr ""
+"RÈGLES IMPORTANTES de Mermaid :\\n1. Les ID de nœud doivent être des mots"
+" uniques (sans espaces ni caractères spéciaux).\\n2. Le texte descriptif "
+"contenant des caractères spéciaux comme `():;\\\"` DOIT être entre "
+"guillemets : `\\\"texte\\\"`.\\n3. **Crucial : N'utilisez PAS de "
+"deux-points pour ajouter des étiquettes aux nœuds, comme `A --> B: "
+"texte`. C'est invalide.** Définissez plutôt l'étiquette du nœud "
+"séparément : `A --> B; B[\\\"texte\\\"]`.\\n4. Utilisez des types de "
+"flèches valides : `-->`, `---`, `==>`.\\n5. N'utilisez pas de définitions"
+" `style` ou `linkStyle` ; le thème est géré automatiquement."
+
+#: blueprints/api/llm.py:373
 msgid "Base URL and API Key are required."
 msgstr "L'URL de base et la clé API sont requises."
 
-#: blueprints/api/llm.py:390
+#: blueprints/api/llm.py:389
 msgid "Unexpected response format from model provider."
 msgstr "Format de réponse inattendu du fournisseur de modèle."
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:394
 msgid "Authentication error. Please check your API Key."
 msgstr "Erreur d'authentification. Veuillez vérifier votre clé API."
 
-#: blueprints/api/llm.py:397
+#: blueprints/api/llm.py:396
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr ""
 "Point de terminaison d'API non valide. Veuillez vérifier votre URL de "
 "base."
 
-#: blueprints/api/llm.py:399
+#: blueprints/api/llm.py:398
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Impossible de se connecter au fournisseur de modèle : %(error)s"
 
-#: blueprints/api/llm.py:401
+#: blueprints/api/llm.py:400
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Une erreur inattendue est survenue : %(error)s"
 
-#: blueprints/api/llm.py:413
+#: blueprints/api/llm.py:412
 msgid "Session not found or permission denied."
 msgstr "Session non trouvée ou permission refusée."
 
-#: blueprints/api/llm.py:420
+#: blueprints/api/llm.py:419
 msgid "Chat session deleted successfully."
 msgstr "Session de discussion supprimée avec succès."
 
@@ -2521,22 +2550,4 @@ msgstr "Terminé !"
 msgid "No finished books yet."
 msgstr "Aucun livre terminé pour le moment."
 
-#~ msgid "Thinking..."
-#~ msgstr "Réflexion..."
-
-#~ msgid "Loading history..."
-#~ msgstr "Chargement de l'historique..."
-
-#~ msgid "Generating summary..."
-#~ msgstr "Génération du résumé..."
-
-#~ msgid ""
-#~ "Please avoid using  and () and :"
-#~ " inside the [] in a Mermaid "
-#~ "diagram to not break it."
-#~ msgstr ""
-#~ "Veuillez éviter d'utiliser , () et "
-#~ ": à l'intérieur de [] dans un "
-#~ "diagramme Mermaid pour ne pas le "
-#~ "casser."
 

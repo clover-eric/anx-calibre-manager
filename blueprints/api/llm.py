@@ -262,15 +262,15 @@ def chat_with_book():
     time_prompt = _("Current time is %(current_time)s.", current_time=current_time_str)
     base_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': book_title}
     mermaid_prompt = _("You can use mermaid syntax for diagrams by enclosing it in ```mermaid ... ```.")
-    MERMAID_SPECIAL_CHARS = "(), \":, ;"
+    MERMAID_SPECIAL_CHARS = "():;\\`"
     mermaid_prompt_instruction = _(
-        "IMPORTANT Mermaid Rules: "
-        "1. Node IDs must be single words (no spaces or special characters). "
-        "2. Avoid special characters like %(special_chars)s inside node labels [...] and subgraph titles. "
-        "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
-        "4. Use valid arrow types: -->, ---, ==>."
-        "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
-    ) % {'special_chars': MERMAID_SPECIAL_CHARS}
+        "IMPORTANT Mermaid Rules:\n"
+        "1. Node IDs must be single words (no spaces or special characters).\n"
+        "2. Titles and all kinds of descriptive texts containing special characters like `():;\"` MUST be in quotes: `\"text\"`.\n"
+        "3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: text`. This is invalid.** Instead, define the node label separately: `A --> B; B[\"text\"]`.\n"
+        "4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+        "5. Do not use `style` or `linkStyle` definitions; the theme is handled automatically."
+    )
 
     translated_strings = {
         'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt} {mermaid_prompt_instruction}",
@@ -330,15 +330,14 @@ def regenerate_chat_response():
     time_prompt = _("Current time is %(current_time)s.", current_time=current_time_str)
     base_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': msg_info['book_title']}
     mermaid_prompt = _("You can use mermaid syntax for diagrams by enclosing it in ```mermaid ... ```.")
-    MERMAID_SPECIAL_CHARS = "(), \":, ;"
     mermaid_prompt_instruction = _(
-        "IMPORTANT Mermaid Rules: "
-        "1. Node IDs must be single words (no spaces or special characters). "
-        "2. Avoid special characters like %(special_chars)s inside node labels [...] and subgraph titles. "
-        "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
-        "4. Use valid arrow types: -->, ---, ==>."
-        "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
-    ) % {'special_chars': MERMAID_SPECIAL_CHARS}
+        "IMPORTANT Mermaid Rules:\n"
+        "1. Node IDs must be single words (no spaces or special characters).\n"
+        "2. Descriptive text containing special characters like `():;\"` MUST be in quotes: `\"text\"`.\n"
+        "3. **Crucially, do NOT use colons to add labels to nodes, like `A --> B: text`. This is invalid.** Instead, define the node label separately: `A --> B; B[\"text\"]`.\n"
+        "4. Use valid arrow types: `-->`, `---`, `==>`. \n"
+        "5. Do not use `style` or `linkStyle` definitions; the theme is handled automatically."
+    )
 
     translated_strings = {
         'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt} {mermaid_prompt_instruction}",
