@@ -3,6 +3,22 @@ import { t, initializeTranslations } from './translations.js';
 document.addEventListener('DOMContentLoaded', () => {
     initializeTranslations();
 
+    // --- Mermaid Initialization with Theme ---
+    if (window.mermaid) {
+        const bodyClass = document.body.className;
+        let mermaidTheme = 'default';
+        if (bodyClass.includes('theme-dark')) {
+            mermaidTheme = 'dark';
+        } else if (bodyClass.includes('theme-auto') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            mermaidTheme = 'dark';
+        }
+        
+        window.mermaid.initialize({
+            startOnLoad: false,
+            theme: mermaidTheme,
+        });
+    }
+
     // --- State ---
     let currentSession = { bookId: null, bookType: null, bookTitle: null, sessionId: null };
     const isMobile = window.matchMedia('(max-width: 768px)').matches;

@@ -29,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: false });
+        // Initialization is now handled dynamically in chat_player.js to support themes
         window.mermaid = mermaid;
     </script>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
