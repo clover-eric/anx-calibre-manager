@@ -461,7 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const mermaidBlocks = container.querySelectorAll('pre code.language-mermaid');
         for (const block of mermaidBlocks) {
             const pre = block.parentNode;
-            const originalContent = block.textContent;
+            // Use innerText instead of textContent to correctly handle line breaks (<br>)
+            // that marked.js might insert. innerText preserves the line breaks.
+            const originalContent = block.innerText;
 
             const wrapper = document.createElement('div');
             wrapper.className = 'mermaid-wrapper';
