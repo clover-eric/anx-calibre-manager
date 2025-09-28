@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-27 15:54+0800\n"
+"POT-Creation-Date: 2025-09-28 16:31+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -412,12 +412,12 @@ msgstr "MCP-Modul ist nicht verfügbar, Buchinhalt kann nicht verarbeitet werden
 msgid "Missing required fields."
 msgstr "Fehlende erforderliche Felder."
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:320
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:321
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "Aktuelle Uhrzeit ist %(current_time)s."
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:321
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:322
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -426,24 +426,30 @@ msgstr ""
 "Du bist ein hilfreicher Assistent. Der Benutzer fragt nach dem Buch "
 "'%(book_title)s'."
 
-#: blueprints/api/llm.py:267 blueprints/api/llm.py:325
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:323
+msgid ""
+"You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
+" ```."
+msgstr "Sie können die Mermaid-Syntax für Diagramme verwenden, indem Sie sie in ```mermaid ... ``` einschließen."
+
+#: blueprints/api/llm.py:268 blueprints/api/llm.py:327
 msgid "Invalid book type."
 msgstr "Ungültiger Buchtyp."
 
-#: blueprints/api/llm.py:268 blueprints/api/llm.py:326
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:328
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Fehler beim Abrufen des Buchinhalts: %(error)s"
 
-#: blueprints/api/llm.py:269 blueprints/api/llm.py:327
+#: blueprints/api/llm.py:270 blueprints/api/llm.py:329
 msgid "Could not extract text from the book."
 msgstr "Text konnte nicht aus dem Buch extrahiert werden."
 
-#: blueprints/api/llm.py:270 blueprints/api/llm.py:328
+#: blueprints/api/llm.py:271 blueprints/api/llm.py:330
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM-Einstellungen sind in den Benutzereinstellungen nicht konfiguriert."
 
-#: blueprints/api/llm.py:271 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:272 blueprints/api/llm.py:331
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -458,71 +464,71 @@ msgstr ""
 "%(book_content)s\n"
 "---ENDE BUCHINHALT---"
 
-#: blueprints/api/llm.py:272 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:273 blueprints/api/llm.py:332
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Bitte geben Sie eine umfassende Zusammenfassung und eine tiefgründige "
 "Rezension dieses Buches ab."
 
-#: blueprints/api/llm.py:273 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:274 blueprints/api/llm.py:333
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Kommunikation mit dem LLM-Anbieter fehlgeschlagen: %(error)s"
 
-#: blueprints/api/llm.py:274 blueprints/api/llm.py:332
+#: blueprints/api/llm.py:275 blueprints/api/llm.py:334
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Gesamter Buchinhalt wird extrahiert..."
 
-#: blueprints/api/llm.py:275 blueprints/api/llm.py:333
+#: blueprints/api/llm.py:276 blueprints/api/llm.py:335
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Denken..."
 
-#: blueprints/api/llm.py:288
+#: blueprints/api/llm.py:289
 msgid "Message ID is required."
 msgstr "Nachrichten-ID ist erforderlich."
 
-#: blueprints/api/llm.py:299
+#: blueprints/api/llm.py:300
 msgid "Message not found."
 msgstr "Nachricht nicht gefunden."
 
-#: blueprints/api/llm.py:301
+#: blueprints/api/llm.py:302
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: blueprints/api/llm.py:354
+#: blueprints/api/llm.py:356
 msgid "Base URL and API Key are required."
 msgstr "Basis-URL und API-Schlüssel sind erforderlich."
 
-#: blueprints/api/llm.py:370
+#: blueprints/api/llm.py:372
 msgid "Unexpected response format from model provider."
 msgstr "Unerwartetes Antwortformat vom Modellanbieter."
 
-#: blueprints/api/llm.py:375
+#: blueprints/api/llm.py:377
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentifizierungsfehler. Bitte überprüfen Sie Ihren API-Schlüssel."
 
-#: blueprints/api/llm.py:377
+#: blueprints/api/llm.py:379
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Ungültiger API-Endpunkt. Bitte überprüfen Sie Ihre Basis-URL."
 
-#: blueprints/api/llm.py:379
+#: blueprints/api/llm.py:381
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Verbindung zum Modellanbieter konnte nicht hergestellt werden: %(error)s"
 
-#: blueprints/api/llm.py:381
+#: blueprints/api/llm.py:383
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %(error)s"
 
-#: blueprints/api/llm.py:393
+#: blueprints/api/llm.py:395
 msgid "Session not found or permission denied."
 msgstr "Sitzung nicht gefunden oder Zugriff verweigert."
 
-#: blueprints/api/llm.py:400
+#: blueprints/api/llm.py:402
 msgid "Chat session deleted successfully."
 msgstr "Chat-Sitzung erfolgreich gelöscht."
 
@@ -1020,13 +1026,13 @@ msgstr "Alle Kapitel sind leer oder konnten nicht in Audio konvertiert werden."
 msgid "An unknown error occurred: %(error)s"
 msgstr "Ein unbekannter Fehler ist aufgetreten: %(error)s"
 
-#: static/js/page/translations.js:62 templates/chat_player.html:57
-#: templates/chat_player.html:70
+#: static/js/page/translations.js:62 templates/chat_player.html:62
+#: templates/chat_player.html:75
 msgid "Updated"
 msgstr "Aktualisiert"
 
-#: static/js/page/translations.js:63 templates/chat_player.html:59
-#: templates/chat_player.html:72
+#: static/js/page/translations.js:63 templates/chat_player.html:64
+#: templates/chat_player.html:77
 msgid "Delete Chat"
 msgstr "Chat löschen"
 
@@ -1090,7 +1096,7 @@ msgstr "Fehler:"
 msgid "Audiobook Player"
 msgstr "Hörbuch-Player"
 
-#: templates/audio_player.html:21 templates/chat_player.html:42
+#: templates/audio_player.html:21 templates/chat_player.html:47
 msgid "Back to main library"
 msgstr "Zurück zur Hauptbibliothek"
 
@@ -1151,7 +1157,7 @@ msgstr "Abmelden"
 msgid "Library"
 msgstr "Bibliothek"
 
-#: templates/base.html:110 templates/chat_player.html:47
+#: templates/base.html:110 templates/chat_player.html:52
 #: templates/index.html:80
 msgid "Anx"
 msgstr "Anx"
@@ -1180,27 +1186,27 @@ msgstr "Anx Calibre Manager von"
 msgid "AI Chat"
 msgstr "KI-Chat"
 
-#: templates/chat_player.html:46
+#: templates/chat_player.html:51
 msgid "Calibre"
 msgstr "Calibre"
 
-#: templates/chat_player.html:62
+#: templates/chat_player.html:67
 msgid "No chats in Calibre."
 msgstr "Keine Chats in Calibre."
 
-#: templates/chat_player.html:75
+#: templates/chat_player.html:80
 msgid "No chats in Anx."
 msgstr "Keine Chats in Anx."
 
-#: templates/chat_player.html:85
+#: templates/chat_player.html:90
 msgid "Select a conversation to begin."
 msgstr "Wählen Sie ein Gespräch aus, um zu beginnen."
 
-#: templates/chat_player.html:95
+#: templates/chat_player.html:100
 msgid "Type your message..."
 msgstr "Geben Sie Ihre Nachricht ein..."
 
-#: templates/chat_player.html:96
+#: templates/chat_player.html:101
 msgid "Send"
 msgstr "Senden"
 

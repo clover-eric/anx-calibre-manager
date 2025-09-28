@@ -330,6 +330,36 @@ body.theme-dark .library-toggle .button.active,
     background-color: var(--background-color-alt);
 }
 
+/* Mermaid Diagram Styles */
+.mermaid {
+    background-color: var(--background-color);
+    padding: 1em;
+    border-radius: 8px;
+    margin: 1em 0;
+    text-align: center;
+    overflow-x: auto;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Theme-specific adjustments for Mermaid */
+.theme-dark .mermaid {
+    background-color: var(--secondary-background-color);
+}
+
+.theme-light .mermaid {
+    background-color: #f9f9f9;
+    border: 1px solid var(--border-color);
+}
+
+.mermaid .error {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
 /* --- Message Actions (Copy/Delete) --- */
 .message-actions {
     display: flex;

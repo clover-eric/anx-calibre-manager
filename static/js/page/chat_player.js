@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (data.chunk) {
                             fullResponse += data.chunk;
                             modelMessageContent.innerHTML = marked.parse(fullResponse);
+                            renderMermaid(modelMessageContent);
                             dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
                         }
                     }
@@ -297,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messageContent.innerHTML = message.content;
         } else if (message.role === 'model') {
             messageContent.innerHTML = marked.parse(message.content || '');
+            renderMermaid(messageContent);
         } else {
             messageContent.textContent = message.content;
         }
@@ -453,6 +455,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (interval > 1) { span.textContent = `${Math.floor(interval)} ${t.minutesAgo}`; return; }
             span.textContent = t.justNow;
         });
+    };
+
+    const renderMermaid = async (container) => {
+        const mermaidBlocks = container.querySelectorAll('pre code.language-mermaid');
+        for (const block of mermaidBlocks) {
+            const pre = block.parentNode;
+            const mermaidContainer = document.createElement('div');
+            mermaidContainer.className = 'mermaid';
+            mermaidContainer.textContent = block.textContent;
+            pre.parentNode.replaceChild(mermaidContainer, pre);
+
+            try {
+                await window.mermaid.run({ nodes: [mermaidContainer] });
+            } catch (e) {
+                console.error("Mermaid rendering error:", e);
+                mermaidContainer.innerHTML = `<p class="error">${t.mermaidRenderError || 'Mermaid Render Error'}</p><pre><code>${block.textContent}</code></pre>`;
+            }
+        }
     };
 
     const handleDeleteSession = async (e) => {
