@@ -265,7 +265,7 @@ def chat_with_book():
     mermaid_prompt_instruction = _(
         "IMPORTANT Mermaid Rules: "
         "1. Node IDs must be single words (no spaces or special characters). "
-        "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
+        "2. In node labels (content inside `[...]`) and subgraph titles, avoid special characters like (), \", :. If they are necessary, enclose the entire label in double quotes (e.g., \"A title with (special chars)\"). "
         "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
         "4. Use valid arrow types: -->, ---, ==>."
         "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
@@ -332,7 +332,7 @@ def regenerate_chat_response():
     mermaid_prompt_instruction = _(
         "IMPORTANT Mermaid Rules: "
         "1. Node IDs must be single words (no spaces or special characters). "
-        "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
+        "2. In node labels (content inside `[...]`) and subgraph titles, avoid special characters like (), \", :. If they are necessary, enclose the entire label in double quotes (e.g., \"A title with (special chars)\"). "
         "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
         "4. Use valid arrow types: -->, ---, ==>."
         "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
