@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 22:30+0800\n"
+"POT-Creation-Date: 2025-09-28 22:57+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -396,58 +396,56 @@ msgstr "MCP 模块不可用，无法处理书籍内容。"
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:330
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "当前时间是 %(current_time)s。"
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:331
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:332
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 语法来绘制图表。"
 
-#: blueprints/api/llm.py:266 blueprints/api/llm.py:333
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:335
+#, python-format
 msgid ""
 "IMPORTANT Mermaid Rules: 1. Node IDs must be single words (no spaces or "
-"special characters). 2. In node labels (content inside `[...]`) and "
-"subgraph titles, avoid special characters like (), \", :. If they are "
-"necessary, enclose the entire label in double quotes (e.g., \"A title "
-"with (special chars)\"). 3. If a node ID or title is a keyword (like "
-"'end'), enclose it in quotes (e.g., \"end\"). 4. Use valid arrow types: "
-"-->, ---, ==>.5. Do not use 'style' or 'linkStyle' definitions; the theme"
-" is handled automatically."
+"special characters). 2. Avoid special characters like %(special_chars)s "
+"inside node labels [...] and subgraph titles. 3. If a node ID or title is"
+" a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). 4. Use "
+"valid arrow types: -->, ---, ==>.5. Do not use 'style' or 'linkStyle' "
+"definitions; the theme is handled automatically."
 msgstr ""
-"重要 Mermaid 规则： 1. 节点 ID 必须是单个单词（不含空格或特殊字符）。 2. 在节点标签（`[...]` "
-"内的内容）和子图标题中，避免使用特殊字符，如 ()、\"、:。如果必须使用，请将整个标签用双引号括起来（例如，\"一个包含（特殊字符）的标题\"）。 3. "
-"如果节点 ID 或标题是关键字（如 'end'），请用引号括起来（例如，\"end\"）。 4. 使用有效的箭头类型：-->、---、==>。5. "
-"不要使用 'style' 或 'linkStyle' 定义；主题会自动处理。"
+"重要 Mermaid 规则： 1. 节点 ID 必须是单个单词（不含空格或特殊字符）。 2. 在节点标签 [...] "
+"和子图标题中，避免使用 %(special_chars)s 等特殊字符。 3. 如果节点 ID 或标题是关键字（如 'end'），请用引号括起来（例如，\"end\"）。 4. "
+"使用有效的箭头类型：-->、---、==>。 5. 不要使用 'style' 或 'linkStyle' 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:276 blueprints/api/llm.py:343
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:345
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
+#: blueprints/api/llm.py:278 blueprints/api/llm.py:346
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:279 blueprints/api/llm.py:347
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:280 blueprints/api/llm.py:348
 msgid "LLM settings are not configured in user settings."
 msgstr "用户设置中未配置 LLM。"
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:281 blueprints/api/llm.py:349
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -462,69 +460,69 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:282 blueprints/api/llm.py:350
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:283 blueprints/api/llm.py:351
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
+#: blueprints/api/llm.py:284 blueprints/api/llm.py:352
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
-#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
+#: blueprints/api/llm.py:285 blueprints/api/llm.py:353
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:297
+#: blueprints/api/llm.py:298
 msgid "Message ID is required."
 msgstr "消息 ID 是必需的。"
 
-#: blueprints/api/llm.py:308
+#: blueprints/api/llm.py:309
 msgid "Message not found."
 msgstr "消息未找到。"
 
-#: blueprints/api/llm.py:310
+#: blueprints/api/llm.py:311
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:374
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:388
+#: blueprints/api/llm.py:390
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:393
+#: blueprints/api/llm.py:395
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:397
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:397
+#: blueprints/api/llm.py:399
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:399
+#: blueprints/api/llm.py:401
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:411
+#: blueprints/api/llm.py:413
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:418
+#: blueprints/api/llm.py:420
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 

@@ -512,7 +512,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         fit: true,
                         center: true,
                         minZoom: 0.1,
-                        maxZoom: 50, // Increased max zoom level
+                        maxZoom: 50,
+                        touchEnabled: true,
+                        dblClickZoomEnabled: true,
+                        mouseWheelZoomEnabled: true, // Enable mouse wheel zoom
+                        preventMouseEventsDefault: true, // Prevent page scroll while zooming/panning
+                        zoomScaleSensitivity: 0.3, // Adjust zoom sensitivity
                     });
 
                     controls.addEventListener('click', (e) => {

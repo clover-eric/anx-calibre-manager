@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 22:30+0800\n"
+"POT-Creation-Date: 2025-09-28 22:57+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -412,12 +412,12 @@ msgstr "MCP-Modul ist nicht verfügbar, Buchinhalt kann nicht verarbeitet werden
 msgid "Missing required fields."
 msgstr "Fehlende erforderliche Felder."
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:330
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "Aktuelle Uhrzeit ist %(current_time)s."
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:331
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -426,7 +426,7 @@ msgstr ""
 "Du bist ein hilfreicher Assistent. Der Benutzer fragt nach dem Buch "
 "'%(book_title)s'."
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:332
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
@@ -434,46 +434,42 @@ msgstr ""
 "Sie können die Mermaid-Syntax für Diagramme verwenden, indem Sie sie in "
 "```mermaid ... ``` einschließen."
 
-#: blueprints/api/llm.py:266 blueprints/api/llm.py:333
+#: blueprints/api/llm.py:267 blueprints/api/llm.py:335
+#, python-format
 msgid ""
 "IMPORTANT Mermaid Rules: 1. Node IDs must be single words (no spaces or "
-"special characters). 2. In node labels (content inside `[...]`) and "
-"subgraph titles, avoid special characters like (), \", :. If they are "
-"necessary, enclose the entire label in double quotes (e.g., \"A title "
-"with (special chars)\"). 3. If a node ID or title is a keyword (like "
-"'end'), enclose it in quotes (e.g., \"end\"). 4. Use valid arrow types: "
-"-->, ---, ==>.5. Do not use 'style' or 'linkStyle' definitions; the theme"
-" is handled automatically."
+"special characters). 2. Avoid special characters like %(special_chars)s "
+"inside node labels [...] and subgraph titles. 3. If a node ID or title is"
+" a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). 4. Use "
+"valid arrow types: -->, ---, ==>.5. Do not use 'style' or 'linkStyle' "
+"definitions; the theme is handled automatically."
 msgstr ""
 "WICHTIGE Mermaid-Regeln: 1. Knoten-IDs müssen einzelne Wörter sein (keine "
-"Leerzeichen oder Sonderzeichen). 2. In Knotenbeschriftungen (Inhalt "
-"innerhalb von `[...]`) und Untergraph-Titeln vermeiden Sie Sonderzeichen "
-"wie (), \", :. Wenn sie notwendig sind, schließen Sie die gesamte "
-"Beschriftung in doppelte Anführungszeichen ein (z. B. \"Ein Titel mit "
-"(Sonderzeichen)\"). 3. Wenn eine Knoten-ID oder ein Titel ein Schlüsselwort "
-"ist (wie 'end'), schließen Sie es in Anführungszeichen ein (z. B. "
-"\"end\"). 4. Verwenden Sie gültige Pfeiltypen: -->, ---, ==>.5. Verwenden "
-"Sie keine 'style'- oder 'linkStyle'-Definitionen; das Thema wird "
-"automatisch behandelt."
+"Leerzeichen oder Sonderzeichen). 2. Vermeiden Sie Sonderzeichen wie "
+"%(special_chars)s in Knotenbeschriftungen [...] und Untergraphen-Titeln. 3. "
+"Wenn eine Knoten-ID oder ein Titel ein Schlüsselwort ist (wie 'end'), "
+"schließen Sie es in Anführungszeichen ein (z.B. \"end\"). 4. Verwenden Sie "
+"gültige Pfeiltypen: -->, ---, ==>. 5. Verwenden Sie keine 'style'- oder "
+"'linkStyle'-Definitionen; das Thema wird automatisch behandelt."
 
-#: blueprints/api/llm.py:276 blueprints/api/llm.py:343
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:345
 msgid "Invalid book type."
 msgstr "Ungültiger Buchtyp."
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
+#: blueprints/api/llm.py:278 blueprints/api/llm.py:346
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Fehler beim Abrufen des Buchinhalts: %(error)s"
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:279 blueprints/api/llm.py:347
 msgid "Could not extract text from the book."
 msgstr "Text konnte nicht aus dem Buch extrahiert werden."
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:280 blueprints/api/llm.py:348
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM-Einstellungen sind in den Benutzereinstellungen nicht konfiguriert."
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:281 blueprints/api/llm.py:349
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -488,71 +484,71 @@ msgstr ""
 "%(book_content)s\n"
 "---ENDE BUCHINHALT---"
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:282 blueprints/api/llm.py:350
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Bitte geben Sie eine umfassende Zusammenfassung und eine tiefgründige "
 "Rezension dieses Buches ab."
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:283 blueprints/api/llm.py:351
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Kommunikation mit dem LLM-Anbieter fehlgeschlagen: %(error)s"
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
+#: blueprints/api/llm.py:284 blueprints/api/llm.py:352
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Gesamter Buchinhalt wird extrahiert..."
 
-#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
+#: blueprints/api/llm.py:285 blueprints/api/llm.py:353
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Denken..."
 
-#: blueprints/api/llm.py:297
+#: blueprints/api/llm.py:298
 msgid "Message ID is required."
 msgstr "Nachrichten-ID ist erforderlich."
 
-#: blueprints/api/llm.py:308
+#: blueprints/api/llm.py:309
 msgid "Message not found."
 msgstr "Nachricht nicht gefunden."
 
-#: blueprints/api/llm.py:310
+#: blueprints/api/llm.py:311
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:374
 msgid "Base URL and API Key are required."
 msgstr "Basis-URL und API-Schlüssel sind erforderlich."
 
-#: blueprints/api/llm.py:388
+#: blueprints/api/llm.py:390
 msgid "Unexpected response format from model provider."
 msgstr "Unerwartetes Antwortformat vom Modellanbieter."
 
-#: blueprints/api/llm.py:393
+#: blueprints/api/llm.py:395
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentifizierungsfehler. Bitte überprüfen Sie Ihren API-Schlüssel."
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:397
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Ungültiger API-Endpunkt. Bitte überprüfen Sie Ihre Basis-URL."
 
-#: blueprints/api/llm.py:397
+#: blueprints/api/llm.py:399
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Verbindung zum Modellanbieter konnte nicht hergestellt werden: %(error)s"
 
-#: blueprints/api/llm.py:399
+#: blueprints/api/llm.py:401
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %(error)s"
 
-#: blueprints/api/llm.py:411
+#: blueprints/api/llm.py:413
 msgid "Session not found or permission denied."
 msgstr "Sitzung nicht gefunden oder Zugriff verweigert."
 
-#: blueprints/api/llm.py:418
+#: blueprints/api/llm.py:420
 msgid "Chat session deleted successfully."
 msgstr "Chat-Sitzung erfolgreich gelöscht."
 
