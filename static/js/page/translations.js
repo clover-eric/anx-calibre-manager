@@ -75,5 +75,10 @@ export function initializeTranslations() {
         confirmDeleteChat: _('Are you sure you want to delete this chat session? This action cannot be undone.'),
         failedToDeleteSession: _('Failed to delete the session.'),
         errorLabel: _('Error:'),
+        zoomIn: _('Zoom In'),
+        zoomOut: _('Zoom Out'),
+        resetZoom: _('Reset Zoom'),
+        downloadSVG: _('Download SVG'),
+        mermaidRenderError: _('Mermaid Render Error'),
     });
 }

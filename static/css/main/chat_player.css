@@ -331,33 +331,69 @@ body.theme-dark .library-toggle .button.active,
 }
 
 /* Mermaid Diagram Styles */
-.mermaid {
-    background-color: var(--background-color);
-    padding: 1em;
-    border-radius: 8px;
+.mermaid-wrapper {
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     margin: 1em 0;
-    text-align: center;
-    overflow-x: auto;
+    overflow: hidden;
+    background-color: var(--background-color-alt);
+}
+
+.mermaid {
+    /* The container for the SVG, svg-pan-zoom will manage its size */
+    width: 100%;
+    height: 400px; /* Default height, can be adjusted */
+    overflow: hidden;
 }
 
 .mermaid svg {
-    max-width: 100%;
-    height: auto;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-/* Theme-specific adjustments for Mermaid */
-.theme-dark .mermaid {
-    background-color: var(--secondary-background-color);
+.mermaid-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    opacity: 0.3;
+    transition: opacity 0.2s ease-in-out;
 }
 
-.theme-light .mermaid {
-    background-color: #f9f9f9;
-    border: 1px solid var(--border-color);
+.mermaid-wrapper:hover .mermaid-controls {
+    opacity: 1;
+}
+
+.mermaid-controls button {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    color: #333;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.mermaid-controls button:hover {
+    background-color: #fff;
 }
 
 .mermaid .error {
-    color: var(--error-color);
+    color: #e74c3c;
     font-weight: bold;
+    padding: 1em;
+    background-color: var(--background-color);
 }
 
 /* --- Message Actions (Copy/Delete) --- */

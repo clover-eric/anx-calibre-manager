@@ -461,16 +461,71 @@ document.addEventListener('DOMContentLoaded', () => {
         const mermaidBlocks = container.querySelectorAll('pre code.language-mermaid');
         for (const block of mermaidBlocks) {
             const pre = block.parentNode;
+            const originalContent = block.textContent;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'mermaid-wrapper';
+
+            const controls = document.createElement('div');
+            controls.className = 'mermaid-controls';
+            controls.innerHTML = `
+                <button data-action="zoom-in" title="${t.zoomIn || 'Zoom In'}"><i class="fas fa-plus"></i></button>
+                <button data-action="zoom-out" title="${t.zoomOut || 'Zoom Out'}"><i class="fas fa-minus"></i></button>
+                <button data-action="reset" title="${t.resetZoom || 'Reset'}"><i class="fas fa-expand"></i></button>
+                <button data-action="download" title="${t.downloadSVG || 'Download SVG'}"><i class="fas fa-download"></i></button>
+            `;
+
             const mermaidContainer = document.createElement('div');
             mermaidContainer.className = 'mermaid';
-            mermaidContainer.textContent = block.textContent;
-            pre.parentNode.replaceChild(mermaidContainer, pre);
+            mermaidContainer.textContent = originalContent;
+
+            wrapper.appendChild(controls);
+            wrapper.appendChild(mermaidContainer);
+            pre.parentNode.replaceChild(wrapper, pre);
 
             try {
                 await window.mermaid.run({ nodes: [mermaidContainer] });
+                const svgElement = mermaidContainer.querySelector('svg');
+                
+                if (svgElement) {
+                    const panZoomInstance = svgPanZoom(svgElement, {
+                        zoomEnabled: true,
+                        controlIconsEnabled: false,
+                        fit: true,
+                        center: true,
+                        minZoom: 0.1,
+                        maxZoom: 50, // Increased max zoom level
+                    });
+
+                    controls.addEventListener('click', (e) => {
+                        const button = e.target.closest('button');
+                        if (!button) return;
+                        const action = button.dataset.action;
+
+                        if (action === 'zoom-in') {
+                            panZoomInstance.zoomIn();
+                        } else if (action === 'zoom-out') {
+                            panZoomInstance.zoomOut();
+                        } else if (action === 'reset') {
+                            panZoomInstance.resetZoom();
+                        } else if (action === 'download') {
+                            const svgData = new XMLSerializer().serializeToString(svgElement);
+                            const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'mermaid-diagram.svg';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        }
+                    });
+                }
+
             } catch (e) {
                 console.error("Mermaid rendering error:", e);
-                mermaidContainer.innerHTML = `<p class="error">${t.mermaidRenderError || 'Mermaid Render Error'}</p><pre><code>${block.textContent}</code></pre>`;
+                wrapper.innerHTML = `<p class="error">${t.mermaidRenderError || 'Mermaid Render Error'}</p><pre><code>${originalContent}</code></pre>`;
             }
         }
     };
