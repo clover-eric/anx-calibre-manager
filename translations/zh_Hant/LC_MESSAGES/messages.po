@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 21:45+0800\n"
+"POT-Creation-Date: 2025-09-28 22:00+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -396,54 +396,55 @@ msgstr "MCP 模塊不可用，無法處理書籍內容。"
 msgid "Missing required fields."
 msgstr "缺少必填欄位。"
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:328
+#: blueprints/api/llm.py:262 blueprints/api/llm.py:329
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "目前時間是 %(current_time)s。"
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:263 blueprints/api/llm.py:330
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一個樂於助人的助理。使用者正在詢問關於《%(book_title)s》這本書的問題。"
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:264 blueprints/api/llm.py:331
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 語法來繪製圖表。"
 
-#: blueprints/api/llm.py:266 blueprints/api/llm.py:332
+#: blueprints/api/llm.py:266 blueprints/api/llm.py:333
 msgid ""
 "IMPORTANT Mermaid Rules: 1. Node IDs must be single words (no spaces or "
 "special characters). 2. Avoid special characters like (), \", : inside "
 "node labels [...] and subgraph titles. 3. If a node ID or title is a "
 "keyword (like 'end'), enclose it in quotes (e.g., \"end\"). 4. Use valid "
-"arrow types: -->, ---, ==>."
+"arrow types: -->, ---, ==>.5. Do not use 'style' or 'linkStyle' "
+"definitions; the theme is handled automatically."
 msgstr ""
-"重要 Mermaid 規則： 1. 節點 ID 必須是單個單詞（不含空格或特殊字元）。 2. 避免在節點標籤 [...] 和子圖標"
-"題中使用特殊字元，如 ()、\"、:。 3. 如果節點 ID 或標題是關鍵字（如 'end'），請用引號括起來（例如，\"end\"）。"
-" 4. 使用有效的箭頭類型：-->、---、==>。"
+"重要 Mermaid 規則： 1. 節點 ID 必須是單個單詞（不含空格或特殊字元）。 2. 避免在節點標籤 [...] "
+"和子圖標題中使用特殊字元，如 ()、\"、:。 3. 如果節點 ID 或標題是關鍵字（如 'end'），請用引號括起來（例如，\"end\"）。 "
+"4. 使用有效的箭頭類型：-->、---、==>。5. 不要使用 'style' 或 'linkStyle' 定義；主題會自動處理。"
 
-#: blueprints/api/llm.py:275 blueprints/api/llm.py:341
+#: blueprints/api/llm.py:276 blueprints/api/llm.py:343
 msgid "Invalid book type."
 msgstr "無效的書籍類型。"
 
-#: blueprints/api/llm.py:276 blueprints/api/llm.py:342
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "取得書籍內容失敗：%(error)s"
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:343
+#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
 msgid "Could not extract text from the book."
 msgstr "無法從書中擷取文字。"
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:344
+#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
 msgid "LLM settings are not configured in user settings."
 msgstr "使用者設定中未設定 LLM。"
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -458,69 +459,69 @@ msgstr ""
 "%(book_content)s\n"
 "---書籍內容結束---"
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "請提供本書的全面摘要和深刻評論。"
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "與 LLM 提供者通訊失敗：%(error)s"
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "正在擷取整本書的內容..."
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:296
+#: blueprints/api/llm.py:297
 msgid "Message ID is required."
 msgstr "訊息 ID 是必要的。"
 
-#: blueprints/api/llm.py:307
+#: blueprints/api/llm.py:308
 msgid "Message not found."
 msgstr "訊息未找到。"
 
-#: blueprints/api/llm.py:309
+#: blueprints/api/llm.py:310
 msgid "Permission denied."
 msgstr "權限遭拒。"
 
-#: blueprints/api/llm.py:370
+#: blueprints/api/llm.py:372
 msgid "Base URL and API Key are required."
 msgstr "需要提供基礎 URL 和 API 金鑰。"
 
-#: blueprints/api/llm.py:386
+#: blueprints/api/llm.py:388
 msgid "Unexpected response format from model provider."
 msgstr "模型提供者傳回了非預期的回應格式。"
 
-#: blueprints/api/llm.py:391
+#: blueprints/api/llm.py:393
 msgid "Authentication error. Please check your API Key."
 msgstr "身分驗證錯誤。請檢查您的 API 金鑰。"
 
-#: blueprints/api/llm.py:393
+#: blueprints/api/llm.py:395
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "無效的 API 端點。請檢查您的基礎 URL。"
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:397
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "無法連線至模型提供者：%(error)s"
 
-#: blueprints/api/llm.py:397
+#: blueprints/api/llm.py:399
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "發生非預期的錯誤：%(error)s"
 
-#: blueprints/api/llm.py:409
+#: blueprints/api/llm.py:411
 msgid "Session not found or permission denied."
 msgstr "會話未找到或權限被拒絕。"
 
-#: blueprints/api/llm.py:416
+#: blueprints/api/llm.py:418
 msgid "Chat session deleted successfully."
 msgstr "聊天會話已成功刪除。"
 

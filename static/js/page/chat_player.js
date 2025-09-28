@@ -481,18 +481,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // that marked.js might insert. innerText preserves the line breaks.
             let originalContent = block.innerText;
 
-            // Sanitize content for Mermaid
-            // 1. Sanitize subgraph titles that contain colons
-            originalContent = originalContent.replace(/^(.*subgraph\s+[^:]+):(.*)$/gm, (match, p1, p2) => {
-                return `${p1}：${p2}`; // Replace with a full-width colon
-            });
-
-            // 2. Sanitize content within brackets [...]
+            // Sanitize content within brackets [...] for Mermaid
             originalContent = originalContent.replace(/\[(.*?)\]/g, (match, content) => {
                 const sanitizedContent = content.replace(/[()":]/g, (char) => {
-                    // Replace with HTML entities to avoid breaking Mermaid syntax
-                    const entities = { '(': '&#40;', ')': '&#41;', '"': '&#34;', ':': '&#58;' };
-                    return entities[char] || char;
+                    return `\\${char}`;
                 });
                 return `[${sanitizedContent}]`;
             });

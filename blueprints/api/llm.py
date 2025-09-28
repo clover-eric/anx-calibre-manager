@@ -268,6 +268,7 @@ def chat_with_book():
         "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
         "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
         "4. Use valid arrow types: -->, ---, ==>."
+        "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
     )
 
     translated_strings = {
@@ -334,6 +335,7 @@ def regenerate_chat_response():
         "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
         "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
         "4. Use valid arrow types: -->, ---, ==>."
+        "5. Do not use 'style' or 'linkStyle' definitions; the theme is handled automatically."
     )
 
     translated_strings = {
