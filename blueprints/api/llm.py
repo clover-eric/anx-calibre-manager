@@ -262,7 +262,13 @@ def chat_with_book():
     time_prompt = _("Current time is %(current_time)s.", current_time=current_time_str)
     base_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': book_title}
     mermaid_prompt = _("You can use mermaid syntax for diagrams by enclosing it in ```mermaid ... ```.")
-    mermaid_prompt_instruction = _("Please avoid using "" and () and : inside the [] in a Mermaid diagram to not break it.")
+    mermaid_prompt_instruction = _(
+        "IMPORTANT Mermaid Rules: "
+        "1. Node IDs must be single words (no spaces or special characters). "
+        "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
+        "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
+        "4. Use valid arrow types: -->, ---, ==>."
+    )
 
     translated_strings = {
         'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt} {mermaid_prompt_instruction}",
@@ -322,7 +328,13 @@ def regenerate_chat_response():
     time_prompt = _("Current time is %(current_time)s.", current_time=current_time_str)
     base_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': msg_info['book_title']}
     mermaid_prompt = _("You can use mermaid syntax for diagrams by enclosing it in ```mermaid ... ```.")
-    mermaid_prompt_instruction = _("Please avoid using "" and () and : inside the [] in a Mermaid diagram to not break it.")
+    mermaid_prompt_instruction = _(
+        "IMPORTANT Mermaid Rules: "
+        "1. Node IDs must be single words (no spaces or special characters). "
+        "2. Avoid special characters like (), \", : inside node labels [...] and subgraph titles. "
+        "3. If a node ID or title is a keyword (like 'end'), enclose it in quotes (e.g., \"end\"). "
+        "4. Use valid arrow types: -->, ---, ==>."
+    )
 
     translated_strings = {
         'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt} {mermaid_prompt_instruction}",
