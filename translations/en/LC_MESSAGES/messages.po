@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 18:24+0800\n"
+"POT-Creation-Date: 2025-09-28 21:13+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -432,30 +432,32 @@ msgstr ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 
-#: blueprints/api/llm.py:265
+#: blueprints/api/llm.py:265 blueprints/api/llm.py:325
 msgid ""
 "Please avoid using  and () and : inside the [] in a Mermaid diagram to "
 "not break it."
-msgstr "Please avoid using  and () and : inside the [] in a Mermaid diagram to not break it."
+msgstr ""
+"Please avoid using  and () and : inside the [] in a Mermaid diagram to "
+"not break it."
 
-#: blueprints/api/llm.py:269 blueprints/api/llm.py:328
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:329
 msgid "Invalid book type."
 msgstr "Invalid book type."
 
-#: blueprints/api/llm.py:270 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:270 blueprints/api/llm.py:330
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Failed to get book content: %(error)s"
 
-#: blueprints/api/llm.py:271 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:271 blueprints/api/llm.py:331
 msgid "Could not extract text from the book."
 msgstr "Could not extract text from the book."
 
-#: blueprints/api/llm.py:272 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:272 blueprints/api/llm.py:332
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM settings are not configured in user settings."
 
-#: blueprints/api/llm.py:273 blueprints/api/llm.py:332
+#: blueprints/api/llm.py:273 blueprints/api/llm.py:333
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -470,22 +472,22 @@ msgstr ""
 "%(book_content)s\n"
 "---END BOOK CONTENT---"
 
-#: blueprints/api/llm.py:274 blueprints/api/llm.py:333
+#: blueprints/api/llm.py:274 blueprints/api/llm.py:334
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "Please provide a comprehensive summary and a profound review of this book."
 
-#: blueprints/api/llm.py:275 blueprints/api/llm.py:334
+#: blueprints/api/llm.py:275 blueprints/api/llm.py:335
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Failed to communicate with LLM provider: %(error)s"
 
-#: blueprints/api/llm.py:276 blueprints/api/llm.py:335
+#: blueprints/api/llm.py:276 blueprints/api/llm.py:336
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Extracting entire book content..."
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:336
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:337
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Thinking..."
@@ -502,37 +504,37 @@ msgstr "Message not found."
 msgid "Permission denied."
 msgstr "Permission denied."
 
-#: blueprints/api/llm.py:357
+#: blueprints/api/llm.py:358
 msgid "Base URL and API Key are required."
 msgstr "Base URL and API Key are required."
 
-#: blueprints/api/llm.py:373
+#: blueprints/api/llm.py:374
 msgid "Unexpected response format from model provider."
 msgstr "Unexpected response format from model provider."
 
-#: blueprints/api/llm.py:378
+#: blueprints/api/llm.py:379
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentication error. Please check your API Key."
 
-#: blueprints/api/llm.py:380
+#: blueprints/api/llm.py:381
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Invalid API endpoint. Please check your Base URL."
 
-#: blueprints/api/llm.py:382
+#: blueprints/api/llm.py:383
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Could not connect to the model provider: %(error)s"
 
-#: blueprints/api/llm.py:384
+#: blueprints/api/llm.py:385
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "An unexpected error occurred: %(error)s"
 
-#: blueprints/api/llm.py:396
+#: blueprints/api/llm.py:397
 msgid "Session not found or permission denied."
 msgstr "Session not found or permission denied."
 
-#: blueprints/api/llm.py:403
+#: blueprints/api/llm.py:404
 msgid "Chat session deleted successfully."
 msgstr "Chat session deleted successfully."
 

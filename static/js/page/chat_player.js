@@ -463,7 +463,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const pre = block.parentNode;
             // Use innerText instead of textContent to correctly handle line breaks (<br>)
             // that marked.js might insert. innerText preserves the line breaks.
-            const originalContent = block.innerText;
+            let originalContent = block.innerText;
+
+            // Sanitize content within brackets [...] for Mermaid
+            originalContent = originalContent.replace(/\[(.*?)\]/g, (match, content) => {
+                const sanitizedContent = content.replace(/[()":]/g, (char) => {
+                    return `\\${char}`;
+                });
+                return `[${sanitizedContent}]`;
+            });
 
             const wrapper = document.createElement('div');
             wrapper.className = 'mermaid-wrapper';

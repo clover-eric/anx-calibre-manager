@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-28 18:24+0800\n"
+"POT-Creation-Date: 2025-09-28 21:13+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -414,30 +414,30 @@ msgid ""
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 語法來繪製圖表。"
 
-#: blueprints/api/llm.py:265
+#: blueprints/api/llm.py:265 blueprints/api/llm.py:325
 msgid ""
 "Please avoid using  and () and : inside the [] in a Mermaid diagram to "
 "not break it."
 msgstr "請避免在 Mermaid 圖表的 [] 內使用  和 () 和 :，以免破壞圖表。"
 
-#: blueprints/api/llm.py:269 blueprints/api/llm.py:328
+#: blueprints/api/llm.py:269 blueprints/api/llm.py:329
 msgid "Invalid book type."
 msgstr "無效的書籍類型。"
 
-#: blueprints/api/llm.py:270 blueprints/api/llm.py:329
+#: blueprints/api/llm.py:270 blueprints/api/llm.py:330
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "取得書籍內容失敗：%(error)s"
 
-#: blueprints/api/llm.py:271 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:271 blueprints/api/llm.py:331
 msgid "Could not extract text from the book."
 msgstr "無法從書中擷取文字。"
 
-#: blueprints/api/llm.py:272 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:272 blueprints/api/llm.py:332
 msgid "LLM settings are not configured in user settings."
 msgstr "使用者設定中未設定 LLM。"
 
-#: blueprints/api/llm.py:273 blueprints/api/llm.py:332
+#: blueprints/api/llm.py:273 blueprints/api/llm.py:333
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -452,22 +452,22 @@ msgstr ""
 "%(book_content)s\n"
 "---書籍內容結束---"
 
-#: blueprints/api/llm.py:274 blueprints/api/llm.py:333
+#: blueprints/api/llm.py:274 blueprints/api/llm.py:334
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "請提供本書的全面摘要和深刻評論。"
 
-#: blueprints/api/llm.py:275 blueprints/api/llm.py:334
+#: blueprints/api/llm.py:275 blueprints/api/llm.py:335
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "與 LLM 提供者通訊失敗：%(error)s"
 
-#: blueprints/api/llm.py:276 blueprints/api/llm.py:335
+#: blueprints/api/llm.py:276 blueprints/api/llm.py:336
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "正在擷取整本書的內容..."
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:336
+#: blueprints/api/llm.py:277 blueprints/api/llm.py:337
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "思考中..."
@@ -484,37 +484,37 @@ msgstr "訊息未找到。"
 msgid "Permission denied."
 msgstr "權限遭拒。"
 
-#: blueprints/api/llm.py:357
+#: blueprints/api/llm.py:358
 msgid "Base URL and API Key are required."
 msgstr "需要提供基礎 URL 和 API 金鑰。"
 
-#: blueprints/api/llm.py:373
+#: blueprints/api/llm.py:374
 msgid "Unexpected response format from model provider."
 msgstr "模型提供者傳回了非預期的回應格式。"
 
-#: blueprints/api/llm.py:378
+#: blueprints/api/llm.py:379
 msgid "Authentication error. Please check your API Key."
 msgstr "身分驗證錯誤。請檢查您的 API 金鑰。"
 
-#: blueprints/api/llm.py:380
+#: blueprints/api/llm.py:381
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "無效的 API 端點。請檢查您的基礎 URL。"
 
-#: blueprints/api/llm.py:382
+#: blueprints/api/llm.py:383
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "無法連線至模型提供者：%(error)s"
 
-#: blueprints/api/llm.py:384
+#: blueprints/api/llm.py:385
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "發生非預期的錯誤：%(error)s"
 
-#: blueprints/api/llm.py:396
+#: blueprints/api/llm.py:397
 msgid "Session not found or permission denied."
 msgstr "會話未找到或權限被拒絕。"
 
-#: blueprints/api/llm.py:403
+#: blueprints/api/llm.py:404
 msgid "Chat session deleted successfully."
 msgstr "聊天會話已成功刪除。"
 

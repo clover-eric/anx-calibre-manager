@@ -322,9 +322,10 @@ def regenerate_chat_response():
     time_prompt = _("Current time is %(current_time)s.", current_time=current_time_str)
     base_prompt = _("You are a helpful assistant. The user is asking about the book '%(book_title)s'.") % {'book_title': msg_info['book_title']}
     mermaid_prompt = _("You can use mermaid syntax for diagrams by enclosing it in ```mermaid ... ```.")
+    mermaid_prompt_instruction = _("Please avoid using "" and () and : inside the [] in a Mermaid diagram to not break it.")
 
     translated_strings = {
-        'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt}",
+        'base_system_prompt': f"{time_prompt} {base_prompt} {mermaid_prompt} {mermaid_prompt_instruction}",
         'invalid_book_type': _('Invalid book type.'),
         'failed_to_get_book_content': _('Failed to get book content: %(error)s'),
         'could_not_extract_text': _('Could not extract text from the book.'),
