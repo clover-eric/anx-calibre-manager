@@ -76,6 +76,10 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
 | :---: | :---: |
 | <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
+| Chatear con el libro | Chatear con el libro |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - ChatWithBook1.png" width="400"/> | <img src="screenshots/Screen Shot - ChatWithBook2.png" width="400"/> |
+
 ## 🚀 Despliegue
 
 Esta aplicación está diseñada para ser desplegada usando Docker.

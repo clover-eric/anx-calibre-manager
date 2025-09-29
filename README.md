@@ -75,6 +75,10 @@ A modern, mobile-first web application to manage your ebook library, integrating
 | :---: | :---: |
 | <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
+| Chat With Book | Chat With Book |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - ChatWithBook1.png" width="400"/> | <img src="screenshots/Screen Shot - ChatWithBook2.png" width="400"/> |
+
 ## 🚀 Deployment
 
 This application is designed to be deployed using Docker.

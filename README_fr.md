@@ -76,6 +76,10 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
 | :---: | :---: |
 | <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
+| Discuter avec le livre | Discuter avec le livre |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - ChatWithBook1.png" width="400"/> | <img src="screenshots/Screen Shot - ChatWithBook2.png" width="400"/> |
+
 ## 🚀 Déploiement
 
 Cette application est conçue pour être déployée avec Docker.

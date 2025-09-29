@@ -76,6 +76,10 @@
 | :---: | :---: |
 | <img src="screenshots/Screen Shot - AudiobookList.png" width="400"/> | <img src="screenshots/Screen Shot - AudiobookPlayer.png" width="400"/> |
 
+| 與圖書對話 | 與圖書對話 |
+| :---: | :---: |
+| <img src="screenshots/Screen Shot - ChatWithBook1.png" width="400"/> | <img src="screenshots/Screen Shot - ChatWithBook2.png" width="400"/> |
+
 ## 🚀 部署
 
 本應用程式設計為使用 Docker 進行部署。
