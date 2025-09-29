@@ -47,7 +47,7 @@ DEFAULT_CONFIG = {
     'DEFAULT_TTS_API_KEY': {'env': 'DEFAULT_TTS_API_KEY', 'default': ''},
     'DEFAULT_TTS_BASE_URL': {'env': 'DEFAULT_TTS_BASE_URL', 'default': ''},
     'DEFAULT_TTS_MODEL': {'env': 'DEFAULT_TTS_MODEL', 'default': ''},
-    'DEFAULT_TTS_RATE': {'env': 'DEFAULT_TTS_RATE', 'default': '+0%'},
+    'DEFAULT_TTS_RATE': {'env': 'DEFAULT_TTS_RATE', 'default': '+40%'},
     'DEFAULT_TTS_VOLUME': {'env': 'DEFAULT_TTS_VOLUME', 'default': '+0%'},
     'DEFAULT_TTS_PITCH': {'env': 'DEFAULT_TTS_PITCH', 'default': '+0Hz'},
 
