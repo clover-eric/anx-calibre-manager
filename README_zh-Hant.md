@@ -85,54 +85,38 @@
 - 您的伺服器上已安裝 [Docker](https://www.docker.com/get-started)。
 - 一個正在運行的 Calibre 伺服器 (可選，但大部分功能需要)。
 
-### 使用 Docker 運行
+### 快速開始 (使用 Docker Run)
 
-1.  **取得您的使用者和群組 ID (PUID/PGID):**
-    在您的主機上運行 `id $USER` 來取得您目前使用者的 UID 和 GID。這對於避免掛載磁碟區的權限問題至關重要。
+這是最簡單的入門方式。
 
+1.  建立兩個用於持久化資料的資料夾：
     ```bash
-    id $USER
-    # 範例輸出: uid=1000(myuser) gid=1000(myuser) ...
+    mkdir -p ./config
+    mkdir -p ./webdav
     ```
 
-2.  **建立持久化資料目錄:**
-    您需要為設定/資料庫和 WebDAV 資料分別建立目錄。
-
-    ```bash
-    mkdir -p /path/to/your/config
-    mkdir -p /path/to/your/webdav
-    mkdir -p /path/to/your/fonts # 可選：用於自訂字型
-    ```
-
-3.  **運行 Docker 容器:**
-    您可以使用 `docker run` 或 `docker-compose.yml` 檔案。
-
-    **使用 `docker run`:**
-
+2.  使用下面這一條命令來啟動 Docker 容器：
     ```bash
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ="Asia/Taipei" \
-      -v /path/to/your/config:/config \
-      -v /path/to/your/webdav:/webdav \
-      -v /path/to/your/fonts:/opt/share/fonts \ # 可選：掛載自訂字型
-      -e "GUNICORN_WORKERS=2" \ 
-      -e "SECRET_KEY=your_super_secret_key" \
-      -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
-      -e "CALIBRE_USERNAME=your_calibre_username" \
-      -e "CALIBRE_PASSWORD=your_calibre_password" \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
       --restart unless-stopped \
       ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
-    **使用 `docker-compose.yml`:**
+3.  在瀏覽器中存取 `http://localhost:5000`。第一個註冊的使用者將自動成為管理員。您後續可以在網頁介面中設定 Calibre 伺服器連線及其他設定。
 
-    建立一個 `docker-compose.yml` 檔案:
+### 進階設定
+
+對於希望連接到 Calibre 伺服器並自訂更多選項的使用者，這裡提供一個更詳細的 `docker-compose.yml` 範例。
+
+1.  **取得您的使用者和群組 ID (PUID/PGID):**
+    在您的主機上運行 `id $USER`。為了避免權限問題，建議進行此項設定。
+
+2.  **建立一個 `docker-compose.yml` 檔案:**
     ```yaml
-    version: '3.8'
     services:
       anx-calibre-manager:
         image: ghcr.io/ptbsare/anx-calibre-manager:latest
@@ -142,13 +126,14 @@
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
-          - /path/to/your/fonts:/opt/share/fonts # 可選：掛載自訂字型
+          - /path/to/your/audiobooks:/audiobooks # 可選
+          - /path/to/your/fonts:/opt/share/fonts # 可選
         environment:
           - PUID=1000
           - PGID=1000
           - TZ=Asia/Taipei
-          - GUNICORN_WORKERS=2 # 可選：自訂 Gunicorn worker 程序的數量
-          - SECRET_KEY=your_super_secret_key
+          - GUNICORN_WORKERS=2 # 可選
+          - SECRET_KEY=your_super_secret_key # 請修改為您的金鑰
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
           - CALIBRE_PASSWORD=your_calibre_password
@@ -156,7 +141,9 @@
           - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
-    然後運行:
+    *注意: 請將 `/path/to/your/...` 替換為您主機上的實際路徑。*
+
+3.  啟動容器:
     ```bash
     docker-compose up -d
     ```

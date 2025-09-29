@@ -85,56 +85,38 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
 - [Docker](https://www.docker.com/get-started) instalado en tu servidor.
 - Un servidor Calibre existente (opcional, pero necesario para la mayoría de las funciones).
 
-### Ejecutar con Docker
+### Inicio Rápido (Docker Run)
 
-1.  **Encuentra tu ID de Usuario y Grupo (PUID/PGID):**
-    Ejecuta `id $USER` en tu máquina anfitriona para obtener el UID y GID de tu usuario. Esto es crucial para evitar problemas de permisos con los volúmenes montados.
+Esta es la forma más sencilla de empezar.
 
+1.  Crea dos directorios para los datos persistentes:
     ```bash
-    id $USER
-    # Salida de ejemplo: uid=1000(miusuario) gid=1000(miusuario) ...
+    mkdir -p ./config
+    mkdir -p ./webdav
     ```
 
-2.  **Crea directorios para datos persistentes:**
-    Necesitas directorios separados para la configuración/base de datos y para los datos de WebDAV.
-
-    ```bash
-    mkdir -p /ruta/a/tu/config
-    mkdir -p /ruta/a/tu/webdav
-    mkdir -p /ruta/a/tu/audiobooks # Opcional: para audiolibros generados
-    mkdir -p /ruta/a/tus/fuentes # Opcional: para fuentes personalizadas
-    ```
-
-3.  **Ejecuta el contenedor de Docker:**
-    Puedes usar `docker run` o un archivo `docker-compose.yml`.
-
-    **Usando `docker run`:**
-
+2.  Ejecuta el contenedor de Docker con este único comando:
     ```bash
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ="America/New_York" \
-      -v /ruta/a/tu/config:/config \
-      -v /ruta/a/tu/webdav:/webdav \
-      -v /ruta/a/tu/audiobooks:/audiobooks \ # Opcional: Montar directorio de salida de audiolibros
-      -v /ruta/a/tus/fuentes:/opt/share/fonts \ # Opcional: Montar fuentes personalizadas
-      -e "GUNICORN_WORKERS=2" \
-      -e "SECRET_KEY=tu_clave_super_secreta" \
-      -e "CALIBRE_URL=http://ip-de-tu-servidor-calibre:8080" \
-      -e "CALIBRE_USERNAME=tu_usuario_calibre" \
-      -e "CALIBRE_PASSWORD=tu_contraseña_calibre" \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
       --restart unless-stopped \
       ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
-    **Usando `docker-compose.yml`:**
+3.  Accede a la aplicación en `http://localhost:5000`. El primer usuario que se registre se convertirá en el administrador. Puedes configurar la conexión al servidor de Calibre y otros ajustes desde la interfaz web más tarde.
 
-    Crea un archivo `docker-compose.yml`:
+### Configuración Avanzada
+
+Aquí tienes un ejemplo más detallado de `docker-compose.yml` para usuarios que quieran conectarse a un servidor de Calibre y personalizar más opciones.
+
+1.  **Encuentra tu ID de Usuario y Grupo (PUID/PGID):**
+    Ejecuta `id $USER` en tu máquina anfitriona. Se recomienda para evitar problemas de permisos.
+
+2.  **Crea un archivo `docker-compose.yml`:**
     ```yaml
-    version: '3.8'
     services:
       anx-calibre-manager:
         image: ghcr.io/ptbsare/anx-calibre-manager:latest
@@ -144,14 +126,14 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
         volumes:
           - /ruta/a/tu/config:/config
           - /ruta/a/tu/webdav:/webdav
-          - /ruta/a/tu/audiobooks:/audiobooks # Opcional: Montar directorio de salida de audiolibros
-          - /ruta/a/tus/fuentes:/opt/share/fonts # Opcional: Montar fuentes personalizadas
+          - /ruta/a/tu/audiobooks:/audiobooks # Opcional
+          - /ruta/a/tus/fuentes:/opt/share/fonts # Opcional
         environment:
           - PUID=1000
           - PGID=1000
           - TZ=America/New_York
-          - GUNICORN_WORKERS=2 # Opcional: Personaliza el número de procesos de trabajo de Gunicorn
-          - SECRET_KEY=tu_clave_super_secreta
+          - GUNICORN_WORKERS=2 # Opcional
+          - SECRET_KEY=tu_clave_super_secreta # ¡Cambia esto!
           - CALIBRE_URL=http://ip-de-tu-servidor-calibre:8080
           - CALIBRE_USERNAME=tu_usuario_calibre
           - CALIBRE_PASSWORD=tu_contraseña_calibre
@@ -159,7 +141,9 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
           - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
-    Luego ejecuta:
+    *Nota: Reemplaza `/ruta/a/tu/...` con las rutas reales en tu máquina anfitriona.*
+
+3.  Ejecuta el contenedor:
     ```bash
     docker-compose up -d
     ```

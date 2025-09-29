@@ -84,56 +84,38 @@ This application is designed to be deployed using Docker.
 - [Docker](https://www.docker.com/get-started) installed on your server.
 - An existing Calibre server (optional, but required for most features).
 
-### Running with Docker
+### Quick Start (Docker Run)
 
-1.  **Find your User and Group ID (PUID/PGID):**
-    Run `id $USER` on your host machine to get your user's UID and GID. This is crucial for avoiding permission issues with the mounted volumes.
+This is the simplest way to get started.
 
+1.  Create two directories for persistent data:
     ```bash
-    id $USER
-    # Example output: uid=1000(myuser) gid=1000(myuser) ...
+    mkdir -p ./config
+    mkdir -p ./webdav
     ```
 
-2.  **Create directories for persistent data:**
-    You need separate directories for configuration/database and for WebDAV data.
-
-    ```bash
-    mkdir -p /path/to/your/config
-    mkdir -p /path/to/your/webdav
-    mkdir -p /path/to/your/audiobooks # Optional: for generated audiobooks
-    mkdir -p /path/to/your/fonts # Optional: for custom fonts
-    ```
-
-3.  **Run the Docker container:**
-    You can use `docker run` or a `docker-compose.yml` file.
-
-    **Using `docker run`:**
-
+2.  Run the Docker container with this single command:
     ```bash
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ="America/New_York" \
-      -v /path/to/your/config:/config \
-      -v /path/to/your/webdav:/webdav \
-      -v /path/to/your/audiobooks:/audiobooks \ # Optional: Mount audiobook output directory
-      -v /path/to/your/fonts:/opt/share/fonts \ # Optional: Mount custom fonts
-      -e "GUNICORN_WORKERS=2" \
-      -e "SECRET_KEY=your_super_secret_key" \
-      -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
-      -e "CALIBRE_USERNAME=your_calibre_username" \
-      -e "CALIBRE_PASSWORD=your_calibre_password" \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
       --restart unless-stopped \
       ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
-    **Using `docker-compose.yml`:**
+3.  Access the application at `http://localhost:5000`. The first user to register will become the administrator. You can configure the Calibre server connection and other settings from the web interface later.
 
-    Create a `docker-compose.yml` file:
+### Advanced Configuration
+
+Here is a more detailed `docker-compose.yml` example for users who want to connect to a Calibre server and customize more options.
+
+1.  **Find your User and Group ID (PUID/PGID):**
+    Run `id $USER` on your host machine. This is recommended to avoid permission issues.
+
+2.  **Create a `docker-compose.yml` file:**
     ```yaml
-    version: '3.8'
     services:
       anx-calibre-manager:
         image: ghcr.io/ptbsare/anx-calibre-manager:latest
@@ -143,14 +125,14 @@ This application is designed to be deployed using Docker.
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
-          - /path/to/your/audiobooks:/audiobooks # Optional: Mount audiobook output directory
-          - /path/to/your/fonts:/opt/share/fonts # Optional: Mount custom fonts
+          - /path/to/your/audiobooks:/audiobooks # Optional
+          - /path/to/your/fonts:/opt/share/fonts # Optional
         environment:
           - PUID=1000
           - PGID=1000
           - TZ=America/New_York
-          - GUNICORN_WORKERS=2 # Optional: Customize the number of Gunicorn worker processes
-          - SECRET_KEY=your_super_secret_key
+          - GUNICORN_WORKERS=2 # Optional
+          - SECRET_KEY=your_super_secret_key # Change this!
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
           - CALIBRE_PASSWORD=your_calibre_password
@@ -158,7 +140,9 @@ This application is designed to be deployed using Docker.
           - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
-    Then run:
+    *Note: Replace `/path/to/your/...` with the actual paths on your host machine.*
+
+3.  Run the container:
     ```bash
     docker-compose up -d
     ```

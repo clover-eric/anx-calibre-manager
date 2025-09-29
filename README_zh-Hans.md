@@ -84,56 +84,38 @@
 - 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
 - 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。
 
-### 使用 Docker 运行
+### 快速开始 (使用 Docker Run)
 
-1.  **获取您的用户和组 ID (PUID/PGID):**
-    在您的宿主机上运行 `id $USER` 来获取您当前用户的 UID 和 GID。这对于避免挂载卷的权限问题至关重要。
+这是最简单的入门方式。
 
+1.  创建两个用于持久化数据的文件夹：
     ```bash
-    id $USER
-    # 示例输出: uid=1000(myuser) gid=1000(myuser) ...
+    mkdir -p ./config
+    mkdir -p ./webdav
     ```
 
-2.  **创建持久化数据目录:**
-    您需要为配置/数据库和 WebDAV 数据分别创建目录。
-
-    ```bash
-    mkdir -p /path/to/your/config
-    mkdir -p /path/to/your/webdav
-    mkdir -p /path/to/your/audiobooks # 可选：用于存放生成的有声书
-    mkdir -p /path/to/your/fonts # 可选：用于自定义字体
-    ```
-
-3.  **运行 Docker 容器:**
-    您可以使用 `docker run` 或 `docker-compose.yml` 文件。
-
-    **使用 `docker run`:**
-
+2.  使用下面这一条命令来启动 Docker 容器：
     ```bash
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ="Asia/Shanghai" \
-      -v /path/to/your/config:/config \
-      -v /path/to/your/webdav:/webdav \
-      -v /path/to/your/audiobooks:/audiobooks \ # 可选：挂载有声书输出目录
-      -v /path/to/your/fonts:/opt/share/fonts \ # 可选：挂载自定义字体
-      -e "GUNICORN_WORKERS=2" \
-      -e "SECRET_KEY=your_super_secret_key" \
-      -e "CALIBRE_URL=http://your-calibre-server-ip:8080" \
-      -e "CALIBRE_USERNAME=your_calibre_username" \
-      -e "CALIBRE_PASSWORD=your_calibre_password" \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
       --restart unless-stopped \
       ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
-    **使用 `docker-compose.yml`:**
+3.  在浏览器中访问 `http://localhost:5000`。第一个注册的用户将自动成为管理员。您后续可以在网页界面中配置 Calibre 服务器连接及其他设置。
 
-    创建一个 `docker-compose.yml` 文件:
+### 高级配置
+
+对于希望连接到 Calibre 服务器并自定义更多选项的用户，这里提供一个更详细的 `docker-compose.yml` 示例。
+
+1.  **获取您的用户和组 ID (PUID/PGID):**
+    在您的宿主机上运行 `id $USER`。为了避免权限问题，建议进行此项配置。
+
+2.  **创建一个 `docker-compose.yml` 文件:**
     ```yaml
-    version: '3.8'
     services:
       anx-calibre-manager:
         image: ghcr.io/ptbsare/anx-calibre-manager:latest
@@ -143,14 +125,14 @@
         volumes:
           - /path/to/your/config:/config
           - /path/to/your/webdav:/webdav
-          - /path/to/your/audiobooks:/audiobooks # 可选：挂载有声书输出目录
-          - /path/to/your/fonts:/opt/share/fonts # 可选：挂载自定义字体
+          - /path/to/your/audiobooks:/audiobooks # 可选
+          - /path/to/your/fonts:/opt/share/fonts # 可选
         environment:
           - PUID=1000
           - PGID=1000
           - TZ=Asia/Shanghai
-          - GUNICORN_WORKERS=2 # 可选：自定义 Gunicorn worker 进程的数量
-          - SECRET_KEY=your_super_secret_key
+          - GUNICORN_WORKERS=2 # 可选
+          - SECRET_KEY=your_super_secret_key # 请修改为您的密钥
           - CALIBRE_URL=http://your-calibre-server-ip:8080
           - CALIBRE_USERNAME=your_calibre_username
           - CALIBRE_PASSWORD=your_calibre_password
@@ -158,7 +140,9 @@
           - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
-    然后运行:
+    *注意: 请将 `/path/to/your/...` 替换为您宿主机上的实际路径。*
+
+3.  启动容器:
     ```bash
     docker-compose up -d
     ```

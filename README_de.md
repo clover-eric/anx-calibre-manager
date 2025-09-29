@@ -85,56 +85,38 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
 - [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
 - Ein vorhandener Calibre-Server (optional, aber für die meisten Funktionen erforderlich).
 
-### Ausführen mit Docker
+### Schnellstart (Docker Run)
 
-1.  **Finden Sie Ihre Benutzer- und Gruppen-ID (PUID/PGID):**
-    Führen Sie `id $USER` auf Ihrer Host-Maschine aus, um die UID und GID Ihres Benutzers zu erhalten. Dies ist entscheidend, um Berechtigungsprobleme mit den gemounteten Volumes zu vermeiden.
+Dies ist der einfachste Weg, um loszulegen.
 
+1.  Erstellen Sie zwei Verzeichnisse für persistente Daten:
     ```bash
-    id $USER
-    # Beispielausgabe: uid=1000(meinbenutzer) gid=1000(meinbenutzer) ...
+    mkdir -p ./config
+    mkdir -p ./webdav
     ```
 
-2.  **Erstellen Sie Verzeichnisse für persistente Daten:**
-    Sie benötigen separate Verzeichnisse für die Konfiguration/Datenbank und für WebDAV-Daten.
-
-    ```bash
-    mkdir -p /pfad/zu/ihrer/config
-    mkdir -p /pfad/zu/ihrem/webdav
-    mkdir -p /pfad/zu/ihren/audiobooks # Optional: für generierte Hörbücher
-    mkdir -p /pfad/zu/ihren/schriftarten # Optional: für benutzerdefinierte Schriftarten
-    ```
-
-3.  **Führen Sie den Docker-Container aus:**
-    Sie können `docker run` oder eine `docker-compose.yml`-Datei verwenden.
-
-    **Mit `docker run`:**
-
+2.  Führen Sie den Docker-Container mit diesem einzigen Befehl aus:
     ```bash
     docker run -d \
       --name anx-calibre-manager \
       -p 5000:5000 \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ="Europe/Berlin" \
-      -v /pfad/zu/ihrer/config:/config \
-      -v /pfad/zu/ihrem/webdav:/webdav \
-      -v /pfad/zu/ihren/audiobooks:/audiobooks \ # Optional: Hörbuch-Ausgabeverzeichnis mounten
-      -v /pfad/zu/ihren/schriftarten:/opt/share/fonts \ # Optional: Benutzerdefinierte Schriftarten mounten
-      -e "GUNICORN_WORKERS=2" \
-      -e "SECRET_KEY=ihr_super_geheimer_schlüssel" \
-      -e "CALIBRE_URL=http://ip-ihres-calibre-servers:8080" \
-      -e "CALIBRE_USERNAME=ihr_calibre_benutzername" \
-      -e "CALIBRE_PASSWORD=ihr_calibre_passwort" \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
       --restart unless-stopped \
       ghcr.io/ptbsare/anx-calibre-manager:latest
     ```
 
-    **Mit `docker-compose.yml`:**
+3.  Greifen Sie auf die Anwendung unter `http://localhost:5000` zu. Der erste Benutzer, der sich registriert, wird zum Administrator. Sie können die Calibre-Serververbindung und andere Einstellungen später über die Weboberfläche konfigurieren.
 
-    Erstellen Sie eine `docker-compose.yml`-Datei:
+### Erweiterte Konfiguration
+
+Hier ist ein detaillierteres `docker-compose.yml`-Beispiel für Benutzer, die eine Verbindung zu einem Calibre-Server herstellen und weitere Optionen anpassen möchten.
+
+1.  **Finden Sie Ihre Benutzer- und Gruppen-ID (PUID/PGID):**
+    Führen Sie `id $USER` auf Ihrer Host-Maschine aus. Dies wird empfohlen, um Berechtigungsprobleme zu vermeiden.
+
+2.  **Erstellen Sie eine `docker-compose.yml`-Datei:**
     ```yaml
-    version: '3.8'
     services:
       anx-calibre-manager:
         image: ghcr.io/ptbsare/anx-calibre-manager:latest
@@ -144,14 +126,14 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
         volumes:
           - /pfad/zu/ihrer/config:/config
           - /pfad/zu/ihrem/webdav:/webdav
-          - /pfad/zu/ihren/audiobooks:/audiobooks # Optional: Hörbuch-Ausgabeverzeichnis mounten
-          - /pfad/zu/ihren/schriftarten:/opt/share/fonts # Optional: Benutzerdefinierte Schriftarten mounten
+          - /pfad/zu/ihren/audiobooks:/audiobooks # Optional
+          - /pfad/zu/ihren/schriftarten:/opt/share/fonts # Optional
         environment:
           - PUID=1000
           - PGID=1000
           - TZ=Europe/Berlin
-          - GUNICORN_WORKERS=2 # Optional: Passen Sie die Anzahl der Gunicorn-Worker-Prozesse an
-          - SECRET_KEY=ihr_super_geheimer_schlüssel
+          - GUNICORN_WORKERS=2 # Optional
+          - SECRET_KEY=ihr_super_geheimer_schlüssel # Ändern Sie dies!
           - CALIBRE_URL=http://ip-ihres-calibre-servers:8080
           - CALIBRE_USERNAME=ihr_calibre_benutzername
           - CALIBRE_PASSWORD=ihr_calibre_passwort
@@ -159,7 +141,9 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
           - CALIBRE_ADD_DUPLICATES=false
         restart: unless-stopped
     ```
-    Führen Sie dann aus:
+    *Hinweis: Ersetzen Sie `/pfad/zu/ihrer/...` durch die tatsächlichen Pfade auf Ihrer Host-Maschine.*
+
+3.  Führen Sie den Container aus:
     ```bash
     docker-compose up -d
     ```
