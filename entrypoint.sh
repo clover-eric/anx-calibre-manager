@@ -7,12 +7,12 @@ PGID=${PGID:-1001}
 
 # Check if the group exists, if not create it
 if ! getent group "$PGID" >/dev/null; then
-    addgroup -g "$PGID" appuser
+    addgroup --gid "$PGID" appuser
 fi
 
 # Check if the user exists, if not create it
 if ! getent passwd "$PUID" >/dev/null; then
-    adduser -D -u "$PUID" -G appuser appuser
+    adduser --system --uid "$PUID" --ingroup appuser appuser
 fi
 
 # Update the user's UID and GID
