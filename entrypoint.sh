@@ -5,19 +5,19 @@ set -e
 PUID=${PUID:-1001}
 PGID=${PGID:-1001}
 
-# Check if the group exists, if not create it
-if ! getent group "$PGID" >/dev/null; then
+# Ensure group 'appuser' exists with the correct GID
+if ! getent group appuser >/dev/null; then
     addgroup --gid "$PGID" appuser
+else
+    groupmod -o -g "$PGID" appuser
 fi
 
-# Check if the user exists, if not create it
-if ! getent passwd "$PUID" >/dev/null; then
-    adduser --system --uid "$PUID" --ingroup appuser appuser
+# Ensure user 'appuser' exists with the correct UID
+if ! getent passwd appuser >/dev/null; then
+    adduser --system --disabled-password --uid "$PUID" --ingroup appuser appuser
+else
+    usermod -o -u "$PUID" appuser
 fi
-
-# Update the user's UID and GID
-usermod -o -u "$PUID" appuser
-groupmod -o -g "$PGID" appuser
 
 echo "
 User UID : $(id -u appuser)
