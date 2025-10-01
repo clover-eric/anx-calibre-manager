@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 00:07+0800\n"
+"POT-Creation-Date: 2025-10-01 22:52+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -37,15 +37,24 @@ msgstr "Vous avez été déconnecté avec succès."
 msgid "Username and password cannot be empty."
 msgstr "Le nom d'utilisateur et le mot de passe ne peuvent pas être vides."
 
-#: blueprints/auth.py:81
+#: blueprints/auth.py:85
+#, python-format
+msgid ""
+"Administrator account created, but failed to initialize Anx library: "
+"%(message)s"
+msgstr ""
+"Compte administrateur créé, mais l'initialisation de la bibliothèque Anx a "
+"échoué : %(message)s"
+
+#: blueprints/auth.py:87
 msgid "Administrator account has been created, please login."
 msgstr "Le compte administrateur a été créé, veuillez vous connecter."
 
-#: blueprints/auth.py:103
+#: blueprints/auth.py:109
 msgid "Username and password cannot be empty"
 msgstr "Le nom d'utilisateur et le mot de passe ne peuvent pas être vides"
 
-#: blueprints/auth.py:106 static/js/register.js:6
+#: blueprints/auth.py:112 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -53,35 +62,35 @@ msgstr ""
 "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres et "
 "des traits de soulignement, et doit comporter entre 3 et 50 caractères"
 
-#: blueprints/auth.py:109 static/js/register.js:5
+#: blueprints/auth.py:115 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "Le mot de passe doit comporter au moins 6 caractères"
 
-#: blueprints/auth.py:114
+#: blueprints/auth.py:120
 msgid "Username already exists"
 msgstr "Ce nom d'utilisateur existe déjà"
 
-#: blueprints/auth.py:118
+#: blueprints/auth.py:124
 msgid "Please enter invite code"
 msgstr "Veuillez saisir le code d'invitation"
 
-#: blueprints/auth.py:127
+#: blueprints/auth.py:133
 msgid "Invite code is invalid"
 msgstr "Le code d'invitation n'est pas valide"
 
-#: blueprints/auth.py:130
+#: blueprints/auth.py:136
 msgid "Invite code has reached usage limit"
 msgstr "Le code d'invitation a atteint sa limite d'utilisation"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:141
 msgid "Invite code has expired"
 msgstr "Le code d'invitation a expiré"
 
-#: blueprints/auth.py:166 static/js/register.js:7
+#: blueprints/auth.py:172 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "Inscription réussie ! Veuillez vous connecter."
 
-#: blueprints/auth.py:172
+#: blueprints/auth.py:178
 msgid "An error occurred during registration"
 msgstr "Une erreur s'est produite lors de l'inscription"
 
@@ -541,12 +550,12 @@ msgstr ""
 "RÈGLES IMPORTANTES de Mermaid :\\n1. Les ID de nœud doivent être des mots"
 " uniques (sans espaces ni caractères spéciaux).\\n2. Le texte descriptif "
 "contenant des caractères spéciaux comme `():;\\\"` DOIT être entre "
-"guillemets : `\\\"texte\\\"`.\\n3. **Crucial : N'utilisez PAS de "
-"deux-points pour ajouter des étiquettes aux nœuds, comme `A --> B: "
-"texte`. C'est invalide.** Définissez plutôt l'étiquette du nœud "
-"séparément : `A --> B; B[\\\"texte\\\"]`.\\n4. Utilisez des types de "
-"flèches valides : `-->`, `---`, `==>`.\\n5. N'utilisez pas de définitions"
-" `style` ou `linkStyle` ; le thème est géré automatiquement."
+"guillemets : `\\\"texte\\\"`.\\n3. **Crucial : N'utilisez PAS de deux-"
+"points pour ajouter des étiquettes aux nœuds, comme `A --> B: texte`. "
+"C'est invalide.** Définissez plutôt l'étiquette du nœud séparément : `A "
+"--> B; B[\\\"texte\\\"]`.\\n4. Utilisez des types de flèches valides : "
+"`-->`, `---`, `==>`.\\n5. N'utilisez pas de définitions `style` ou "
+"`linkStyle` ; le thème est géré automatiquement."
 
 #: blueprints/api/llm.py:373
 msgid "Base URL and API Key are required."
@@ -2549,5 +2558,4 @@ msgstr "Terminé !"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Aucun livre terminé pour le moment."
-
 

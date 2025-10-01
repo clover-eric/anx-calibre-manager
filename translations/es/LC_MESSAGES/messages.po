@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 00:07+0800\n"
+"POT-Creation-Date: 2025-10-01 22:52+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -38,15 +38,24 @@ msgstr "Has cerrado sesión correctamente."
 msgid "Username and password cannot be empty."
 msgstr "El nombre de usuario y la contraseña no pueden estar vacíos."
 
-#: blueprints/auth.py:81
+#: blueprints/auth.py:85
+#, python-format
+msgid ""
+"Administrator account created, but failed to initialize Anx library: "
+"%(message)s"
+msgstr ""
+"Cuenta de administrador creada, pero falló la inicialización de la "
+"biblioteca Anx: %(message)s"
+
+#: blueprints/auth.py:87
 msgid "Administrator account has been created, please login."
 msgstr "Se ha creado la cuenta de administrador, por favor, inicia sesión."
 
-#: blueprints/auth.py:103
+#: blueprints/auth.py:109
 msgid "Username and password cannot be empty"
 msgstr "El nombre de usuario y la contraseña no pueden estar vacíos"
 
-#: blueprints/auth.py:106 static/js/register.js:6
+#: blueprints/auth.py:112 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -54,35 +63,35 @@ msgstr ""
 "El nombre de usuario solo puede contener letras, números y guiones bajos,"
 " con una longitud de 3 a 50 caracteres"
 
-#: blueprints/auth.py:109 static/js/register.js:5
+#: blueprints/auth.py:115 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "La contraseña debe tener al menos 6 caracteres"
 
-#: blueprints/auth.py:114
+#: blueprints/auth.py:120
 msgid "Username already exists"
 msgstr "El nombre de usuario ya existe"
 
-#: blueprints/auth.py:118
+#: blueprints/auth.py:124
 msgid "Please enter invite code"
 msgstr "Por favor, introduce el código de invitación"
 
-#: blueprints/auth.py:127
+#: blueprints/auth.py:133
 msgid "Invite code is invalid"
 msgstr "El código de invitación no es válido"
 
-#: blueprints/auth.py:130
+#: blueprints/auth.py:136
 msgid "Invite code has reached usage limit"
 msgstr "El código de invitación ha alcanzado el límite de uso"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:141
 msgid "Invite code has expired"
 msgstr "El código de invitación ha caducado"
 
-#: blueprints/auth.py:166 static/js/register.js:7
+#: blueprints/auth.py:172 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "¡Registro exitoso! Por favor, inicia sesión."
 
-#: blueprints/auth.py:172
+#: blueprints/auth.py:178
 msgid "An error occurred during registration"
 msgstr "Ocurrió un error durante el registro"
 
@@ -541,11 +550,11 @@ msgstr ""
 "REGLAS IMPORTANTES de Mermaid:\\n1. Los ID de los nodos deben ser "
 "palabras únicas (sin espacios ni caracteres especiales).\\n2. El texto "
 "descriptivo que contiene caracteres especiales como `():;\\\"` DEBE estar"
-" entre comillas: `\\\"texto\\\"`.\\n3. **Fundamental: NO use dos "
-"puntos para agregar etiquetas a los nodos, como `A --> B: texto`. Esto no"
-" es válido.** En su lugar, defina la etiqueta del nodo por separado: `A "
-"--> B; B[\\\"texto\\\"]`.\\n4. Use tipos de flecha válidos: `-->`, `---`,"
-" `==>`. \\n5. No use definiciones de `style` o `linkStyle`; el tema se "
+" entre comillas: `\\\"texto\\\"`.\\n3. **Fundamental: NO use dos puntos "
+"para agregar etiquetas a los nodos, como `A --> B: texto`. Esto no es "
+"válido.** En su lugar, defina la etiqueta del nodo por separado: `A --> "
+"B; B[\\\"texto\\\"]`.\\n4. Use tipos de flecha válidos: `-->`, `---`, "
+"`==>`. \\n5. No use definiciones de `style` o `linkStyle`; el tema se "
 "maneja automáticamente."
 
 #: blueprints/api/llm.py:373
@@ -2545,5 +2554,4 @@ msgstr "¡Terminado!"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Aún no hay libros terminados."
-
 

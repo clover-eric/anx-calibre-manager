@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 00:07+0800\n"
+"POT-Creation-Date: 2025-10-01 22:52+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -38,49 +38,56 @@ msgstr "您已成功登出。"
 msgid "Username and password cannot be empty."
 msgstr "使用者名稱和密碼不能為空。"
 
-#: blueprints/auth.py:81
+#: blueprints/auth.py:85
+#, python-format
+msgid ""
+"Administrator account created, but failed to initialize Anx library: "
+"%(message)s"
+msgstr "管理員帳戶已建立，但初始化 Anx 書庫失敗：%(message)s"
+
+#: blueprints/auth.py:87
 msgid "Administrator account has been created, please login."
 msgstr "管理員帳戶已建立，請登入。"
 
-#: blueprints/auth.py:103
+#: blueprints/auth.py:109
 msgid "Username and password cannot be empty"
 msgstr "使用者名稱和密碼不能為空"
 
-#: blueprints/auth.py:106 static/js/register.js:6
+#: blueprints/auth.py:112 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
 msgstr "使用者名稱只能包含字母、數字和底線，長度為 3-50 個字元"
 
-#: blueprints/auth.py:109 static/js/register.js:5
+#: blueprints/auth.py:115 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "密碼必須至少為 6 個字元"
 
-#: blueprints/auth.py:114
+#: blueprints/auth.py:120
 msgid "Username already exists"
 msgstr "使用者名稱已存在"
 
-#: blueprints/auth.py:118
+#: blueprints/auth.py:124
 msgid "Please enter invite code"
 msgstr "請輸入邀請碼"
 
-#: blueprints/auth.py:127
+#: blueprints/auth.py:133
 msgid "Invite code is invalid"
 msgstr "邀請碼無效"
 
-#: blueprints/auth.py:130
+#: blueprints/auth.py:136
 msgid "Invite code has reached usage limit"
 msgstr "邀請碼已達使用上限"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:141
 msgid "Invite code has expired"
 msgstr "邀請碼已過期"
 
-#: blueprints/auth.py:166 static/js/register.js:7
+#: blueprints/auth.py:172 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "註冊成功！請登入。"
 
-#: blueprints/auth.py:172
+#: blueprints/auth.py:178
 msgid "An error occurred during registration"
 msgstr "註冊時發生錯誤"
 
@@ -430,7 +437,8 @@ msgstr ""
 "重要的 Mermaid 規則：\n"
 "1. 節點 ID 必須是單一詞（不能有空格或特殊字元）。\n"
 "2. 包含特殊字元（如 `():;\"`）的標題和各種描述性文字必須放在引號中：`\"text\"`。\n"
-"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> B; B[\"text\"]`。\n"
+"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> "
+"B; B[\"text\"]`。\n"
 "4. 使用有效的箭頭類型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定義；主題會自動處理。"
 
@@ -514,7 +522,8 @@ msgstr ""
 "重要的 Mermaid 規則：\n"
 "1. 節點 ID 必須是單一詞（不能有空格或特殊字元）。\n"
 "2. 包含特殊字元（如 `():;\"`）的描述性文字必須放在引號中：`\"text\"`。\n"
-"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> B; B[\"text\"]`。\n"
+"3. **至關重要的一點是，不要使用冒號為節點新增標籤，例如 `A --> B: text`。這是無效的。** 請單獨定義節點標籤：`A --> "
+"B; B[\"text\"]`。\n"
 "4. 使用有效的箭頭類型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定義；主題會自動處理。"
 

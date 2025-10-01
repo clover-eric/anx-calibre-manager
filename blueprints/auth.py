@@ -78,7 +78,13 @@ def setup():
         with closing(database.get_db()) as db:
             db.execute("INSERT INTO users (username, password_hash, role, force_epub_conversion) VALUES (?, ?, 'admin', 1)", (username, hashed_password))
             db.commit()
-        flash(_('Administrator account has been created, please login.'))
+        
+        from anx_library import initialize_anx_user_data
+        success, message = initialize_anx_user_data(username)
+        if not success:
+            flash(_('Administrator account created, but failed to initialize Anx library: %(message)s', message=message))
+        else:
+            flash(_('Administrator account has been created, please login.'))
         return redirect(url_for('auth.login'))
     return render_template('setup.html')
 

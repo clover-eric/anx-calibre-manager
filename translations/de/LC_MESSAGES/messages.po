@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 00:07+0800\n"
+"POT-Creation-Date: 2025-10-01 22:52+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -38,15 +38,24 @@ msgstr "Sie wurden erfolgreich abgemeldet."
 msgid "Username and password cannot be empty."
 msgstr "Benutzername und Passwort dürfen nicht leer sein."
 
-#: blueprints/auth.py:81
+#: blueprints/auth.py:85
+#, python-format
+msgid ""
+"Administrator account created, but failed to initialize Anx library: "
+"%(message)s"
+msgstr ""
+"Administratorkonto erstellt, aber die Initialisierung der Anx-Bibliothek "
+"ist fehlgeschlagen: %(message)s"
+
+#: blueprints/auth.py:87
 msgid "Administrator account has been created, please login."
 msgstr "Administratorkonto wurde erstellt, bitte melden Sie sich an."
 
-#: blueprints/auth.py:103
+#: blueprints/auth.py:109
 msgid "Username and password cannot be empty"
 msgstr "Benutzername und Passwort dürfen nicht leer sein"
 
-#: blueprints/auth.py:106 static/js/register.js:6
+#: blueprints/auth.py:112 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -54,35 +63,35 @@ msgstr ""
 "Benutzername darf nur Buchstaben, Zahlen und Unterstriche enthalten, 3-50"
 " Zeichen lang"
 
-#: blueprints/auth.py:109 static/js/register.js:5
+#: blueprints/auth.py:115 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "Passwort muss mindestens 6 Zeichen lang sein"
 
-#: blueprints/auth.py:114
+#: blueprints/auth.py:120
 msgid "Username already exists"
 msgstr "Benutzername existiert bereits"
 
-#: blueprints/auth.py:118
+#: blueprints/auth.py:124
 msgid "Please enter invite code"
 msgstr "Bitte geben Sie den Einladungscode ein"
 
-#: blueprints/auth.py:127
+#: blueprints/auth.py:133
 msgid "Invite code is invalid"
 msgstr "Einladungscode ist ungültig"
 
-#: blueprints/auth.py:130
+#: blueprints/auth.py:136
 msgid "Invite code has reached usage limit"
 msgstr "Einladungscode hat die Nutzungsgrenze erreicht"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:141
 msgid "Invite code has expired"
 msgstr "Einladungscode ist abgelaufen"
 
-#: blueprints/auth.py:166 static/js/register.js:7
+#: blueprints/auth.py:172 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "Registrierung erfolgreich! Bitte melden Sie sich an."
 
-#: blueprints/auth.py:172
+#: blueprints/auth.py:178
 msgid "An error occurred during registration"
 msgstr "Ein Fehler ist während der Registrierung aufgetreten"
 
@@ -2531,5 +2540,4 @@ msgstr "Fertig!"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Noch keine Bücher fertig gelesen."
-
 
