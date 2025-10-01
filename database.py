@@ -89,9 +89,9 @@ def update_schema_if_needed(db):
         'tts_api_key': "TEXT",
         'tts_base_url': "TEXT",
         'tts_model': "TEXT",
-        'tts_rate': "TEXT DEFAULT '+0%'",
-        'tts_volume': "TEXT DEFAULT '+0%'",
-        'tts_pitch': "TEXT DEFAULT '+0Hz'"
+        'tts_rate': "TEXT",
+        'tts_volume': "TEXT",
+        'tts_pitch': "TEXT"
     }
     for col, col_type in tts_columns.items():
         if col not in columns:
@@ -323,9 +323,9 @@ def create_schema():
                             tts_api_key TEXT,
                             tts_base_url TEXT,
                             tts_model TEXT,
-                            tts_rate TEXT DEFAULT '+0%',
-                            tts_volume TEXT DEFAULT '+0%',
-                            tts_pitch TEXT DEFAULT '+0Hz',
+                            tts_rate TEXT,
+                            tts_volume TEXT,
+                            tts_pitch TEXT,
                             llm_provider TEXT DEFAULT 'openai',
                             llm_api_key TEXT,
                             llm_base_url TEXT,
