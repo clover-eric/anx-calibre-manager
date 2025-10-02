@@ -18,6 +18,7 @@ DEFAULT_CONFIG = {
     'CALIBRE_URL': {'env': 'CALIBRE_URL', 'default': 'http://localhost:8081'},
     'CALIBRE_USERNAME': {'env': 'CALIBRE_USERNAME', 'default': ''},
     'CALIBRE_PASSWORD': {'env': 'CALIBRE_PASSWORD', 'default': ''},
+    'CALIBRE_DEFAULT_LIBRARY_ID': {'env': 'CALIBRE_DEFAULT_LIBRARY_ID', 'default': 'Calibre_Library'},
     'CALIBRE_ADD_DUPLICATES': {'env': 'CALIBRE_ADD_DUPLICATES', 'default': False},
     
     # Global application security settings
@@ -169,6 +170,9 @@ class ConfigManager:
                     os.kill(pid, signal.SIGHUP)
                 except (IOError, ValueError, ProcessLookupError) as e:
                     logging.warning(f"Could not signal Gunicorn to reload: {e}")
+            
+            # Force-reload the config in the current worker process immediately
+            self.load_config()
             
             return True, "Global configuration saved successfully. Workers are reloading."
         except IOError as e:
