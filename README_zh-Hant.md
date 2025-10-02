@@ -189,20 +189,20 @@
 
 這裡是一些常見問題及其解決方案：
 
-**1. 為什麼我的 Calibre 清單沒有書籍？**
+### 1. 為什麼我的 Calibre 清單沒有書籍？
 
 *   **A**: 請確保您已在 Calibre 用戶端或容器中啟動了 Calibre 內容服務（Content Server），即 `calibre-server`。它通常運行在 `8080` 連接埠。請注意，本程式連接的是 `calibre-server`，而不是 `calibre-web`（後者通常運行在 `8083` 連接埠）。
 *   **B**: 請確認您在設定中填寫的 Calibre 伺服器 URL、使用者名稱和密碼是正確的。您可以在瀏覽器中開啟您設定的 URL，並嘗試使用相同的使用者名稱和密碼登入來測試連線。
 
-**2. 為什麼上傳/編輯書籍時出現 `401 Unauthorized` 錯誤？**
+### 2. 為什麼上傳/編輯書籍時出現 `401 Unauthorized` 錯誤？
 
 *   **A**: 請確保您所設定的 Calibre 使用者帳戶對書庫具有寫入權限。檢查方法：在 Calibre 桌面應用程式中，點擊 `偏好設定` -> `透過網路分享` -> `使用者帳戶`，並確保已為該使用者勾選了「授予寫入權限」選項。
 
-**3. 為什麼上傳/編輯書籍時出現 `403 Forbidden` 錯誤？**
+### 3. 為什麼上傳/編輯書籍時出現 `403 Forbidden` 錯誤？
 
 *   **A**: 這通常意味著您設定了錯誤的 Calibre Library ID。
 
-**4. 我如何找到我的 `library_id`？**
+### 4. 我如何找到我的 `library_id`？
 
 *   **方法一 (視覺化)**: 在瀏覽器中開啟您的 Calibre 內容服務並登入。查看頁面上顯示的書庫名稱。`library_id` 通常是這個名稱將空格等特殊字元替換為底線後的結果。例如，如果您的書庫名為 "Calibre Library"，那麼 ID 很可能就是 `Calibre_Library`。
 *   **方法二 (從 URL)**: 在內容服務介面，點擊您的書庫名稱。查看瀏覽器網址列中的 URL，您應該能看到一個類似 `library_id=...` 的參數。該參數的值就是您的 library ID（它可能經過了 URL 編碼，您可能需要解碼一下）。
@@ -357,6 +357,13 @@
 ## 🤝 貢獻
 
 歡迎提交貢獻、問題和功能請求！請隨時查看 [問題頁面](https://github.com/ptbsare/anx-calibre-manager/issues)。
+
+## 🙏 致謝
+
+本專案使用了以下優秀的開源專案：
+
+-   [foliate-js](https://github.com/johnfactotum/foliate-js) 提供了強大的電子書預覽功能。
+-   [ebook-converter](https://github.com/gryf/ebook-converter) 提供了可靠的電子書格式轉換功能。
 
 ## 📄 授權
 

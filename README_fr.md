@@ -195,20 +195,20 @@ L'application est configurée via des variables d'environnement.
 
 Voici quelques problèmes courants et leurs solutions :
 
-**1. Pourquoi n'y a-t-il pas de livres dans ma liste Calibre ?**
+### 1. Pourquoi n'y a-t-il pas de livres dans ma liste Calibre ?
 
 *   **R**: Veuillez vous assurer que vous avez démarré le serveur de contenu Calibre dans votre client ou conteneur Calibre. Il fonctionne généralement sur le port `8080`. N'oubliez pas que cette application se connecte à `calibre-server`, et non à `calibre-web` (qui fonctionne généralement sur le port `8083`).
 *   **R**: Vérifiez que l'URL de votre serveur Calibre, votre nom d'utilisateur et votre mot de passe sont corrects dans les paramètres. Vous pouvez tester cela en ouvrant l'URL configurée dans votre navigateur et en essayant de vous connecter.
 
-**2. Pourquoi est-ce que je reçois une erreur `401 Unauthorized` lors du téléversement/de la modification de livres ?**
+### 2. Pourquoi est-ce que je reçois une erreur `401 Unauthorized` lors du téléversement/de la modification de livres ?
 
 *   **R**: Assurez-vous que le compte utilisateur Calibre que vous avez configuré dispose des autorisations d'écriture pour la bibliothèque. Pour vérifier, allez dans `Préférences` -> `Partage sur le réseau` -> `Comptes utilisateurs` dans l'application de bureau Calibre et assurez-vous que l'option "Autoriser l'accès en écriture" est cochée pour l'utilisateur.
 
-**3. Pourquoi est-ce que je reçois une erreur `403 Forbidden` lors du téléversement/de la modification de livres ?**
+### 3. Pourquoi est-ce que je reçois une erreur `403 Forbidden` lors du téléversement/de la modification de livres ?
 
 *   **R**: Cela signifie généralement que vous avez configuré un ID de bibliothèque Calibre incorrect.
 
-**4. Comment trouver mon `library_id` ?**
+### 4. Comment trouver mon `library_id` ?
 
 *   **Méthode 1 (Visuelle)**: Ouvrez votre serveur de contenu Calibre dans un navigateur et connectez-vous. Regardez le nom de votre bibliothèque affiché sur la page. Le `library_id` est généralement ce nom avec les espaces et les caractères spéciaux remplacés par des traits de soulignement. Par exemple, si votre bibliothèque s'appelle "Calibre Library", l'ID est probablement `Calibre_Library`.
 *   **Méthode 2 (Depuis l'URL)**: Dans l'interface du serveur de contenu, cliquez sur le nom de votre bibliothèque. Regardez l'URL dans la barre d'adresse de votre navigateur. Vous devriez voir un paramètre comme `library_id=...`. La valeur de ce paramètre est votre ID de bibliothèque (il peut être encodé pour l'URL, vous devrez peut-être le décoder).
@@ -363,6 +363,13 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
 ## 🤝 Contribution
 
 Les contributions, les problèmes et les demandes de fonctionnalités sont les bienvenus ! N'hésitez pas à consulter la [page des problèmes](https://github.com/ptbsare/anx-calibre-manager/issues).
+
+## 🙏 Remerciements
+
+Ce projet utilise les projets open-source suivants :
+
+-   [foliate-js](https://github.com/johnfactotum/foliate-js) pour fournir la fonctionnalité de prévisualisation des livres électroniques.
+-   [ebook-converter](https://github.com/gryf/ebook-converter) pour fournir la fonctionnalité de conversion des livres électroniques.
 
 ## 📄 Licence
 

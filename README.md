@@ -194,20 +194,20 @@ The application is configured via environment variables.
 
 Here are some common issues and their solutions:
 
-**1. Why are there no books in my Calibre list?**
+### 1. Why are there no books in my Calibre list?
 
 *   **A**: Please ensure you have started the Calibre Content Server in your Calibre client or container. It usually runs on port `8080`. Remember, this application connects to `calibre-server`, not `calibre-web` (which typically runs on port `8083`).
 *   **B**: Verify that your Calibre Server URL, username, and password are correct in the settings. You can test this by opening the configured URL in your browser and trying to log in.
 
-**2. Why do I get a `401 Unauthorized` error when uploading/editing books?**
+### 2. Why do I get a `401 Unauthorized` error when uploading/editing books?
 
 *   **A**: Make sure the Calibre user account you configured has write permissions for the library. To check, go to `Preferences` -> `Sharing over the net` -> `User accounts` in the Calibre desktop application and ensure the "Allow write access" option is checked for the user.
 
-**3. Why do I get a `403 Forbidden` error when uploading/editing books?**
+### 3. Why do I get a `403 Forbidden` error when uploading/editing books?
 
 *   **A**: This usually means you have configured an incorrect Calibre Library ID.
 
-**4. How do I find my `library_id`?**
+### 4. How do I find my `library_id`?
 
 *   **Method 1 (Visual)**: Open your Calibre Content Server in a browser and log in. Look at the name of your library displayed on the page. The `library_id` is usually this name with spaces and special characters replaced by underscores. For example, if your library is named "Calibre Library", the ID is likely `Calibre_Library`.
 *   **Method 2 (From URL)**: In the Content Server interface, click on your library's name. Look at the URL in your browser's address bar. You should see a parameter like `library_id=...`. The value of this parameter is your library ID (it might be URL-encoded, so you may need to decode it).
@@ -362,6 +362,13 @@ You can get a list of all available tools by calling the `tools/list` method. Th
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/ptbsare/anx-calibre-manager/issues).
+
+## 🙏 Acknowledgements
+
+This project utilizes the following open-source projects:
+
+-   [foliate-js](https://github.com/johnfactotum/foliate-js) for providing the ebook preview functionality.
+-   [ebook-converter](https://github.com/gryf/ebook-converter) for providing the ebook conversion functionality.
 
 ## 📄 License
 
