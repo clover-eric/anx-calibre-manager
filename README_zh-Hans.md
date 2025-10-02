@@ -169,10 +169,10 @@
 | `CONFIG_DIR` | 用于存放数据库和 `settings.json` 的目录。 | `/config` |
 | `WEBDAV_DIR` | 用于存放 WebDAV 用户文件的基础目录。 | `/webdav` |
 | `SECRET_KEY` | **必需。** 用于会话安全的、长的、随机的字符串。 | `""` |
-| `CALIBRE_URL` | 您的 Calibre 内容服务器的 URL。 | `""` |
-| `CALIBRE_USERNAME` | 您的 Calibre 服务器的用户名。 | `""` |
-| `CALIBRE_PASSWORD` | 您的 Calibre 服务器的密码。 | `""` |
-| `CALIBRE_DEFAULT_LIBRARY_ID` | 用于浏览、搜索和上传书籍的默认 Calibre 库 ID。 | `Calibre_Library` |
+| `CALIBRE_URL` | 您的 Calibre 内容服务器的 URL。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |
+| `CALIBRE_USERNAME` | 您的 Calibre 服务器的用户名。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |
+| `CALIBRE_PASSWORD` | 您的 Calibre 服务器的密码。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |
+| `CALIBRE_DEFAULT_LIBRARY_ID` | 默认的 Calibre 库 ID。详情请参阅[如何找到我的 `library_id`](#4-我如何找到我的-library_id)。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允许上传重复的书籍。 | `false` |
 | `REQUIRE_INVITE_CODE` | 注册时是否需要邀请码。 | `true` |
 | `SMTP_SERVER` | 用于发送邮件 (例如，推送到 Kindle) 的 SMTP 服务器。 | `""` |
@@ -189,6 +189,35 @@
 | `DEFAULT_LLM_BASE_URL` | 大语言模型 (LLM) API 的基础 URL，需与 OpenAI API 格式兼容。 | `""` |
 | `DEFAULT_LLM_API_KEY` | LLM 服务的 API 密钥。 | `""` |
 | `DEFAULT_LLM_MODEL` | LLM 服务默认使用的模型 (例如, `gpt-4`)。 | `""` |
+
+## 🔧 问题排查
+
+这里是一些常见问题及其解决方案：
+
+**1. 为什么我的 Calibre 列表没有书籍？**
+
+*   **A**: 请确保您已在 Calibre 客户端或容器中启动了 Calibre 内容服务（Content Server），即 `calibre-server`。它通常运行在 `8080` 端口。请注意，本程序连接的是 `calibre-server`，而不是 `calibre-web`（后者通常运行在 `8083` 端口）。
+*   **B**: 请确认您在设置中填写的 Calibre 服务器 URL、用户名和密码是正确的。您可以在浏览器中打开您配置的 URL，并尝试使用相同的用户名和密码登录来测试连接。
+
+**2. 为什么上传/编辑书籍时出现 `401 Unauthorized` 错误？**
+
+*   **A**: 请确保您所配置的 Calibre 用户账户对书库具有写入权限。检查方法：在 Calibre 桌面应用中，点击 `首选项` -> `通过网络共享` -> `用户账户`，并确保已为该用户勾选了“授予写入权限”选项。
+
+**3. 为什么上传/编辑书籍时出现 `403 Forbidden` 错误？**
+
+*   **A**: 这通常意味着您配置了错误的 Calibre Library ID。
+
+**4. 我如何找到我的 `library_id`？**
+
+*   **方法一 (可视化)**: 在浏览器中打开您的 Calibre 内容服务并登录。查看页面上显示的书库名称。`library_id` 通常是这个名称将空格等特殊字符替换为下划线后的结果。例如，如果您的书库名为 "Calibre Library"，那么 ID 很可能就是 `Calibre_Library`。
+*   **方法二 (从 URL)**: 在内容服务界面，点击您的书库名称。查看浏览器地址栏中的 URL，您应该能看到一个类似 `library_id=...` 的参数。该参数的值就是您的 library ID（它可能经过了 URL 编码，您可能需要解码一下）。
+*   **常见的默认 ID**: 首次运行 Calibre 时，默认的书库 ID 通常取决于您的系统语言。以下是一些常见的默认值：
+    *   英语: `Calibre_Library`
+    *   法语: `Bibliothèque_calibre`
+    *   德语: `Calibre-Bibliothek`
+    *   西班牙语: `Biblioteca_de_calibre`
+    *   简体中文: `Calibre_书库`
+    *   繁體中文: `calibre_書庫`
 
 ## 📖 KOReader 同步
 

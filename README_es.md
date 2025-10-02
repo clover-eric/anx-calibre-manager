@@ -170,10 +170,10 @@ La aplicación se configura a través de variables de entorno.
 | `CONFIG_DIR` | El directorio para la base de datos y `settings.json`. | `/config` |
 | `WEBDAV_DIR` | El directorio base para los archivos de usuario de WebDAV. | `/webdav` |
 | `SECRET_KEY` | **Requerido.** Una cadena larga y aleatoria para la seguridad de la sesión. | `""` |
-| `CALIBRE_URL` | La URL de tu servidor de contenido de Calibre. | `""` |
-| `CALIBRE_USERNAME` | Nombre de usuario para tu servidor Calibre. | `""` |
-| `CALIBRE_PASSWORD` | Contraseña para tu servidor Calibre. | `""` |
-| `CALIBRE_DEFAULT_LIBRARY_ID` | El ID de la biblioteca de Calibre predeterminada para navegar, buscar y subir libros. | `Calibre_Library` |
+| `CALIBRE_URL` | La URL de tu servidor de contenido de Calibre. Consulta [Solución de Problemas](#1-por-qué-no-hay-libros-en-mi-lista-de-calibre) si tienes problemas de conexión. | `""` |
+| `CALIBRE_USERNAME` | Nombre de usuario para tu servidor Calibre. Consulta [Solución de Problemas](#1-por-qué-no-hay-libros-en-mi-lista-de-calibre) si tienes problemas de conexión. | `""` |
+| `CALIBRE_PASSWORD` | Contraseña para tu servidor Calibre. Consulta [Solución de Problemas](#1-por-qué-no-hay-libros-en-mi-lista-de-calibre) si tienes problemas de conexión. | `""` |
+| `CALIBRE_DEFAULT_LIBRARY_ID` | El ID de la biblioteca de Calibre predeterminada. Para más detalles, consulta [Cómo encuentro mi `library_id`](#4-cómo-encuentro-mi-library_id). | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Si se permite subir libros duplicados. | `false` |
 | `REQUIRE_INVITE_CODE` | Si se requiere un código de invitación para el registro. | `true` |
 | `SMTP_SERVER` | Servidor SMTP para enviar correos electrónicos (ej., para Kindle). | `""` |
@@ -190,6 +190,35 @@ La aplicación se configura a través de variables de entorno.
 | `DEFAULT_LLM_BASE_URL` | La URL base para la API del Modelo de Lenguaje Grande (LLM), compatible con el formato de la API de OpenAI. | `""` |
 | `DEFAULT_LLM_API_KEY` | La clave de API para el servicio LLM. | `""` |
 | `DEFAULT_LLM_MODEL` | El modelo predeterminado a utilizar para el servicio LLM (por ejemplo, `gpt-4`). | `""` |
+
+## 🔧 Solución de Problemas
+
+Aquí hay algunos problemas comunes y sus soluciones:
+
+**1. ¿Por qué no hay libros en mi lista de Calibre?**
+
+*   **R**: Asegúrate de haber iniciado el Servidor de Contenido de Calibre en tu cliente o contenedor de Calibre. Generalmente se ejecuta en el puerto `8080`. Recuerda que esta aplicación se conecta a `calibre-server`, no a `calibre-web` (que normalmente se ejecuta en el puerto `8083`).
+*   **R**: Verifica que la URL de tu servidor Calibre, el nombre de usuario y la contraseña sean correctos en la configuración. Puedes probar esto abriendo la URL configurada en tu navegador e intentando iniciar sesión.
+
+**2. ¿Por qué recibo un error `401 Unauthorized` al subir/editar libros?**
+
+*   **R**: Asegúrate de que la cuenta de usuario de Calibre que configuraste tenga permisos de escritura para la biblioteca. Para verificarlo, ve a `Preferencias` -> `Compartir por la red` -> `Cuentas de usuario` en la aplicación de escritorio de Calibre y asegúrate de que la opción "Permitir acceso de escritura" esté marcada para el usuario.
+
+**3. ¿Por qué recibo un error `403 Forbidden` al subir/editar libros?**
+
+*   **R**: Esto generalmente significa que has configurado un ID de Biblioteca de Calibre incorrecto.
+
+**4. ¿Cómo encuentro mi `library_id`?**
+
+*   **Método 1 (Visual)**: Abre tu Servidor de Contenido de Calibre en un navegador e inicia sesión. Mira el nombre de tu biblioteca que se muestra en la página. El `library_id` suele ser este nombre con los espacios y caracteres especiales reemplazados por guiones bajos. Por ejemplo, si tu biblioteca se llama "Calibre Library", el ID probablemente sea `Calibre_Library`.
+*   **Método 2 (Desde la URL)**: En la interfaz del Servidor de Contenido, haz clic en el nombre de tu biblioteca. Mira la URL en la barra de direcciones de tu navegador. Deberías ver un parámetro como `library_id=...`. El valor de este parámetro es tu ID de biblioteca (podría estar codificado para URL, por lo que es posible que necesites decodificarlo).
+*   **IDs Predeterminados Comunes**: El ID de la biblioteca predeterminada a menudo depende del idioma de tu sistema cuando ejecutaste Calibre por primera vez. Aquí hay algunos valores predeterminados comunes:
+    *   Inglés: `Calibre_Library`
+    *   Francés: `Bibliothèque_calibre`
+    *   Alemán: `Calibre-Bibliothek`
+    *   Español: `Biblioteca_de_calibre`
+    *   Chino Simplificado (简体中文): `Calibre_书库`
+    *   Chino Tradicional (繁體中文): `calibre_書庫`
 
 ## 📖 Sincronización con KOReader
 

@@ -170,10 +170,10 @@
 | `CONFIG_DIR` | 用於存放資料庫和 `settings.json` 的目錄。 | `/config` |
 | `WEBDAV_DIR` | 用於存放 WebDAV 使用者檔案的基礎目錄。 | `/webdav` |
 | `SECRET_KEY` | **必需。** 用於會話安全的、長的、隨機的字串。 | `""` |
-| `CALIBRE_URL` | 您的 Calibre 內容伺服器的 URL。 | `""` |
-| `CALIBRE_USERNAME` | 您的 Calibre 伺服器的使用者名稱。 | `""` |
-| `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。 | `""` |
-| `CALIBRE_DEFAULT_LIBRARY_ID` | 用於瀏覽、搜尋和上傳書籍的預設 Calibre 庫 ID。 | `Calibre_Library` |
+| `CALIBRE_URL` | 您的 Calibre 內容伺服器的 URL。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
+| `CALIBRE_USERNAME` | 您的 Calibre 伺服器的使用者名稱。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
+| `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
+| `CALIBRE_DEFAULT_LIBRARY_ID` | 預設的 Calibre 庫 ID。詳情請參閱[如何找到我的 `library_id`](#4-我如何找到我的-library_id)。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允許上傳重複的書籍。 | `false` |
 | `REQUIRE_INVITE_CODE` | 註冊時是否需要邀請碼。 | `true` |
 | `SMTP_SERVER` | 用於傳送郵件 (例如，推送到 Kindle) 的 SMTP 伺服器。 | `""` |
@@ -184,6 +184,35 @@
 | `DEFAULT_LLM_BASE_URL` | 大型語言模型 (LLM) API 的基礎 URL，需與 OpenAI API 格式相容。 | `""` |
 | `DEFAULT_LLM_API_KEY` | LLM 服務的 API 金鑰。 | `""` |
 | `DEFAULT_LLM_MODEL` | LLM 服務預設使用的模型 (例如, `gpt-4`)。 | `""` |
+
+## 🔧 問題排查
+
+這裡是一些常見問題及其解決方案：
+
+**1. 為什麼我的 Calibre 清單沒有書籍？**
+
+*   **A**: 請確保您已在 Calibre 用戶端或容器中啟動了 Calibre 內容服務（Content Server），即 `calibre-server`。它通常運行在 `8080` 連接埠。請注意，本程式連接的是 `calibre-server`，而不是 `calibre-web`（後者通常運行在 `8083` 連接埠）。
+*   **B**: 請確認您在設定中填寫的 Calibre 伺服器 URL、使用者名稱和密碼是正確的。您可以在瀏覽器中開啟您設定的 URL，並嘗試使用相同的使用者名稱和密碼登入來測試連線。
+
+**2. 為什麼上傳/編輯書籍時出現 `401 Unauthorized` 錯誤？**
+
+*   **A**: 請確保您所設定的 Calibre 使用者帳戶對書庫具有寫入權限。檢查方法：在 Calibre 桌面應用程式中，點擊 `偏好設定` -> `透過網路分享` -> `使用者帳戶`，並確保已為該使用者勾選了「授予寫入權限」選項。
+
+**3. 為什麼上傳/編輯書籍時出現 `403 Forbidden` 錯誤？**
+
+*   **A**: 這通常意味著您設定了錯誤的 Calibre Library ID。
+
+**4. 我如何找到我的 `library_id`？**
+
+*   **方法一 (視覺化)**: 在瀏覽器中開啟您的 Calibre 內容服務並登入。查看頁面上顯示的書庫名稱。`library_id` 通常是這個名稱將空格等特殊字元替換為底線後的結果。例如，如果您的書庫名為 "Calibre Library"，那麼 ID 很可能就是 `Calibre_Library`。
+*   **方法二 (從 URL)**: 在內容服務介面，點擊您的書庫名稱。查看瀏覽器網址列中的 URL，您應該能看到一個類似 `library_id=...` 的參數。該參數的值就是您的 library ID（它可能經過了 URL 編碼，您可能需要解碼一下）。
+*   **常見的預設 ID**: 首次運行 Calibre 時，預設的書庫 ID 通常取決於您的系統語言。以下是一些常見的預設值：
+    *   英語: `Calibre_Library`
+    *   法語: `Bibliothèque_calibre`
+    *   德語: `Calibre-Bibliothek`
+    *   西班牙語: `Biblioteca_de_calibre`
+    *   簡體中文: `Calibre_书库`
+    *   繁體中文: `calibre_書庫`
 
 ## 📖 KOReader 同步
 
