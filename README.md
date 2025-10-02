@@ -86,7 +86,7 @@ This application is designed to be deployed using Docker.
 ### Prerequisites
 
 - [Docker](https://www.docker.com/get-started) installed on your server.
-- An existing Calibre server (optional, but required for most features).
+- An existing Calibre server (optional, but required for most features). We recommend using the [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker image.
 
 ### Quick Start (Docker Run)
 

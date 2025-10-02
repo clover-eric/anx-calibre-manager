@@ -87,7 +87,7 @@
 ### 先決條件
 
 - 您的伺服器上已安裝 [Docker](https://www.docker.com/get-started)。
-- 一個正在運行的 Calibre 伺服器 (可選，但大部分功能需要)。
+- 一個正在運行的 Calibre 伺服器 (可選，但大部分功能需要)。我們推薦使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker 映像。
 
 ### 快速開始 (使用 Docker Run)
 

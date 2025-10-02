@@ -87,7 +87,7 @@ Esta aplicación está diseñada para ser desplegada usando Docker.
 ### Prerrequisitos
 
 - [Docker](https://www.docker.com/get-started) instalado en tu servidor.
-- Un servidor Calibre existente (opcional, pero necesario para la mayoría de las funciones).
+- Un servidor Calibre existente (opcional, pero necesario para la mayoría de las funciones). Recomendamos usar la imagen de Docker [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre).
 
 ### Inicio Rápido (Docker Run)
 

@@ -86,7 +86,7 @@
 ### 先决条件
 
 - 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
-- 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。
+- 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。我们推荐使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker 镜像。
 
 ### 快速开始 (使用 Docker Run)
 
