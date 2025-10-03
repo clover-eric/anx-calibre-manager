@@ -212,10 +212,18 @@ def generate_audiobook_route():
         # 将 temp_file_to_clean 单独传递给 run_async_task
         run_async_kwargs = {'temp_file_to_clean': temp_file_to_clean}
 
+        user_dict_for_thread = {
+            'id': g.user.id,
+            'username': g.user.username,
+            'kindle_email': g.user.kindle_email,
+            'send_format_priority': g.user.send_format_priority,
+            'force_epub_conversion': g.user.force_epub_conversion,
+            'language': g.user.language
+        }
         thread = threading.Thread(
             target=run_async_task,
-            args=(generator.generate, book_path_or_temp_file, str(book_id)),
-            kwargs={**generator_kwargs, **run_async_kwargs}
+            args=(generator.generate, str(book_id), library, user_dict_for_thread),
+            kwargs={'cover_image_data': generator_kwargs.get('cover_image_data'), **run_async_kwargs}
         )
         thread.daemon = True
         thread.start()
