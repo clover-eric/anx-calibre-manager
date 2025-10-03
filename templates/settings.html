@@ -252,18 +252,18 @@
             <h4>{{ _('Available Tools') }}</h4>
             <p>{{ _("You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:") }}</p>
             <ul>
-                <li><strong>search_books</strong>: {{ _("Search for books in a specified library. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `search_expression` (str), `limit` (int, optional)") }}</li>
-                <li><strong>get_recent_books</strong>: {{ _("Get recent books from a specified library. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `limit` (int, optional)") }}</li>
-                <li><strong>get_book_details</strong>: {{ _("Get details for a specific book in a library. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>push_calibre_book_to_anx</strong>: {{ _("Push a book from the Calibre library to the user's Anx library. Parameters: `book_id` (int)") }}</li>
-                <li><strong>send_book_to_kindle</strong>: {{ _("Send a book from a specified library to Kindle. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>get_epub_table_of_contents</strong>: {{ _("Get the table of contents for an EPUB book from a specified library. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>get_epub_chapter_content</strong>: {{ _("Get the content of a specific chapter from an EPUB book. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int), `chapter_number` (int)") }}</li>
-                <li><strong>get_epub_entire_content</strong>: {{ _("Get the entire content of an EPUB book from a specified library. library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>get_book_word_count_stats</strong>: {{ _("Get word count statistics for a book (total and per-chapter). library_type: 'anx' (user's currently reading library), 'calibre' (public library). Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>generate_audiobook</strong>: {{ _("Generate an audiobook for a book from either the Anx or Calibre library. Parameters: `library_type` (str), `book_id` (int)") }}</li>
-                <li><strong>get_audiobook_generation_status</strong>: {{ _("Get the status of an audiobook generation task by its task ID. Parameters: `task_id` (str)") }}</li>
-                <li><strong>get_audiobook_status_by_book</strong>: {{ _("Get the status of the latest audiobook task for a specific book by its ID and library type. Parameters: `library_type` (str), `book_id` (int)") }}</li>
+                <li><strong>search_calibre_books</strong>: {{ _('Search Calibre books using Calibre\'s search syntax. Parameters: `search_expression` (str), `limit` (int, optional)') }}</li>
+                <li><strong>get_recent_books</strong>: {{ _('Get recent books from a library. Parameters: `library_type` (str, "anx" or "calibre"), `limit` (int, optional)') }}</li>
+                <li><strong>get_book_details</strong>: {{ _('Get details for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+                <li><strong>push_calibre_book_to_anx</strong>: {{ _('Push a Calibre book to the user\'s Anx library. Parameters: `book_id` (int)') }}</li>
+                <li><strong>send_calibre_book_to_kindle</strong>: {{ _('Send a Calibre book to the user\'s configured Kindle email. Parameters: `book_id` (int)') }}</li>
+                <li><strong>get_table_of_contents</strong>: {{ _('Get the table of contents for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+                <li><strong>get_chapter_content</strong>: {{ _('Get the content of a specific chapter. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int), `chapter_number` (int)') }}</li>
+                <li><strong>get_entire_book_content</strong>: {{ _('Get the entire text content of a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+                <li><strong>get_word_count_statistics</strong>: {{ _('Get word count statistics for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+                <li><strong>generate_audiobook</strong>: {{ _('Generate an audiobook for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
+                <li><strong>get_audiobook_generation_status</strong>: {{ _('Get audiobook generation status by task ID. Parameters: `task_id` (str)') }}</li>
+                <li><strong>get_audiobook_status_by_book</strong>: {{ _('Get the latest audiobook task status for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
             </ul>
         </div>
     </div>

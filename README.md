@@ -298,17 +298,16 @@ Here are a few examples of natural language prompts you could use with an AI age
 
 You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:
 
--   **`search_books`**: Search for books in a specified library using Calibre's powerful search syntax. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `search_expression` (string), `limit` (integer, optional).
-    -   **Example (Advanced Search)**: Find books in the `calibre` library by "O'Reilly Media" with a rating of 4 stars or higher.
+-   **`search_calibre_books`**: Search Calibre books using Calibre's powerful search syntax.
+    -   **Parameters**: `search_expression` (string), `limit` (integer, optional).
+    -   **Example (Advanced Search)**: Find books by "O'Reilly Media" with a rating of 4 stars or higher.
         ```json
         {
             "jsonrpc": "2.0",
             "method": "tools/call",
             "params": {
-                "name": "search_books",
+                "name": "search_calibre_books",
                 "arguments": {
-                    "library_type": "calibre",
                     "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
                     "limit": 10
                 }
@@ -316,28 +315,28 @@ You can get a list of all available tools by calling the `tools/list` method. Th
             "id": "search-request-1"
         }
         ```
--   **`get_recent_books`**: Get recent books from a specified library. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `limit` (integer, optional).
--   **`get_book_details`**: Get details for a specific book in a library. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
+-   **`get_recent_books`**: Get recent books from a specified library.
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `limit` (integer, optional).
+-   **`get_book_details`**: Get details for a specific book in a library.
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
 -   **`push_calibre_book_to_anx`**: Push a book from the Calibre library to the user's Anx library.
     -   **Parameters**: `book_id` (integer).
--   **`send_book_to_kindle`**: Send a book from a specified library to Kindle. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
--   **`get_epub_table_of_contents`**: Get the table of contents for an EPUB book from a specified library. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
--   **`get_epub_chapter_content`**: Get the content of a specific chapter from an EPUB book. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer), `chapter_number` (integer).
--   **`get_epub_entire_content`**: Get the entire content of an EPUB book from a specified library. `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
--   **`get_book_word_count_stats`**: Get word count statistics for a book (total and per-chapter). `library_type`: 'anx' (user's currently reading library), 'calibre' (public library).
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
+-   **`send_calibre_book_to_kindle`**: Send a book from the Calibre library to the user's configured Kindle email.
+    -   **Parameters**: `book_id` (integer).
+-   **`get_table_of_contents`**: Get the table of contents for a book from a specified library.
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
+-   **`get_chapter_content`**: Get the content of a specific chapter from a book.
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer), `chapter_number` (integer).
+-   **`get_entire_book_content`**: Get the entire text content of a book from a specified library.
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
+-   **`get_word_count_statistics`**: Get word count statistics for a book (total and per-chapter).
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
 -   **`generate_audiobook`**: Generate an audiobook for a book from either the Anx or Calibre library.
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
 -   **`get_audiobook_generation_status`**: Get the status of an audiobook generation task by its task ID.
     -   **Parameters**: `task_id` (string).
 -   **`get_audiobook_status_by_book`**: Get the status of the latest audiobook task for a specific book by its ID and library type.
-    -   **Parameters**: `library_type` (string), `book_id` (integer).
+    -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
 
 ## 💻 Development
 

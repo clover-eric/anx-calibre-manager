@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-03 14:05+0800\n"
+"POT-Creation-Date: 2025-10-03 21:35+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -1839,99 +1839,73 @@ msgstr "你可以通过调用 `tools/list` 方法获取所有可用工具的列�
 
 #: templates/settings.html:255
 msgid ""
-"Search for books in a specified library. library_type: 'anx' (user's "
-"currently reading library), 'calibre' (public library). Parameters: "
-"`library_type` (str), `search_expression` (str), `limit` (int, optional)"
-msgstr ""
-"在指定书库中搜索书籍。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` (str), "
-"`search_expression` (str), `limit` (int, 可选)"
+"Search Calibre books using Calibre's search syntax. Parameters: "
+"`search_expression` (str), `limit` (int, optional)"
+msgstr "使用 Calibre 的搜索语法搜索 Calibre 书籍。参数: `search_expression` (str), `limit` (int, 可选)"
 
 #: templates/settings.html:256
 msgid ""
-"Get recent books from a specified library. library_type: 'anx' (user's "
-"currently reading library), 'calibre' (public library). Parameters: "
-"`library_type` (str), `limit` (int, optional)"
+"Get recent books from a library. Parameters: `library_type` (str, \"anx\""
+" or \"calibre\"), `limit` (int, optional)"
 msgstr ""
-"从指定书库获取最近的书籍。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` (str), `limit` "
-"(int, 可选)"
+"从书库获取最近的书籍。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `limit` (int, "
+"可选)"
 
 #: templates/settings.html:257
 msgid ""
-"Get details for a specific book in a library. library_type: 'anx' (user's"
-" currently reading library), 'calibre' (public library). Parameters: "
-"`library_type` (str), `book_id` (int)"
-msgstr ""
-"获取书库中特定书籍的详细信息。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` (str), "
-"`book_id` (int)"
+"Get details for a book. Parameters: `library_type` (str, \"anx\" or "
+"\"calibre\"), `book_id` (int)"
+msgstr "获取书籍的详细信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
 #: templates/settings.html:258
-msgid ""
-"Push a book from the Calibre library to the user's Anx library. "
-"Parameters: `book_id` (int)"
-msgstr "将书籍从 Calibre 书库推送到用户的 Anx 书库。参数: `book_id` (int)"
+msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
+msgstr "将 Calibre 书籍推送到用户的 Anx 书库。参数: `book_id` (int)"
 
 #: templates/settings.html:259
 msgid ""
-"Send a book from a specified library to Kindle. library_type: 'anx' "
-"(user's currently reading library), 'calibre' (public library). "
-"Parameters: `library_type` (str), `book_id` (int)"
-msgstr ""
-"将指定书库中的书籍发送到 Kindle。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` "
-"(str), `book_id` (int)"
+"Send a Calibre book to the user's configured Kindle email. Parameters: "
+"`book_id` (int)"
+msgstr "将 Calibre 书籍发送到用户配置的 Kindle 邮箱。参数: `book_id` (int)"
 
 #: templates/settings.html:260
 msgid ""
-"Get the table of contents for an EPUB book from a specified library. "
-"library_type: 'anx' (user's currently reading library), 'calibre' (public"
-" library). Parameters: `library_type` (str), `book_id` (int)"
-msgstr ""
-"获取指定书库中 EPUB 书籍的目录。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` "
-"(str), `book_id` (int)"
+"Get the table of contents for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr "获取书籍的目录。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
 #: templates/settings.html:261
 msgid ""
-"Get the content of a specific chapter from an EPUB book. library_type: "
-"'anx' (user's currently reading library), 'calibre' (public library). "
-"Parameters: `library_type` (str), `book_id` (int), `chapter_number` (int)"
-msgstr ""
-"获取 EPUB 书籍特定章节的内容。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` (str), "
-"`book_id` (int), `chapter_number` (int)"
+"Get the content of a specific chapter. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
+msgstr "获取特定章节的内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int), `chapter_number` (int)"
 
 #: templates/settings.html:262
 msgid ""
-"Get the entire content of an EPUB book from a specified library. "
-"library_type: 'anx' (user's currently reading library), 'calibre' (public"
-" library). Parameters: `library_type` (str), `book_id` (int)"
-msgstr ""
-"获取指定书库中 EPUB 书籍的全部内容。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` "
-"(str), `book_id` (int)"
+"Get the entire text content of a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr "获取书籍的全部文本内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
 #: templates/settings.html:263
 msgid ""
-"Get word count statistics for a book (total and per-chapter). "
-"library_type: 'anx' (user's currently reading library), 'calibre' (public"
-" library). Parameters: `library_type` (str), `book_id` (int)"
-msgstr ""
-"获取书籍的字数统计（总字数和每章字数）。library_type: 'anx' (用户当前正在阅读的书库), 'calibre' (公共书库)。参数: `library_type` "
-"(str), `book_id` (int)"
+"Get word count statistics for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr "获取书籍的字数统计信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
 #: templates/settings.html:264
 msgid ""
-"Generate an audiobook for a book from either the Anx or Calibre library. "
-"Parameters: `library_type` (str), `book_id` (int)"
-msgstr "为 Anx 或 Calibre 书库中的书籍生成有声书。参数: `library_type` (str), `book_id` (int)"
+"Generate an audiobook for a book. Parameters: `book_id` (int), "
+"`library_type` (str, \"anx\" or \"calibre\")"
+msgstr "为书籍生成有声书。参数: `book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
 
 #: templates/settings.html:265
-msgid ""
-"Get the status of an audiobook generation task by its task ID. "
-"Parameters: `task_id` (str)"
-msgstr "通过任务 ID 获取有声书生成任务的状态。参数: `task_id` (str)"
+msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
+msgstr "通过任务 ID 获取有声书生成状态。参数: `task_id` (str)"
 
 #: templates/settings.html:266
 msgid ""
-"Get the status of the latest audiobook task for a specific book by its ID"
-" and library type. Parameters: `library_type` (str), `book_id` (int)"
-msgstr "通过书籍 ID 和书库类型获取该书籍最新有声书任务的状态。参数: `library_type` (str), `book_id` (int)"
+"Get the latest audiobook task status for a book. Parameters: `book_id` "
+"(int), `library_type` (str, \"anx\" or \"calibre\")"
+msgstr "获取书籍的最新有声书任务状态。参数: `book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
 
 #: templates/settings.html:273
 msgid "KOReader Sync Settings"
@@ -2425,5 +2399,4 @@ msgstr "已读完！"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
-
 

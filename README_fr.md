@@ -299,17 +299,16 @@ Voici quelques exemples de prompts en langage naturel que vous pourriez utiliser
 
 Vous pouvez obtenir une liste de tous les outils disponibles en appelant la méthode `tools/list`. Les outils actuellement pris en charge sont :
 
--   **`search_books`**: Recherchez des livres dans une bibliothèque spécifiée en utilisant la puissante syntaxe de recherche de Calibre. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `search_expression` (chaîne de caractères), `limit` (entier, facultatif).
-    -   **Exemple (Recherche Avancée)**: Trouvez des livres dans la bibliothèque `calibre` de "O'Reilly Media" avec une note de 4 étoiles ou plus.
+-   **`search_calibre_books`**: Recherchez des livres Calibre en utilisant la puissante syntaxe de recherche de Calibre.
+    -   **Paramètres**: `search_expression` (chaîne de caractères), `limit` (entier, facultatif).
+    -   **Exemple (Recherche Avancée)**: Trouvez des livres de "O'Reilly Media" avec une note de 4 étoiles ou plus.
         ```json
         {
             "jsonrpc": "2.0",
             "method": "tools/call",
             "params": {
-                "name": "search_books",
+                "name": "search_calibre_books",
                 "arguments": {
-                    "library_type": "calibre",
                     "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
                     "limit": 10
                 }
@@ -317,28 +316,28 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
             "id": "search-request-1"
         }
         ```
--   **`get_recent_books`**: Obtenir les livres récents d'une bibliothèque spécifiée. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `limit` (entier, facultatif).
--   **`get_book_details`**: Obtenir les détails d'un livre spécifique dans une bibliothèque. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
+-   **`get_recent_books`**: Obtenir les livres récents d'une bibliothèque spécifiée.
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `limit` (entier, facultatif).
+-   **`get_book_details`**: Obtenir les détails d'un livre spécifique dans une bibliothèque.
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
 -   **`push_calibre_book_to_anx`**: Pousser un livre de la bibliothèque Calibre vers la bibliothèque Anx de l'utilisateur.
     -   **Paramètres**: `book_id` (entier).
--   **`send_book_to_kindle`**: Envoyer un livre d'une bibliothèque spécifiée à Kindle. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
--   **`get_epub_table_of_contents`**: Obtenir la table des matières d'un livre EPUB d'une bibliothèque spécifiée. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
--   **`get_epub_chapter_content`**: Obtenir le contenu d'un chapitre spécifique d'un livre EPUB. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier), `chapter_number` (entier).
--   **`get_epub_entire_content`**: Obtenir le contenu complet d'un livre EPUB d'une bibliothèque spécifiée. `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
--   **`get_book_word_count_stats`**: Obtenir les statistiques de nombre de mots pour un livre (total et par chapitre). `library_type`: 'anx' (bibliothèque personnelle de l'utilisateur), 'calibre' (bibliothèque publique).
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
+-   **`send_calibre_book_to_kindle`**: Envoyer un livre de la bibliothèque Calibre à l'e-mail Kindle configuré par l'utilisateur.
+    -   **Paramètres**: `book_id` (entier).
+-   **`get_table_of_contents`**: Obtenir la table des matières d'un livre d'une bibliothèque spécifiée.
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
+-   **`get_chapter_content`**: Obtenir le contenu d'un chapitre spécifique d'un livre.
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier), `chapter_number` (entier).
+-   **`get_entire_book_content`**: Obtenir le contenu textuel complet d'un livre d'une bibliothèque spécifiée.
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
+-   **`get_word_count_statistics`**: Obtenir les statistiques de nombre de mots pour un livre (total et par chapitre).
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
 -   **`generate_audiobook`**: Générer un livre audio pour un livre de la bibliothèque Anx ou Calibre.
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
 -   **`get_audiobook_generation_status`**: Obtenir le statut d'une tâche de génération de livre audio par son ID de tâche.
     -   **Paramètres**: `task_id` (chaîne de caractères).
 -   **`get_audiobook_status_by_book`**: Obtenir le statut de la dernière tâche de livre audio pour un livre spécifique par son ID et son type de bibliothèque.
-    -   **Paramètres**: `library_type` (chaîne de caractères), `book_id` (entier).
+    -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
 
 ## 💻 Développement
 
