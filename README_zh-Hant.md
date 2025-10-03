@@ -293,17 +293,17 @@
 
 您可以透過 `tools/list` 方法取得所有可用工具的清單。目前支援的工具包括：
 
--   **`search_calibre_books`**: 使用 Calibre 強大的搜尋語法搜尋書籍。
-    -   **參數**: `search_expression` (字串), `limit` (整數, 可選)。
-    -   **功能**: 您可以提供簡單的關鍵詞進行模糊搜尋，也可以建構複雜的查詢。
-    -   **範例 (進階搜尋)**: 搜尋由「O'Reilly Media」出版且評分高於4星的圖書。
+-   **`search_books`**: 使用 Calibre 強大的搜尋語法在指定書庫中搜尋書籍。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `search_expression` (字串), `limit` (整數, 可選)。
+    -   **範例 (進階搜尋)**: 在 `calibre` 書庫中搜尋由「O'Reilly Media」出版且評分高於4星的圖書。
         ```json
         {
             "jsonrpc": "2.0",
             "method": "tools/call",
             "params": {
-                "name": "search_calibre_books",
+                "name": "search_books",
                 "arguments": {
+                    "library_type": "calibre",
                     "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
                     "limit": 10
                 }
@@ -311,23 +311,28 @@
             "id": "search-request-1"
         }
         ```
--   `get_recent_calibre_books`: 取得最近的 Calibre 書籍。
--   `get_calibre_book_details`: 取得 Calibre 書籍詳情。
--   `get_recent_anx_books`: 取得最近的 Anx 書籍。
--   `get_anx_book_details`: 取得 Anx 書籍詳情。
--   `push_calibre_book_to_anx`: 推送 Calibre 書籍到 Anx。
--   `send_calibre_book_to_kindle`: 傳送 Calibre 書籍到 Kindle。
--   `get_calibre_epub_table_of_contents`: 獲取 Calibre 書籍的目錄。
--   `get_calibre_epub_chapter_content`: 獲取 Calibre 書籍指定章節的完整內容。
--   `get_anx_epub_table_of_contents`: 獲取 Anx 書庫中書籍的目錄。
--   `get_anx_epub_chapter_content`: 獲取 Anx 書庫中書籍指定章節的完整內容。
--   `get_calibre_epub_entire_content`: 獲取 Calibre 書籍的全部內容。
--   `get_anx_epub_entire_content`: 獲取 Anx 書庫中書籍的全部內容。
--   `get_calibre_book_word_count_stats`: 獲取 Calibre 書籍的字數統計（總字數和每章字數）。
--   `get_anx_book_word_count_stats`: 獲取 Anx 書庫中書籍的字數統計（總字數和每章字數）。
--   `generate_audiobook`: 為 Anx 或 Calibre 書庫中的書籍產生有聲書。
--   `get_audiobook_generation_status`: 透過任務 ID 獲取有聲書產生任務的狀態。
--   `get_audiobook_status_by_book`: 透過書籍 ID 和書庫類型獲取指定書籍的最新有聲書任務狀態。
+-   **`get_recent_books`**: 從指定書庫取得最近的書籍。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `limit` (整數, 可選)。
+-   **`get_book_details`**: 取得指定書庫中某本書的詳細資訊。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`push_calibre_book_to_anx`**: 將 Calibre 書庫中的書籍推送到使用者的 Anx 書庫。
+    -   **參數**: `book_id` (整數)。
+-   **`send_book_to_kindle`**: 將指定書庫中的書籍傳送到 Kindle。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`get_epub_table_of_contents`**: 取得指定書庫中 EPUB 書籍的目錄。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`get_epub_chapter_content`**: 取得 EPUB 書籍指定章節的內容。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數), `chapter_number` (整數)。
+-   **`get_epub_entire_content`**: 取得指定書庫中 EPUB 書籍的全部內容。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`get_book_word_count_stats`**: 取得書籍的字數統計（總字數和每章字數）。`library_type`: 'anx' (使用者正在看的書庫), 'calibre' (公共書庫)。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`generate_audiobook`**: 為 Anx 或 Calibre 書庫中的書籍產生有聲書。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
+-   **`get_audiobook_generation_status`**: 透過任務 ID 獲取有聲書產生任務的狀態。
+    -   **參數**: `task_id` (字串)。
+-   **`get_audiobook_status_by_book`**: 透過書籍 ID 和書庫類型獲取指定書籍的最新有聲書任務狀態。
+    -   **參數**: `library_type` (字串), `book_id` (整數)。
 
 ## 💻 開發
 

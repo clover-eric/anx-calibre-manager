@@ -37,8 +37,6 @@ def extract_text_from_html(html_content: str) -> str:
     if not html_content:
         return ""
     
-    logger.info(f"--- HTML START (first 500 chars) ---\n{html_content[:500]}\n--- HTML END ---")
-    
     soup = BeautifulSoup(html_content, 'lxml')
     
     # 移除所有不需要的标签
@@ -55,7 +53,6 @@ def extract_text_from_html(html_content: str) -> str:
 
     # 使用 separator='' 来获取文本，这样我们添加的换行符就会被保留
     raw_text = soup.get_text(separator='')
-    logger.info(f"--- RAW TEXT after get_text() ---\n{raw_text[:500]}\n--- RAW TEXT END ---")
     
     # --- 后续清理 ---
     # 1. 将多个连续的空格或制表符压缩为单个空格
@@ -68,7 +65,6 @@ def extract_text_from_html(html_content: str) -> str:
     cleaned_text = re.sub(r'\n{3,}', '\n\n', cleaned_text)
     
     final_text = cleaned_text.strip()
-    logger.info(f"--- FINAL TEXT after cleaning ---\n{final_text[:500]}\n--- FINAL TEXT END ---")
     
     return final_text
 

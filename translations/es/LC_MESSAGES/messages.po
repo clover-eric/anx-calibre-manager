@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-01 22:52+0800\n"
+"POT-Creation-Date: 2025-10-03 14:05+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -184,21 +184,21 @@ msgstr "Código de verificación incorrecto."
 msgid "2FA has been disabled."
 msgstr "2FA ha sido desactivado."
 
-#: blueprints/api/books.py:31
+#: blueprints/api/books.py:32
 msgid "Anx database not found."
 msgstr "Base de datos Anx no encontrada."
 
-#: blueprints/api/books.py:40
+#: blueprints/api/books.py:41
 #, python-format
 msgid "Book file with ID %(book_id)s not found."
 msgstr "Archivo de libro con ID %(book_id)s no encontrado."
 
-#: blueprints/api/books.py:47
+#: blueprints/api/books.py:48
 #, python-format
 msgid "Error downloading book: %(error)s"
 msgstr "Error al descargar el libro: %(error)s"
 
-#: blueprints/api/books.py:158
+#: blueprints/api/books.py:159
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
@@ -206,30 +206,30 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra en el entorno actual."
 
-#: blueprints/api/books.py:162
+#: blueprints/api/books.py:163
 msgid "Unable to process or convert the book."
 msgstr "No se puede procesar o convertir el libro."
 
-#: blueprints/api/books.py:167 blueprints/api/books.py:252
+#: blueprints/api/books.py:168 blueprints/api/books.py:253
 #: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "Detalles del libro no encontrados."
 
-#: blueprints/api/books.py:178
+#: blueprints/api/books.py:179
 msgid "This book has no available formats."
 msgstr "Este libro no tiene formatos disponibles."
 
-#: blueprints/api/books.py:184
+#: blueprints/api/books.py:185
 msgid "Unable to download the book."
 msgstr "No se puede descargar el libro."
 
-#: blueprints/api/books.py:189
+#: blueprints/api/books.py:190
 msgid "Please configure your Kindle email in user settings first."
 msgstr ""
 "Por favor, configura tu correo electrónico de Kindle en los ajustes de "
 "usuario primero."
 
-#: blueprints/api/books.py:196
+#: blueprints/api/books.py:197
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
@@ -237,11 +237,11 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra. Por favor, instálala en el PATH del sistema."
 
-#: blueprints/api/books.py:199
+#: blueprints/api/books.py:200
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "No se puede obtener o procesar el archivo EPUB para el libro."
 
-#: blueprints/api/books.py:246
+#: blueprints/api/books.py:247
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
@@ -249,19 +249,19 @@ msgstr ""
 "Este libro necesita ser convertido a EPUB, pero la herramienta `ebook-"
 "converter` no se encuentra."
 
-#: blueprints/api/books.py:259
+#: blueprints/api/books.py:260
 msgid "No pushable format found."
 msgstr "No se encontró formato para enviar."
 
-#: blueprints/api/books.py:264
+#: blueprints/api/books.py:265
 msgid "Error downloading or processing the book."
 msgstr "Error al descargar o procesar el libro."
 
-#: blueprints/api/books.py:270
+#: blueprints/api/books.py:271
 msgid "User directory not configured."
 msgstr "Directorio de usuario no configurado."
 
-#: blueprints/api/books.py:290
+#: blueprints/api/books.py:291
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
@@ -270,7 +270,7 @@ msgstr ""
 "Libro '%(filename)s' enviado. Procesados: %(processed)s, Omitidos: "
 "%(skipped)s."
 
-#: blueprints/api/books.py:316
+#: blueprints/api/books.py:317
 msgid "Missing book ID."
 msgstr "Falta el ID del libro."
 
@@ -401,34 +401,34 @@ msgstr "El código de invitación ya existe"
 msgid "Operation failed"
 msgstr "Operación fallida"
 
-#: blueprints/api/llm.py:34
+#: blueprints/api/llm.py:26
 msgid "Authentication required."
 msgstr "Autenticación requerida."
 
-#: blueprints/api/llm.py:198
+#: blueprints/api/llm.py:149
 msgid "Book ID and type are required."
 msgstr "Se requiere el ID y el tipo de libro."
 
-#: blueprints/api/llm.py:207
+#: blueprints/api/llm.py:158
 msgid "No history found for this book."
 msgstr "No se encontró historial para este libro."
 
-#: blueprints/api/llm.py:223
+#: blueprints/api/llm.py:174
 msgid "MCP module is not available, cannot process book content."
 msgstr ""
 "El módulo MCP no está disponible, no se puede procesar el contenido del "
 "libro."
 
-#: blueprints/api/llm.py:233
+#: blueprints/api/llm.py:184
 msgid "Missing required fields."
 msgstr "Faltan campos obligatorios."
 
-#: blueprints/api/llm.py:262 blueprints/api/llm.py:330
+#: blueprints/api/llm.py:213 blueprints/api/llm.py:281
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "La hora actual es %(current_time)s."
 
-#: blueprints/api/llm.py:263 blueprints/api/llm.py:331
+#: blueprints/api/llm.py:214 blueprints/api/llm.py:282
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -437,7 +437,7 @@ msgstr ""
 "Eres un asistente útil. El usuario está preguntando sobre el libro "
 "'%(book_title)s'."
 
-#: blueprints/api/llm.py:264 blueprints/api/llm.py:332
+#: blueprints/api/llm.py:215 blueprints/api/llm.py:283
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
@@ -445,7 +445,7 @@ msgstr ""
 "Puedes usar la sintaxis de mermaid para diagramas encerrándola en "
 "```mermaid ... ```."
 
-#: blueprints/api/llm.py:267
+#: blueprints/api/llm.py:218
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -468,24 +468,24 @@ msgstr ""
 "flecha válidos: `-->`, `---`, `==>`. \\n5. No use definiciones de `style`"
 " o `linkStyle`; el tema se maneja automáticamente."
 
-#: blueprints/api/llm.py:277 blueprints/api/llm.py:344
+#: blueprints/api/llm.py:228 blueprints/api/llm.py:295
 msgid "Invalid book type."
 msgstr "Tipo de libro no válido."
 
-#: blueprints/api/llm.py:278 blueprints/api/llm.py:345
+#: blueprints/api/llm.py:229 blueprints/api/llm.py:296
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Error al obtener el contenido del libro: %(error)s"
 
-#: blueprints/api/llm.py:279 blueprints/api/llm.py:346
+#: blueprints/api/llm.py:230 blueprints/api/llm.py:297
 msgid "Could not extract text from the book."
 msgstr "No se pudo extraer el texto del libro."
 
-#: blueprints/api/llm.py:280 blueprints/api/llm.py:347
+#: blueprints/api/llm.py:231 blueprints/api/llm.py:298
 msgid "LLM settings are not configured in user settings."
 msgstr "La configuración de LLM no está configurada en los ajustes de usuario."
 
-#: blueprints/api/llm.py:281 blueprints/api/llm.py:348
+#: blueprints/api/llm.py:232 blueprints/api/llm.py:299
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -500,41 +500,41 @@ msgstr ""
 "%(book_content)s\n"
 "---FIN DEL CONTENIDO DEL LIBRO---"
 
-#: blueprints/api/llm.py:282 blueprints/api/llm.py:349
+#: blueprints/api/llm.py:233 blueprints/api/llm.py:300
 #: static/js/page/translations.js:68
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Por favor, proporcione un resumen completo y una reseña profunda de este "
 "libro."
 
-#: blueprints/api/llm.py:283 blueprints/api/llm.py:350
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:301
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Error al comunicarse con el proveedor de LLM: %(error)s"
 
-#: blueprints/api/llm.py:284 blueprints/api/llm.py:351
+#: blueprints/api/llm.py:235 blueprints/api/llm.py:302
 #: static/js/page/translations.js:60
 msgid "Extracting entire book content..."
 msgstr "Extrayendo todo el contenido del libro..."
 
-#: blueprints/api/llm.py:285 blueprints/api/llm.py:352
+#: blueprints/api/llm.py:236 blueprints/api/llm.py:303
 #: static/js/page/translations.js:61
 msgid "Thinking..."
 msgstr "Pensando..."
 
-#: blueprints/api/llm.py:298
+#: blueprints/api/llm.py:249
 msgid "Message ID is required."
 msgstr "Se requiere el ID del mensaje."
 
-#: blueprints/api/llm.py:309
+#: blueprints/api/llm.py:260
 msgid "Message not found."
 msgstr "Mensaje no encontrado."
 
-#: blueprints/api/llm.py:311
+#: blueprints/api/llm.py:262
 msgid "Permission denied."
 msgstr "Permiso denegado."
 
-#: blueprints/api/llm.py:334
+#: blueprints/api/llm.py:285
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -557,37 +557,37 @@ msgstr ""
 "`==>`. \\n5. No use definiciones de `style` o `linkStyle`; el tema se "
 "maneja automáticamente."
 
-#: blueprints/api/llm.py:373
+#: blueprints/api/llm.py:324
 msgid "Base URL and API Key are required."
 msgstr "Se requieren la URL base y la clave de API."
 
-#: blueprints/api/llm.py:389
+#: blueprints/api/llm.py:340
 msgid "Unexpected response format from model provider."
 msgstr "Formato de respuesta inesperado del proveedor del modelo."
 
-#: blueprints/api/llm.py:394
+#: blueprints/api/llm.py:345
 msgid "Authentication error. Please check your API Key."
 msgstr "Error de autenticación. Por favor, comprueba tu clave de API."
 
-#: blueprints/api/llm.py:396
+#: blueprints/api/llm.py:347
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Punto final de la API no válido. Por favor, comprueba tu URL base."
 
-#: blueprints/api/llm.py:398
+#: blueprints/api/llm.py:349
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "No se pudo conectar con el proveedor del modelo: %(error)s"
 
-#: blueprints/api/llm.py:400
+#: blueprints/api/llm.py:351
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Ocurrió un error inesperado: %(error)s"
 
-#: blueprints/api/llm.py:412
+#: blueprints/api/llm.py:363
 msgid "Session not found or permission denied."
 msgstr "Sesión no encontrada o permiso denegado."
 
-#: blueprints/api/llm.py:419
+#: blueprints/api/llm.py:370
 msgid "Chat session deleted successfully."
 msgstr "Sesión de chat eliminada correctamente."
 
@@ -846,7 +846,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Editar"
 
-#: static/js/settings.js:30 templates/settings.html:425
+#: static/js/settings.js:30 templates/settings.html:420
 msgid "Add"
 msgstr "Añadir"
 
@@ -1374,7 +1374,7 @@ msgstr ""
 "sincronizar (el nombre de usuario y la contraseña son tus credenciales de"
 " acceso):"
 
-#: templates/index.html:119 templates/settings.html:285
+#: templates/index.html:119 templates/settings.html:280
 msgid "Click to copy"
 msgstr "Haz clic para copiar"
 
@@ -1415,7 +1415,7 @@ msgid "Select files:"
 msgstr "Seleccionar archivos:"
 
 #: templates/index.html:188 templates/index.html:205
-#: templates/settings.html:168 templates/settings.html:445
+#: templates/settings.html:168 templates/settings.html:440
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1423,7 +1423,7 @@ msgstr "Cancelar"
 msgid "Edit Book Information"
 msgstr "Editar información del libro"
 
-#: templates/index.html:206 templates/settings.html:444
+#: templates/index.html:206 templates/settings.html:439
 msgid "Save"
 msgstr "Guardar"
 
@@ -1436,13 +1436,13 @@ msgid "Login to Anx Calibre Manager"
 msgstr "Iniciar sesión en Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:287
-#: templates/settings.html:427 templates/settings.html:454
+#: templates/settings.html:31 templates/settings.html:282
+#: templates/settings.html:422 templates/settings.html:449
 msgid "Username"
 msgstr "Nombre de usuario"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:288 templates/settings.html:431
+#: templates/settings.html:283 templates/settings.html:426
 msgid "Password"
 msgstr "Contraseña"
 
@@ -1556,7 +1556,7 @@ msgstr "Perfil"
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
-#: templates/settings.html:36 templates/settings.html:333
+#: templates/settings.html:36 templates/settings.html:328
 msgid "Leave blank to keep unchanged"
 msgstr "Dejar en blanco para no cambiar"
 
@@ -1912,133 +1912,153 @@ msgstr ""
 msgid "Available Tools"
 msgstr "Herramientas disponibles"
 
-#: templates/settings.html:254
+#: templates/settings.html:253
 msgid ""
-"Search Calibre books. Parameters: `search_expression` (str), `limit` "
-"(int, default 20)"
+"You can get a list of all available tools by calling the `tools/list` "
+"method. The currently supported tools are:"
 msgstr ""
-"Buscar libros en Calibre. Parámetros: `search_expression` (str), `limit` "
-"(int, por defecto 20)"
+"Puedes obtener una lista de todas las herramientas disponibles llamando al "
+"método `tools/list`. Las herramientas compatibles actualmente son:"
 
 #: templates/settings.html:255
-msgid "Get recent Calibre books. Parameters: `limit` (int, default 20)"
+msgid ""
+"Search for books in a specified library. library_type: 'anx' (user's "
+"currently reading library), 'calibre' (public library). Parameters: "
+"`library_type` (str), `search_expression` (str), `limit` (int, optional)"
 msgstr ""
-"Obtener libros recientes de Calibre. Parámetros: `limit` (int, por "
-"defecto 20)"
+"Busca libros en una biblioteca específica. library_type: 'anx' (biblioteca "
+"de lectura actual del usuario), 'calibre' (biblioteca pública). "
+"Parámetros: `library_type` (str), `search_expression` (str), `limit` (int, "
+"opcional)"
 
 #: templates/settings.html:256
-msgid "Get Calibre book details. Parameters: `book_id` (int)"
-msgstr "Obtener detalles de un libro de Calibre. Parámetros: `book_id` (int)"
+msgid ""
+"Get recent books from a specified library. library_type: 'anx' (user's "
+"currently reading library), 'calibre' (public library). Parameters: "
+"`library_type` (str), `limit` (int, optional)"
+msgstr ""
+"Obtén libros recientes de una biblioteca específica. library_type: 'anx' "
+"(biblioteca de lectura actual del usuario), 'calibre' (biblioteca "
+"pública). Parámetros: `library_type` (str), `limit` (int, opcional)"
 
 #: templates/settings.html:257
-msgid "Get recent Anx books. Parameters: `limit` (int, default 20)"
-msgstr "Obtener libros recientes de Anx. Parámetros: `limit` (int, por defecto 20)"
+msgid ""
+"Get details for a specific book in a library. library_type: 'anx' (user's"
+" currently reading library), 'calibre' (public library). Parameters: "
+"`library_type` (str), `book_id` (int)"
+msgstr ""
+"Obtén detalles de un libro específico en una biblioteca. library_type: 'anx' "
+"(biblioteca de lectura actual del usuario), 'calibre' (biblioteca "
+"pública). Parámetros: `library_type` (str), `book_id` (int)"
 
 #: templates/settings.html:258
-msgid "Get Anx book details. Parameters: `id` (int)"
-msgstr "Obtener detalles de un libro de Anx. Parámetros: `id` (int)"
+msgid ""
+"Push a book from the Calibre library to the user's Anx library. "
+"Parameters: `book_id` (int)"
+msgstr ""
+"Empuja un libro de la biblioteca de Calibre a la biblioteca Anx del "
+"usuario. Parámetros: `book_id` (int)"
 
 #: templates/settings.html:259
-msgid "Push Calibre book to Anx. Parameters: `book_id` (int)"
-msgstr "Enviar libro de Calibre a Anx. Parámetros: `book_id` (int)"
+msgid ""
+"Send a book from a specified library to Kindle. library_type: 'anx' "
+"(user's currently reading library), 'calibre' (public library). "
+"Parameters: `library_type` (str), `book_id` (int)"
+msgstr ""
+"Envía un libro de una biblioteca específica a Kindle. library_type: 'anx' "
+"(biblioteca de lectura actual del usuario), 'calibre' (biblioteca "
+"pública). Parámetros: `library_type` (str), `book_id` (int)"
 
 #: templates/settings.html:260
-msgid "Send Calibre book to Kindle. Parameters: `book_id` (int)"
-msgstr "Enviar libro de Calibre a Kindle. Parámetros: `book_id` (int)"
+msgid ""
+"Get the table of contents for an EPUB book from a specified library. "
+"library_type: 'anx' (user's currently reading library), 'calibre' (public"
+" library). Parameters: `library_type` (str), `book_id` (int)"
+msgstr ""
+"Obtén la tabla de contenidos de un libro EPUB de una biblioteca específica. "
+"library_type: 'anx' (biblioteca de lectura actual del usuario), 'calibre' "
+"(biblioteca pública). Parámetros: `library_type` (str), `book_id` (int)"
 
 #: templates/settings.html:261
-msgid "Get table of contents for a Calibre book. Params: `book_id` (int)"
+msgid ""
+"Get the content of a specific chapter from an EPUB book. library_type: "
+"'anx' (user's currently reading library), 'calibre' (public library). "
+"Parameters: `library_type` (str), `book_id` (int), `chapter_number` (int)"
 msgstr ""
-"Obtener tabla de contenidos de un libro de Calibre. Parámetros: `book_id`"
-" (int)"
+"Obtén el contenido de un capítulo específico de un libro EPUB. "
+"library_type: 'anx' (biblioteca de lectura actual del usuario), 'calibre' "
+"(biblioteca pública). Parámetros: `library_type` (str), `book_id` (int), "
+"`chapter_number` (int)"
 
 #: templates/settings.html:262
 msgid ""
-"Get chapter content for a Calibre book. Params: `book_id` (int), "
-"`chapter_number` (int)"
+"Get the entire content of an EPUB book from a specified library. "
+"library_type: 'anx' (user's currently reading library), 'calibre' (public"
+" library). Parameters: `library_type` (str), `book_id` (int)"
 msgstr ""
-"Obtener contenido del capítulo de un libro de Calibre. Parámetros: "
-"`book_id` (int), `chapter_number` (int)"
+"Obtén el contenido completo de un libro EPUB de una biblioteca específica. "
+"library_type: 'anx' (biblioteca de lectura actual del usuario), 'calibre' "
+"(biblioteca pública). Parámetros: `library_type` (str), `book_id` (int)"
 
 #: templates/settings.html:263
-msgid "Get table of contents for an Anx book. Params: `id` (int)"
-msgstr "Obtener tabla de contenido de un libro Anx. Parámetros: `id` (int)"
+msgid ""
+"Get word count statistics for a book (total and per-chapter). "
+"library_type: 'anx' (user's currently reading library), 'calibre' (public"
+" library). Parameters: `library_type` (str), `book_id` (int)"
+msgstr ""
+"Obtén estadísticas de recuento de palabras para un libro (total y por "
+"capítulo). library_type: 'anx' (biblioteca de lectura actual del usuario), "
+"'calibre' (biblioteca pública). Parámetros: `library_type` (str), "
+"`book_id` (int)"
 
 #: templates/settings.html:264
 msgid ""
-"Get chapter content for an Anx book. Params: `id` (int), `chapter_number`"
-" (int)"
+"Generate an audiobook for a book from either the Anx or Calibre library. "
+"Parameters: `library_type` (str), `book_id` (int)"
 msgstr ""
-"Obtener contenido del capítulo de un libro Anx. Parámetros: `id` (int), "
-"`chapter_number` (int)"
+"Genera un audiolibro para un libro de la biblioteca Anx o Calibre. "
+"Parámetros: `library_type` (str), `book_id` (int)"
 
 #: templates/settings.html:265
-msgid "Get the entire content of a Calibre book. Params: `book_id` (int)"
+msgid ""
+"Get the status of an audiobook generation task by its task ID. "
+"Parameters: `task_id` (str)"
 msgstr ""
-"Obtener el contenido completo de un libro de Calibre. Parámetros: "
-"`book_id` (int)"
+"Obtén el estado de una tarea de generación de audiolibros por su ID de "
+"tarea. Parámetros: `task_id` (str)"
 
 #: templates/settings.html:266
-msgid "Get the entire content of an Anx book. Params: `id` (int)"
-msgstr "Obtener el contenido completo de un libro Anx. Parámetros: `id` (int)"
-
-#: templates/settings.html:267
-msgid "Get word count statistics for a Calibre book. Params: `book_id` (int)"
-msgstr ""
-"Obtener estadísticas de recuento de palabras para un libro de Calibre. "
-"Parámetros: `book_id` (int)"
-
-#: templates/settings.html:268
-msgid "Get word count statistics for an Anx book. Params: `id` (int)"
-msgstr ""
-"Obtener estadísticas de recuento de palabras para un libro Anx. "
-"Parámetros: `id` (int)"
-
-#: templates/settings.html:269
 msgid ""
-"Generate an audiobook for a book. Parameters: `book_id` (int), "
-"`library_type` (str, \"anx\" or \"calibre\")"
+"Get the status of the latest audiobook task for a specific book by its ID"
+" and library type. Parameters: `library_type` (str), `book_id` (int)"
 msgstr ""
-"Generar un audiolibro para un libro. Parámetros: `book_id` (int), "
-"`library_type` (str, \"anx\" o \"calibre\")"
+"Obtén el estado de la última tarea de audiolibro para un libro específico "
+"por su ID y tipo de biblioteca. Parámetros: `library_type` (str), "
+"`book_id` (int)"
 
-#: templates/settings.html:270
-msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
-msgstr ""
-"Obtener el estado de generación de un audiolibro por ID de tarea. "
-"Parámetros: `task_id` (str)"
-
-#: templates/settings.html:271
-msgid ""
-"Get the latest audiobook task status for a book. Parameters: `book_id` "
-"(int), `library_type` (str, \"anx\" or \"calibre\")"
-msgstr ""
-"Obtener el estado de la última tarea de audiolibro para un libro. "
-"Parámetros: `book_id` (int), `library_type` (str, \"anx\" o \"calibre\")"
-
-#: templates/settings.html:278
+#: templates/settings.html:273
 msgid "KOReader Sync Settings"
 msgstr "Ajustes de sincronización de KOReader"
 
-#: templates/settings.html:280
+#: templates/settings.html:275
 msgid "Step 1: Configure WebDAV Cloud Storage"
 msgstr "Paso 1: Configurar el almacenamiento en la nube WebDAV"
 
-#: templates/settings.html:282
+#: templates/settings.html:277
 msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
 msgstr ""
 "En KOReader, ve a `Almacenamiento en la nube` -> `Añadir nuevo "
 "almacenamiento en la nube`."
 
-#: templates/settings.html:283
+#: templates/settings.html:278
 msgid "Select `WebDAV`."
 msgstr "Selecciona `WebDAV`."
 
-#: templates/settings.html:284
+#: templates/settings.html:279
 msgid "Server address"
 msgstr "Dirección del servidor"
 
-#: templates/settings.html:284
+#: templates/settings.html:279
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
@@ -2046,15 +2066,15 @@ msgstr ""
 "Rellena la dirección de abajo y <strong>asegúrate de que la ruta termine "
 "con una `/`</strong>."
 
-#: templates/settings.html:288
+#: templates/settings.html:283
 msgid "Your Anx Calibre Manager login password."
 msgstr "Tu contraseña de inicio de sesión de Anx Calibre Manager."
 
-#: templates/settings.html:289
+#: templates/settings.html:284
 msgid "Folder"
 msgstr "Carpeta"
 
-#: templates/settings.html:290
+#: templates/settings.html:285
 msgid ""
 "Click `Connect` and save. You should now be able to see your Anx library "
 "in KOReader's file browser."
@@ -2062,27 +2082,27 @@ msgstr ""
 "Haz clic en `Conectar` y guarda. Ahora deberías poder ver tu biblioteca "
 "de Anx en el explorador de archivos de KOReader."
 
-#: templates/settings.html:293
+#: templates/settings.html:288
 msgid "Step 2: Install and Configure the Sync Plugin"
 msgstr "Paso 2: Instalar y configurar el plugin de sincronización"
 
-#: templates/settings.html:296
+#: templates/settings.html:291
 msgid "Download Plugin"
 msgstr "Descargar plugin"
 
-#: templates/settings.html:296
+#: templates/settings.html:291
 msgid "Click the button below to download the plugin zip file."
 msgstr "Haz clic en el botón de abajo para descargar el archivo zip del plugin."
 
-#: templates/settings.html:298
+#: templates/settings.html:293
 msgid "Download KOReader Plugin (.zip)"
 msgstr "Descargar plugin de KOReader (.zip)"
 
-#: templates/settings.html:301
+#: templates/settings.html:296
 msgid "Install Plugin"
 msgstr "Instalar plugin"
 
-#: templates/settings.html:301
+#: templates/settings.html:296
 msgid ""
 "Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
@@ -2094,11 +2114,11 @@ msgstr ""
 "<strong>carpeta completa</strong> al directorio `koreader/plugins/` de tu"
 " dispositivo KOReader."
 
-#: templates/settings.html:302
+#: templates/settings.html:297
 msgid "Restart KOReader"
 msgstr "Reiniciar KOReader"
 
-#: templates/settings.html:302
+#: templates/settings.html:297
 msgid ""
 "Completely close and reopen the KOReader application to load the new "
 "plugin."
@@ -2106,15 +2126,15 @@ msgstr ""
 "Cierra y vuelve a abrir completamente la aplicación KOReader para cargar "
 "el nuevo plugin."
 
-#: templates/settings.html:303
+#: templates/settings.html:298
 msgid "Configure Sync Server"
 msgstr "Configurar servidor de sincronización"
 
-#: templates/settings.html:305
+#: templates/settings.html:300
 msgid "Important"
 msgstr "Importante"
 
-#: templates/settings.html:305
+#: templates/settings.html:300
 msgid ""
 "First, please open and start reading a book via the WebDAV set up in the "
 "previous step. The plugin menu will <strong>only appear in the reading "
@@ -2124,7 +2144,7 @@ msgstr ""
 "en el paso anterior. El menú del plugin <strong>solo aparecerá en la "
 "interfaz de lectura</strong>."
 
-#: templates/settings.html:306
+#: templates/settings.html:301
 msgid ""
 "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
 "`More tools` -> `ANX Calibre Manager`."
@@ -2132,15 +2152,15 @@ msgstr ""
 "En la interfaz de lectura, ve a `Herramientas (icono de llave inglesa)` "
 "-> `Página siguiente` -> `Más herramientas` -> `ANX Calibre Manager`."
 
-#: templates/settings.html:307
+#: templates/settings.html:302
 msgid "Select `Custom sync server`."
 msgstr "Selecciona `Servidor de sincronización personalizado`."
 
-#: templates/settings.html:308
+#: templates/settings.html:303
 msgid "Custom sync server address"
 msgstr "Dirección del servidor de sincronización personalizado"
 
-#: templates/settings.html:309
+#: templates/settings.html:304
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
@@ -2148,7 +2168,7 @@ msgstr ""
 "Vuelve al menú anterior, selecciona `Iniciar sesión` e introduce tu "
 "nombre de usuario y contraseña de Anx Calibre Manager."
 
-#: templates/settings.html:313
+#: templates/settings.html:308
 msgid ""
 "Once configured, the plugin will automatically or manually sync your "
 "reading progress and time. You can adjust settings like sync frequency in"
@@ -2158,31 +2178,31 @@ msgstr ""
 "progreso y tiempo de lectura. Puedes ajustar la configuración, como la "
 "frecuencia de sincronización, en el menú del plugin."
 
-#: templates/settings.html:314
+#: templates/settings.html:309
 msgid "Note: Only supports epub book synchronization"
 msgstr "Nota: Solo admite la sincronización de libros epub"
 
-#: templates/settings.html:322
+#: templates/settings.html:317
 msgid "Calibre Connection"
 msgstr "Conexión con Calibre"
 
-#: templates/settings.html:324
+#: templates/settings.html:319
 msgid "Calibre Server URL"
 msgstr "URL del servidor de Calibre"
 
-#: templates/settings.html:328
+#: templates/settings.html:323
 msgid "Calibre Username"
 msgstr "Nombre de usuario de Calibre"
 
-#: templates/settings.html:332
+#: templates/settings.html:327
 msgid "Calibre Password"
 msgstr "Contraseña de Calibre"
 
-#: templates/settings.html:336
+#: templates/settings.html:331
 msgid "Default Calibre Library ID"
 msgstr "ID de biblioteca de Calibre por defecto"
 
-#: templates/settings.html:338
+#: templates/settings.html:333
 msgid ""
 "The default Calibre library ID for browsing, searching, and uploading "
 "books. Usually 'Calibre_Library'."
@@ -2190,11 +2210,11 @@ msgstr ""
 "El ID de biblioteca de Calibre por defecto para navegar, buscar y subir "
 "libros. Normalmente 'Calibre_Library'."
 
-#: templates/settings.html:342
+#: templates/settings.html:337
 msgid "Allow uploading duplicate books"
 msgstr "Permitir subir libros duplicados"
 
-#: templates/settings.html:343
+#: templates/settings.html:338
 msgid ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
@@ -2202,15 +2222,15 @@ msgstr ""
 "Si está activado, Calibre añadirá el libro como una nueva copia aunque "
 "detecte un duplicado."
 
-#: templates/settings.html:345
+#: templates/settings.html:340
 msgid "Path Settings"
 msgstr "Ajustes de ruta"
 
-#: templates/settings.html:347
+#: templates/settings.html:342
 msgid "WebDAV Root Path"
 msgstr "Ruta raíz de WebDAV"
 
-#: templates/settings.html:349
+#: templates/settings.html:344
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
@@ -2219,15 +2239,15 @@ msgstr ""
 "usuarios. Las carpetas de los usuarios se crearán automáticamente en esta"
 " ruta (por ejemplo, /webdav/nombredeusuario)."
 
-#: templates/settings.html:352
+#: templates/settings.html:347
 msgid "Default Settings"
 msgstr "Ajustes por defecto"
 
-#: templates/settings.html:354
+#: templates/settings.html:349
 msgid "Default Format Priority for New Users"
 msgstr "Prioridad de formato por defecto para nuevos usuarios"
 
-#: templates/settings.html:356
+#: templates/settings.html:351
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
@@ -2235,15 +2255,15 @@ msgstr ""
 "Prioridad de formato por defecto para nuevos usuarios, separada por "
 "comas, por ejemplo, azw3,mobi,epub"
 
-#: templates/settings.html:359
+#: templates/settings.html:354
 msgid "Audiobook Settings"
 msgstr "Configuración de audiolibros"
 
-#: templates/settings.html:361
+#: templates/settings.html:356
 msgid "Audiobook File Retention Period (days)"
 msgstr "Período de retención de archivos de audiolibros (días)"
 
-#: templates/settings.html:363
+#: templates/settings.html:358
 msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
@@ -2252,15 +2272,15 @@ msgstr ""
 " más de este número de días. Establezca en 0 para deshabilitar la "
 "limpieza."
 
-#: templates/settings.html:366
+#: templates/settings.html:361
 msgid "Manual Cleanup"
 msgstr "Limpieza manual"
 
-#: templates/settings.html:367
+#: templates/settings.html:362
 msgid "Clean Up All Audiobooks Now"
 msgstr "Limpiar todos los audiolibros ahora"
 
-#: templates/settings.html:368
+#: templates/settings.html:363
 msgid ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
@@ -2268,43 +2288,43 @@ msgstr ""
 "Elimine inmediatamente todos los archivos de audiolibros generados y "
 "actualice sus registros de base de datos."
 
-#: templates/settings.html:371
+#: templates/settings.html:366
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "Ajustes de SMTP (para enviar a Kindle)"
 
-#: templates/settings.html:373
+#: templates/settings.html:368
 msgid "SMTP Server"
 msgstr "Servidor SMTP"
 
-#: templates/settings.html:377
+#: templates/settings.html:372
 msgid "SMTP Port"
 msgstr "Puerto SMTP"
 
-#: templates/settings.html:381
+#: templates/settings.html:376
 msgid "SMTP Username (usually your email)"
 msgstr "Nombre de usuario SMTP (normalmente tu correo electrónico)"
 
-#: templates/settings.html:385
+#: templates/settings.html:380
 msgid "SMTP Password"
 msgstr "Contraseña SMTP"
 
-#: templates/settings.html:389
+#: templates/settings.html:384
 msgid "Encryption Method"
 msgstr "Método de cifrado"
 
-#: templates/settings.html:391
+#: templates/settings.html:386
 msgid "None"
 msgstr "Ninguno"
 
-#: templates/settings.html:392
+#: templates/settings.html:387
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:393
+#: templates/settings.html:388
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:395
+#: templates/settings.html:390
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
@@ -2312,95 +2332,95 @@ msgstr ""
 "SSL/TLS se suele usar para el puerto 465, STARTTLS se suele usar para el "
 "puerto 587."
 
-#: templates/settings.html:398
+#: templates/settings.html:393
 msgid "Security"
 msgstr "Seguridad"
 
-#: templates/settings.html:400
+#: templates/settings.html:395
 msgid "Login Failure Lock Threshold"
 msgstr "Umbral de bloqueo por fallo de inicio de sesión"
 
-#: templates/settings.html:402
+#: templates/settings.html:397
 msgid "Set to 0 to disable this feature."
 msgstr "Establecer en 0 para desactivar esta función."
 
-#: templates/settings.html:405
+#: templates/settings.html:400
 msgid "Session Lifetime (days)"
 msgstr "Duración de la sesión (días)"
 
-#: templates/settings.html:407
+#: templates/settings.html:402
 msgid "The number of days a user's session remains valid after logging in."
 msgstr ""
 "El número de días que la sesión de un usuario permanece válida después de"
 " iniciar sesión."
 
-#: templates/settings.html:411
+#: templates/settings.html:406
 msgid "Test Inbox"
 msgstr "Bandeja de entrada de prueba"
 
-#: templates/settings.html:412
+#: templates/settings.html:407
 msgid "Enter an email address to receive a test email"
 msgstr ""
 "Introduce una dirección de correo electrónico para recibir un correo de "
 "prueba"
 
-#: templates/settings.html:415
+#: templates/settings.html:410
 msgid "Send Test Email"
 msgstr "Enviar correo de prueba"
 
-#: templates/settings.html:416
+#: templates/settings.html:411
 msgid "Save Global Settings"
 msgstr "Guardar ajustes globales"
 
-#: templates/settings.html:425
+#: templates/settings.html:420
 msgid "New User"
 msgstr "Nuevo usuario"
 
-#: templates/settings.html:433
+#: templates/settings.html:428
 msgid "Leave blank to not change the existing user's password."
 msgstr "Dejar en blanco para no cambiar la contraseña del usuario existente."
 
-#: templates/settings.html:436 templates/settings.html:455
+#: templates/settings.html:431 templates/settings.html:450
 msgid "Role"
 msgstr "Rol"
 
-#: templates/settings.html:438
+#: templates/settings.html:433
 msgid "Normal User"
 msgstr "Usuario normal"
 
-#: templates/settings.html:439
+#: templates/settings.html:434
 msgid "Calibre Library Maintainer"
 msgstr "Mantenedor de la biblioteca de Calibre"
 
-#: templates/settings.html:440
+#: templates/settings.html:435
 msgid "Administrator"
 msgstr "Administrador"
 
-#: templates/settings.html:449
+#: templates/settings.html:444
 msgid "Existing Users"
 msgstr "Usuarios existentes"
 
-#: templates/settings.html:453
+#: templates/settings.html:448
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:456 templates/settings.html:500
+#: templates/settings.html:451 templates/settings.html:495
 msgid "Actions"
 msgstr "Acciones"
 
-#: templates/settings.html:468
+#: templates/settings.html:463
 msgid "Generate New Invite Code"
 msgstr "Generar nuevo código de invitación"
 
-#: templates/settings.html:470
+#: templates/settings.html:465
 msgid "Custom Invite Code"
 msgstr "Código de invitación personalizado"
 
-#: templates/settings.html:471
+#: templates/settings.html:466
 msgid "Leave blank to auto-generate"
 msgstr "Dejar en blanco para autogenerar"
 
-#: templates/settings.html:472
+#: templates/settings.html:467
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
@@ -2408,61 +2428,61 @@ msgstr ""
 "Código de invitación personalizado (opcional). Si se deja en blanco, se "
 "generará un código aleatorio."
 
-#: templates/settings.html:475
+#: templates/settings.html:470
 msgid "Maximum Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:477
+#: templates/settings.html:472
 msgid "How many times this invite code can be used"
 msgstr "Cuántas veces se puede usar este código de invitación"
 
-#: templates/settings.html:480
+#: templates/settings.html:475
 msgid "Expires After (Hours)"
 msgstr "Expira después de (horas)"
 
-#: templates/settings.html:481
+#: templates/settings.html:476
 msgid "Leave blank for no expiration"
 msgstr "Dejar en blanco para que no caduque"
 
-#: templates/settings.html:482
+#: templates/settings.html:477
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr ""
 "Número de horas después de las cuales caducará este código de invitación "
 "(opcional)"
 
-#: templates/settings.html:485
+#: templates/settings.html:480
 msgid "Generate Invite Code"
 msgstr "Generar código de invitación"
 
-#: templates/settings.html:489
+#: templates/settings.html:484
 msgid "Existing Invite Codes"
 msgstr "Códigos de invitación existentes"
 
-#: templates/settings.html:493
+#: templates/settings.html:488
 msgid "Code"
 msgstr "Código"
 
-#: templates/settings.html:494
+#: templates/settings.html:489
 msgid "Max Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:495
+#: templates/settings.html:490
 msgid "Current Uses"
 msgstr "Usos actuales"
 
-#: templates/settings.html:496
+#: templates/settings.html:491
 msgid "Created By"
 msgstr "Creado por"
 
-#: templates/settings.html:497
+#: templates/settings.html:492
 msgid "Created At"
 msgstr "Creado el"
 
-#: templates/settings.html:498
+#: templates/settings.html:493
 msgid "Expires At"
 msgstr "Expira el"
 
-#: templates/settings.html:499
+#: templates/settings.html:494
 msgid "Status"
 msgstr "Estado"
 
@@ -2554,4 +2574,5 @@ msgstr "¡Terminado!"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Aún no hay libros terminados."
+
 

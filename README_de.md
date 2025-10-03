@@ -299,17 +299,17 @@ Hier sind einige Beispiele für natürlichsprachige Prompts, die Sie mit einem K
 
 Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Methode `tools/list` aufrufen. Die derzeit unterstützten Werkzeuge sind:
 
--   **`search_calibre_books`**: Suchen Sie nach Büchern mit der leistungsstarken Suchsyntax von Calibre.
-    -   **Parameter**: `search_expression` (Zeichenkette), `limit` (Ganzzahl, optional).
-    -   **Funktionalität**: Sie können einfache Schlüsselwörter für eine breite Suche angeben oder komplexe Abfragen erstellen.
-    -   **Beispiel (Erweiterte Suche)**: Finden Sie Bücher von "O'Reilly Media" mit einer Bewertung von 4 Sternen oder höher.
+-   **`search_books`**: Suchen Sie mit der leistungsstarken Suchsyntax von Calibre nach Büchern in einer bestimmten Bibliothek. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `search_expression` (string), `limit` (integer, optional).
+    -   **Beispiel (Erweiterte Suche)**: Finden Sie Bücher in der `calibre`-Bibliothek von "O'Reilly Media" mit einer Bewertung von 4 Sternen oder höher.
         ```json
         {
             "jsonrpc": "2.0",
             "method": "tools/call",
             "params": {
-                "name": "search_calibre_books",
+                "name": "search_books",
                 "arguments": {
+                    "library_type": "calibre",
                     "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
                     "limit": 10
                 }
@@ -317,23 +317,28 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
             "id": "search-request-1"
         }
         ```
--   `get_recent_calibre_books`: Holen Sie sich die neuesten Bücher aus der Calibre-Bibliothek.
--   `get_calibre_book_details`: Holen Sie sich Details zu einem bestimmten Calibre-Buch.
--   `get_recent_anx_books`: Holen Sie sich die neuesten Bücher aus der Anx-Bibliothek.
--   `get_anx_book_details`: Holen Sie sich Details zu einem bestimmten Anx-Buch.
--   `push_calibre_book_to_anx`: Schieben Sie ein Calibre-Buch in die Anx-Bibliothek.
--   `send_calibre_book_to_kindle`: Senden Sie ein Calibre-Buch an Kindle.
--   `get_calibre_epub_table_of_contents`: Ruft das Inhaltsverzeichnis für ein Calibre-Buch ab.
--   `get_calibre_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Calibre-Buch ab.
--   `get_anx_epub_table_of_contents`: Ruft das Inhaltsverzeichnis für ein Buch aus der Anx-Bibliothek ab.
--   `get_anx_epub_chapter_content`: Ruft den Inhalt eines Kapitels aus einem Buch der Anx-Bibliothek ab.
--   `get_calibre_epub_entire_content`: Ruft den gesamten Inhalt eines Calibre-Buches ab.
--   `get_anx_epub_entire_content`: Ruft den gesamten Inhalt eines Buches aus der Anx-Bibliothek ab.
--   `get_calibre_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Calibre-Buch ab (Gesamtzahl und pro Kapitel).
--   `get_anx_book_word_count_stats`: Ruft die Wortzahlstatistiken für ein Buch aus der Anx-Bibliothek ab (Gesamtzahl und pro Kapitel).
--   `generate_audiobook`: Generiert ein Hörbuch für ein Buch aus der Anx- oder Calibre-Bibliothek.
--   `get_audiobook_generation_status`: Ruft den Status einer Hörbuch-Generierungsaufgabe anhand ihrer Aufgaben-ID ab.
--   `get_audiobook_status_by_book`: Ruft den Status der neuesten Hörbuch-Aufgabe für ein bestimmtes Buch anhand seiner ID und des Bibliothekstyps ab.
+-   **`get_recent_books`**: Holen Sie sich die neuesten Bücher aus einer bestimmten Bibliothek. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `limit` (integer, optional).
+-   **`get_book_details`**: Holen Sie sich Details zu einem bestimmten Buch in einer Bibliothek. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`push_calibre_book_to_anx`**: Schieben Sie ein Buch aus der Calibre-Bibliothek in die Anx-Bibliothek des Benutzers.
+    -   **Parameter**: `book_id` (integer).
+-   **`send_book_to_kindle`**: Senden Sie ein Buch aus einer bestimmten Bibliothek an Kindle. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`get_epub_table_of_contents`**: Ruft das Inhaltsverzeichnis für ein EPUB-Buch aus einer bestimmten Bibliothek ab. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`get_epub_chapter_content`**: Ruft den Inhalt eines bestimmten Kapitels aus einem EPUB-Buch ab. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer), `chapter_number` (integer).
+-   **`get_epub_entire_content`**: Ruft den gesamten Inhalt eines EPUB-Buches aus einer bestimmten Bibliothek ab. `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`get_book_word_count_stats`**: Ruft die Wortzahlstatistiken für ein Buch ab (Gesamtzahl und pro Kapitel). `library_type`: 'anx' (persönliche Bibliothek des Benutzers), 'calibre' (öffentliche Bibliothek).
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`generate_audiobook`**: Generiert ein Hörbuch für ein Buch aus der Anx- oder Calibre-Bibliothek.
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
+-   **`get_audiobook_generation_status`**: Ruft den Status einer Hörbuch-Generierungsaufgabe anhand ihrer Aufgaben-ID ab.
+    -   **Parameter**: `task_id` (string).
+-   **`get_audiobook_status_by_book`**: Ruft den Status der neuesten Hörbuch-Aufgabe für ein bestimmtes Buch anhand seiner ID und des Bibliothekstyps ab.
+    -   **Parameter**: `library_type` (string), `book_id` (integer).
 
 ## 💻 Entwicklung
 

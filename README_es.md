@@ -299,17 +299,17 @@ Aquí tienes algunos ejemplos de prompts en lenguaje natural que podrías usar c
 
 Puedes obtener una lista de todas las herramientas disponibles llamando al método `tools/list`. Las herramientas actualmente soportadas son:
 
--   **`search_calibre_books`**: Busca libros usando la potente sintaxis de búsqueda de Calibre.
-    -   **Parámetros**: `search_expression` (cadena), `limit` (entero, opcional).
-    -   **Funcionalidad**: Puedes proporcionar palabras clave simples para una búsqueda amplia o construir consultas complejas.
-    -   **Ejemplo (Búsqueda Avanzada)**: Encuentra libros de "O'Reilly Media" con una calificación de 4 estrellas o más.
+-   **`search_books`**: Busca libros en una biblioteca específica utilizando la potente sintaxis de búsqueda de Calibre. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `search_expression` (cadena), `limit` (entero, opcional).
+    -   **Ejemplo (Búsqueda Avanzada)**: Encuentra libros en la biblioteca `calibre` de "O'Reilly Media" con una calificación de 4 estrellas o más.
         ```json
         {
             "jsonrpc": "2.0",
             "method": "tools/call",
             "params": {
-                "name": "search_calibre_books",
+                "name": "search_books",
                 "arguments": {
+                    "library_type": "calibre",
                     "search_expression": "publisher:\"O'Reilly Media\" AND rating:>=4",
                     "limit": 10
                 }
@@ -317,23 +317,28 @@ Puedes obtener una lista de todas las herramientas disponibles llamando al méto
             "id": "search-request-1"
         }
         ```
--   `get_recent_calibre_books`: Obtiene libros recientes de la biblioteca de Calibre.
--   `get_calibre_book_details`: Obtiene detalles de un libro específico de Calibre.
--   `get_recent_anx_books`: Obtiene libros recientes de la biblioteca Anx.
--   `get_anx_book_details`: Obtiene detalles de un libro específico de Anx.
--   `push_calibre_book_to_anx`: Envía un libro de Calibre a la biblioteca Anx.
--   `send_calibre_book_to_kindle`: Envía un libro de Calibre a Kindle.
--   `get_calibre_epub_table_of_contents`: Obtiene la tabla de contenidos de un libro de Calibre.
--   `get_calibre_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de Calibre.
--   `get_anx_epub_table_of_contents`: Obtiene la tabla de contenidos de un libro de la biblioteca Anx.
--   `get_anx_epub_chapter_content`: Obtiene el contenido de un capítulo de un libro de la biblioteca Anx.
--   `get_calibre_epub_entire_content`: Obtiene el contenido completo de un libro de Calibre.
--   `get_anx_epub_entire_content`: Obtiene el contenido completo de un libro de la biblioteca Anx.
--   `get_calibre_book_word_count_stats`: Obtiene estadísticas de recuento de palabras para un libro de Calibre (total y por capítulo).
--   `get_anx_book_word_count_stats`: Obtiene estadísticas de recuento de palabras para un libro de la biblioteca Anx (total y por capítulo).
--   `generate_audiobook`: Genera un audiolibro para un libro de la biblioteca Anx o Calibre.
--   `get_audiobook_generation_status`: Obtiene el estado de una tarea de generación de audiolibros por su ID de tarea.
--   `get_audiobook_status_by_book`: Obtiene el estado de la última tarea de audiolibro para un libro específico por su ID y tipo de biblioteca.
+-   **`get_recent_books`**: Obtiene libros recientes de una biblioteca específica. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `limit` (entero, opcional).
+-   **`get_book_details`**: Obtiene detalles de un libro específico en una biblioteca. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`push_calibre_book_to_anx`**: Envía un libro de la biblioteca de Calibre a la biblioteca Anx del usuario.
+    -   **Parámetros**: `book_id` (entero).
+-   **`send_book_to_kindle`**: Envía un libro de una biblioteca específica a Kindle. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`get_epub_table_of_contents`**: Obtiene la tabla de contenidos de un libro EPUB de una biblioteca específica. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`get_epub_chapter_content`**: Obtiene el contenido de un capítulo específico de un libro EPUB. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero), `chapter_number` (entero).
+-   **`get_epub_entire_content`**: Obtiene el contenido completo de un libro EPUB de una biblioteca específica. `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`get_book_word_count_stats`**: Obtiene estadísticas de recuento de palabras para un libro (total y por capítulo). `library_type`: 'anx' (biblioteca personal del usuario), 'calibre' (biblioteca pública).
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`generate_audiobook`**: Genera un audiolibro para un libro de la biblioteca Anx o Calibre.
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
+-   **`get_audiobook_generation_status`**: Obtiene el estado de una tarea de generación de audiolibros por su ID de tarea.
+    -   **Parámetros**: `task_id` (cadena).
+-   **`get_audiobook_status_by_book`**: Obtiene el estado de la última tarea de audiolibro para un libro específico por su ID y tipo de biblioteca.
+    -   **Parámetros**: `library_type` (cadena), `book_id` (entero).
 
 ## 💻 Desarrollo
 
