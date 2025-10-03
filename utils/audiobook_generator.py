@@ -3,15 +3,12 @@ import os
 import re
 import logging
 import io
-import zipfile
 from dataclasses import dataclass
-from typing import Protocol, List, Tuple
+from typing import Protocol, List, Tuple, Dict, Any
 from abc import ABC, abstractmethod
 from time import sleep
 
 import ffmpeg
-from bs4 import BeautifulSoup
-import ebooklib
 from ebooklib import epub
 from mutagen.mp4 import MP4, MP4Cover, MP4FreeForm
 import edge_tts
@@ -21,7 +18,8 @@ from sentencex import segment
 
 import config_manager
 from utils.audiobook_tasks_db import get_tasks_to_cleanup, update_task_as_cleaned, get_all_successful_tasks
-from utils.epub_utils import _process_entire_epub
+from utils.epub_chapter_parser import get_parsed_chapters
+from utils.epub_meta import get_metadata
 from utils.text import generate_audiobook_filename
 
 # --- 常量 ---
@@ -185,6 +183,7 @@ class EdgeTTSProvider(BaseTTSProvider):
         
         segments: list[AudioSegment] = []
         paragraph_pause = AudioSegment.silent(duration=700) # 700ms 的段落停顿
+        sentence_pause = AudioSegment.silent(duration=300)  # 300ms 的句子停顿
 
         # 预先计算总块数以提供更准确的日志
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
@@ -213,6 +212,9 @@ class EdgeTTSProvider(BaseTTSProvider):
                         )
                         segment = await communicate.get_audio_segment()
                         segments.append(segment)
+                        # 如果不是段落的最后一个句子块，则添加句子停顿
+                        if i < len(text_chunks) - 1:
+                            segments.append(sentence_pause)
                         break
                     except Exception as e:
                         logger.warning(f"EdgeTTS error on chunk {chunk_counter} (attempt {attempt + 1}/{MAX_TTS_RETRIES}): {e}")
@@ -261,6 +263,7 @@ class OpenAITTSProvider(BaseTTSProvider):
         
         segments: list[AudioSegment] = []
         paragraph_pause = AudioSegment.silent(duration=700)
+        sentence_pause = AudioSegment.silent(duration=300)
 
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
         if total_chunks == 0: total_chunks = 1
@@ -290,6 +293,9 @@ class OpenAITTSProvider(BaseTTSProvider):
                     audio_data = io.BytesIO(response.content)
                     segment = AudioSegment.from_mp3(audio_data)
                     segments.append(segment)
+                    # 如果不是段落的最后一个句子块，则添加句子停顿
+                    if i < len(text_chunks) - 1:
+                        segments.append(sentence_pause)
 
                 except Exception as e:
                     logger.error(f"OpenAI TTS error on chunk {chunk_counter}: {e}")
@@ -317,200 +323,6 @@ class AudiobookGenerator:
         self.update_progress = update_progress_callback
         self.book_language = "en" # 默认语言
 
-    def _get_book_language(self, book: epub.EpubBook) -> str:
-        try:
-            lang_meta = book.get_metadata('DC', 'language')
-            if lang_meta and lang_meta[0][0]:
-                return lang_meta[0][0].split('-')[0] # 'en-US' -> 'en'
-        except Exception:
-            pass
-        return "en"
-
-    def _get_book_title(self, book: epub.EpubBook) -> str:
-        try:
-            if title_meta := book.get_metadata('DC', 'title'):
-                return title_meta[0][0]
-        except Exception as e:
-            logger.error(f"Error extracting title: {e}")
-        return "Untitled"
-
-    def _get_book_author(self, book: epub.EpubBook) -> str:
-        try:
-            if creator_meta := book.get_metadata('DC', 'creator'):
-                return creator_meta[0][0]
-        except Exception as e:
-            logger.error(f"Error extracting author: {e}")
-        return "Unknown Author"
-
-    def _get_epub_chapters(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
-        """
-        使用三级回退策略从 EPUB 文件中提取章节和内容，以确保最大程度的兼容性。
-        该函数会执行所有级别，并返回内容最丰富的那个级别结果。
-        """
-        # --- Level 1: MCP 高性能解析器 ---
-        logger.info("Attempting chapter extraction strategy: Level 1 (MCP Processor)...")
-        chapters_l1 = self._get_epub_chapters_level1_mcp(epub_path)
-        len_l1 = sum(len(self._extract_text_from_html(content)) for _, content in chapters_l1)
-        logger.info(f"Level 1 Result: {len(chapters_l1)} chapters, Total Length: {len_l1}")
-        # 如果 Level 1 的结果非常好，可以直接返回，跳过其他策略以提高效率
-        if len_l1 > 500:
-            logger.info("Level 1 provided a good result, using it directly.")
-            return chapters_l1
-
-        # --- Level 2: 旧版文档流解析 ---
-        logger.info("Attempting chapter extraction strategy: Level 2 (Legacy Document Stream)...")
-        chapters_l2 = self._get_epub_chapters_level2_legacy(book)
-        # Level 2 的内容已经是半处理过的文本，所以直接计算长度
-        len_l2 = sum(len(content) for _, content in chapters_l2)
-        logger.info(f"Level 2 Result: {len(chapters_l2)} chapters, Total Length: {len_l2}")
-
-        # --- Level 3: 基于 Spine 的原始文件读取 ---
-        logger.info("Attempting chapter extraction strategy: Level 3 (Spine Fallback)...")
-        chapters_l3 = self._get_epub_chapters_level3_spine(book, epub_path)
-        len_l3 = sum(len(self._extract_text_from_html(content)) for _, content in chapters_l3)
-        logger.info(f"Level 3 Result: {len(chapters_l3)} chapters, Total Length: {len_l3}")
-
-        # --- 比较所有结果并选择最佳 ---
-        results = [
-            (len_l1, chapters_l1, "Level 1"),
-            (len_l2, chapters_l2, "Level 2"),
-            (len_l3, chapters_l3, "Level 3")
-        ]
-
-        # 找到长度最大的那个结果
-        best_len, best_chapters, best_level_name = max(results, key=lambda item: item[0])
-
-        logger.info(f"Selected best result from {best_level_name}. Final Chapters: {len(best_chapters)}, Final Length: {best_len}.")
-        return best_chapters
-
-    def _get_epub_chapters_level1_mcp(self, epub_path: str) -> List[Tuple[str, str]]:
-        """
-        第一级提取策略：使用来自 utils.epub_utils 的高性能函数来精确提取章节内容。
-        返回原始 HTML 内容。
-        """
-        try:
-            processed_data = _process_entire_epub(epub_path)
-            if 'error' in processed_data:
-                logger.error(f"Level 1 MCP processor failed: {processed_data['error']}")
-                return []
-            
-            chapters = []
-            for chapter_data in processed_data.get('processed_chapters', []):
-                title = chapter_data.get('title', 'Untitled Chapter')
-                html_content = chapter_data.get('html_content', '')
-                if html_content.strip():
-                    chapters.append((title, html_content))
-            return chapters
-        except Exception as e:
-            logger.error(f"Exception in Level 1 MCP processor: {e}")
-            return []
-
-    def _get_epub_chapters_level2_legacy(self, book: epub.EpubBook) -> List[Tuple[str, str]]:
-        """
-        第二级提取策略：移植自旧版 epub_to_audiobook 的核心逻辑。
-        返回带段落标记的文本。
-        """
-        chapters = []
-        for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-            content = item.get_content()
-            soup = BeautifulSoup(content, "lxml-xml")
-            
-            title = ""
-            for level in ['h1', 'h2', 'h3', 'title']:
-                if tag := soup.find(level):
-                    title = tag.get_text().strip()
-                    break
-            if not title:
-                title = item.get_name() or item.file_name
-
-            # 使用 _extract_text_from_html 进行更可靠的文本提取和段落处理
-            cleaned_text = self._extract_text_from_html(str(soup))
-            
-            if cleaned_text.strip():
-                chapters.append((title, cleaned_text))
-        return chapters
-
-    def _get_epub_chapters_level3_spine(self, book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
-        """
-        第三级提取策略：基于 zipfile 和 book.spine 的手动解析。
-        返回原始 HTML 内容。
-        """
-        chapters = []
-        if not book.spine:
-            logger.warning("EPUB has no spine. Cannot use Level 3 extraction.")
-            return chapters
-            
-        try:
-            with zipfile.ZipFile(epub_path, 'r') as archive:
-                toc_title_map = {}
-                if book.toc:
-                    # 确保 toc_items 是可迭代的
-                    toc_items = book.toc if isinstance(book.toc, (list, tuple)) else [book.toc]
-                    for item in toc_items:
-                        # 递归处理嵌套的目录项
-                        def process_toc_item(toc_item):
-                            if isinstance(toc_item, ebooklib.epub.Link):
-                                toc_title_map[toc_item.href.split('#')[0]] = toc_item.title
-                            elif isinstance(toc_item, (list, tuple)):
-                                for sub_item in toc_item:
-                                    process_toc_item(sub_item)
-                        process_toc_item(item)
-
-                for item_id, _ in book.spine:
-                    item = book.get_item_with_id(item_id)
-                    if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
-                        file_name = item.file_name
-                        title = toc_title_map.get(file_name, item.get_name() or file_name)
-                        try:
-                            content = archive.read(f"OEBPS/{file_name}").decode('utf-8', 'ignore')
-                            chapters.append((title, content))
-                        except KeyError:
-                             try: # 尝试不带 OEBPS 前缀
-                                content = archive.read(file_name).decode('utf-8', 'ignore')
-                                chapters.append((title, content))
-                             except KeyError:
-                                logger.warning(f"File '{file_name}' not found in EPUB archive (with or without OEBPS prefix).")
-                        except Exception as e:
-                            logger.error(f"Error reading file '{file_name}' from EPUB: {e}")
-        except Exception as e:
-            logger.error(f"Failed to process EPUB with Level 3 (spine) method: {e}")
-
-        return chapters
-
-    def _extract_text_from_html(self, html_content: str) -> str:
-        """从HTML内容中稳健地提取和清理文本，并保留段落间隔。"""
-        soup = BeautifulSoup(html_content, 'html.parser')
-        # 移除不包含口头内容的标签
-        for element in soup(["script", "style", "head", "title", "meta", "[document]"]):
-            element.decompose()
-        
-        # 获取包含换行符的原始文本
-        raw_text = soup.get_text(strip=False)
-        
-        # 1. 将两个或多个换行符（段落分隔）替换为特殊标记
-        text_with_breaks = re.sub(r'[\n\r]{2,}', _PARAGRAPH_BREAK_MARKER, raw_text)
-        # 2. 将剩余的单个换行符替换为空格
-        text_no_single_newlines = re.sub(r'[\n\r]+', ' ', text_with_breaks)
-        # 3. 清理多余的空白字符
-        cleaned_text = re.sub(r'\s+', ' ', text_no_single_newlines).strip()
-        
-        return cleaned_text
-
-    def _sanitize_text(self, text: str) -> str:
-        """清理文本，移除多余的空白。"""
-        return re.sub(r'\s+', ' ', text).strip()
-
-    def _get_epub_cover_image(self, book: epub.EpubBook) -> bytes | None:
-        try:
-            if cover_items := list(book.get_items_of_type(ebooklib.ITEM_COVER)):
-                return cover_items[0].get_content()
-            for item in book.get_items_of_type(ebooklib.ITEM_IMAGE):
-                if 'cover' in item.get_name().lower():
-                    return item.get_content()
-        except Exception as e:
-            logger.error(f"Error extracting cover: {e}")
-        return None
-
     async def _generate_chapter_audio(self, semaphore: asyncio.Semaphore, index: int, title: str, content: str, book_id: str) -> ChapterAudio | None:
         async with semaphore:
             try:
@@ -521,12 +333,8 @@ class AudiobookGenerator:
                     "params": {"index": index + 1, "total": self.total_chapters}
                 })
 
-                # 无条件调用 _extract_text_from_html 来确保所有内容都被统一清理为纯文本。
-                # 这个函数足够健壮，可以处理原始 HTML 和半处理过的文本。
-                text = self._extract_text_from_html(content)
-
-                # 将 _extract_text_from_html 产生的标准段落分隔符 (\n\n) 转换回 TTS 处理器使用的内部标记。
-                text = text.replace('\n\n', f' {_PARAGRAPH_BREAK_MARKER} ')
+                # 将标准的段落分隔符 (\n\n) 转换回 TTS 处理器使用的内部标记。
+                text = content.replace('\n\n', f' {_PARAGRAPH_BREAK_MARKER} ')
                 
                 if not text.strip():
                     logger.warning(f"Chapter {index + 1} '{title}' is empty after processing, skipping.")
@@ -546,49 +354,43 @@ class AudiobookGenerator:
                 logger.error(f"Error processing chapter {index+1} ('{title}'): {e}")
                 return None
 
-    def _write_m4b_tags(self, book: epub.EpubBook, m4b_path: str, chapters_audio: List[ChapterAudio], cover_image_data: bytes | None = None):
+    def _write_m4b_tags(self, book_meta: Dict[str, Any], m4b_path: str, chapters_audio: List[ChapterAudio], cover_image_data: bytes | None = None):
         try:
             audio = MP4(m4b_path)
             
             # --- 标准元数据 ---
-            if title_meta := book.get_metadata('DC', 'title'):
-                audio["\xa9nam"] = [title_meta[0][0]]  # Title
-            if creator_meta := book.get_metadata('DC', 'creator'):
-                author_name = creator_meta[0][0]
-                audio["\xa9ART"] = [author_name]  # Artist
-                audio["aART"] = [author_name]   # Album Artist
+            if title := book_meta.get('title'):
+                audio["\xa9nam"] = [title]
+            
+            authors = book_meta.get('authors', [])
+            if authors:
+                author_name = authors[0]
+                audio["\xa9ART"] = [author_name]
+                audio["aART"] = [author_name]
             
             # --- 增强的元数据 ---
-            if publisher_meta := book.get_metadata('DC', 'publisher'):
-                audio["\xa9pub"] = [publisher_meta[0][0]]  # Publisher
+            if publisher := book_meta.get('publisher'):
+                audio["\xa9pub"] = [publisher]
 
-            if date_meta := book.get_metadata('DC', 'date'):
-                year_match = re.search(r'\d{4}', date_meta[0][0])
+            if pubdate := book_meta.get('pubdate'):
+                # pubdate 可能已经是年份字符串，或者包含年份的字符串
+                year_match = re.search(r'\d{4}', str(pubdate))
                 if year_match:
-                    audio["\xa9day"] = [year_match.group(0)]  # Year
+                    audio["\xa9day"] = [year_match.group(0)]
 
-            # Description - 优先使用 'description'，回退到 Calibre 可能使用的 'comments'
-            if description_meta := book.get_metadata('DC', 'description'):
-                audio["desc"] = [description_meta[0][0]]
-            elif comments_meta := book.get_metadata('DC', 'comments'):
-                 audio["desc"] = [comments_meta[0][0]]
+            # Description - 使用 'comments' 键，因为 get_metadata 已经处理了回退逻辑
+            if comments := book_meta.get('comments'):
+                 audio["desc"] = [comments]
 
-            if subject_meta := book.get_metadata('DC', 'subject'):
-                audio["\xa9gen"] = [s[0] for s in subject_meta]  # Genre
+            if tags := book_meta.get('tags'):
+                audio["\xa9gen"] = tags
 
-            if language_meta := book.get_metadata('DC', 'language'):
-                audio["lang"] = [language_meta[0][0]] # Language
+            if language := book_meta.get('language'):
+                audio["lang"] = [language]
 
             # 提取 ISBN
-            for identifier in book.get_metadata('DC', 'identifier'):
-                try:
-                    if 'scheme' in identifier[1] and identifier[1]['scheme'] == 'ISBN':
-                        isbn_value = identifier[0]
-                        # 使用一个非标准的 '----' atom 来存储 ISBN，某些播放器可能会识别
-                        audio["----:com.apple.iTunes:ISBN"] = MP4FreeForm(isbn_value.encode('utf-8'))
-                        break
-                except (IndexError, KeyError):
-                    continue
+            if isbn := book_meta.get('isbn'):
+                audio["----:com.apple.iTunes:ISBN"] = MP4FreeForm(isbn.encode('utf-8'))
 
             audio["\xa9wrt"] = [self.tts_provider.config.voice]  # Composer/Narrator
 
@@ -596,8 +398,8 @@ class AudiobookGenerator:
             # 优先使用外部传入的封面数据（例如从 Anx 数据库直接读取的）
             final_cover_data = cover_image_data
             if not final_cover_data:
-                # 如果没有外部封面，则尝试从 EPUB 文件内部提取
-                final_cover_data = self._get_epub_cover_image(book)
+                # 如果没有外部封面，则使用从 get_metadata 获取的封面
+                final_cover_data = book_meta.get('cover_image_data')
 
             if final_cover_data:
                 img_format = MP4Cover.FORMAT_JPEG if final_cover_data.startswith(b'\xff\xd8') else MP4Cover.FORMAT_PNG
@@ -636,7 +438,7 @@ class AudiobookGenerator:
         except Exception as e:
             logger.error(f"Error writing M4B tags: {e}")
 
-    async def generate(self, epub_path: str, book_id: str, library_type: str, username: str | None = None, cover_image_data: bytes | None = None) -> str | None:
+    async def generate(self, book_id: str, library_type: str, user_dict: dict, cover_image_data: bytes | None = None) -> str | None:
         # 在开始新任务前，执行一次自动清理
         cleanup_old_audiobooks()
 
@@ -644,25 +446,25 @@ class AudiobookGenerator:
         try:
             await self.update_progress("start", {"status_key": "GENERATION_STARTED"})
             
-            book = epub.read_epub(epub_path)
-            self.book_language = self._get_book_language(book)
-
             await self.update_progress("progress", {"percentage": 5, "status_key": "PARSING_EPUB"})
-            chapters = self._get_epub_chapters(book, epub_path)
-            logger.info(f"DEBUG: Found {len(chapters)} chapters from best-effort extraction.")
+            chapters = get_parsed_chapters(library_type, int(book_id), user_dict)
+            book_meta = get_metadata(library_type, int(book_id), user_dict)
+            
+            logger.info(f"DEBUG: Found {len(chapters)} chapters from unified parser.")
             if not chapters:
                 raise ValueError("CHAPTER_EXTRACTION_FAILED")
             self.total_chapters = len(chapters)
             
-            book_title = self._get_book_title(book)
-            book_author = self._get_book_author(book)
+            self.book_language = book_meta.get('language', 'en').split('-')[0]
+            book_title = book_meta.get('title', 'Untitled')
+            book_author = (book_meta.get('authors') or ['Unknown Author'])[0]
             
             output_filename = generate_audiobook_filename(
                 title=book_title,
                 author=book_author,
                 book_id=book_id,
                 library_type=library_type,
-                username=username
+                username=user_dict.get('username')
             )
             final_output_path = os.path.join(OUTPUT_DIR, output_filename)
 
@@ -675,13 +477,7 @@ class AudiobookGenerator:
             if not chapters_audio and chapters:
                 logger.warning("No valid text found in chapters. Attempting to process the entire book as a single chapter.")
                 
-                # 提取书中所有文档的纯文本内容
-                full_book_text_content = ""
-                for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-                    html_content = item.get_content().decode('utf-8', 'ignore')
-                    plain_text = self._extract_text_from_html(html_content)
-                    if plain_text:
-                        full_book_text_content += plain_text + " "
+                full_book_text_content = "\n\n".join([content for _, content in chapters])
 
                 if full_book_text_content.strip():
                     logger.debug(f"Fallback mode: full book text content (first 200 chars): {full_book_text_content.strip()[:200]}")
@@ -730,7 +526,7 @@ class AudiobookGenerator:
                     os.remove(concat_list_path)
 
             await self.update_progress("progress", {"percentage": 90, "status_key": "WRITING_METADATA"})
-            self._write_m4b_tags(book, final_output_path, chapters_audio, cover_image_data=cover_image_data)
+            self._write_m4b_tags(book_meta, final_output_path, chapters_audio, cover_image_data=cover_image_data)
 
             await self.update_progress("progress", {"percentage": 98, "status_key": "CLEANING_UP"})
             for chapter in chapters_audio:

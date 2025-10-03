@@ -11,10 +11,11 @@ from contextlib import closing
 import sqlite3
 import config_manager
 from anx_library import (
-    get_anx_user_dirs, 
-    process_anx_import_folder, 
+    get_anx_user_dirs,
+    process_anx_import_folder,
     update_anx_book_metadata,
-    delete_anx_book
+    delete_anx_book,
+    get_anx_book_details
 )
 from .calibre import download_calibre_book, get_calibre_book_details
 from .email_service import send_email_with_config
@@ -321,6 +322,60 @@ def edit_anx_metadata_api():
         return jsonify({'message': message})
     else:
         return jsonify({'error': message}), 500
+
+def _get_processed_epub_for_anx_book(id: int, username: str):
+    book_details = get_anx_book_details(username, id)
+    if not book_details:
+        return None, "BOOK_NOT_FOUND", False
+
+    file_path = book_details.get('file_path')
+    if not file_path:
+        return None, "FILE_PATH_MISSING", False
+
+    from anx_library import get_anx_user_dirs
+    dirs = get_anx_user_dirs(username)
+    if not dirs:
+        return None, "USER_DIR_NOT_FOUND", False
+
+    full_file_path = os.path.join(dirs['base'], 'data', file_path)
+    if not os.path.exists(full_file_path):
+        return None, "FILE_NOT_FOUND", False
+
+    needs_conversion = not full_file_path.lower().endswith('.epub')
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        epub_to_process_path = None
+        
+        if not needs_conversion:
+            epub_to_process_path = os.path.join(temp_dir, os.path.basename(full_file_path))
+            shutil.copy2(full_file_path, epub_to_process_path)
+        else:
+            if not shutil.which('ebook-converter'):
+                return None, "CONVERTER_NOT_FOUND", False
+
+            base_name, _unused = os.path.splitext(os.path.basename(full_file_path))
+            epub_filename = f"{base_name}.epub"
+            dest_path = os.path.join(temp_dir, epub_filename)
+
+            try:
+                subprocess.run(
+                    ['ebook-converter', full_file_path, dest_path],
+                    capture_output=True, text=True, check=True, timeout=300
+                )
+                epub_to_process_path = dest_path
+            except Exception:
+                return None, "CONVERSION_FAILED", False
+
+        if not epub_to_process_path or not os.path.exists(epub_to_process_path):
+            return None, "PROCESSING_FAILED", False
+
+        fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
+        
+        with open(fixed_epub_path, 'rb') as f:
+            content_to_send = f.read()
+
+        final_filename = os.path.basename(fixed_epub_path)
+        return content_to_send, final_filename, needs_conversion
 
 @books_bp.route('/delete_anx_book/<int:book_id>', methods=['DELETE'])
 def delete_anx_book_api(book_id):

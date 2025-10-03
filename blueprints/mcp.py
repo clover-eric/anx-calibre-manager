@@ -10,18 +10,16 @@ from flask import Blueprint, request, jsonify, g
 from contextlib import closing
 import database
 import config_manager
-import ebooklib
-from ebooklib import epub
-from lxml import etree, html
 from epub_fixer import fix_epub_for_kindle
 
 # Import necessary functions from other modules
 from .main import get_calibre_books
 # Rename the original function to avoid conflicts
 from .api.calibre import get_calibre_book_details as get_raw_calibre_book_details
-from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic, _get_processed_epub_for_book
-from anx_library import get_anx_books, get_anx_book_details
-from utils.epub_utils import _get_text_from_html, _extract_toc_from_epub, _process_entire_epub, _count_words
+from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic
+from anx_library import get_anx_books, get_anx_book_details as get_raw_anx_book_details
+from utils.epub_chapter_parser import get_parsed_chapters
+from utils.epub_utils import _count_words
 from blueprints.api.audiobook import generate_audiobook_route
 from utils.audiobook_tasks_db import get_latest_task_for_book
  
@@ -78,7 +76,7 @@ def format_calibre_book_data_for_mcp(book_data):
         'formats': list(book_data.get('format_metadata', {}).keys())
     }
 
-# --- Tool Implementations ---
+# --- Tool Implementations (Refactored and Unified) ---
 
 def search_calibre_books(search_expression: str, limit: int = 20):
     """
@@ -88,18 +86,26 @@ def search_calibre_books(search_expression: str, limit: int = 20):
     books, _unused = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
-def get_recent_calibre_books(limit: int = 20):
-    books, _unused = get_calibre_books(page=1, page_size=limit)
-    return [format_calibre_book_data_for_mcp(book) for book in books if book]
+def get_recent_books(library_type: str, limit: int = 20):
+    """获取指定书库（'anx' 或 'calibre'）中最近添加的书籍列表。"""
+    if library_type == 'calibre':
+        books, _unused = get_calibre_books(page=1, page_size=limit)
+        return [format_calibre_book_data_for_mcp(book) for book in books if book]
+    elif library_type == 'anx':
+        books = get_anx_books(g.user['username'])
+        return books[:limit]
+    else:
+        return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
-def get_calibre_book_details(book_id: int):
-    """Wrapper for getting and formatting book details."""
-    raw_details = get_raw_calibre_book_details(book_id)
-    return format_calibre_book_data_for_mcp(raw_details)
-
-def get_recent_anx_books(limit: int = 20):
-    books = get_anx_books(g.user['username'])
-    return books[:limit]
+def get_book_details(library_type: str, book_id: int):
+    """获取指定书库（'anx' 或 'calibre'）中某本书的详细信息。"""
+    if library_type == 'calibre':
+        raw_details = get_raw_calibre_book_details(book_id)
+        return format_calibre_book_data_for_mcp(raw_details)
+    elif library_type == 'anx':
+        return get_raw_anx_book_details(g.user['username'], book_id)
+    else:
+        return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
 def push_calibre_book_to_anx(book_id: int):
     return _push_calibre_to_anx_logic(dict(g.user), book_id)
@@ -107,247 +113,120 @@ def push_calibre_book_to_anx(book_id: int):
 def send_calibre_book_to_kindle(book_id: int):
     return _send_to_kindle_logic(dict(g.user), book_id)
 
-def _get_processed_epub_for_anx_book(id: int, username: str):
-    book_details = get_anx_book_details(username, id)
-    if not book_details:
-        return None, "BOOK_NOT_FOUND", False
-
-    file_path = book_details.get('file_path')
-    if not file_path:
-        return None, "FILE_PATH_MISSING", False
-
-    from anx_library import get_anx_user_dirs
-    dirs = get_anx_user_dirs(username)
-    if not dirs:
-        return None, "USER_DIR_NOT_FOUND", False
-
-    full_file_path = os.path.join(dirs['base'], 'data', file_path)
-    if not os.path.exists(full_file_path):
-        return None, "FILE_NOT_FOUND", False
-
-    needs_conversion = not full_file_path.lower().endswith('.epub')
-
-    with tempfile.TemporaryDirectory() as temp_dir:
-        epub_to_process_path = None
+def get_table_of_contents(library_type: str, book_id: int):
+    """获取指定书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。"""
+    try:
+        chapters = get_parsed_chapters(library_type, book_id, dict(g.user))
+        toc_items = [{'chapter_number': i + 1, 'title': title} for i, (title, _) in enumerate(chapters)]
         
-        if not needs_conversion:
-            epub_to_process_path = os.path.join(temp_dir, os.path.basename(full_file_path))
-            shutil.copy2(full_file_path, epub_to_process_path)
-        else:
-            if not shutil.which('ebook-converter'):
-                return None, "CONVERTER_NOT_FOUND", False
-
-            base_name, _unused = os.path.splitext(os.path.basename(full_file_path))
-            epub_filename = f"{base_name}.epub"
-            dest_path = os.path.join(temp_dir, epub_filename)
-
-            try:
-                subprocess.run(
-                    ['ebook-converter', full_file_path, dest_path],
-                    capture_output=True, text=True, check=True, timeout=300
-                )
-                epub_to_process_path = dest_path
-            except Exception:
-                return None, "CONVERSION_FAILED", False
-
-        if not epub_to_process_path or not os.path.exists(epub_to_process_path):
-            return None, "PROCESSING_FAILED", False
-
-        fixed_epub_path = fix_epub_for_kindle(epub_to_process_path, force_language='zh')
-        
-        with open(fixed_epub_path, 'rb') as f:
-            content_to_send = f.read()
-
-        final_filename = os.path.basename(fixed_epub_path)
-        return content_to_send, final_filename, needs_conversion
-
-def get_calibre_epub_table_of_contents(book_id: int):
-    user_dict = dict(g.user)
-    language = (user_dict.get('language') or 'zh').split('_')[0]
-    epub_content, epub_filename, _unused = _get_processed_epub_for_book(book_id, user_dict, language=language)
-
-    if epub_filename == 'CONVERTER_NOT_FOUND':
-        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
-    if not epub_content:
-        return {'error': '无法获取或处理书籍的 EPUB 文件。'}
-
-    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
-        temp_file.write(epub_content)
-        temp_file.flush()
-        
-        try:
-            book = epub.read_epub(temp_file.name)
-            toc_items = _extract_toc_from_epub(book)
-            # Add chapter numbers for user convenience
-            for i, item in enumerate(toc_items):
-                item['chapter_number'] = i + 1
-
+        if library_type == 'calibre':
             book_details = get_raw_calibre_book_details(book_id)
-            return {
-                "book_id": book_id,
-                "book_title": book_details.get('title', 'N/A'),
-                "total_chapters": len(toc_items),
-                "chapters": toc_items
-            }
-        except Exception as e:
-            return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
+            book_title = book_details.get('title', 'N/A')
+        elif library_type == 'anx':
+            book_details = get_raw_anx_book_details(g.user['username'], book_id)
+            book_title = book_details.get('title', 'N/A')
+        else:
+            return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
-def get_anx_epub_table_of_contents(id: int):
-    epub_content, epub_filename, _unused = _get_processed_epub_for_anx_book(id, g.user['username'])
+        return {
+            "library_type": library_type,
+            "book_id": book_id,
+            "book_title": book_title,
+            "total_chapters": len(toc_items),
+            "chapters": toc_items
+        }
+    except Exception as e:
+        return {"error": f"获取目录时出错: {str(e)}"}
 
-    if epub_filename == 'CONVERTER_NOT_FOUND':
-        return {'error': '此书需要转换为 EPUB 格式，但当前环境缺少 `ebook-converter` 工具。'}
-    if not epub_content:
-        return {'error': f'无法获取或处理书籍的 EPUB 文件。错误代码: {epub_filename}'}
-
-    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
-        temp_file.write(epub_content)
-        temp_file.flush()
+def get_chapter_content(library_type: str, book_id: int, chapter_number: int):
+    """获取指定书籍的指定章节纯文本内容。"""
+    try:
+        chapters = get_parsed_chapters(library_type, book_id, dict(g.user))
+        if not (1 <= chapter_number <= len(chapters)):
+            return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{len(chapters)}"}
         
-        try:
-            book = epub.read_epub(temp_file.name)
-            toc_items = _extract_toc_from_epub(book)
-            for i, item in enumerate(toc_items):
-                item['chapter_number'] = i + 1
+        chapter_title, chapter_content = chapters[chapter_number - 1]
 
-            book_details = get_anx_book_details(g.user['username'], id)
-            return {
-                "id": id,
-                "book_title": book_details.get('title', 'N/A'),
-                "total_chapters": len(toc_items),
-                "chapters": toc_items
-            }
-        except Exception as e:
-            return {"error": f"解析 EPUB 文件时出错: {str(e)}"}
+        if library_type == 'calibre':
+            book_details = get_raw_calibre_book_details(book_id)
+            book_title = book_details.get('title', 'N/A')
+        elif library_type == 'anx':
+            book_details = get_raw_anx_book_details(g.user['username'], book_id)
+            book_title = book_details.get('title', 'N/A')
+        else:
+            return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
-def _get_chapter_content_logic(book_id, chapter_number, get_epub_content_func, get_details_func):
-    """通用逻辑：使用高性能函数获取指定章节的内容。"""
-    epub_content, epub_filename, _ = get_epub_content_func()
-    if 'error' in (epub_filename or {}): return epub_filename
-    if not epub_content: return {'error': f'无法获取或处理书籍的 EPUB 文件。代码: {epub_filename}'}
+        return {
+            'library_type': library_type,
+            'book_id': book_id,
+            'book_title': book_title,
+            'chapter_number': chapter_number,
+            'chapter_title': chapter_title,
+            'content': chapter_content
+        }
+    except Exception as e:
+        return {"error": f"获取章节内容时出错: {str(e)}"}
 
-    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
-        temp_file.write(epub_content)
-        temp_file.flush()
-        processed_data = _process_entire_epub(temp_file.name)
-
-    if 'error' in processed_data:
-        return processed_data
-
-    total_chapters = processed_data.get('total_chapters', 0)
-    if not (1 <= chapter_number <= total_chapters):
-        return {"error": f"章节号 {chapter_number} 无效，有效范围: 1-{total_chapters}"}
-
-    chapter_data = processed_data['processed_chapters'][chapter_number - 1]
-    
-    book_details = get_details_func(book_id)
-    return {
-        'book_id': book_id,
-        'book_title': book_details.get('title', 'N/A'),
-        'chapter_number': chapter_number,
-        'chapter_title': chapter_data.get('title', 'N/A'),
-        'content': chapter_data.get('html_content', '')
-    }
-
-def get_calibre_epub_chapter_content(book_id: int, chapter_number: int):
-    """获取指定 Calibre 书籍的指定章节完整内容。"""
-    user_dict = dict(g.user)
-    language = (user_dict.get('language') or 'zh').split('_')[0]
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
-    return _get_chapter_content_logic(book_id, chapter_number, get_epub_func, get_raw_calibre_book_details)
-
-def get_anx_epub_chapter_content(id: int, chapter_number: int):
-    """获取指定 Anx 书籍的指定章节完整内容。"""
-    get_epub_func = lambda: _get_processed_epub_for_anx_book(id, g.user['username'])
-    get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
-    return _get_chapter_content_logic(id, chapter_number, get_epub_func, get_details_func)
-
-def _get_entire_book_content_logic(book_id, get_epub_content_func, get_details_func):
-    """通用逻辑：使用高性能函数获取整本书的纯文本内容。"""
-    epub_content, epub_filename, _ = get_epub_content_func()
-    if 'error' in (epub_filename or {}): return epub_filename
-    if not epub_content: return {'error': f'无法获取或处理书籍的 EPUB 文件。代码: {epub_filename}'}
-
-    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
-        temp_file.write(epub_content)
-        temp_file.flush()
-        processed_data = _process_entire_epub(temp_file.name)
-
-    if 'error' in processed_data:
-        return processed_data
-
-    full_text_parts = []
-    for chapter in processed_data.get('processed_chapters', []):
-        text_content = _get_text_from_html(chapter.get('html_content', ''))
-        full_text_parts.append(f"--- Chapter {chapter.get('chapter_number')}: {chapter.get('title', '')} ---\n\n{text_content}\n\n")
-    
-    book_details = get_details_func(book_id)
-    return {
-        'book_id': book_id,
-        'book_title': book_details.get('title', 'N/A'),
-        'full_text': "".join(full_text_parts)
-    }
-
-def _get_book_word_count_statistics_logic(book_id, get_epub_content_func, get_details_func):
-    """通用逻辑：使用高性能函数获取书籍的字数统计信息。"""
-    epub_content, epub_filename, _ = get_epub_content_func()
-    if 'error' in (epub_filename or {}): return epub_filename
-    if not epub_content: return {'error': f'无法获取或处理书籍的 EPUB 文件。代码: {epub_filename}'}
-
-    with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
-        temp_file.write(epub_content)
-        temp_file.flush()
-        processed_data = _process_entire_epub(temp_file.name)
-
-    if 'error' in processed_data:
-        return processed_data
-
-    stats = []
-    total_word_count = 0
-    for chapter in processed_data.get('processed_chapters', []):
-        text_content = _get_text_from_html(chapter.get('html_content', ''))
-        word_count = _count_words(text_content)
+def get_entire_book_content(library_type: str, book_id: int):
+    """获取指定书籍的完整纯文本内容（保留段落格式）。"""
+    try:
+        chapters = get_parsed_chapters(library_type, book_id, dict(g.user))
+        full_text_parts = []
+        for i, (title, content) in enumerate(chapters):
+            full_text_parts.append(f"--- Chapter {i + 1}: {title} ---\n\n{content}\n\n")
         
-        stats.append({
-            'chapter_number': chapter.get('chapter_number'),
-            'chapter_title': chapter.get('title', 'N/A'),
-            'word_count': word_count
-        })
-        total_word_count += word_count
-    
-    book_details = get_details_func(book_id)
-    return {
-        'book_id': book_id,
-        'book_title': book_details.get('title', 'N/A'),
-        'total_word_count': total_word_count,
-        'chapter_statistics': stats
-    }
+        if library_type == 'calibre':
+            book_details = get_raw_calibre_book_details(book_id)
+            book_title = book_details.get('title', 'N/A')
+        elif library_type == 'anx':
+            book_details = get_raw_anx_book_details(g.user['username'], book_id)
+            book_title = book_details.get('title', 'N/A')
+        else:
+            return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
-def get_calibre_entire_book_content(book_id: int):
-    """获取指定 Calibre 书籍的完整纯文本内容。"""
-    user_dict = dict(g.user)
-    language = (user_dict.get('language') or 'zh').split('_')[0]
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
-    return _get_entire_book_content_logic(book_id, get_epub_func, get_raw_calibre_book_details)
+        return {
+            'library_type': library_type,
+            'book_id': book_id,
+            'book_title': book_title,
+            'full_text': "".join(full_text_parts)
+        }
+    except Exception as e:
+        return {"error": f"获取全书内容时出错: {str(e)}"}
 
-def get_anx_entire_book_content(id: int):
-    """获取指定 Anx 书籍的完整纯文本内容。"""
-    get_epub_func = lambda: _get_processed_epub_for_anx_book(id, g.user['username'])
-    get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
-    return _get_entire_book_content_logic(id, get_epub_func, get_details_func)
+def get_word_count_statistics(library_type: str, book_id: int):
+    """获取指定书籍的字数统计信息（分章节和总计）。"""
+    try:
+        chapters = get_parsed_chapters(library_type, book_id, dict(g.user))
+        
+        stats = []
+        total_word_count = 0
+        for i, (title, content) in enumerate(chapters):
+            word_count = _count_words(content)
+            stats.append({
+                'chapter_number': i + 1,
+                'chapter_title': title,
+                'word_count': word_count
+            })
+            total_word_count += word_count
+        
+        if library_type == 'calibre':
+            book_details = get_raw_calibre_book_details(book_id)
+            book_title = book_details.get('title', 'N/A')
+        elif library_type == 'anx':
+            book_details = get_raw_anx_book_details(g.user['username'], book_id)
+            book_title = book_details.get('title', 'N/A')
+        else:
+            return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
-def get_calibre_book_word_count_statistics(book_id: int):
-    """获取指定 Calibre 书籍的字数统计信息（分章节和总计）。"""
-    user_dict = dict(g.user)
-    language = (user_dict.get('language') or 'zh').split('_')[0]
-    get_epub_func = lambda: _get_processed_epub_for_book(book_id, user_dict, language=language)
-    return _get_book_word_count_statistics_logic(book_id, get_epub_func, get_raw_calibre_book_details)
-
-def get_anx_book_word_count_statistics(id: int):
-    """获取指定 Anx 书籍的字数统计信息（分章节和总计）。"""
-    get_epub_func = lambda: _get_processed_epub_for_anx_book(id, g.user['username'])
-    get_details_func = lambda book_id: get_anx_book_details(g.user['username'], book_id)
-    return _get_book_word_count_statistics_logic(id, get_epub_func, get_details_func)
+        return {
+            'library_type': library_type,
+            'book_id': book_id,
+            'book_title': book_title,
+            'total_word_count': total_word_count,
+            'chapter_statistics': stats
+        }
+    except Exception as e:
+        return {"error": f"获取字数统计时出错: {str(e)}"}
 
 
 def generate_audiobook(book_id: int, library_type: str):
@@ -430,7 +309,7 @@ TOOLS = {
     'generate_audiobook': {
         'function': generate_audiobook,
         'params': {'book_id': int, 'library_type': str},
-        'description': "为指定的书籍生成有声书。library_type 必须是 'anx' 或 'calibre'。"
+        'description': "为指定的书籍生成有声书。library_type 必须是 'anx' (用户正在看的书库) 或 'calibre' (公共书库)。"
     },
     'get_audiobook_generation_status': {
         'function': get_audiobook_generation_status,
@@ -440,7 +319,7 @@ TOOLS = {
     'get_audiobook_status_by_book': {
         'function': get_audiobook_status_by_book,
         'params': {'book_id': int, 'library_type': str},
-        'description': "通过书籍 ID 和库类型（'anx' 或 'calibre'）获取最新的有声书任务状态。"
+        'description': "通过书籍 ID 和库类型获取最新的有声书任务状态。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
     'search_calibre_books': {
         'function': search_calibre_books,
@@ -454,25 +333,15 @@ TOOLS = {
 - 通配符: * 匹配任意字符序列, ? 匹配单个字符。例如: title:hist* 或 author:Sm?th。
 - 正则表达式: field_name:~"regex"。例如: title:~"war.*peace"。"""
     },
-    'get_recent_calibre_books': {
-        'function': get_recent_calibre_books,
-        'params': {'limit': int},
-        'description': '获取最近添加到 Calibre 书库的书籍列表。'
+    'get_recent_books': {
+        'function': get_recent_books,
+        'params': {'library_type': str, 'limit': int},
+        'description': "获取指定书库中最近添加的书籍列表。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
-    'get_calibre_book_details': {
-        'function': get_calibre_book_details,
-        'params': {'book_id': int},
-        'description': '获取指定 ID 的 Calibre 书籍的详细信息。'
-    },
-    'get_recent_anx_books': {
-        'function': get_recent_anx_books,
-        'params': {'limit': int},
-        'description': '获取当前用户的 Anx 书库（正在看的书库）中最近的书籍列表。'
-    },
-    'get_anx_book_details': {
-        'function': get_anx_book_details,
-        'params': {'id': int},
-        'description': '获取指定 ID 的 Anx 书籍（正在看的书库）的详细信息。'
+    'get_book_details': {
+        'function': get_book_details,
+        'params': {'library_type': str, 'book_id': int},
+        'description': "获取指定书库中某本书的详细信息。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
     'push_calibre_book_to_anx': {
         'function': push_calibre_book_to_anx,
@@ -484,45 +353,25 @@ TOOLS = {
         'params': {'book_id': int},
         'description': '将指定的 Calibre 书籍发送到当前用户配置的 Kindle 邮箱。'
     },
-    'get_calibre_epub_table_of_contents': {
-        'function': get_calibre_epub_table_of_contents,
-        'params': {'book_id': int},
-        'description': '获取指定 Calibre 书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。'
+    'get_table_of_contents': {
+        'function': get_table_of_contents,
+        'params': {'library_type': str, 'book_id': int},
+        'description': "获取指定书库中书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
-    'get_calibre_epub_chapter_content': {
-        'function': get_calibre_epub_chapter_content,
-        'params': {'book_id': int, 'chapter_number': int},
-        'description': '获取指定 Calibre 书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
+    'get_chapter_content': {
+        'function': get_chapter_content,
+        'params': {'library_type': str, 'book_id': int, 'chapter_number': int},
+        'description': "获取指定书库中书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
-    'get_anx_epub_table_of_contents': {
-        'function': get_anx_epub_table_of_contents,
-        'params': {'id': int},
-        'description': '获取指定 Anx 书库（正在看的书库）中书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。'
+    'get_entire_book_content': {
+        'function': get_entire_book_content,
+        'params': {'library_type': str, 'book_id': int},
+        'description': "获取指定书库中书籍的完整纯文本内容（保留段落格式）。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     },
-    'get_anx_epub_chapter_content': {
-        'function': get_anx_epub_chapter_content,
-        'params': {'id': int, 'chapter_number': int},
-        'description': '获取指定 Anx 书库（正在看的书库）中书籍的指定章节完整内容。如果书籍不是 EPUB 格式，会自动尝试转换。'
-    },
-    'get_calibre_entire_book_content': {
-        'function': get_calibre_entire_book_content,
-        'params': {'book_id': int},
-        'description': '获取指定 Calibre 书籍的完整纯文本内容（保留段落格式）。'
-    },
-    'get_anx_entire_book_content': {
-        'function': get_anx_entire_book_content,
-        'params': {'id': int},
-        'description': '获取指定 Anx 书籍的完整纯文本内容（保留段落格式）。'
-    },
-    'get_calibre_book_word_count_statistics': {
-        'function': get_calibre_book_word_count_statistics,
-        'params': {'book_id': int},
-        'description': '获取指定 Calibre 书籍的字数统计信息（分章节和总计）。对于中文等语言统计字数，对于英文等语言统计单词数。'
-    },
-    'get_anx_book_word_count_statistics': {
-        'function': get_anx_book_word_count_statistics,
-        'params': {'id': int},
-        'description': '获取指定 Anx 书籍的字数统计信息（分章节和总计）。对于中文等语言统计字数，对于英文等语言统计单词数。'
+    'get_word_count_statistics': {
+        'function': get_word_count_statistics,
+        'params': {'library_type': str, 'book_id': int},
+        'description': "获取指定书库中书籍的字数统计信息（分章节和总计）。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
     }
 }
 
@@ -588,14 +437,6 @@ def mcp_endpoint():
             # 创建一个只包含目标函数所需参数的新字典，以避免意外的关键字参数错误
             expected_params = tool_info.get('params', {}).keys()
             filtered_arguments = {k: v for k, v in arguments.items() if k in expected_params}
-
-            if tool_name == 'get_anx_book_details':
-                if 'id' in arguments:
-                    # 'id' is the expected param, but the function needs 'book_id'
-                    filtered_arguments['book_id'] = arguments.get('id')
-                    if 'id' in filtered_arguments:
-                        del filtered_arguments['id']
-                filtered_arguments['username'] = g.user['username']
 
             try:
                 result = tool_function(**filtered_arguments)

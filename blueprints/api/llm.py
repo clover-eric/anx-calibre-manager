@@ -11,20 +11,12 @@ from threading import Lock
 
 # Use a try-except block for cleaner optional import
 try:
-    from blueprints.mcp import get_calibre_entire_book_content, get_anx_entire_book_content
+    from blueprints.mcp import get_entire_book_content
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
 
 llm_bp = Blueprint('llm', __name__, url_prefix='/api/llm')
-
-# File-based cache settings
-CACHE_DIR = "/tmp/anx_book_cache"
-MAX_CACHE_SIZE = 20  # Max number of book files to cache
-cache_lock = Lock()
-
-# Ensure cache directory exists
-os.makedirs(CACHE_DIR, exist_ok=True)
 
 def login_required_api(f):
     from functools import wraps
@@ -35,75 +27,34 @@ def login_required_api(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def _manage_cache():
-    """Clean up cache based on LRU (access time)."""
-    try:
-        files = [os.path.join(CACHE_DIR, f) for f in os.listdir(CACHE_DIR)]
-        if len(files) > MAX_CACHE_SIZE:
-            files.sort(key=lambda x: os.path.getatime(x))
-            os.remove(files[0])
-    except OSError:
-        # Ignore errors during cleanup (e.g., file removed by another process)
-        pass
-
 def _generate_llm_response(session_id, book_id, book_type, user_info_dict, translated_strings, app, user_message_id=None):
     """
     Internal generator function to handle LLM response generation.
     It receives all necessary data as arguments to avoid working outside of an application context.
     """
-    # --- Get book content with file-based cache ---
-    cache_filename = f"{book_type}_{book_id}.txt"
-    cache_filepath = os.path.join(CACHE_DIR, cache_filename)
+    # --- Get book content using the new unified and cached function ---
+    stage_message = json.dumps({"message": translated_strings['extracting_book_content']})
+    yield f"event: stage_update\ndata: {stage_message}\n\n"
+
     book_content = None
+    content_result = {}
+    with app.app_context():
+        # We need to set g.user within the context for the MCP function to work correctly
+        g.user = user_info_dict
+        content_result = get_entire_book_content(library_type=book_type, book_id=book_id)
 
-    with cache_lock:
-        if os.path.exists(cache_filepath):
-            try:
-                with open(cache_filepath, 'r', encoding='utf-8') as f:
-                    book_content = f.read()
-                # Update access time for LRU
-                os.utime(cache_filepath, None)
-            except IOError:
-                book_content = None # File might be gone, proceed to fetch
-
-    if book_content is None:
-        stage_message = json.dumps({"message": translated_strings['extracting_book_content']})
-        yield f"event: stage_update\ndata: {stage_message}\n\n"
-
-        if book_type not in ['calibre', 'anx']:
-            error_message = json.dumps({"error": translated_strings['invalid_book_type']})
-            yield f"event: error\ndata: {error_message}\n\n"
-            return
-
-        content_result = {}
-        with app.app_context():
-            g.user = user_info_dict
-            if book_type == 'calibre':
-                content_result = get_calibre_entire_book_content(book_id)
-            elif book_type == 'anx':
-                content_result = get_anx_entire_book_content(book_id)
-
-        if 'error' in content_result:
-            error_text = translated_strings['failed_to_get_book_content'] % {'error': content_result['error']}
-            error_message = json.dumps({"error": error_text})
-            yield f"event: error\ndata: {error_message}\n\n"
-            return
-        
-        book_content = content_result.get('full_text', '')
-        if not book_content:
-            error_message = json.dumps({"error": translated_strings['could_not_extract_text']})
-            yield f"event: error\ndata: {error_message}\n\n"
-            return
-        
-        with cache_lock:
-            _manage_cache()
-            try:
-                with open(cache_filepath, 'w', encoding='utf-8') as f:
-                    f.write(book_content)
-            except IOError:
-                # If writing fails, we just proceed without caching
-                pass
+    if 'error' in content_result:
+        error_text = translated_strings['failed_to_get_book_content'] % {'error': content_result['error']}
+        error_message = json.dumps({"error": error_text})
+        yield f"event: error\ndata: {error_message}\n\n"
+        return
     
+    book_content = content_result.get('full_text', '')
+    if not book_content:
+        error_message = json.dumps({"error": translated_strings['could_not_extract_text']})
+        yield f"event: error\ndata: {error_message}\n\n"
+        return
+
     # --- Call LLM ---
     stage_message = json.dumps({"message": translated_strings['waiting_for_model']})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
