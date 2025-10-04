@@ -182,8 +182,8 @@ class EdgeTTSProvider(BaseTTSProvider):
         paragraphs = text.split(_PARAGRAPH_BREAK_MARKER)
         
         segments: list[AudioSegment] = []
-        paragraph_pause = AudioSegment.silent(duration=700) # 700ms 的段落停顿
-        sentence_pause = AudioSegment.silent(duration=300)  # 300ms 的句子停顿
+        paragraph_pause = AudioSegment.silent(duration=1500) # 1500ms 的段落停顿
+        sentence_pause = AudioSegment.silent(duration=900)  # 900ms 的句子停顿
 
         # 预先计算总块数以提供更准确的日志
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
