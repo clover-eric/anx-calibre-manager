@@ -123,44 +123,56 @@ def _get_epub_chapters_level2_legacy(book: epub.EpubBook) -> List[Tuple[str, str
 def _get_epub_chapters_level3_spine(book: epub.EpubBook, epub_path: str) -> List[Tuple[str, str]]:
     """
     第三级提取策略：基于 Spine 的手动解析，返回 (标题, 纯文本)。
+    此策略通过直接扫描 zip 存档来稳健地定位 OPF 目录。
     """
     chapters = []
     if not book.spine:
         logger.warning("EPUB has no spine. Cannot use Level 3 extraction.")
         return chapters
-
-    # 动态获取 OPF 文件的父目录，例如 'OEBPS' 或 'Content'
-    # book.opf_dir 会返回规范化的路径，末尾可能没有斜杠，所以我们确保添加它
-    opf_dir = book.opf_dir
-    if opf_dir and not opf_dir.endswith('/'):
-        opf_dir += '/'
         
     try:
         with zipfile.ZipFile(epub_path, 'r') as archive:
+            # --- 新增：稳健地查找 OPF 目录 ---
+            # 不再信任 book.opf_dir，而是通过扫描 zip 文件列表来查找 .opf 文件。
+            opf_dir = ''
+            # 标准方式：先检查 META-INF/container.xml
+            try:
+                container_content = archive.read('META-INF/container.xml').decode('utf-8', 'ignore')
+                rootfile_path_match = re.search(r'full-path="([^"]+)"', container_content)
+                if rootfile_path_match:
+                    opf_full_path = rootfile_path_match.group(1)
+                    opf_dir = os.path.dirname(opf_full_path)
+                    logger.info(f"Level 3: Found OPF path '{opf_full_path}' from container.xml. OPF dir is '{opf_dir}'.")
+            except (KeyError, AttributeError):
+                 # 回退方式：如果 container.xml 失败，则扫描整个存档
+                logger.warning("Level 3: Could not find or parse container.xml, scanning for .opf file.")
+                for filename in archive.namelist():
+                    if filename.lower().endswith('.opf'):
+                        opf_dir = os.path.dirname(filename)
+                        logger.info(f"Level 3: Found OPF file by scanning: '{filename}'. OPF dir is '{opf_dir}'.")
+                        break
+            
+            # --- TOC 标题映射 ---
             toc_title_map = {}
             if book.toc:
                 toc_items = book.toc if isinstance(book.toc, (list, tuple)) else [book.toc]
                 for item in toc_items:
                     def process_toc_item(toc_item):
                         if isinstance(toc_item, ebooklib.epub.Link):
-                            # TOC hrefs 可能也需要相对于 OPF 目录进行规范化
-                            toc_href = toc_item.href.split('#')[0]
-                            toc_title_map[toc_href] = toc_item.title
+                            toc_title_map[toc_item.href.split('#')[0]] = toc_item.title
                         elif isinstance(toc_item, (list, tuple)):
                             for sub_item in toc_item:
                                 process_toc_item(sub_item)
                     process_toc_item(item)
 
+            # --- 遍历 Spine ---
             for item_id, _ in book.spine:
                 item = book.get_item_with_id(item_id)
                 if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
-                    # item.file_name 是相对于 OPF 文件的路径
                     relative_file_name = item.file_name
-                    # 尝试从 TOC map 中找到最匹配的标题
                     title = toc_title_map.get(relative_file_name, item.get_name() or relative_file_name)
                     
-                    # 构建在 zip 压缩包内的完整路径
-                    # 如果 opf_dir 是空字符串 (OPF 在根目录), os.path.join 会正确处理
+                    # 使用找到的 opf_dir 构建完整路径
                     full_path_in_zip = os.path.join(opf_dir, relative_file_name).replace('\\', '/')
 
                     try:
@@ -169,15 +181,7 @@ def _get_epub_chapters_level3_spine(book: epub.EpubBook, epub_path: str) -> List
                         if plain_text:
                             chapters.append((title, plain_text))
                     except KeyError:
-                        logger.warning(f"File '{full_path_in_zip}' not found in EPUB archive. Trying without OPF dir.")
-                        # 作为最终回退，尝试直接使用相对路径（适用于 OPF 在根目录的特殊情况）
-                        try:
-                            content = archive.read(relative_file_name).decode('utf-8', 'ignore')
-                            plain_text = extract_text_from_html(content)
-                            if plain_text:
-                                chapters.append((title, plain_text))
-                        except KeyError:
-                            logger.error(f"File '{relative_file_name}' also not found. Skipping.")
+                        logger.warning(f"File '{full_path_in_zip}' not found in EPUB archive. Skipping.")
                     except Exception as e:
                         logger.error(f"Error reading file '{full_path_in_zip}' from EPUB: {e}")
     except Exception as e:
