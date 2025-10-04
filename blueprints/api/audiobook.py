@@ -198,16 +198,6 @@ def generate_audiobook_route():
             # 这个特殊的 kwarg 是给 run_async_task 用的，而不是 generator.generate
             generator_kwargs['temp_file_to_clean'] = book_path_or_temp_file
 
-        # 准备传递给生成器的参数
-        generator_kwargs = {
-            'library_type': library,
-            'username': g.user.username
-        }
-        if library == 'anx':
-            cover_data = get_anx_cover_data(g.user.username, book_id)
-            if cover_data:
-                generator_kwargs['cover_image_data'] = cover_data
-
         # 检查是否使用了临时文件，以便在任务结束后清理
         temp_file_to_clean = None
         if "tmp" in book_path_or_temp_file:
@@ -227,7 +217,8 @@ def generate_audiobook_route():
         thread = threading.Thread(
             target=run_async_task,
             args=(generator.generate, str(book_id), library, user_dict_for_thread),
-            kwargs={'cover_image_data': generator_kwargs.get('cover_image_data'), **run_async_kwargs}
+            # 修复：移除错误的 kwargs 重置，并正确合并外部封面数据和临时文件清理参数
+            kwargs={**generator_kwargs, **run_async_kwargs}
         )
         thread.daemon = True
         thread.start()
