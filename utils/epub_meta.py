@@ -40,13 +40,19 @@ def _extract_from_ebooklib(book: epub.EpubBook) -> Dict[str, Any]:
 def _get_epub_cover_image(book: epub.EpubBook) -> bytes | None:
     """从 ebooklib.EpubBook 对象中提取封面图片数据。"""
     try:
-        # 首先尝试获取明确标记为 'cover' 的图片
+        # 策略 1: 尝试获取明确标记为 'cover' 的图片
         if cover_items := list(book.get_items_of_type(ebooklib.ITEM_COVER)):
             return cover_items[0].get_content()
-        # 如果没有，则回退查找文件名中包含 'cover' 的图片
+        
+        # 策略 2: 回退查找文件名中包含 'cover' 的图片
         for item in book.get_items_of_type(ebooklib.ITEM_IMAGE):
             if 'cover' in item.get_name().lower():
                 return item.get_content()
+
+        # 策略 3: 最终回退，返回书中的第一张图片
+        if images := list(book.get_items_of_type(ebooklib.ITEM_IMAGE)):
+            return images[0].get_content()
+            
     except Exception:
         # 忽略提取封面时可能发生的任何错误
         pass
