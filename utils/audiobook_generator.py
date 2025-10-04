@@ -374,12 +374,16 @@ class AudiobookGenerator:
 
             UNDEFINED_DATE_ISO = '0101-01-01T00:00:00+00:00'
             if pubdate := book_meta.get('pubdate'):
-                # 检查是否为 Calibre 的未定义日期，如果是则跳过
-                if UNDEFINED_DATE_ISO not in str(pubdate):
+                pubdate_str = str(pubdate).strip()
+                # 检查是否为 Calibre 的未定义日期或 Anx/EPUB 内部的无效年份，如果是则跳过
+                if UNDEFINED_DATE_ISO not in pubdate_str and pubdate_str not in ['0101', '101']:
                     # pubdate 可能已经是年份字符串，或者包含年份的字符串
-                    year_match = re.search(r'\d{4}', str(pubdate))
+                    year_match = re.search(r'\d{4}', pubdate_str)
                     if year_match:
-                        audio["\xa9day"] = [year_match.group(0)]
+                        # 再次检查匹配到的年份是否有效
+                        year_val = year_match.group(0)
+                        if year_val not in ['0101', '101']:
+                            audio["\xa9day"] = [year_val]
 
             # Description - 使用 'comments' 键，因为 get_metadata 已经处理了回退逻辑
             if comments := book_meta.get('comments'):
