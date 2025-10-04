@@ -16,7 +16,7 @@ from .books import _get_processed_epub_for_book
 from .calibre import get_calibre_book_details
 from anx_library import get_anx_user_dirs
 from utils.text import generate_audiobook_filename
-from utils.covers import get_anx_cover_data
+from utils.covers import get_anx_cover_data, get_calibre_cover_data
 import json
 from utils.audiobook_tasks_db import (
     add_audiobook_task,
@@ -186,6 +186,10 @@ def generate_audiobook_route():
         generator_kwargs = {}
         if library == 'anx':
             cover_data = get_anx_cover_data(g.user.username, book_id)
+            if cover_data:
+                generator_kwargs['cover_image_data'] = cover_data
+        elif library == 'calibre':
+            cover_data = get_calibre_cover_data(book_id)
             if cover_data:
                 generator_kwargs['cover_image_data'] = cover_data
 
