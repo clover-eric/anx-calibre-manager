@@ -128,6 +128,12 @@ def _get_epub_chapters_level3_spine(book: epub.EpubBook, epub_path: str) -> List
     if not book.spine:
         logger.warning("EPUB has no spine. Cannot use Level 3 extraction.")
         return chapters
+
+    # 动态获取 OPF 文件的父目录，例如 'OEBPS' 或 'Content'
+    # book.opf_dir 会返回规范化的路径，末尾可能没有斜杠，所以我们确保添加它
+    opf_dir = book.opf_dir
+    if opf_dir and not opf_dir.endswith('/'):
+        opf_dir += '/'
         
     try:
         with zipfile.ZipFile(epub_path, 'r') as archive:
@@ -137,7 +143,9 @@ def _get_epub_chapters_level3_spine(book: epub.EpubBook, epub_path: str) -> List
                 for item in toc_items:
                     def process_toc_item(toc_item):
                         if isinstance(toc_item, ebooklib.epub.Link):
-                            toc_title_map[toc_item.href.split('#')[0]] = toc_item.title
+                            # TOC hrefs 可能也需要相对于 OPF 目录进行规范化
+                            toc_href = toc_item.href.split('#')[0]
+                            toc_title_map[toc_href] = toc_item.title
                         elif isinstance(toc_item, (list, tuple)):
                             for sub_item in toc_item:
                                 process_toc_item(sub_item)
@@ -146,23 +154,32 @@ def _get_epub_chapters_level3_spine(book: epub.EpubBook, epub_path: str) -> List
             for item_id, _ in book.spine:
                 item = book.get_item_with_id(item_id)
                 if item and item.get_type() == ebooklib.ITEM_DOCUMENT:
-                    file_name = item.file_name
-                    title = toc_title_map.get(file_name, item.get_name() or file_name)
+                    # item.file_name 是相对于 OPF 文件的路径
+                    relative_file_name = item.file_name
+                    # 尝试从 TOC map 中找到最匹配的标题
+                    title = toc_title_map.get(relative_file_name, item.get_name() or relative_file_name)
+                    
+                    # 构建在 zip 压缩包内的完整路径
+                    # 如果 opf_dir 是空字符串 (OPF 在根目录), os.path.join 会正确处理
+                    full_path_in_zip = os.path.join(opf_dir, relative_file_name).replace('\\', '/')
+
                     try:
-                        content = archive.read(f"OEBPS/{file_name}").decode('utf-8', 'ignore')
+                        content = archive.read(full_path_in_zip).decode('utf-8', 'ignore')
                         plain_text = extract_text_from_html(content)
                         if plain_text:
                             chapters.append((title, plain_text))
                     except KeyError:
-                         try:
-                            content = archive.read(file_name).decode('utf-8', 'ignore')
+                        logger.warning(f"File '{full_path_in_zip}' not found in EPUB archive. Trying without OPF dir.")
+                        # 作为最终回退，尝试直接使用相对路径（适用于 OPF 在根目录的特殊情况）
+                        try:
+                            content = archive.read(relative_file_name).decode('utf-8', 'ignore')
                             plain_text = extract_text_from_html(content)
                             if plain_text:
                                 chapters.append((title, plain_text))
-                         except KeyError:
-                            logger.warning(f"File '{file_name}' not found in EPUB archive.")
+                        except KeyError:
+                            logger.error(f"File '{relative_file_name}' also not found. Skipping.")
                     except Exception as e:
-                        logger.error(f"Error reading file '{file_name}' from EPUB: {e}")
+                        logger.error(f"Error reading file '{full_path_in_zip}' from EPUB: {e}")
     except Exception as e:
         logger.error(f"Failed to process EPUB with Level 3 (spine) method: {e}")
 
