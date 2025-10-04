@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const seek = (seconds) => { dom.audioElement.currentTime += seconds; };
 
-    const playbackRates = [0.3, 0.5, 0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5, 3.0];
+    const playbackRates = [0.3, 0.5, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.5, 3.0];
 
     const applyPlaybackRate = (rate) => {
         dom.audioElement.playbackRate = rate;
