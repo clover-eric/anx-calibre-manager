@@ -326,7 +326,7 @@ class AudiobookGenerator:
     async def _generate_chapter_audio(self, semaphore: asyncio.Semaphore, index: int, title: str, content: str, book_id: str) -> ChapterAudio | None:
         async with semaphore:
             try:
-                progress = 10 + int(60 * (index / self.total_chapters))
+                progress = 10 + int(60 * ((index + 1) / self.total_chapters))
                 await self.update_progress("progress", {
                     "percentage": progress,
                     "status_key": "PROCESSING_CHAPTER",
