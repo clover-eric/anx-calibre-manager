@@ -65,7 +65,13 @@ def get_metadata(library_type: str, book_id: int, user_dict: Dict[str, Any]) -> 
     # --- 步骤 1: 从数据库获取核心权威元数据 (Title, Authors) 和其他可用字段 ---
     if library_type == 'calibre':
         from blueprints.api.calibre import get_calibre_book_details
+        from .epub_chapter_parser import extract_text_from_html
         db_meta = get_calibre_book_details(book_id) or {}
+        
+        # 清理 comments 字段的 HTML
+        if 'comments' in db_meta:
+            db_meta['comments'] = extract_text_from_html(db_meta['comments'])
+
         final_meta['title'] = db_meta.get('title', 'Untitled')
         final_meta['authors'] = db_meta.get('authors', ['Unknown Author'])
     elif library_type == 'anx':
@@ -76,12 +82,12 @@ def get_metadata(library_type: str, book_id: int, user_dict: Dict[str, Any]) -> 
         final_meta['authors'] = [author] if author else ['Unknown Author']
 
     # --- 步骤 2: 获取 EPUB 内容并提取补充元数据 ---
-    epub_content, _, _unused = (None, None, None)
+    epub_content, _unused1, _unused2 = (None, None, None)
     if library_type == 'calibre':
         language = (user_dict.get('language') or 'zh').split('_')[0]
-        epub_content, _, _unused = _get_processed_epub_for_book(book_id, user_dict, language=language)
+        epub_content, _unused1, _unused2 = _get_processed_epub_for_book(book_id, user_dict, language=language)
     elif library_type == 'anx':
-        epub_content, _, _unused = _get_processed_epub_for_anx_book(book_id, user_dict['username'])
+        epub_content, _unused1, _unused2 = _get_processed_epub_for_anx_book(book_id, user_dict['username'])
 
     if epub_content:
         with tempfile.NamedTemporaryFile(suffix='.epub', delete=True) as temp_file:
