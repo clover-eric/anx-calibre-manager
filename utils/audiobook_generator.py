@@ -21,6 +21,7 @@ from utils.audiobook_tasks_db import get_tasks_to_cleanup, update_task_as_cleane
 from utils.epub_chapter_parser import get_parsed_chapters
 from utils.epub_meta import get_metadata
 from utils.text import generate_audiobook_filename
+import string
 
 # --- 常量 ---
 _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
@@ -101,6 +102,12 @@ def split_long_sentence(sentence: str, max_chars: int) -> List[str]:
         parts.append(remaining[:best_split_idx])
         remaining = remaining[best_split_idx:]
     return parts
+
+def is_punctuation_or_whitespace(s: str) -> bool:
+    """检查字符串是否只包含标点符号、特殊符号和空白字符。"""
+    # 定义一个更全面的标点和符号集合
+    punctuation_and_symbols = string.punctuation + "。？！；，：、……“”‘’（）《》【】「」『』—"
+    return all(char.isspace() or char in punctuation_and_symbols for char in s)
 
 def split_text(text: str, max_chars: int, language: str) -> List[str]:
     if not text: return []
@@ -199,6 +206,12 @@ class EdgeTTSProvider(BaseTTSProvider):
             
             for i, chunk in enumerate(text_chunks):
                 chunk_counter += 1
+                
+                # 在发送到 TTS 之前，跳过只包含标点或空白的块
+                if is_punctuation_or_whitespace(chunk):
+                    logger.info(f"Skipping chunk {chunk_counter}/{total_chunks} as it contains only punctuation/whitespace.")
+                    continue
+
                 logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks}...")
                 for attempt in range(MAX_TTS_RETRIES):
                     try:
@@ -217,11 +230,13 @@ class EdgeTTSProvider(BaseTTSProvider):
                             segments.append(sentence_pause)
                         break
                     except Exception as e:
+                        # 增强日志：当 TTS 失败时，记录下导致失败的具体文本块内容
                         logger.warning(f"EdgeTTS error on chunk {chunk_counter} (attempt {attempt + 1}/{MAX_TTS_RETRIES}): {e}")
+                        logger.warning(f"Problematic chunk content: {chunk!r}") # 使用 !r 来显示原始字符串表示
                         if attempt < MAX_TTS_RETRIES - 1:
                             sleep(2 ** attempt)
                         else:
-                            logger.error(f"Failed to generate audio for chunk after {MAX_TTS_RETRIES} retries.")
+                            logger.error(f"Failed to generate audio for chunk after {MAX_TTS_RETRIES} retries. Content: {chunk!r}")
                             return False
             
             # 在每个段落（除了最后一个）之后添加停顿
