@@ -353,6 +353,8 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
     -   **Parameter**: `task_id` (string).
 -   **`get_audiobook_status_by_book`**: Ruft den Status der neuesten Hörbuch-Aufgabe für ein bestimmtes Buch anhand seiner ID und des Bibliothekstyps ab.
     -   **Parameter**: `library_type` (string, 'anx' oder 'calibre'), `book_id` (integer).
+-   **`get_user_reading_stats`**: Ruft Lesestatistiken für den aktuellen Benutzer ab.
+    -   **Parameter**: `time_range` (string). Dieser Parameter ist erforderlich. Er kann "all", "today", "this_week", "this_month", "this_year", eine Anzahl der letzten Tage (z. B. "7", "30") oder ein Datumsbereich "JJJJ-MM-TT:JJJJ-MM-TT" sein.
 
 ## 💻 Entwicklung
 

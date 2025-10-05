@@ -353,6 +353,8 @@ Puedes obtener una lista de todas las herramientas disponibles llamando al méto
     -   **Parámetros**: `task_id` (cadena).
 -   **`get_audiobook_status_by_book`**: Obtiene el estado de la última tarea de audiolibro para un libro específico por su ID y tipo de biblioteca.
     -   **Parámetros**: `library_type` (cadena, 'anx' o 'calibre'), `book_id` (entero).
+-   **`get_user_reading_stats`**: Obtiene estadísticas de lectura para el usuario actual.
+    -   **Parámetros**: `time_range` (cadena). Este parámetro es obligatorio. Puede ser "all", "today", "this_week", "this_month", "this_year", un número de días recientes (por ejemplo, "7", "30") o un rango de fechas "AAAA-MM-DD:AAAA-MM-DD".
 
 ## 💻 Desarrollo
 

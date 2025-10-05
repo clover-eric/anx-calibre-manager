@@ -353,6 +353,8 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
     -   **Paramètres**: `task_id` (chaîne de caractères).
 -   **`get_audiobook_status_by_book`**: Obtenir le statut de la dernière tâche de livre audio pour un livre spécifique par son ID et son type de bibliothèque.
     -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
+-   **`get_user_reading_stats`**: Obtenir les statistiques de lecture de l'utilisateur actuel.
+    -   **Paramètres**: `time_range` (chaîne de caractères). Ce paramètre est obligatoire. Il peut être "all", "today", "this_week", "this_month", "this_year", un nombre de jours récents (par ex. "7", "30"), ou une plage de dates "AAAA-MM-JJ:AAAA-MM-JJ".
 
 ## 💻 Développement
 

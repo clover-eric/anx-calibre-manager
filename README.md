@@ -352,6 +352,8 @@ You can get a list of all available tools by calling the `tools/list` method. Th
     -   **Parameters**: `task_id` (string).
 -   **`get_audiobook_status_by_book`**: Get the status of the latest audiobook task for a specific book by its ID and library type.
     -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
+-   **`get_user_reading_stats`**: Get reading statistics for the current user.
+    -   **Parameters**: `time_range` (string). This parameter is required. It can be "all", "today", "this_week", "this_month", "this_year", a number of recent days (e.g., "7", "30"), or a date range "YYYY-MM-DD:YYYY-MM-DD".
 
 ## 💻 Development
 
