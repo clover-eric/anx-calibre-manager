@@ -1,10 +1,13 @@
 import os
 import logging
 import re
+import sqlite3
 from flask import Blueprint, jsonify, g, request, send_file, Response
 from contextlib import closing
 import database
 from utils.audio_metadata import extract_m4b_metadata
+from anx_library import get_anx_user_dirs
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 audio_player_bp = Blueprint('audio_player', __name__, url_prefix='/api/audioplayer')
@@ -168,3 +171,45 @@ def handle_progress(task_id):
                 'totalDuration': total_duration_sec,
                 'playbackRate': saved_rate
             })
+
+@audio_player_bp.route('/log_listen_time', methods=['POST'])
+def log_listen_time():
+    if g.user is None or g.user.id is None:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    data = request.get_json()
+    book_id = data.get('book_id')
+    listen_duration_seconds = data.get('listen_duration_seconds')
+
+    if not book_id or not listen_duration_seconds:
+        return jsonify({'error': 'book_id and listen_duration_seconds are required.'}), 400
+
+    try:
+        listen_duration = int(listen_duration_seconds)
+        if listen_duration <= 0:
+            return jsonify({'message': 'Duration must be positive.'})
+    except (ValueError, TypeError):
+        return jsonify({'error': 'Invalid listen_duration_seconds.'}), 400
+
+    dirs = get_anx_user_dirs(g.user.username)
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        return jsonify({'error': 'Anx library not found.'}), 404
+
+    date_str = datetime.utcnow().strftime('%Y-%m-%d')
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        cursor = db.cursor()
+        
+        # Check if a record for this book and date already exists
+        cursor.execute("SELECT id, reading_time FROM tb_reading_time WHERE book_id = ? AND date = ?", (book_id, date_str))
+        existing_record = cursor.fetchone()
+
+        if existing_record:
+            new_reading_time = existing_record[1] + listen_duration
+            cursor.execute("UPDATE tb_reading_time SET reading_time = ? WHERE id = ?", (new_reading_time, existing_record[0]))
+        else:
+            cursor.execute("INSERT INTO tb_reading_time (book_id, date, reading_time) VALUES (?, ?, ?)", (book_id, date_str, listen_duration))
+        
+        db.commit()
+
+    return jsonify({'message': 'Listen time logged successfully.'})

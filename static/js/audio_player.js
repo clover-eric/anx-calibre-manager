@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredAudiobooks = [];
     let currentTrackIndex = -1;
     let saveProgressInterval;
+    let lastListenLogTime = null;
+    let accumulatedListenTime = 0;
+    const LISTEN_LOG_THRESHOLD = 60; // Log every 60 seconds
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
     // --- DOM Elements ---
@@ -98,6 +101,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 playbackRate: playbackRate
             }),
         });
+    };
+
+    const logListenTime = () => {
+        if (currentTrackIndex === -1 || dom.audioElement.paused || !lastListenLogTime) {
+            return;
+        }
+
+        const now = Date.now();
+        const elapsedSeconds = (now - lastListenLogTime) / 1000;
+        accumulatedListenTime += elapsedSeconds;
+        lastListenLogTime = now;
+
+        if (accumulatedListenTime >= LISTEN_LOG_THRESHOLD) {
+            const track = currentAudiobooks[currentTrackIndex];
+            if (track.library_type !== 'anx') return; // Only log for anx library books
+
+            const timeToSend = Math.round(accumulatedListenTime);
+            accumulatedListenTime = 0;
+
+            fetch('/api/audioplayer/log_listen_time', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    book_id: track.book_id,
+                    listen_duration_seconds: timeToSend,
+                }),
+            }).catch(error => console.error('Failed to log listen time:', error));
+        }
     };
 
     // --- Render Functions ---
@@ -390,7 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
             dom.audioElement.play();
         }, { once: true });
 
-        saveProgressInterval = setInterval(saveProgress, 5000);
+        saveProgressInterval = setInterval(() => {
+            saveProgress();
+            logListenTime();
+        }, 5000);
     };
 
     const togglePlayPause = () => {
@@ -400,6 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             dom.audioElement.pause();
             saveProgress(); // Save progress on pause
+            logListenTime(); // Log listen time on pause
         }
     };
 
@@ -545,6 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.searchInput.addEventListener('input', filterAndRenderList);
 
     dom.audioElement.addEventListener('play', () => {
+        lastListenLogTime = Date.now();
         updateAllPlayerStates();
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     });
@@ -640,7 +676,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.addEventListener('beforeunload', saveProgress);
+    window.addEventListener('beforeunload', () => {
+        saveProgress();
+        logListenTime();
+    });
 
     // Keyboard shortcuts listener (keep for non-media keys)
     document.addEventListener('keydown', (e) => {
