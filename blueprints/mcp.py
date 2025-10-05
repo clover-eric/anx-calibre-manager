@@ -22,6 +22,7 @@ from utils.epub_chapter_parser import get_parsed_chapters
 from utils.epub_utils import _count_words
 from blueprints.api.audiobook import generate_audiobook_route
 from utils.audiobook_tasks_db import get_latest_task_for_book
+from utils.anx_stats import get_user_reading_stats
  
 mcp_bp = Blueprint('mcp', __name__, url_prefix='/mcp')
  
@@ -302,6 +303,15 @@ def get_audiobook_status_by_book(book_id: int, library_type: str):
         return {'status': 'not_found', 'message': 'No active or completed task found for this book.'}
     return dict(task)
 
+def mcp_get_user_reading_stats(time_range: str = None):
+    """
+    获取当前用户的阅读统计信息。
+    :param time_range: 时间范围。可以是 "today", "this_week", "this_month", "this_year",
+                       最近的天数（如 "7", "30"）, 或日期范围 "YYYY-MM-DD:YYYY-MM-DD"。
+                       如果省略，则获取所有书籍的累计统计。
+    """
+    return get_user_reading_stats(g.user['username'], time_range)
+
 
 # --- Main MCP Endpoint ---
 
@@ -372,6 +382,11 @@ TOOLS = {
         'function': get_word_count_statistics,
         'params': {'library_type': str, 'book_id': int},
         'description': "获取指定书库中书籍的字数统计信息（分章节和总计）。library_type: 'anx' (用户正在看的书库), 'calibre' (公共书库)。"
+    },
+    'get_user_reading_stats': {
+        'function': mcp_get_user_reading_stats,
+        'params': {'time_range': str},
+        'description': '获取当前用户的阅读统计信息。time_range 可以是 "today", "this_week", "this_month", "this_year", 最近的天数（如 "7", "30"）, 或日期范围 "YYYY-MM-DD:YYYY-MM-DD"。如果省略，则获取所有书籍的累计统计。'
     }
 }
 
