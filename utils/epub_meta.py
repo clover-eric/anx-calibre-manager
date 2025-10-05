@@ -13,6 +13,8 @@ def _get_processed_epub_for_anx_book(*args, **kwargs):
     from blueprints.api.books import _get_processed_epub_for_anx_book as func
     return func(*args, **kwargs)
 
+from .epub_chapter_parser import extract_text_from_html
+
 def _extract_from_ebooklib(book: epub.EpubBook) -> Dict[str, Any]:
     """严格按照 M4B 标签逻辑，从 ebooklib.EpubBook 对象中提取补充元数据。"""
     meta = {}
@@ -23,7 +25,8 @@ def _extract_from_ebooklib(book: epub.EpubBook) -> Dict[str, Any]:
         if year_match:
             meta['pubdate'] = year_match.group(0)
     if description_meta := book.get_metadata('DC', 'description'):
-        meta['comments'] = description_meta[0][0] # 使用 comments 键以匹配 Calibre
+        # 在源头清理从 EPUB 内部提取的 description
+        meta['comments'] = extract_text_from_html(description_meta[0][0]) # 使用 comments 键以匹配 Calibre
     if subject_meta := book.get_metadata('DC', 'subject'):
         meta['tags'] = [s[0] for s in subject_meta]
     if language_meta := book.get_metadata('DC', 'language'):
@@ -82,7 +85,13 @@ def get_metadata(library_type: str, book_id: int, user_dict: Dict[str, Any]) -> 
         final_meta['authors'] = db_meta.get('authors', ['Unknown Author'])
     elif library_type == 'anx':
         from anx_library import get_anx_book_details
+        from .epub_chapter_parser import extract_text_from_html
         db_meta = get_anx_book_details(user_dict.get('username'), book_id) or {}
+
+        # 清理 description 字段的 HTML
+        if 'description' in db_meta:
+            db_meta['description'] = extract_text_from_html(db_meta['description'])
+
         final_meta['title'] = db_meta.get('title', 'Untitled')
         author = db_meta.get('author')
         final_meta['authors'] = [author] if author else ['Unknown Author']
