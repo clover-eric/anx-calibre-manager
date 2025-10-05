@@ -5,14 +5,25 @@ from contextlib import closing
 from anx_library import get_anx_user_dirs
 
 def format_reading_time(seconds):
-    """将秒格式化为易读的字符串。"""
+    """将秒格式化为精确且易读的字符串。"""
     if not seconds or seconds == 0:
-        return "0 minutes"
+        return "0 seconds"
+    
+    seconds = int(seconds)
+    
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
+    remaining_seconds = seconds % 60
+    
+    parts = []
     if hours > 0:
-        return f"{int(hours)} hours {int(minutes)} minutes"
-    return f"{int(minutes)} minutes"
+        parts.append(f"{hours} hours")
+    if minutes > 0:
+        parts.append(f"{minutes} minutes")
+    if remaining_seconds > 0:
+        parts.append(f"{remaining_seconds} seconds")
+        
+    return " ".join(parts)
 
 def get_user_reading_stats(username, time_range):
     """
