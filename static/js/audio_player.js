@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let saveProgressInterval;
     let lastListenLogTime = null;
     let accumulatedListenTime = 0;
-    const LISTEN_LOG_THRESHOLD = 60; // Log every 60 seconds
+    const LISTEN_LOG_THRESHOLD = 30; // Log every 30 seconds
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
     // --- DOM Elements ---
