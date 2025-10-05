@@ -14,17 +14,17 @@ def format_reading_time(seconds):
         return f"{int(hours)} hours {int(minutes)} minutes"
     return f"{int(minutes)} minutes"
 
-def get_user_reading_stats(username, time_range=None):
+def get_user_reading_stats(username, time_range):
     """
     获取用户的阅读统计信息。
 
     Args:
         username (str): 要查询的用户名。
-        time_range (str, optional): 时间范围。可以是：
-            - "today", "this_week", "this_month", "this_year"
-            - "7", "30", "365" (最近 N 天)
-            - "YYYY-MM-DD:YYYY-MM-DD" (自定义日期范围)
-            - 如果为 None，则不按时间筛选书籍列表。
+        time_range (str): 时间范围。此参数为必需项。可以是：
+            - "all": 获取所有时间的统计数据。
+            - "today", "this_week", "this_month", "this_year": 预设的时间范围。
+            - "7", "30", "365": 最近 N 天。
+            - "YYYY-MM-DD:YYYY-MM-DD": 自定义日期范围。
 
     Returns:
         dict: 包含统计数据的字典，或在出错时返回 {"error": "..."}。
@@ -72,8 +72,9 @@ def get_user_reading_stats(username, time_range=None):
         # 2. --- 根据 time_range 计算日期范围 ---
         start_date = None
         end_date = today
+        query_all = (time_range == 'all')
 
-        if time_range:
+        if not query_all:
             if time_range.isdigit():
                 start_date = today - datetime.timedelta(days=int(time_range))
             elif ':' in time_range:
@@ -94,24 +95,21 @@ def get_user_reading_stats(username, time_range=None):
                     start_date = start_of_year
         
         # 3. --- 每日阅读时长 ---
-        daily_reading_time = []
-        if start_date:
-            cursor.execute(
-                """
-                SELECT date, SUM(reading_time) as total_time
-                FROM tb_reading_time
-                WHERE date >= ? AND date <= ?
-                GROUP BY date
-                ORDER BY date
-                """,
-                (start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
-            )
-            daily_data = cursor.fetchall()
-            daily_reading_time = [{"date": row['date'], "time": format_reading_time(row['total_time'])} for row in daily_data]
+        daily_query = "SELECT date, SUM(reading_time) as total_time FROM tb_reading_time"
+        daily_params = []
+        
+        if not query_all and start_date:
+            daily_query += " WHERE date >= ? AND date <= ?"
+            daily_params.extend([start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')])
+        
+        daily_query += " GROUP BY date ORDER BY date"
+        cursor.execute(daily_query, daily_params)
+        daily_data = cursor.fetchall()
+        daily_reading_time = [{"date": row['date'], "time": format_reading_time(row['total_time'])} for row in daily_data]
 
         # 4. --- 书籍统计 ---
         books_query = """
-            SELECT 
+            SELECT
                 b.id, b.title, b.author, b.reading_percentage, b.cover_path,
                 SUM(rt.reading_time) as total_reading_time
             FROM tb_books b
@@ -119,12 +117,12 @@ def get_user_reading_stats(username, time_range=None):
         """
         params = []
         
-        if start_date:
-            books_query += " WHERE rt.date >= ? AND rt.date <= ? AND b.is_deleted = 0"
+        where_clauses = ["b.is_deleted = 0"]
+        if not query_all and start_date:
+            where_clauses.append("rt.date >= ? AND rt.date <= ?")
             params.extend([start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')])
-        else:
-            books_query += " WHERE b.is_deleted = 0"
 
+        books_query += " WHERE " + " AND ".join(where_clauses)
         books_query += " GROUP BY b.id HAVING total_reading_time > 0 ORDER BY total_reading_time DESC"
         
         cursor.execute(books_query, params)

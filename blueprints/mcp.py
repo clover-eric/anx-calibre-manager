@@ -303,12 +303,11 @@ def get_audiobook_status_by_book(book_id: int, library_type: str):
         return {'status': 'not_found', 'message': 'No active or completed task found for this book.'}
     return dict(task)
 
-def mcp_get_user_reading_stats(time_range: str = None):
+def mcp_get_user_reading_stats(time_range: str):
     """
     获取当前用户的阅读统计信息。
-    :param time_range: 时间范围。可以是 "today", "this_week", "this_month", "this_year",
+    :param time_range: 时间范围。此参数为必需项。可以是 "all", "today", "this_week", "this_month", "this_year",
                        最近的天数（如 "7", "30"）, 或日期范围 "YYYY-MM-DD:YYYY-MM-DD"。
-                       如果省略，则获取所有书籍的累计统计。
     """
     return get_user_reading_stats(g.user['username'], time_range)
 
@@ -386,7 +385,7 @@ TOOLS = {
     'get_user_reading_stats': {
         'function': mcp_get_user_reading_stats,
         'params': {'time_range': str},
-        'description': '获取当前用户的阅读统计信息。time_range 可以是 "today", "this_week", "this_month", "this_year", 最近的天数（如 "7", "30"）, 或日期范围 "YYYY-MM-DD:YYYY-MM-DD"。如果省略，则获取所有书籍的累计统计。'
+        'description': '获取当前用户的阅读统计信息。time_range 是必需参数，可以是 "all", "today", "this_week", "this_month", "this_year", 最近的天数（如 "7", "30"）, 或日期范围 "YYYY-MM-DD:YYYY-MM-DD"。'
     }
 }
 
