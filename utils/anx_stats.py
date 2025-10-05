@@ -122,6 +122,7 @@ def get_user_reading_stats(username, time_range):
         books_query = """
             SELECT
                 b.id, b.title, b.author, b.reading_percentage, b.cover_path,
+                b.description, b.create_time, b.update_time, b.rating,
                 SUM(rt.reading_time) as total_reading_time
             FROM tb_books b
             LEFT JOIN tb_reading_time rt ON b.id = rt.book_id
@@ -145,7 +146,11 @@ def get_user_reading_stats(username, time_range):
                 "author": row['author'],
                 "reading_percentage": row['reading_percentage'],
                 "total_reading_time": format_reading_time(row['total_reading_time']),
-                "cover_path": row['cover_path']
+                "cover_path": row['cover_path'],
+                "description": row['description'],
+                "create_time": row['create_time'],
+                "update_time": row['update_time'],
+                "rating": row['rating'],
             }
             for row in books_data
         ]
