@@ -220,6 +220,21 @@ Hier sind einige häufige Probleme und deren Lösungen:
     *   Vereinfachtes Chinesisch (简体中文): `Calibre_书库`
     *   Traditionelles Chinesisch (繁體中文): `calibre_書庫`
 
+### 5. Warum erhalte ich einen `400 Bad Request`-Fehler beim Bearbeiten des Lesedatums oder der Bibliotheksfelder?
+
+*   **A**: Dieser Fehler tritt auf, weil in Ihrer Calibre-Bibliothek die erforderlichen benutzerdefinierten Spalten zum Speichern dieser Informationen fehlen. Um Funktionen wie das Nachverfolgen des Hochladenden/Besitzers eines Buches und das Festlegen eines bestimmten Lesedatums zu aktivieren, müssen Sie in Ihrer Calibre-Desktop-Anwendung zwei benutzerdefinierte Spalten hinzufügen:
+    1.  Gehen Sie zu `Einstellungen` -> `Eigene Spalten hinzufügen`.
+    2.  Klicken Sie auf `Benutzerdefinierte Spalte hinzufügen`.
+    3.  Erstellen Sie die erste Spalte mit den folgenden Details:
+        *   **Nachschlagename**: `#library`
+        *   **Spaltenüberschrift**: `Library` (oder wie Sie bevorzugen)
+        *   **Spaltentyp**: `Text, wobei Kommas als separate Tags behandelt werden`
+    4.  Erstellen Sie die zweite Spalte mit diesen Details:
+        *   **Nachschlagename**: `#readdate`
+        *   **Spaltenüberschrift**: `Read Date` (oder wie Sie bevorzugen)
+        *   **Spaltentyp**: `Datum`
+    5.  Klicken Sie auf `Anwenden` und starten Sie Ihren Calibre-Server neu, falls er läuft. Nach dem Hinzufügen dieser Spalten funktionieren die Bearbeitungsfunktionen korrekt.
+
 ## 📖 KOReader-Synchronisierung
 
 Sie können Ihren Lesefortschritt und Ihre Lesezeit zwischen Ihrer Anx-Bibliothek und KOReader-Geräten synchronisieren. Die Einrichtung umfasst zwei Hauptschritte: die Einrichtung von WebDAV für den Zugriff auf Ihre Bücher und die Konfiguration des Synchronisierungs-Plugins zur Handhabung der Fortschrittssynchronisierung.

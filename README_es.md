@@ -220,6 +220,21 @@ Aquí hay algunos problemas comunes y sus soluciones:
     *   Chino Simplificado (简体中文): `Calibre_书库`
     *   Chino Tradicional (繁體中文): `calibre_書庫`
 
+### 5. ¿Por qué recibo un error `400 Bad Request` al editar la fecha de lectura o los campos de la biblioteca?
+
+*   **R**: Este error ocurre porque a tu biblioteca de Calibre le faltan las columnas personalizadas necesarias para almacenar esta información. Para habilitar funciones como el seguimiento de quién subió/es dueño de un libro y establecer una fecha de lectura específica, necesitas añadir dos columnas personalizadas en tu aplicación de escritorio de Calibre:
+    1.  Ve a `Preferencias` -> `Añadir columnas personalizadas`.
+    2.  Haz clic en `Añadir columna personalizada`.
+    3.  Crea la primera columna con los siguientes detalles:
+        *   **Nombre de búsqueda**: `#library`
+        *   **Encabezado de columna**: `Library` (o como prefieras)
+        *   **Tipo de columna**: `Texto, con comas tratadas como etiquetas separadas`
+    4.  Crea la segunda columna con estos detalles:
+        *   **Nombre de búsqueda**: `#readdate`
+        *   **Encabezado de columna**: `Read Date` (o como prefieras)
+        *   **Tipo de columna**: `Fecha`
+    5.  Haz clic en `Aplicar` y reinicia tu servidor de Calibre si está en funcionamiento. Después de añadir estas columnas, las funciones de edición funcionarán correctamente.
+
 ## 📖 Sincronización con KOReader
 
 Puedes sincronizar tu progreso de lectura y tiempo de lectura entre tu biblioteca Anx y los dispositivos KOReader. La configuración implica dos pasos principales: configurar WebDAV para acceder a tus libros y configurar el complemento de sincronización para manejar la sincronización del progreso.
