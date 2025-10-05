@@ -153,6 +153,7 @@ def create_app():
     from blueprints.api.audiobook import audiobook_bp
     from blueprints.api.audio_player import audio_player_bp
     from blueprints.api.llm import llm_bp
+    from blueprints.api.reader import reader_bp
     
     # Register all blueprints
     app.register_blueprint(main_bp)
@@ -174,6 +175,7 @@ def create_app():
     app.register_blueprint(audiobook_bp)
     app.register_blueprint(audio_player_bp)
     app.register_blueprint(llm_bp)
+    app.register_blueprint(reader_bp)
 
     @app.context_processor
     def inject_conf_var():

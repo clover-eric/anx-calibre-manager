@@ -1,6 +1,17 @@
 import './foliate/view.js';
 import { createTOCView } from './foliate/ui/tree.js';
 
+// --- Utility Functions ---
+const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+};
+
 // --- Translatable Strings ---
 const t = {
     failedToFetchSettings: _('Failed to fetch user settings'),
@@ -124,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (downloadUrl) {
-            loadBook(downloadUrl);
+            loadBook(downloadUrl, bookType, bookId);
         } else {
             showError(t.invalidBookType);
         }
@@ -132,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showError(t.invalidUrl);
     }
 
-    async function loadBook(url) {
+    async function loadBook(url, bookType, bookId) {
         // The loading spinner is already visible, just proceed with loading
         try {
             const response = await fetch(url);
@@ -160,12 +171,75 @@ document.addEventListener('DOMContentLoaded', () => {
             view = document.createElement('foliate-view');
             readerContainer.appendChild(view);
 
+            // ANX-CALIBRE-MANAGER DARK MODE PATCH (Event-based)
             await view.open(bookFile);
 
             if (view.renderer) {
+                // ANX-CALIBRE-MANAGER DARK MODE PATCH (Event-based)
+                // Must be attached AFTER view.open() but BEFORE the first navigation
+                view.renderer.addEventListener('load', (event) => {
+                    const iframeDoc = event.detail.doc;
+                    if (!iframeDoc) return;
+
+                    const themeSetting = document.documentElement.getAttribute('data-theme') || 'auto';
+                    const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                    const effectiveTheme = (themeSetting === 'dark' || (themeSetting === 'auto' && systemIsDark))
+                        ? 'dark'
+                        : 'light';
+
+                    iframeDoc.documentElement.setAttribute('data-theme', effectiveTheme);
+
+                    const styleId = 'anx-dark-mode-patch';
+                    if (iframeDoc.getElementById(styleId)) return;
+
+                    const style = iframeDoc.createElement('style');
+                    style.id = styleId;
+                    style.textContent = `
+                        [data-theme="dark"] * {
+                            background-color: #333333 !important;
+                            color: #e0e0e0 !important;
+                        }
+                        [data-theme="dark"] a {
+                            color: lightblue !important;
+                        }
+                        [data-theme="light"] * {
+                            background-color: #ffffff !important;
+                            color: #000000 !important;
+                        }
+                        [data-theme="light"] a {
+                            color: #0000ee !important;
+                        }
+                    `;
+                    iframeDoc.head.appendChild(style);
+                });
+                // END PATCH
+
                 view.renderer.setStyles?.(getCSS());
-                view.renderer.next();
-                setupUI(view);
+                
+                // Load progress before rendering the first page
+                if (bookType === 'anx') {
+                    try {
+                        const progressRes = await fetch(`/api/reader/progress/anx/${bookId}`);
+                        if (progressRes.ok) {
+                            const progress = await progressRes.json();
+                            if (progress.cfi) {
+                                await view.goTo(progress.cfi);
+                            } else {
+                                view.renderer.next();
+                            }
+                        } else {
+                             view.renderer.next();
+                        }
+                    } catch (e) {
+                        console.error("Failed to load progress", e);
+                        view.renderer.next();
+                    }
+                } else {
+                    view.renderer.next();
+                }
+
+                setupUI(view, bookType, bookId);
                 setupTTS(); // Setup TTS after the book is loaded
                 hideLoading(); // Hide loading animation after book is loaded
             } else {
@@ -179,47 +253,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function setupUI(viewInstance) {
+    function setupUI(viewInstance, bookType, bookId) {
         const book = viewInstance.book;
 
-        // ANX-CALIBRE-MANAGER DARK MODE PATCH (Event-based)
-        viewInstance.renderer.addEventListener('load', (event) => {
-            const iframeDoc = event.detail.doc;
-            if (!iframeDoc) return;
+        // --- Progress and Reading Time Saving ---
+        let accumulatedReadingTime = 0;
+        let lastSaveTime = Date.now();
+        let currentLocation = null;
 
-            const themeSetting = document.documentElement.getAttribute('data-theme') || 'auto';
-            const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const saveProgress = (isUnloading = false) => {
+            if (bookType !== 'anx' || !currentLocation) return;
 
-            const effectiveTheme = (themeSetting === 'dark' || (themeSetting === 'auto' && systemIsDark))
-                ? 'dark'
-                : 'light';
+            const now = Date.now();
+            const elapsedSeconds = (now - lastSaveTime) / 1000;
+            lastSaveTime = now;
 
-            iframeDoc.documentElement.setAttribute('data-theme', effectiveTheme);
+            // Mirror KOReader plugin logic: only log time chunks between 5s and 200min (12000s)
+            if (elapsedSeconds > 5 && elapsedSeconds < 12000) {
+                accumulatedReadingTime += elapsedSeconds;
+            }
 
-            const styleId = 'anx-dark-mode-patch';
-            if (iframeDoc.getElementById(styleId)) return;
+            const { cfi, fraction } = currentLocation;
+            const readingTimeToSend = Math.round(accumulatedReadingTime);
 
-            const style = iframeDoc.createElement('style');
-            style.id = styleId;
-            style.textContent = `
-                [data-theme="dark"] * {
-                    background-color: #333333 !important;
-                    color: #e0e0e0 !important;
-                }
-                [data-theme="dark"] a {
-                    color: lightblue !important;
-                }
-                [data-theme="light"] * {
-                    background-color: #ffffff !important;
-                    color: #000000 !important;
-                }
-                [data-theme="light"] a {
-                    color: #0000ee !important;
-                }
-            `;
-            iframeDoc.head.appendChild(style);
+            if (readingTimeToSend <= 0 && !isUnloading) {
+                return;
+            }
+
+            const url = `/api/reader/progress/anx/${bookId}`;
+            const body = JSON.stringify({
+                cfi,
+                percentage: fraction,
+                reading_time_seconds: readingTimeToSend
+            });
+
+            if (isUnloading && navigator.sendBeacon) {
+                navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+            } else {
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: body,
+                    keepalive: true
+                }).catch(error => {
+                    console.error('Failed to save progress:', error);
+                });
+            }
+            accumulatedReadingTime = 0;
+        };
+        
+        const debouncedSaveProgress = debounce(saveProgress, 3000);
+
+        viewInstance.addEventListener('relocate', ({ detail }) => {
+            currentLocation = detail;
+            debouncedSaveProgress();
         });
-        // END PATCH
+
+        window.addEventListener('beforeunload', () => {
+            saveProgress(true);
+        });
+
 
         // 1. Setup Book Info (Title, Author, Cover)
         const title = formatLanguageMap(book.metadata?.title) || t.untitled;
