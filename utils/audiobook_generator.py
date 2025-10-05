@@ -278,7 +278,7 @@ class OpenAITTSProvider(BaseTTSProvider):
         
         segments: list[AudioSegment] = []
         paragraph_pause = AudioSegment.silent(duration=500)
-        sentence_pause = AudioSegment.silent(duration=300)
+        sentence_pause = AudioSegment.silent(duration=400)
 
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
         if total_chunks == 0: total_chunks = 1
