@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-05 15:03+0800\n"
+"POT-Creation-Date: 2025-10-07 17:49+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -211,7 +211,6 @@ msgid "Unable to process or convert the book."
 msgstr "Unable to process or convert the book."
 
 #: blueprints/api/books.py:168 blueprints/api/books.py:253
-#: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "Book details not found."
 
@@ -272,19 +271,15 @@ msgstr ""
 msgid "Missing book ID."
 msgstr "Missing book ID."
 
-#: blueprints/api/calibre.py:22
-msgid "Maintainer or administrator permission required."
-msgstr "Maintainer or administrator permission required."
-
-#: blueprints/api/calibre.py:29
+#: blueprints/api/calibre.py:20
 msgid "No file part."
 msgstr "No file part."
 
-#: blueprints/api/calibre.py:33
+#: blueprints/api/calibre.py:24
 msgid "No selected file."
 msgstr "No selected file."
 
-#: blueprints/api/calibre.py:94
+#: blueprints/api/calibre.py:85
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
@@ -293,88 +288,79 @@ msgstr ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 
-#: blueprints/api/calibre.py:103
+#: blueprints/api/calibre.py:94
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 
-#: blueprints/api/calibre.py:111
+#: blueprints/api/calibre.py:102
 msgid "Upload failed, book may already exist."
 msgstr "Upload failed, book may already exist."
 
-#: blueprints/api/calibre.py:117
+#: blueprints/api/calibre.py:108
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre server returned an error: %(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:127 blueprints/api/calibre.py:200
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Error connecting to Calibre server: %(error)s"
 
-#: blueprints/api/calibre.py:145
-msgid "You do not have permission to edit this book."
-msgstr "You do not have permission to edit this book."
-
-#: blueprints/api/calibre.py:176
+#: blueprints/api/calibre.py:156
 msgid "No fields provided to update."
 msgstr "No fields provided to update."
 
-#: blueprints/api/calibre.py:191
+#: blueprints/api/calibre.py:171
 msgid "Metadata updated successfully."
 msgstr "Metadata updated successfully."
 
-#: blueprints/api/calibre.py:193
+#: blueprints/api/calibre.py:173
 msgid "Calibre returned an unknown response."
 msgstr "Calibre returned an unknown response."
 
-#: blueprints/api/calibre.py:195
+#: blueprints/api/calibre.py:175
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre returned an invalid JSON response: %(text)s"
 
-#: blueprints/api/calibre.py:198
+#: blueprints/api/calibre.py:178
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Error connecting to Calibre server: %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:226
+#: blueprints/api/calibre.py:206
 msgid "Field parameter is required."
 msgstr "Field parameter is required."
 
-#: blueprints/api/calibre.py:230
+#: blueprints/api/calibre.py:210
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Completions not supported for field: %(field)s"
 
-#: blueprints/api/email_service.py:17 blueprints/api/settings.py:19
-#: blueprints/api/users.py:20
-msgid "Administrator permission required."
-msgstr "Administrator permission required."
-
-#: blueprints/api/email_service.py:29
+#: blueprints/api/email_service.py:20
 msgid "SMTP is not fully configured."
 msgstr "SMTP is not fully configured."
 
-#: blueprints/api/email_service.py:76
+#: blueprints/api/email_service.py:67
 msgid "Email sent successfully."
 msgstr "Email sent successfully."
 
-#: blueprints/api/email_service.py:79
+#: blueprints/api/email_service.py:70
 #, python-format
 msgid "Failed to send email: %(error)s"
 msgstr "Failed to send email: %(error)s"
 
-#: blueprints/api/email_service.py:87
+#: blueprints/api/email_service.py:78
 msgid "Test recipient email address is required."
 msgstr "Test recipient email address is required."
 
-#: blueprints/api/email_service.py:103
+#: blueprints/api/email_service.py:94
 #, python-format
 msgid "Test email successfully sent to %(email)s."
 msgstr "Test email successfully sent to %(email)s."
 
-#: blueprints/api/email_service.py:105
+#: blueprints/api/email_service.py:96
 #, python-format
 msgid "Failed to send test email: %(message)s"
 msgstr "Failed to send test email: %(message)s"
@@ -587,20 +573,20 @@ msgstr "Session not found or permission denied."
 msgid "Chat session deleted successfully."
 msgstr "Chat session deleted successfully."
 
-#: blueprints/api/settings.py:85
+#: blueprints/api/settings.py:76
 msgid "User settings updated."
 msgstr "User settings updated."
 
-#: blueprints/api/settings.py:141
+#: blueprints/api/settings.py:132
 msgid "Global settings updated."
 msgstr "Global settings updated."
 
-#: blueprints/api/settings.py:151
+#: blueprints/api/settings.py:142
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "%(count)s audiobook files have been cleaned up."
 
-#: blueprints/api/settings.py:153
+#: blueprints/api/settings.py:144
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "An error occurred during cleanup: %(error)s"
@@ -613,11 +599,11 @@ msgstr "New token generated."
 msgid "Token deleted."
 msgstr "Token deleted."
 
-#: blueprints/api/users.py:39
+#: blueprints/api/users.py:30
 msgid "Username and password are required."
 msgstr "Username and password are required."
 
-#: blueprints/api/users.py:56
+#: blueprints/api/users.py:47
 #, python-format
 msgid ""
 "User added successfully, but failed to initialize Anx directory: "
@@ -626,73 +612,92 @@ msgstr ""
 "User added successfully, but failed to initialize Anx directory: "
 "%(message)s"
 
-#: blueprints/api/users.py:58
+#: blueprints/api/users.py:49
 msgid "User added and initialized successfully."
 msgstr "User added and initialized successfully."
 
-#: blueprints/api/users.py:60
+#: blueprints/api/users.py:51
 msgid "Username already exists."
 msgstr "Username already exists."
 
-#: blueprints/api/users.py:73
+#: blueprints/api/users.py:64
 msgid "User ID and username are required."
 msgstr "User ID and username are required."
 
-#: blueprints/api/users.py:89
+#: blueprints/api/users.py:80
 msgid "User updated successfully."
 msgstr "User updated successfully."
 
-#: blueprints/api/users.py:97
+#: blueprints/api/users.py:88
 msgid "User ID is required."
 msgstr "User ID is required."
 
-#: blueprints/api/users.py:113
+#: blueprints/api/users.py:104
 #, python-format
 msgid "Error deleting user data directory: %(error)s"
 msgstr "Error deleting user data directory: %(error)s"
 
-#: blueprints/api/users.py:118
+#: blueprints/api/users.py:109
 msgid "User and their data have been successfully deleted."
 msgstr "User and their data have been successfully deleted."
 
-#: static/js/audio_player.js:70
+#: static/js/audio_player.js:72
 msgid "Failed to fetch audiobook list."
 msgstr "Failed to fetch audiobook list."
 
-#: static/js/audio_player.js:197
+#: static/js/audio_player.js:208
+#, python-format
+msgid ""
+"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
+"cannot be undone."
+msgstr ""
+"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
+"cannot be undone."
+
+#: static/js/audio_player.js:229
+#, python-format
+msgid "Error: %(message)s"
+msgstr "Error: %(message)s"
+
+#: static/js/audio_player.js:233
+#, python-format
+msgid "An unexpected error occurred."
+msgstr "An unexpected error occurred."
+
+#: static/js/audio_player.js:247
 msgid "Album"
 msgstr "Album"
 
-#: static/js/audio_player.js:198
+#: static/js/audio_player.js:248
 msgid "Album Artist"
 msgstr "Album Artist"
 
-#: static/js/audio_player.js:199
+#: static/js/audio_player.js:249
 msgid "Genre"
 msgstr "Genre"
 
-#: static/js/audio_player.js:200
+#: static/js/audio_player.js:250
 msgid "Year"
 msgstr "Year"
 
-#: static/js/audio_player.js:201
+#: static/js/audio_player.js:251
 msgid "Composer"
 msgstr "Composer"
 
-#: static/js/audio_player.js:202
+#: static/js/audio_player.js:252
 msgid "Comment"
 msgstr "Comment"
 
-#: static/js/audio_player.js:203 static/js/page/translations.js:36
+#: static/js/audio_player.js:253 static/js/page/translations.js:36
 #: templates/index.html:73 templates/index.html:149
 msgid "Description"
 msgstr "Description"
 
-#: static/js/audio_player.js:331
+#: static/js/audio_player.js:381
 msgid "Less"
 msgstr "Less"
 
-#: static/js/audio_player.js:333
+#: static/js/audio_player.js:383
 msgid "More"
 msgstr "More"
 
@@ -1166,47 +1171,47 @@ msgstr "Mermaid Render Error"
 msgid "Audiobook Player"
 msgstr "Audiobook Player"
 
-#: templates/audio_player.html:21 templates/chat_player.html:48
+#: templates/audio_player.html:24 templates/chat_player.html:48
 msgid "Back to main library"
 msgstr "Back to main library"
 
-#: templates/audio_player.html:25
+#: templates/audio_player.html:28
 msgid "Calibre Library"
 msgstr "Calibre Library"
 
-#: templates/audio_player.html:26 templates/index.html:116
+#: templates/audio_player.html:29 templates/index.html:116
 msgid "Anx Library"
 msgstr "Anx Library"
 
-#: templates/audio_player.html:31
+#: templates/audio_player.html:34
 msgid "Search in library..."
 msgstr "Search in library..."
 
-#: templates/audio_player.html:39
+#: templates/audio_player.html:42
 msgid "No audiobooks found in this library."
 msgstr "No audiobooks found in this library."
 
-#: templates/audio_player.html:40
+#: templates/audio_player.html:43
 msgid "Try generating one from your book list."
 msgstr "Try generating one from your book list."
 
-#: templates/audio_player.html:48
+#: templates/audio_player.html:51
 msgid "Select an audiobook to begin playback."
 msgstr "Select an audiobook to begin playback."
 
-#: templates/audio_player.html:70
+#: templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "Previous Chapter"
 
-#: templates/audio_player.html:71
+#: templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "Play/Pause"
 
-#: templates/audio_player.html:72
+#: templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "Next Chapter"
 
-#: templates/audio_player.html:81
+#: templates/audio_player.html:84
 msgid "Now Playing"
 msgstr "Now Playing"
 
@@ -1450,23 +1455,23 @@ msgstr "Don't have an account?"
 msgid "Register here"
 msgstr "Register here"
 
-#: templates/reader.html:6
+#: templates/reader.html:8
 msgid "Book Reader"
 msgstr "Book Reader"
 
-#: templates/reader.html:81
+#: templates/reader.html:86
 msgid "TTS Settings"
 msgstr "TTS Settings"
 
-#: templates/reader.html:83 templates/settings.html:99
+#: templates/reader.html:88 templates/settings.html:99
 msgid "Rate"
 msgstr "Rate"
 
-#: templates/reader.html:88 templates/settings.html:109
+#: templates/reader.html:93 templates/settings.html:109
 msgid "Pitch"
 msgstr "Pitch"
 
-#: templates/reader.html:93 templates/settings.html:76
+#: templates/reader.html:98 templates/settings.html:76
 msgid "Voice"
 msgstr "Voice"
 
@@ -2522,4 +2527,13 @@ msgstr "Finished!"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "No finished books yet."
+
+#: utils/decorators.py:10
+msgid "Administrator permission required."
+msgstr "Administrator permission required."
+
+#: utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "Maintainer or administrator permission required."
+
 

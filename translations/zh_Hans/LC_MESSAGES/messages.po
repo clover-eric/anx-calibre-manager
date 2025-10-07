@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-05 15:03+0800\n"
+"POT-Creation-Date: 2025-10-07 17:49+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -205,7 +205,6 @@ msgid "Unable to process or convert the book."
 msgstr "无法处理或转换该图书。"
 
 #: blueprints/api/books.py:168 blueprints/api/books.py:253
-#: blueprints/api/calibre.py:139
 msgid "Book details not found."
 msgstr "未找到图书详情。"
 
@@ -260,107 +259,94 @@ msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过�
 msgid "Missing book ID."
 msgstr "缺少图书 ID。"
 
-#: blueprints/api/calibre.py:22
-msgid "Maintainer or administrator permission required."
-msgstr "需要维护者或管理员权限。"
-
-#: blueprints/api/calibre.py:29
+#: blueprints/api/calibre.py:20
 msgid "No file part."
 msgstr "无文件部分。"
 
-#: blueprints/api/calibre.py:33
+#: blueprints/api/calibre.py:24
 msgid "No selected file."
 msgstr "未选择文件。"
 
-#: blueprints/api/calibre.py:94
+#: blueprints/api/calibre.py:85
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s（但更新来源失败）。"
 
-#: blueprints/api/calibre.py:103
+#: blueprints/api/calibre.py:94
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s。"
 
-#: blueprints/api/calibre.py:111
+#: blueprints/api/calibre.py:102
 msgid "Upload failed, book may already exist."
 msgstr "上传失败，图书可能已存在。"
 
-#: blueprints/api/calibre.py:117
+#: blueprints/api/calibre.py:108
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre 服务器返回错误：%(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:127 blueprints/api/calibre.py:200
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "连接 Calibre 服务器时出错：%(error)s"
 
-#: blueprints/api/calibre.py:145
-msgid "You do not have permission to edit this book."
-msgstr "您无权编辑此图书。"
-
-#: blueprints/api/calibre.py:176
+#: blueprints/api/calibre.py:156
 msgid "No fields provided to update."
 msgstr "未提供要更新的字段。"
 
-#: blueprints/api/calibre.py:191
+#: blueprints/api/calibre.py:171
 msgid "Metadata updated successfully."
 msgstr "元数据更新成功。"
 
-#: blueprints/api/calibre.py:193
+#: blueprints/api/calibre.py:173
 msgid "Calibre returned an unknown response."
 msgstr "Calibre 返回未知响应。"
 
-#: blueprints/api/calibre.py:195
+#: blueprints/api/calibre.py:175
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre 返回了无效的 JSON 响应：%(text)s"
 
-#: blueprints/api/calibre.py:198
+#: blueprints/api/calibre.py:178
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "连接 Calibre 服务器时出错：%(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:226
+#: blueprints/api/calibre.py:206
 msgid "Field parameter is required."
 msgstr "字段参数是必需的。"
 
-#: blueprints/api/calibre.py:230
+#: blueprints/api/calibre.py:210
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "不支持字段 %(field)s 的补全。"
 
-#: blueprints/api/email_service.py:17 blueprints/api/settings.py:19
-#: blueprints/api/users.py:20
-msgid "Administrator permission required."
-msgstr "需要管理员权限。"
-
-#: blueprints/api/email_service.py:29
+#: blueprints/api/email_service.py:20
 msgid "SMTP is not fully configured."
 msgstr "SMTP 未完全配置。"
 
-#: blueprints/api/email_service.py:76
+#: blueprints/api/email_service.py:67
 msgid "Email sent successfully."
 msgstr "邮件发送成功。"
 
-#: blueprints/api/email_service.py:79
+#: blueprints/api/email_service.py:70
 #, python-format
 msgid "Failed to send email: %(error)s"
 msgstr "发送邮件失败：%(error)s"
 
-#: blueprints/api/email_service.py:87
+#: blueprints/api/email_service.py:78
 msgid "Test recipient email address is required."
 msgstr "测试收件人电子邮件地址是必需的。"
 
-#: blueprints/api/email_service.py:103
+#: blueprints/api/email_service.py:94
 #, python-format
 msgid "Test email successfully sent to %(email)s."
 msgstr "测试邮件已成功发送至 %(email)s。"
 
-#: blueprints/api/email_service.py:105
+#: blueprints/api/email_service.py:96
 #, python-format
 msgid "Failed to send test email: %(message)s"
 msgstr "发送测试邮件失败：%(message)s"
@@ -561,20 +547,20 @@ msgstr "会话未找到或权限被拒绝。"
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
-#: blueprints/api/settings.py:85
+#: blueprints/api/settings.py:76
 msgid "User settings updated."
 msgstr "用户设置已更新。"
 
-#: blueprints/api/settings.py:141
+#: blueprints/api/settings.py:132
 msgid "Global settings updated."
 msgstr "全局设置已更新。"
 
-#: blueprints/api/settings.py:151
+#: blueprints/api/settings.py:142
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "已清理 %(count)s 个有声书文件。"
 
-#: blueprints/api/settings.py:153
+#: blueprints/api/settings.py:144
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "清理过程中发生错误：%(error)s"
@@ -587,84 +573,101 @@ msgstr "已生成新令牌。"
 msgid "Token deleted."
 msgstr "令牌已删除。"
 
-#: blueprints/api/users.py:39
+#: blueprints/api/users.py:30
 msgid "Username and password are required."
 msgstr "用户名和密码是必需的。"
 
-#: blueprints/api/users.py:56
+#: blueprints/api/users.py:47
 #, python-format
 msgid ""
 "User added successfully, but failed to initialize Anx directory: "
 "%(message)s"
 msgstr "用户添加成功，但初始化 Anx 目录失败：%(message)s"
 
-#: blueprints/api/users.py:58
+#: blueprints/api/users.py:49
 msgid "User added and initialized successfully."
 msgstr "用户添加并初始化成功。"
 
-#: blueprints/api/users.py:60
+#: blueprints/api/users.py:51
 msgid "Username already exists."
 msgstr "用户名已存在。"
 
-#: blueprints/api/users.py:73
+#: blueprints/api/users.py:64
 msgid "User ID and username are required."
 msgstr "用户 ID 和用户名是必需的。"
 
-#: blueprints/api/users.py:89
+#: blueprints/api/users.py:80
 msgid "User updated successfully."
 msgstr "用户更新成功。"
 
-#: blueprints/api/users.py:97
+#: blueprints/api/users.py:88
 msgid "User ID is required."
 msgstr "用户 ID 是必需的。"
 
-#: blueprints/api/users.py:113
+#: blueprints/api/users.py:104
 #, python-format
 msgid "Error deleting user data directory: %(error)s"
 msgstr "删除用户数据目录时出错：%(error)s"
 
-#: blueprints/api/users.py:118
+#: blueprints/api/users.py:109
 msgid "User and their data have been successfully deleted."
 msgstr "用户及其数据已成功删除。"
 
-#: static/js/audio_player.js:70
+#: static/js/audio_player.js:72
 msgid "Failed to fetch audiobook list."
 msgstr "获取有声书列表失败。"
 
-#: static/js/audio_player.js:197
+#: static/js/audio_player.js:208
+#, python-format
+msgid ""
+"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
+"cannot be undone."
+msgstr "您确定要删除有声书 “%(title)s” 吗？此操作无法撤销。"
+
+#: static/js/audio_player.js:229
+#, python-format
+msgid "Error: %(message)s"
+msgstr "错误：%(message)s"
+
+#: static/js/audio_player.js:233
+#, python-format
+msgid "An unexpected error occurred."
+msgstr "发生意外错误。"
+
+#: static/js/audio_player.js:247
 msgid "Album"
 msgstr "专辑"
 
-#: static/js/audio_player.js:198
+#: static/js/audio_player.js:248
 msgid "Album Artist"
 msgstr "专辑艺术家"
 
-#: static/js/audio_player.js:199
+#: static/js/audio_player.js:249
 msgid "Genre"
 msgstr "类型"
 
-#: static/js/audio_player.js:200
+#: static/js/audio_player.js:250
 msgid "Year"
 msgstr "年份"
 
-#: static/js/audio_player.js:201
+#: static/js/audio_player.js:251
 msgid "Composer"
 msgstr "作曲家"
 
-#: static/js/audio_player.js:202
+#: static/js/audio_player.js:252
 msgid "Comment"
 msgstr "评论"
 
-#: static/js/audio_player.js:203 static/js/page/translations.js:36
+#: static/js/audio_player.js:253 static/js/page/translations.js:36
 #: templates/index.html:73 templates/index.html:149
 msgid "Description"
 msgstr "描述"
 
-#: static/js/audio_player.js:331
+#: static/js/audio_player.js:381
 msgid "Less"
 msgstr "收起"
 
-#: static/js/audio_player.js:333
+#: static/js/audio_player.js:383
 msgid "More"
 msgstr "更多"
 
@@ -1130,47 +1133,47 @@ msgstr "Mermaid 渲染错误"
 msgid "Audiobook Player"
 msgstr "有声书播放器"
 
-#: templates/audio_player.html:21 templates/chat_player.html:48
+#: templates/audio_player.html:24 templates/chat_player.html:48
 msgid "Back to main library"
 msgstr "返回主书库"
 
-#: templates/audio_player.html:25
+#: templates/audio_player.html:28
 msgid "Calibre Library"
 msgstr "Calibre 书库"
 
-#: templates/audio_player.html:26 templates/index.html:116
+#: templates/audio_player.html:29 templates/index.html:116
 msgid "Anx Library"
 msgstr "Anx 书库"
 
-#: templates/audio_player.html:31
+#: templates/audio_player.html:34
 msgid "Search in library..."
 msgstr "在书库中搜索..."
 
-#: templates/audio_player.html:39
+#: templates/audio_player.html:42
 msgid "No audiobooks found in this library."
 msgstr "此书库中没有找到有声书。"
 
-#: templates/audio_player.html:40
+#: templates/audio_player.html:43
 msgid "Try generating one from your book list."
 msgstr "尝试从您的图书列表中生成一本。"
 
-#: templates/audio_player.html:48
+#: templates/audio_player.html:51
 msgid "Select an audiobook to begin playback."
 msgstr "选择一本有声书以开始播放。"
 
-#: templates/audio_player.html:70
+#: templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "上一章"
 
-#: templates/audio_player.html:71
+#: templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "播放/暂停"
 
-#: templates/audio_player.html:72
+#: templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "下一章"
 
-#: templates/audio_player.html:81
+#: templates/audio_player.html:84
 msgid "Now Playing"
 msgstr "正在播放"
 
@@ -1412,23 +1415,23 @@ msgstr "没有帐户？"
 msgid "Register here"
 msgstr "在此注册"
 
-#: templates/reader.html:6
+#: templates/reader.html:8
 msgid "Book Reader"
 msgstr "图书阅读器"
 
-#: templates/reader.html:81
+#: templates/reader.html:86
 msgid "TTS Settings"
 msgstr "TTS 设置"
 
-#: templates/reader.html:83 templates/settings.html:99
+#: templates/reader.html:88 templates/settings.html:99
 msgid "Rate"
 msgstr "语速"
 
-#: templates/reader.html:88 templates/settings.html:109
+#: templates/reader.html:93 templates/settings.html:109
 msgid "Pitch"
 msgstr "音高"
 
-#: templates/reader.html:93 templates/settings.html:76
+#: templates/reader.html:98 templates/settings.html:76
 msgid "Voice"
 msgstr "声音"
 
@@ -1917,7 +1920,10 @@ msgid ""
 "parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
 "\"this_year\", a number of recent days (e.g., \"7\", \"30\"), or a date "
 "range \"YYYY-MM-DD:YYYY-MM-DD\"."
-msgstr "获取当前用户的阅读统计信息。`time_range` 是一个必需参数，可以是“all”、“today”、“this_week”、“this_month”、“this_year”、最近几天的天数（例如“7”、“30”）或日期范围“YYYY-MM-DD:YYYY-MM-DD”。"
+msgstr ""
+"获取当前用户的阅读统计信息。`time_range` "
+"是一个必需参数，可以是“all”、“today”、“this_week”、“this_month”、“this_year”、最近几天的天数（例如“7”、“30”）或日期范围"
+"“YYYY-MM-DD:YYYY-MM-DD”。"
 
 #: templates/settings.html:274
 msgid "KOReader Sync Settings"
@@ -2411,4 +2417,13 @@ msgstr "已读完！"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
+
+#: utils/decorators.py:10
+msgid "Administrator permission required."
+msgstr "需要管理员权限。"
+
+#: utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "需要维护者或管理员权限。"
+
 
