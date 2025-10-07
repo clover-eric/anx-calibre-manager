@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 17:49+0800\n"
+"POT-Creation-Date: 2025-10-07 19:29+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -143,6 +143,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Une erreur inconnue est survenue lors du démarrage de la tâche : %(error)s"
 
 #: blueprints/api/audiobook.py:243 blueprints/api/audiobook.py:273
+#: blueprints/api/audiobook.py:326
 msgid "Task not found"
 msgstr "Tâche non trouvée"
 
@@ -162,6 +163,27 @@ msgstr "Fichier non trouvé sur le serveur"
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "Impossible d'envoyer le fichier : %(error)s"
+
+#: blueprints/api/audiobook.py:318
+#, fuzzy
+msgid "Authentication required"
+msgstr "Authentification requise."
+
+#: blueprints/api/audiobook.py:333
+msgid "Permission denied to delete this Anx audiobook"
+msgstr "Permission refusée pour supprimer ce livre audio Anx"
+
+#: blueprints/api/audiobook.py:336 utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "Permission de mainteneur ou d'administrateur requise."
+
+#: blueprints/api/audiobook.py:352
+msgid "Audiobook deleted successfully"
+msgstr "Livre audio supprimé avec succès."
+
+#: blueprints/api/audiobook.py:357
+msgid "An error occurred during deletion"
+msgstr "Une erreur s'est produite lors de la suppression."
 
 #: blueprints/api/auth_2fa.py:15
 msgid "2FA is already enabled."
@@ -303,38 +325,46 @@ msgstr "Échec du téléversement, le livre existe peut-être déjà."
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Le serveur Calibre a retourné une erreur : %(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Erreur de connexion au serveur Calibre : %(error)s"
 
-#: blueprints/api/calibre.py:156
+#: blueprints/api/calibre.py:129
+msgid "Book not found"
+msgstr "Livre non trouvé"
+
+#: blueprints/api/calibre.py:135
+msgid "You do not have permission to edit this book."
+msgstr "Vous n'avez pas la permission de modifier ce livre."
+
+#: blueprints/api/calibre.py:166
 msgid "No fields provided to update."
 msgstr "Aucun champ fourni pour la mise à jour."
 
-#: blueprints/api/calibre.py:171
+#: blueprints/api/calibre.py:181
 msgid "Metadata updated successfully."
 msgstr "Métadonnées mises à jour avec succès."
 
-#: blueprints/api/calibre.py:173
+#: blueprints/api/calibre.py:183
 msgid "Calibre returned an unknown response."
 msgstr "Calibre a retourné une réponse inconnue."
 
-#: blueprints/api/calibre.py:175
+#: blueprints/api/calibre.py:185
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre a retourné une réponse JSON invalide : %(text)s"
 
-#: blueprints/api/calibre.py:178
+#: blueprints/api/calibre.py:188
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Erreur de connexion au serveur Calibre : %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:206
+#: blueprints/api/calibre.py:216
 msgid "Field parameter is required."
 msgstr "Le paramètre de champ est requis."
 
-#: blueprints/api/calibre.py:210
+#: blueprints/api/calibre.py:220
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Les complétions ne sont pas prises en charge pour le champ : %(field)s"
@@ -668,7 +698,6 @@ msgid "Error: %(message)s"
 msgstr "Erreur : %(message)s"
 
 #: static/js/audio_player.js:233
-#, python-format
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue est survenue."
 
@@ -2578,9 +2607,4 @@ msgstr "Aucun livre terminé pour le moment."
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "Permission administrateur requise."
-
-#: utils/decorators.py:19
-msgid "Maintainer or administrator permission required."
-msgstr "Permission de mainteneur ou d'administrateur requise."
-
 

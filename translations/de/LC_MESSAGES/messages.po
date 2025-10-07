@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 17:49+0800\n"
+"POT-Creation-Date: 2025-10-07 19:29+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -144,6 +144,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Beim Starten der Aufgabe ist ein unbekannter Fehler aufgetreten: %(error)s"
 
 #: blueprints/api/audiobook.py:243 blueprints/api/audiobook.py:273
+#: blueprints/api/audiobook.py:326
 msgid "Task not found"
 msgstr "Aufgabe nicht gefunden"
 
@@ -163,6 +164,27 @@ msgstr "Datei auf dem Server nicht gefunden"
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "Datei konnte nicht gesendet werden: %(error)s"
+
+#: blueprints/api/audiobook.py:318
+#, fuzzy
+msgid "Authentication required"
+msgstr "Authentifizierung erforderlich."
+
+#: blueprints/api/audiobook.py:333
+msgid "Permission denied to delete this Anx audiobook"
+msgstr "Keine Berechtigung zum Löschen dieses Anx-Hörbuchs"
+
+#: blueprints/api/audiobook.py:336 utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "Wartungs- oder Administratorberechtigung erforderlich."
+
+#: blueprints/api/audiobook.py:352
+msgid "Audiobook deleted successfully"
+msgstr "Hörbuch erfolgreich gelöscht."
+
+#: blueprints/api/audiobook.py:357
+msgid "An error occurred during deletion"
+msgstr "Beim Löschen ist ein Fehler aufgetreten."
 
 #: blueprints/api/auth_2fa.py:15
 msgid "2FA is already enabled."
@@ -304,38 +326,46 @@ msgstr "Upload fehlgeschlagen, Buch existiert möglicherweise bereits."
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre-Server hat einen Fehler zurückgegeben: %(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Fehler beim Verbinden mit dem Calibre-Server: %(error)s"
 
-#: blueprints/api/calibre.py:156
+#: blueprints/api/calibre.py:129
+msgid "Book not found"
+msgstr "Buch nicht gefunden"
+
+#: blueprints/api/calibre.py:135
+msgid "You do not have permission to edit this book."
+msgstr "Sie haben keine Berechtigung, dieses Buch zu bearbeiten."
+
+#: blueprints/api/calibre.py:166
 msgid "No fields provided to update."
 msgstr "Keine Felder zum Aktualisieren angegeben."
 
-#: blueprints/api/calibre.py:171
+#: blueprints/api/calibre.py:181
 msgid "Metadata updated successfully."
 msgstr "Metadaten erfolgreich aktualisiert."
 
-#: blueprints/api/calibre.py:173
+#: blueprints/api/calibre.py:183
 msgid "Calibre returned an unknown response."
 msgstr "Calibre hat eine unbekannte Antwort zurückgegeben."
 
-#: blueprints/api/calibre.py:175
+#: blueprints/api/calibre.py:185
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre hat eine ungültige JSON-Antwort zurückgegeben: %(text)s"
 
-#: blueprints/api/calibre.py:178
+#: blueprints/api/calibre.py:188
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Fehler beim Verbinden mit dem Calibre-Server: %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:206
+#: blueprints/api/calibre.py:216
 msgid "Field parameter is required."
 msgstr "Feldparameter ist erforderlich."
 
-#: blueprints/api/calibre.py:210
+#: blueprints/api/calibre.py:220
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Vervollständigungen werden für Feld nicht unterstützt: %(field)s"
@@ -655,8 +685,8 @@ msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
 "cannot be undone."
 msgstr ""
-"Sind Sie sicher, dass Sie das Hörbuch \"%(title)s\" löschen möchten? Diese "
-"Aktion kann nicht rückgängig gemacht werden."
+"Sind Sie sicher, dass Sie das Hörbuch \"%(title)s\" löschen möchten? "
+"Diese Aktion kann nicht rückgängig gemacht werden."
 
 #: static/js/audio_player.js:229
 #, python-format
@@ -664,7 +694,6 @@ msgid "Error: %(message)s"
 msgstr "Fehler: %(message)s"
 
 #: static/js/audio_player.js:233
-#, python-format
 msgid "An unexpected error occurred."
 msgstr "Ein unerwarteter Fehler ist aufgetreten."
 
@@ -2563,9 +2592,4 @@ msgstr "Noch keine Bücher fertig gelesen."
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "Administratorberechtigung erforderlich."
-
-#: utils/decorators.py:19
-msgid "Maintainer or administrator permission required."
-msgstr "Wartungs- oder Administratorberechtigung erforderlich."
-
 

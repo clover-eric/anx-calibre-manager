@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 17:49+0800\n"
+"POT-Creation-Date: 2025-10-07 19:29+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -144,6 +144,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Ocurrió un error desconocido al iniciar la tarea: %(error)s"
 
 #: blueprints/api/audiobook.py:243 blueprints/api/audiobook.py:273
+#: blueprints/api/audiobook.py:326
 msgid "Task not found"
 msgstr "Tarea no encontrada"
 
@@ -163,6 +164,27 @@ msgstr "Archivo no encontrado en el servidor"
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "No se pudo enviar el archivo: %(error)s"
+
+#: blueprints/api/audiobook.py:318
+#, fuzzy
+msgid "Authentication required"
+msgstr "Autenticación requerida."
+
+#: blueprints/api/audiobook.py:333
+msgid "Permission denied to delete this Anx audiobook"
+msgstr "Permiso denegado para eliminar este audiolibro de Anx"
+
+#: blueprints/api/audiobook.py:336 utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "Se requiere permiso de mantenedor o administrador."
+
+#: blueprints/api/audiobook.py:352
+msgid "Audiobook deleted successfully"
+msgstr "Audiolibro eliminado con éxito."
+
+#: blueprints/api/audiobook.py:357
+msgid "An error occurred during deletion"
+msgstr "Ocurrió un error durante la eliminación."
 
 #: blueprints/api/auth_2fa.py:15
 msgid "2FA is already enabled."
@@ -304,38 +326,46 @@ msgstr "Error al subir, el libro ya puede existir."
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "El servidor de Calibre devolvió un error: %(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Error al conectar con el servidor de Calibre: %(error)s"
 
-#: blueprints/api/calibre.py:156
+#: blueprints/api/calibre.py:129
+msgid "Book not found"
+msgstr "Libro no encontrado"
+
+#: blueprints/api/calibre.py:135
+msgid "You do not have permission to edit this book."
+msgstr "No tienes permiso para editar este libro."
+
+#: blueprints/api/calibre.py:166
 msgid "No fields provided to update."
 msgstr "No se proporcionaron campos para actualizar."
 
-#: blueprints/api/calibre.py:171
+#: blueprints/api/calibre.py:181
 msgid "Metadata updated successfully."
 msgstr "Metadatos actualizados correctamente."
 
-#: blueprints/api/calibre.py:173
+#: blueprints/api/calibre.py:183
 msgid "Calibre returned an unknown response."
 msgstr "Calibre devolvió una respuesta desconocida."
 
-#: blueprints/api/calibre.py:175
+#: blueprints/api/calibre.py:185
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre devolvió una respuesta JSON no válida: %(text)s"
 
-#: blueprints/api/calibre.py:178
+#: blueprints/api/calibre.py:188
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Error al conectar con el servidor de Calibre: %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:206
+#: blueprints/api/calibre.py:216
 msgid "Field parameter is required."
 msgstr "El parámetro de campo es obligatorio."
 
-#: blueprints/api/calibre.py:210
+#: blueprints/api/calibre.py:220
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Completados no compatibles para el campo: %(field)s"
@@ -664,7 +694,6 @@ msgid "Error: %(message)s"
 msgstr "Error: %(message)s"
 
 #: static/js/audio_player.js:233
-#, python-format
 msgid "An unexpected error occurred."
 msgstr "Ocurrió un error inesperado."
 
@@ -2572,9 +2601,4 @@ msgstr "Aún no hay libros terminados."
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "Se requiere permiso de administrador."
-
-#: utils/decorators.py:19
-msgid "Maintainer or administrator permission required."
-msgstr "Se requiere permiso de mantenedor o administrador."
-
 

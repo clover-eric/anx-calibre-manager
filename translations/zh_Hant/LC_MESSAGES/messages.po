@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 17:49+0800\n"
+"POT-Creation-Date: 2025-10-07 19:29+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -140,6 +140,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "啟動任務時發生未知錯誤：%(error)s"
 
 #: blueprints/api/audiobook.py:243 blueprints/api/audiobook.py:273
+#: blueprints/api/audiobook.py:326
 msgid "Task not found"
 msgstr "找不到任務"
 
@@ -159,6 +160,27 @@ msgstr "在伺服器上找不到檔案"
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "無法傳送檔案：%(error)s"
+
+#: blueprints/api/audiobook.py:318
+#, fuzzy
+msgid "Authentication required"
+msgstr "需要身分驗證。"
+
+#: blueprints/api/audiobook.py:333
+msgid "Permission denied to delete this Anx audiobook"
+msgstr "無權刪除此 Anx 有聲書"
+
+#: blueprints/api/audiobook.py:336 utils/decorators.py:19
+msgid "Maintainer or administrator permission required."
+msgstr "需要維護者或管理員權限。"
+
+#: blueprints/api/audiobook.py:352
+msgid "Audiobook deleted successfully"
+msgstr "有聲書刪除成功"
+
+#: blueprints/api/audiobook.py:357
+msgid "An error occurred during deletion"
+msgstr "刪除時發生錯誤"
 
 #: blueprints/api/auth_2fa.py:15
 msgid "2FA is already enabled."
@@ -288,38 +310,46 @@ msgstr "上傳失敗，書籍可能已存在。"
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre 伺服器傳回錯誤：%(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:180
+#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "連線至 Calibre 伺服器時發生錯誤：%(error)s"
 
-#: blueprints/api/calibre.py:156
+#: blueprints/api/calibre.py:129
+msgid "Book not found"
+msgstr "找不到書籍"
+
+#: blueprints/api/calibre.py:135
+msgid "You do not have permission to edit this book."
+msgstr "您沒有權限編輯此書籍。"
+
+#: blueprints/api/calibre.py:166
 msgid "No fields provided to update."
 msgstr "未提供要更新的欄位。"
 
-#: blueprints/api/calibre.py:171
+#: blueprints/api/calibre.py:181
 msgid "Metadata updated successfully."
 msgstr "中繼資料更新成功。"
 
-#: blueprints/api/calibre.py:173
+#: blueprints/api/calibre.py:183
 msgid "Calibre returned an unknown response."
 msgstr "Calibre 傳回未知的回應。"
 
-#: blueprints/api/calibre.py:175
+#: blueprints/api/calibre.py:185
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre 傳回無效的 JSON 回應：%(text)s"
 
-#: blueprints/api/calibre.py:178
+#: blueprints/api/calibre.py:188
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "連線至 Calibre 伺服器時發生錯誤：%(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:206
+#: blueprints/api/calibre.py:216
 msgid "Field parameter is required."
 msgstr "欄位參數為必填項。"
 
-#: blueprints/api/calibre.py:210
+#: blueprints/api/calibre.py:220
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "欄位 %(field)s 不支援自動完成。"
@@ -630,7 +660,6 @@ msgid "Error: %(message)s"
 msgstr "錯誤：%(message)s"
 
 #: static/js/audio_player.js:233
-#, python-format
 msgid "An unexpected error occurred."
 msgstr "發生非預期的錯誤。"
 
@@ -2421,9 +2450,4 @@ msgstr "還沒有已讀完的書籍。"
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "需要管理員權限。"
-
-#: utils/decorators.py:19
-msgid "Maintainer or administrator permission required."
-msgstr "需要維護者或管理員權限。"
-
 
