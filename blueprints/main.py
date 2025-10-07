@@ -3,7 +3,7 @@ import re
 import requests
 import io
 import os
-from flask import Blueprint, render_template, request, g, redirect, url_for, send_from_directory, send_file
+from flask import Blueprint, render_template, request, g, redirect, url_for, send_from_directory, send_file, make_response
 from flask_babel import gettext as _
 from requests.auth import HTTPDigestAuth
 from functools import wraps
@@ -110,11 +110,13 @@ def index():
     total_pages = math.ceil(total_calibre_books / page_size) if page_size > 0 else 0
     pagination = {'page': page, 'page_size': page_size, 'total_books': total_calibre_books, 'total_pages': total_pages}
     
-    return render_template('index.html', 
-                           calibre_books=calibre_books, 
-                           anx_books=anx_books, 
-                           search_query=search_query, 
-                           pagination=pagination)
+    response = make_response(render_template('index.html',
+                           calibre_books=calibre_books,
+                           anx_books=anx_books,
+                           search_query=search_query,
+                           pagination=pagination))
+    response.headers['Accept-CH'] = 'Sec-CH-Prefers-Color-Scheme'
+    return response
 @main_bp.route('/sw.js')
 def service_worker():
     return send_from_directory('static', 'sw.js')
@@ -131,7 +133,7 @@ def dynamic_manifest():
         "description": "A web-based manager for your Calibre and Anx ebook libraries.",
         "start_url": "/",
         "display": "standalone",
-        "theme_color": "#4A90E2",
+        "theme_color": "#ffffff",  # Default to light
         "icons": [
             {
                 "src": "/static/logo.png",
@@ -154,23 +156,23 @@ def dynamic_manifest():
         
         if user_theme == 'dark':
             manifest["background_color"] = "#121212"
+            manifest["theme_color"] = "#1f1f1f"
         elif user_theme == 'light':
             manifest["background_color"] = "#ffffff"
-        else:  # auto - 根据系统偏好检测
-            # 检查请求头中的 Sec-CH-Prefers-Color-Scheme 或其他暗色模式指示
-            prefers_dark = False
-            
-            # 检查 Accept 头中是否包含暗色模式偏好的指示
-            accept_header = request.headers.get('Accept', '')
-            user_agent = request.headers.get('User-Agent', '').lower()
-            
-            # 简单的启发式检测：如果是夜间时间或者有暗色模式的指示
-            # 由于无法直接检测系统主题，我们采用保守策略
-            # 对于 auto 模式，默认使用暗色背景，因为这样在夜间模式下体验更好
-            manifest["background_color"] = "#121212"
+            manifest["theme_color"] = "#ffffff"
+        else:  # auto
+            # Check for Client Hint header to respect browser preference
+            if request.headers.get('Sec-CH-Prefers-Color-Scheme') == 'dark':
+                manifest["background_color"] = "#121212"
+                manifest["theme_color"] = "#1f1f1f"
+            else:
+                # Default to light if header is not present or not 'dark'
+                manifest["background_color"] = "#ffffff"
+                manifest["theme_color"] = "#ffffff"
     else:
-        # 未登录用户使用默认亮色背景
+        # Default for non-logged-in users
         manifest["background_color"] = "#ffffff"
+        manifest["theme_color"] = "#ffffff"
     
     response = jsonify(manifest)
     response.headers['Content-Type'] = 'application/manifest+json'
