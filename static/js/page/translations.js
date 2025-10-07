@@ -80,5 +80,38 @@ export function initializeTranslations() {
         resetZoom: _('Reset Zoom'),
         downloadSVG: _('Download SVG'),
         mermaidRenderError: _('Mermaid Render Error'),
+
+        // Audio Player
+        failedToFetchAudiobookList: _('Failed to fetch audiobook list.'),
+        deleteAudiobook: _('Delete Audiobook'),
+        areYouSureYouWantToDelete: _('Are you sure you want to delete the audiobook "%(title)s"? This action cannot be undone.'),
+        errorWithMessage: _('Error: %(message)s'),
+        failedToDeleteAudiobook: _('Failed to delete audiobook.'),
+        anUnexpectedErrorOccurred: _('An unexpected error occurred.'),
+        chapters: _('chapters'),
+        noChaptersAvailable: _('No chapters available.'),
+        more: _('More'),
+        less: _('Less'),
+        album: _('Album'),
+        albumArtist: _('Album Artist'),
+        genre: _('Genre'),
+        year: _('Year'),
+        composer: _('Composer'),
+        comment: _('Comment'),
+        description: _('Description'),
+        previousChapter: _('Previous Chapter'),
+        nextChapter: _('Next Chapter'),
+        seekBackward: _('Seek Backward 10s'),
+        seekForward: _('Seek Forward 30s'),
+        playPause: _('Play/Pause'),
+        playbackSpeed: _('Playback Speed'),
+    });
+}
+
+// A simple sprintf-like function for replacements.
+export function sprintf(str, values) {
+    if (!str) return '';
+    return str.replace(/%\((\w+)\)s/g, (match, key) => {
+        return values.hasOwnProperty(key) ? values[key] : match;
     });
 }

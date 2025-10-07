@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 19:29+0800\n"
+"POT-Creation-Date: 2025-10-07 19:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -162,9 +162,8 @@ msgid "Could not send file: %(error)s"
 msgstr "无法发送文件：%(error)s"
 
 #: blueprints/api/audiobook.py:318
-#, fuzzy
 msgid "Authentication required"
-msgstr "需要身份验证。"
+msgstr "需要身份验证"
 
 #: blueprints/api/audiobook.py:333
 msgid "Permission denied to delete this Anx audiobook"
@@ -643,63 +642,6 @@ msgstr "删除用户数据目录时出错：%(error)s"
 msgid "User and their data have been successfully deleted."
 msgstr "用户及其数据已成功删除。"
 
-#: static/js/audio_player.js:72
-msgid "Failed to fetch audiobook list."
-msgstr "获取有声书列表失败。"
-
-#: static/js/audio_player.js:208
-#, python-format
-msgid ""
-"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
-"cannot be undone."
-msgstr "您确定要删除有声书 “%(title)s” 吗？此操作无法撤销。"
-
-#: static/js/audio_player.js:229
-#, python-format
-msgid "Error: %(message)s"
-msgstr "错误：%(message)s"
-
-#: static/js/audio_player.js:233
-msgid "An unexpected error occurred."
-msgstr "发生意外错误。"
-
-#: static/js/audio_player.js:247
-msgid "Album"
-msgstr "专辑"
-
-#: static/js/audio_player.js:248
-msgid "Album Artist"
-msgstr "专辑艺术家"
-
-#: static/js/audio_player.js:249
-msgid "Genre"
-msgstr "类型"
-
-#: static/js/audio_player.js:250
-msgid "Year"
-msgstr "年份"
-
-#: static/js/audio_player.js:251
-msgid "Composer"
-msgstr "作曲家"
-
-#: static/js/audio_player.js:252
-msgid "Comment"
-msgstr "评论"
-
-#: static/js/audio_player.js:253 static/js/page/translations.js:36
-#: templates/index.html:73 templates/index.html:149
-msgid "Description"
-msgstr "描述"
-
-#: static/js/audio_player.js:381
-msgid "Less"
-msgstr "收起"
-
-#: static/js/audio_player.js:383
-msgid "More"
-msgstr "更多"
-
 #: static/js/login.js:3
 msgid "A network error occurred, please try again."
 msgstr "网络发生错误，请重试"
@@ -997,6 +939,11 @@ msgstr "评分 (0-5)"
 msgid "Reading Progress (%)"
 msgstr "阅读进度 (%)"
 
+#: static/js/page/translations.js:36 static/js/page/translations.js:101
+#: templates/index.html:73 templates/index.html:149
+msgid "Description"
+msgstr "描述"
+
 #: static/js/page/translations.js:37
 msgid "Note"
 msgstr "笔记"
@@ -1158,6 +1105,98 @@ msgstr "下载 SVG"
 msgid "Mermaid Render Error"
 msgstr "Mermaid 渲染错误"
 
+#: static/js/page/translations.js:85
+msgid "Failed to fetch audiobook list."
+msgstr "获取有声书列表失败。"
+
+#: static/js/page/translations.js:86
+msgid "Delete Audiobook"
+msgstr "删除有声书"
+
+#: static/js/page/translations.js:87
+#, python-format
+msgid ""
+"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
+"cannot be undone."
+msgstr "您确定要删除有声书 “%(title)s” 吗？此操作无法撤销。"
+
+#: static/js/page/translations.js:88
+#, python-format
+msgid "Error: %(message)s"
+msgstr "错误：%(message)s"
+
+#: static/js/page/translations.js:89
+msgid "Failed to delete audiobook."
+msgstr "删除有声书失败。"
+
+#: static/js/page/translations.js:90
+msgid "An unexpected error occurred."
+msgstr "发生意外错误。"
+
+#: static/js/page/translations.js:91
+msgid "chapters"
+msgstr "章"
+
+#: static/js/page/translations.js:92
+msgid "No chapters available."
+msgstr "无可用章节。"
+
+#: static/js/page/translations.js:93
+msgid "More"
+msgstr "更多"
+
+#: static/js/page/translations.js:94
+msgid "Less"
+msgstr "收起"
+
+#: static/js/page/translations.js:95
+msgid "Album"
+msgstr "专辑"
+
+#: static/js/page/translations.js:96
+msgid "Album Artist"
+msgstr "专辑艺术家"
+
+#: static/js/page/translations.js:97
+msgid "Genre"
+msgstr "类型"
+
+#: static/js/page/translations.js:98
+msgid "Year"
+msgstr "年份"
+
+#: static/js/page/translations.js:99
+msgid "Composer"
+msgstr "作曲家"
+
+#: static/js/page/translations.js:100
+msgid "Comment"
+msgstr "评论"
+
+#: static/js/page/translations.js:102 templates/audio_player.html:73
+msgid "Previous Chapter"
+msgstr "上一章"
+
+#: static/js/page/translations.js:103 templates/audio_player.html:75
+msgid "Next Chapter"
+msgstr "下一章"
+
+#: static/js/page/translations.js:104
+msgid "Seek Backward 10s"
+msgstr "快退 10 秒"
+
+#: static/js/page/translations.js:105
+msgid "Seek Forward 30s"
+msgstr "快进 30 秒"
+
+#: static/js/page/translations.js:106 templates/audio_player.html:74
+msgid "Play/Pause"
+msgstr "播放/暂停"
+
+#: static/js/page/translations.js:107
+msgid "Playback Speed"
+msgstr "播放速度"
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "有声书播放器"
@@ -1189,18 +1228,6 @@ msgstr "尝试从您的图书列表中生成一本。"
 #: templates/audio_player.html:51
 msgid "Select an audiobook to begin playback."
 msgstr "选择一本有声书以开始播放。"
-
-#: templates/audio_player.html:73
-msgid "Previous Chapter"
-msgstr "上一章"
-
-#: templates/audio_player.html:74
-msgid "Play/Pause"
-msgstr "播放/暂停"
-
-#: templates/audio_player.html:75
-msgid "Next Chapter"
-msgstr "下一章"
 
 #: templates/audio_player.html:84
 msgid "Now Playing"

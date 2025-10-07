@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 19:29+0800\n"
+"POT-Creation-Date: 2025-10-07 19:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -165,9 +165,8 @@ msgid "Could not send file: %(error)s"
 msgstr "Impossible d'envoyer le fichier : %(error)s"
 
 #: blueprints/api/audiobook.py:318
-#, fuzzy
 msgid "Authentication required"
-msgstr "Authentification requise."
+msgstr "Authentification requise"
 
 #: blueprints/api/audiobook.py:333
 msgid "Permission denied to delete this Anx audiobook"
@@ -679,65 +678,6 @@ msgstr ""
 msgid "User and their data have been successfully deleted."
 msgstr "L'utilisateur et ses données ont été supprimés avec succès."
 
-#: static/js/audio_player.js:72
-msgid "Failed to fetch audiobook list."
-msgstr "Échec de la récupération de la liste des livres audio."
-
-#: static/js/audio_player.js:208
-#, python-format
-msgid ""
-"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
-"cannot be undone."
-msgstr ""
-"Êtes-vous sûr de vouloir supprimer le livre audio \"%(title)s\" ? Cette "
-"action est irréversible."
-
-#: static/js/audio_player.js:229
-#, python-format
-msgid "Error: %(message)s"
-msgstr "Erreur : %(message)s"
-
-#: static/js/audio_player.js:233
-msgid "An unexpected error occurred."
-msgstr "Une erreur inattendue est survenue."
-
-#: static/js/audio_player.js:247
-msgid "Album"
-msgstr "Album"
-
-#: static/js/audio_player.js:248
-msgid "Album Artist"
-msgstr "Artiste de l'album"
-
-#: static/js/audio_player.js:249
-msgid "Genre"
-msgstr "Genre"
-
-#: static/js/audio_player.js:250
-msgid "Year"
-msgstr "Année"
-
-#: static/js/audio_player.js:251
-msgid "Composer"
-msgstr "Compositeur"
-
-#: static/js/audio_player.js:252
-msgid "Comment"
-msgstr "Commentaire"
-
-#: static/js/audio_player.js:253 static/js/page/translations.js:36
-#: templates/index.html:73 templates/index.html:149
-msgid "Description"
-msgstr "Description"
-
-#: static/js/audio_player.js:381
-msgid "Less"
-msgstr "Moins"
-
-#: static/js/audio_player.js:383
-msgid "More"
-msgstr "Plus"
-
 #: static/js/login.js:3
 msgid "A network error occurred, please try again."
 msgstr "Une erreur réseau est survenue, veuillez réessayer."
@@ -1043,6 +983,11 @@ msgstr "Note (0-5)"
 msgid "Reading Progress (%)"
 msgstr "Progression de la lecture (%)"
 
+#: static/js/page/translations.js:36 static/js/page/translations.js:101
+#: templates/index.html:73 templates/index.html:149
+msgid "Description"
+msgstr "Description"
+
 #: static/js/page/translations.js:37
 msgid "Note"
 msgstr "Note"
@@ -1208,6 +1153,100 @@ msgstr "Télécharger le SVG"
 msgid "Mermaid Render Error"
 msgstr "Erreur de rendu Mermaid"
 
+#: static/js/page/translations.js:85
+msgid "Failed to fetch audiobook list."
+msgstr "Échec de la récupération de la liste des livres audio."
+
+#: static/js/page/translations.js:86
+msgid "Delete Audiobook"
+msgstr "Supprimer le livre audio"
+
+#: static/js/page/translations.js:87
+#, python-format
+msgid ""
+"Are you sure you want to delete the audiobook \"%(title)s\"? This action "
+"cannot be undone."
+msgstr ""
+"Êtes-vous sûr de vouloir supprimer le livre audio \"%(title)s\" ? Cette "
+"action est irréversible."
+
+#: static/js/page/translations.js:88
+#, python-format
+msgid "Error: %(message)s"
+msgstr "Erreur : %(message)s"
+
+#: static/js/page/translations.js:89
+msgid "Failed to delete audiobook."
+msgstr "Échec de la suppression du livre audio."
+
+#: static/js/page/translations.js:90
+msgid "An unexpected error occurred."
+msgstr "Une erreur inattendue est survenue."
+
+#: static/js/page/translations.js:91
+msgid "chapters"
+msgstr "chapitres"
+
+#: static/js/page/translations.js:92
+msgid "No chapters available."
+msgstr "Aucun chapitre disponible."
+
+#: static/js/page/translations.js:93
+msgid "More"
+msgstr "Plus"
+
+#: static/js/page/translations.js:94
+msgid "Less"
+msgstr "Moins"
+
+#: static/js/page/translations.js:95
+msgid "Album"
+msgstr "Album"
+
+#: static/js/page/translations.js:96
+msgid "Album Artist"
+msgstr "Artiste de l'album"
+
+#: static/js/page/translations.js:97
+msgid "Genre"
+msgstr "Genre"
+
+#: static/js/page/translations.js:98
+msgid "Year"
+msgstr "Année"
+
+#: static/js/page/translations.js:99
+msgid "Composer"
+msgstr "Compositeur"
+
+#: static/js/page/translations.js:100
+msgid "Comment"
+msgstr "Commentaire"
+
+#: static/js/page/translations.js:102 templates/audio_player.html:73
+msgid "Previous Chapter"
+msgstr "Chapitre précédent"
+
+#: static/js/page/translations.js:103 templates/audio_player.html:75
+msgid "Next Chapter"
+msgstr "Chapitre suivant"
+
+#: static/js/page/translations.js:104
+msgid "Seek Backward 10s"
+msgstr "Reculer de 10s"
+
+#: static/js/page/translations.js:105
+msgid "Seek Forward 30s"
+msgstr "Avancer de 30s"
+
+#: static/js/page/translations.js:106 templates/audio_player.html:74
+msgid "Play/Pause"
+msgstr "Lecture/Pause"
+
+#: static/js/page/translations.js:107
+msgid "Playback Speed"
+msgstr "Vitesse de lecture"
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "Lecteur de livres audio"
@@ -1239,18 +1278,6 @@ msgstr "Essayez d'en générer un à partir de votre liste de livres."
 #: templates/audio_player.html:51
 msgid "Select an audiobook to begin playback."
 msgstr "Sélectionnez un livre audio pour commencer la lecture."
-
-#: templates/audio_player.html:73
-msgid "Previous Chapter"
-msgstr "Chapitre précédent"
-
-#: templates/audio_player.html:74
-msgid "Play/Pause"
-msgstr "Lecture/Pause"
-
-#: templates/audio_player.html:75
-msgid "Next Chapter"
-msgstr "Chapitre suivant"
 
 #: templates/audio_player.html:84
 msgid "Now Playing"

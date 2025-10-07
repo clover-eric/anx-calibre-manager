@@ -1,4 +1,7 @@
+import { t, initializeTranslations, sprintf } from './page/translations.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+    initializeTranslations();
     // --- State ---
     let currentAudiobooks = [];
     let filteredAudiobooks = [];
@@ -69,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dom.loadingOverlay.style.display = 'flex';
         try {
             const response = await fetch(`/api/audioplayer/list/${libraryType}`);
-            if (!response.ok) throw new Error(_("Failed to fetch audiobook list."));
+            if (!response.ok) throw new Error(t.failedToFetchAudiobookList);
             currentAudiobooks = await response.json();
             filterAndRenderList();
         } catch (error) {
@@ -167,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                               (book.library_type === 'calibre' && dom.isMaintainer);
 
             const deleteButtonHtml = canDelete
-                ? `<button class="delete-audiobook-btn" title="${_('Delete Audiobook')}"><i class="fas fa-trash-alt"></i></button>`
+                ? `<button class="delete-audiobook-btn" title="${t.deleteAudiobook}"><i class="fas fa-trash-alt"></i></button>`
                 : '';
 
              item.innerHTML = `
@@ -178,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                          ${artistHtml}
                      </div>
                      <div class="meta">
-                         <span>${book.chapter_count} ${_('chapters')}</span>
+                         <span>${book.chapter_count} ${t.chapters}</span>
                         <span>${formatTime(book.total_duration)}</span>
                     </div>
                 </div>
@@ -205,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const handleDelete = async (taskId, title) => {
-        const confirmationMessage = `${_('Are you sure you want to delete the audiobook')} "${title}"? ${_('This action cannot be undone.')}`;
+        const confirmationMessage = sprintf(t.areYouSureYouWantToDelete, { title: title });
         if (!confirm(confirmationMessage)) {
             return;
         }
@@ -227,11 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Reset player UI
                 }
             } else {
-                alert(_('Error: %(message)s', { message: result.error || 'Failed to delete audiobook.' }));
+                alert(sprintf(t.errorWithMessage, { message: result.error || t.failedToDeleteAudiobook }));
             }
         } catch (error) {
             console.error('Deletion error:', error);
-            alert(_('An unexpected error occurred.'));
+            alert(t.anUnexpectedErrorOccurred);
         }
     };
 
@@ -242,23 +245,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="marquee"><span>${chap.title}</span></span>
                     <span>${formatTime(chap.end - chap.start)}</span>
                 </li>`).join('')
-            : `<li>${_('No chapters available.')}</li>`;
+            : `<li>${t.noChaptersAvailable}</li>`;
 
         const metadataHtml = [
-            { label: _('Album'), value: track.album },
-            { label: _('Album Artist'), value: track.album_artist },
-            { label: _('Genre'), value: track.genre },
-            { label: _('Year'), value: track.year },
-            { label: _('Composer'), value: track.composer },
-            { label: _('Comment'), value: track.comment },
-            { label: _('Description'), value: track.description }
+            { label: t.album, value: track.album },
+            { label: t.albumArtist, value: track.album_artist },
+            { label: t.genre, value: track.genre },
+            { label: t.year, value: track.year },
+            { label: t.composer, value: track.composer },
+            { label: t.comment, value: track.comment },
+            { label: t.description, value: track.description }
         ]
         .filter(item => item.value)
         .map(item => `<p><strong>${item.label}:</strong> ${item.value}</p>`)
         .join('');
         
         const metadataContainerHtml = metadataHtml
-            ? `<div class="track-metadata">${metadataHtml}</div><button class="button metadata-toggle-btn">${_('More')}</button>`
+            ? `<div class="track-metadata">${metadataHtml}</div><button class="button metadata-toggle-btn">${t.more}</button>`
             : '';
  
          return `
@@ -282,13 +285,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="playback-buttons">
-                    <button class="control-button prev-chapter-btn" title="${_('Previous Chapter')}"><i class="fas fa-step-backward"></i></button>
-                    <button class="control-button seek-backward-btn" title="${_('Seek Backward 10s')}"><i class="fas fa-undo"></i></button>
-                    <button class="control-button play-pause-btn" title="${_('Play/Pause')}"><i class="fas fa-play"></i></button>
-                    <button class="control-button seek-forward-btn" title="${_('Seek Forward 30s')}"><i class="fas fa-redo"></i></button>
-                    <button class="control-button next-chapter-btn" title="${_('Next Chapter')}"><i class="fas fa-step-forward"></i></button>
+                    <button class="control-button prev-chapter-btn" title="${t.previousChapter}"><i class="fas fa-step-backward"></i></button>
+                    <button class="control-button seek-backward-btn" title="${t.seekBackward}"><i class="fas fa-undo"></i></button>
+                    <button class="control-button play-pause-btn" title="${t.playPause}"><i class="fas fa-play"></i></button>
+                    <button class="control-button seek-forward-btn" title="${t.seekForward}"><i class="fas fa-redo"></i></button>
+                    <button class="control-button next-chapter-btn" title="${t.nextChapter}"><i class="fas fa-step-forward"></i></button>
                     <div class="playback-rate-container">
-                        <button class="control-button playback-rate-btn" title="${_('Playback Speed')}">1.0x</button>
+                        <button class="control-button playback-rate-btn" title="${t.playbackSpeed}">1.0x</button>
                         <ul class="playback-rate-list">
                             <!-- Rates will be populated by JS -->
                         </ul>
@@ -379,9 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const metadataContainer = container.querySelector('.track-metadata');
                 metadataContainer.classList.toggle('expanded');
                 if (metadataContainer.classList.contains('expanded')) {
-                    e.target.textContent = _('Less');
+                    e.target.textContent = t.less;
                 } else {
-                    e.target.textContent = _('More');
+                    e.target.textContent = t.more;
                 }
             });
         }
