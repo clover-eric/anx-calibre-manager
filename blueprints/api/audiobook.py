@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from flask_babel import gettext as _
 
 import config_manager
+import database
 # 内部导入
 from utils.audiobook_generator import AudiobookGenerator, TTSConfig, EdgeTTSProvider, OpenAITTSProvider
 from .books import _get_processed_epub_for_book
