@@ -315,7 +315,7 @@ def download_audiobook(task_id):
 @audiobook_bp.route('/delete/<task_id>', methods=['DELETE'])
 def delete_audiobook(task_id):
     if g.user is None or g.user.id is None:
-        return jsonify({'error': 'Authentication required'}), 401
+        return jsonify({'error': _('Authentication required')}), 401
 
     with closing(database.get_db()) as db:
         cursor = db.cursor()
@@ -323,17 +323,17 @@ def delete_audiobook(task_id):
         task = cursor.fetchone()
 
         if not task:
-            return jsonify({'error': 'Task not found'}), 404
+            return jsonify({'error': _('Task not found')}), 404
 
         # Permission Check
         is_owner = task['user_id'] == g.user.id
         is_maintainer = g.user.is_maintainer
 
         if task['library_type'] == 'anx' and not is_owner:
-            return jsonify({'error': 'Permission denied to delete this Anx audiobook'}), 403
+            return jsonify({'error': _('Permission denied to delete this Anx audiobook')}), 403
         
         if task['library_type'] == 'calibre' and not is_maintainer:
-            return jsonify({'error': 'Only maintainers can delete Calibre audiobooks'}), 403
+            return jsonify({'error': _('Maintainer or administrator permission required.')}), 403
 
         # Proceed with deletion
         try:
@@ -349,9 +349,9 @@ def delete_audiobook(task_id):
             
             db.commit()
             
-            return jsonify({'message': 'Audiobook deleted successfully'})
+            return jsonify({'message': _('Audiobook deleted successfully')})
 
         except Exception as e:
             db.rollback()
             # Consider adding logging here
-            return jsonify({'error': 'An error occurred during deletion'}), 500
+            return jsonify({'error': _('An error occurred during deletion')}), 500
