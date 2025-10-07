@@ -122,8 +122,18 @@ def upload_to_calibre_api():
     return jsonify(results)
 
 @calibre_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
-@maintainer_required_api
 def update_calibre_book_api(book_id):
+    if not g.user.is_maintainer:
+        book_details = get_calibre_book_details(book_id)
+        if not book_details:
+            return jsonify({'error': _('Book not found')}), 404
+        
+        library_field = book_details.get('user_metadata', {}).get('#library', {})
+        uploader = library_field.get('#value#', '') if library_field else ''
+
+        if uploader != g.user.username:
+            return jsonify({'error': _('You do not have permission to edit this book.')}), 403
+
     data = request.get_json()
     
     # Prepare the 'changes' dictionary
