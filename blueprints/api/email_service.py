@@ -5,18 +5,9 @@ from flask import Blueprint, request, jsonify, g
 from flask_babel import gettext as _
 import config_manager
 from utils.email import create_calibre_mail
+from utils.decorators import admin_required_api
 
 email_bp = Blueprint('email', __name__, url_prefix='/api')
-
-# Helper for decorators
-def admin_required_api(f):
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or not g.user.is_admin:
-            return jsonify({'error': _('Administrator permission required.')}), 403
-        return f(*args, **kwargs)
-    return decorated_function
 
 def send_email_with_config(to_address, subject, body, config, attachment_content=None, attachment_filename=None):
     """

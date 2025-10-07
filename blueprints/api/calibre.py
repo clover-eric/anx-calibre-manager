@@ -10,18 +10,9 @@ from contextlib import closing
 import config_manager
 from utils.auth import get_calibre_auth
 from utils.text import safe_title, safe_author
+from utils.decorators import maintainer_required_api
 
 calibre_bp = Blueprint('calibre', __name__, url_prefix='/api')
-
-# Helper for decorators
-def maintainer_required_api(f):
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or not g.user.is_maintainer:
-            return jsonify({'error': _('Maintainer or administrator permission required.')}), 403
-        return f(*args, **kwargs)
-    return decorated_function
 
 @calibre_bp.route('/upload_to_calibre', methods=['POST'])
 def upload_to_calibre_api():
@@ -131,19 +122,8 @@ def upload_to_calibre_api():
     return jsonify(results)
 
 @calibre_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
+@maintainer_required_api
 def update_calibre_book_api(book_id):
-    if not g.user.is_maintainer:
-        # If not a maintainer, check if they are the uploader
-        book_details = get_calibre_book_details(book_id)
-        if not book_details:
-            return jsonify({'error': _('Book details not found.')}), 404
-
-        library_field = book_details.get('user_metadata', {}).get('#library', {})
-        uploader = library_field.get('#value#', '') if library_field else ''
-
-        if uploader != g.user.username:
-            return jsonify({'error': _('You do not have permission to edit this book.')}), 403
-
     data = request.get_json()
     
     # Prepare the 'changes' dictionary

@@ -311,3 +311,47 @@ def download_audiobook(task_id):
         return send_file(file_path, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({"error": _("Could not send file: %(error)s") % {'error': str(e)}}), 500
+
+@audiobook_bp.route('/delete/<task_id>', methods=['DELETE'])
+def delete_audiobook(task_id):
+    if g.user is None or g.user.id is None:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    with closing(database.get_db()) as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM audiobook_tasks WHERE task_id = ?", (task_id,))
+        task = cursor.fetchone()
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Permission Check
+        is_owner = task['user_id'] == g.user.id
+        is_maintainer = g.user.is_maintainer
+
+        if task['library_type'] == 'anx' and not is_owner:
+            return jsonify({'error': 'Permission denied to delete this Anx audiobook'}), 403
+        
+        if task['library_type'] == 'calibre' and not is_maintainer:
+            return jsonify({'error': 'Only maintainers can delete Calibre audiobooks'}), 403
+
+        # Proceed with deletion
+        try:
+            # 1. Delete the file
+            if task['file_path'] and os.path.exists(task['file_path']):
+                os.remove(task['file_path'])
+            
+            # 2. Delete progress records for this task (all users)
+            cursor.execute("DELETE FROM audiobook_progress WHERE task_id = ?", (task_id,))
+
+            # 3. Delete the task record
+            cursor.execute("DELETE FROM audiobook_tasks WHERE task_id = ?", (task_id,))
+            
+            db.commit()
+            
+            return jsonify({'message': 'Audiobook deleted successfully'})
+
+        except Exception as e:
+            db.rollback()
+            # Consider adding logging here
+            return jsonify({'error': 'An error occurred during deletion'}), 500

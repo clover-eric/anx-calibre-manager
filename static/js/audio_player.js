@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const dom = {
         body: document.body,
+        userId: document.body.dataset.userId,
+        isMaintainer: document.body.dataset.isMaintainer === 'true',
         listView: document.querySelector('.list-view'),
         libraryToggleButtons: document.querySelectorAll('.library-toggle button'),
         searchInput: document.getElementById('search-input'),
@@ -161,6 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleHtml = `<div class="marquee"><span>${book.title}</span></div>`;
             const artistHtml = `<p class="marquee"><span>${book.artist}</span></p>`;
  
+            const canDelete = (book.library_type === 'anx' && book.user_id == dom.userId) ||
+                              (book.library_type === 'calibre' && dom.isMaintainer);
+
+            const deleteButtonHtml = canDelete
+                ? `<button class="button-icon delete-button" title="${_('Delete Audiobook')}"><i class="fas fa-trash-alt"></i></button>`
+                : '';
+
              item.innerHTML = `
                  <img src="${book.cover || '/static/images/default-cover.svg'}" alt="${book.title}" class="cover">
                  <div class="info">
@@ -173,15 +182,56 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${formatTime(book.total_duration)}</span>
                     </div>
                 </div>
+                ${deleteButtonHtml}
             `;
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
-                playAudiobook(originalIndex);
+
+            item.querySelector('.info, .cover').forEach(el => {
+                el.addEventListener('click', () => {
+                    document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    playAudiobook(originalIndex);
+                });
             });
+
+            if (canDelete) {
+                item.querySelector('.delete-button').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleDelete(book.task_id, book.title);
+                });
+            }
             dom.audiobookList.appendChild(item);
             applyConditionalMarquee(item);
         });
+    };
+
+    const handleDelete = async (taskId, title) => {
+        if (!confirm(_('Are you sure you want to delete the audiobook "%(title)s"? This action cannot be undone.', { title: title }))) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/audiobook/delete/${taskId}`, {
+                method: 'DELETE',
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Remove from state and re-render
+                currentAudiobooks = currentAudiobooks.filter(book => book.task_id !== taskId);
+                filterAndRenderList();
+                // If the deleted book was playing, stop the player
+                if (currentTrackIndex !== -1 && currentAudiobooks[currentTrackIndex]?.task_id === taskId) {
+                    dom.audioElement.src = '';
+                    // Reset player UI
+                }
+            } else {
+                alert(_('Error: %(message)s', { message: result.error || 'Failed to delete audiobook.' }));
+            }
+        } catch (error) {
+            console.error('Deletion error:', error);
+            alert(_('An unexpected error occurred.'));
+        }
     };
 
     const renderPlayerContent = (track) => {

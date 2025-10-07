@@ -109,3 +109,71 @@ def get_all_successful_tasks():
     with closing(get_db()) as db:
         tasks = db.execute("SELECT * FROM audiobook_tasks WHERE status = 'success'").fetchall()
         return tasks
+
+import os
+import logging
+import config_manager
+
+logger = logging.getLogger(__name__)
+
+def cleanup_old_audiobooks():
+    """根据全局设置清理旧的有声书文件并删除数据库记录。"""
+    try:
+        cleanup_days = int(config_manager.config.get('AUDIOBOOK_CLEANUP_DAYS', 7))
+        if cleanup_days == 0:
+            logger.info("Audiobook cleanup is disabled.")
+            return
+
+        logger.info(f"Starting cleanup of audiobooks older than {cleanup_days} days.")
+        tasks_to_clean = get_tasks_to_cleanup(cleanup_days)
+        count = 0
+        with closing(get_db()) as db:
+            cursor = db.cursor()
+            for task in tasks_to_clean:
+                task_id = task['task_id']
+                file_path = task['file_path']
+                if file_path and os.path.exists(file_path):
+                    try:
+                        os.remove(file_path)
+                        cursor.execute("DELETE FROM audiobook_progress WHERE task_id = ?", (task_id,))
+                        cursor.execute("DELETE FROM audiobook_tasks WHERE task_id = ?", (task_id,))
+                        logger.info(f"Cleaned up old audiobook and records for task: {task_id}")
+                        count += 1
+                    except Exception as e:
+                        logger.error(f"Error during cleanup for task {task_id}: {e}")
+                        db.rollback()
+                        continue
+            db.commit()
+        logger.info(f"Cleanup complete. Removed {count} old audiobook files and records.")
+    except Exception as e:
+        logger.error(f"An error occurred during scheduled audiobook cleanup: {e}")
+
+def cleanup_all_audiobooks():
+    """手动触发，清理所有已生成的有声书文件并删除数据库记录。"""
+    try:
+        logger.info("Starting manual cleanup of all audiobooks.")
+        tasks_to_clean = get_all_successful_tasks()
+        count = 0
+        with closing(get_db()) as db:
+            cursor = db.cursor()
+            for task in tasks_to_clean:
+                task_id = task['task_id']
+                file_path = task['file_path']
+                
+                if file_path and os.path.exists(file_path):
+                    try:
+                        os.remove(file_path)
+                        cursor.execute("DELETE FROM audiobook_progress WHERE task_id = ?", (task_id,))
+                        cursor.execute("DELETE FROM audiobook_tasks WHERE task_id = ?", (task_id,))
+                        logger.info(f"Deleted audiobook file and records for task: {task_id}")
+                        count += 1
+                    except Exception as e:
+                        logger.error(f"Error during manual cleanup for task {task_id}: {e}")
+                        db.rollback()
+                        continue
+            db.commit()
+        logger.info(f"Manual cleanup complete. Removed {count} audiobook files and records.")
+        return count
+    except Exception as e:
+        logger.error(f"An error occurred during manual audiobook cleanup: {e}")
+        return 0

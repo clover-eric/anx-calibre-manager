@@ -17,7 +17,7 @@ from pydub import AudioSegment
 from sentencex import segment
 
 import config_manager
-from utils.audiobook_tasks_db import get_tasks_to_cleanup, update_task_as_cleaned, get_all_successful_tasks
+from utils.audiobook_tasks_db import cleanup_old_audiobooks
 from utils.epub_chapter_parser import get_parsed_chapters
 from utils.epub_meta import get_metadata
 from utils.text import generate_audiobook_filename
@@ -34,52 +34,6 @@ OUTPUT_DIR = "/audiobooks"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 CONCURRENT_TTS_REQUESTS = 5
 MAX_TTS_RETRIES = 12
-
-# --- 清理函数 ---
-def cleanup_old_audiobooks():
-    """根据全局设置清理旧的有声书文件。"""
-    try:
-        cleanup_days = int(config_manager.config.get('AUDIOBOOK_CLEANUP_DAYS', 7))
-        if cleanup_days == 0:
-            logger.info("Audiobook cleanup is disabled.")
-            return
-
-        logger.info(f"Starting cleanup of audiobooks older than {cleanup_days} days.")
-        tasks_to_clean = get_tasks_to_cleanup(cleanup_days)
-        count = 0
-        for task in tasks_to_clean:
-            if task['file_path'] and os.path.exists(task['file_path']):
-                try:
-                    os.remove(task['file_path'])
-                    update_task_as_cleaned(task['task_id'])
-                    logger.info(f"Cleaned up old audiobook: {task['file_path']}")
-                    count += 1
-                except OSError as e:
-                    logger.error(f"Error removing file {task['file_path']}: {e}")
-        logger.info(f"Cleanup complete. Removed {count} old audiobook files.")
-    except Exception as e:
-        logger.error(f"An error occurred during audiobook cleanup: {e}")
-
-def cleanup_all_audiobooks():
-    """手动触发，清理所有已生成的有声书文件。"""
-    try:
-        logger.info("Starting manual cleanup of all audiobooks.")
-        tasks_to_clean = get_all_successful_tasks()
-        count = 0
-        for task in tasks_to_clean:
-            if task['file_path'] and os.path.exists(task['file_path']):
-                try:
-                    os.remove(task['file_path'])
-                    update_task_as_cleaned(task['task_id'])
-                    logger.info(f"Cleaned up audiobook: {task['file_path']}")
-                    count += 1
-                except OSError as e:
-                    logger.error(f"Error removing file {task['file_path']}: {e}")
-        logger.info(f"Manual cleanup complete. Removed {count} audiobook files.")
-        return count
-    except Exception as e:
-        logger.error(f"An error occurred during manual audiobook cleanup: {e}")
-        return 0
 
 # --- 从 epub_to_audiobook 移植的工具函数 ---
 

@@ -13,7 +13,10 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/audio_player.css') }}?v={{ cache_buster }}">
 </head>
-<body class="theme-{{ theme }}" data-library-id="{{ library_id }}">
+<body class="theme-{{ theme }}"
+      data-library-id="{{ library_id }}"
+      data-user-id="{{ user_info.id }}"
+      data-is-maintainer="{{ 'true' if user_info.is_maintainer else 'false' }}">
     <div class="audio-player-container">
         <!-- Desktop: Left Panel / Mobile: Full View -->
         <div class="list-view">

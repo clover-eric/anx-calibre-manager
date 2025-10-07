@@ -193,7 +193,11 @@ def reader_page(book_type, book_id):
 def audio_player_page():
     theme = g.user.theme if hasattr(g.user, 'theme') and g.user.theme else 'auto'
     library_id = request.args.get('library_id', 'calibre')
-    return render_template('audio_player.html', theme=theme, library_id=library_id)
+    user_info = {
+        'id': g.user.id,
+        'is_maintainer': g.user.is_maintainer
+    }
+    return render_template('audio_player.html', theme=theme, library_id=library_id, user_info=user_info)
 
 @main_bp.route('/calibre_cover/<int:book_id>')
 @login_required

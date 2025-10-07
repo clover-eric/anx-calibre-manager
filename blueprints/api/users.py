@@ -8,18 +8,9 @@ from flask_babel import gettext as _
 from contextlib import closing
 import database
 from anx_library import initialize_anx_user_data, get_anx_user_dirs
+from utils.decorators import admin_required_api
 
 users_bp = Blueprint('users', __name__, url_prefix='/api')
-
-# Helper for decorators
-def admin_required_api(f):
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or not g.user.is_admin:
-            return jsonify({'error': _('Administrator permission required.')}), 403
-        return f(*args, **kwargs)
-    return decorated_function
 
 @users_bp.route('/users', methods=['GET'])
 @admin_required_api

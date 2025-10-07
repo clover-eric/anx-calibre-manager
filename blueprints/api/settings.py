@@ -6,19 +6,10 @@ from flask_babel import gettext as _
 from contextlib import closing
 import database
 import config_manager
-from utils.audiobook_generator import cleanup_all_audiobooks
+from utils.audiobook_tasks_db import cleanup_all_audiobooks
+from utils.decorators import admin_required_api
 
 settings_bp = Blueprint('settings', __name__, url_prefix='/api')
-
-# Helper for decorators
-def admin_required_api(f):
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or not g.user.is_admin:
-            return jsonify({'error': _('Administrator permission required.')}), 403
-        return f(*args, **kwargs)
-    return decorated_function
 
 @settings_bp.route('/user_settings', methods=['GET', 'POST'])
 def user_settings_api():
