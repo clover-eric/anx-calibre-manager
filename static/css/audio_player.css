@@ -155,6 +155,7 @@ body.theme-dark .library-toggle .button.active {
     display: flex;
     gap: 1rem;
     padding: 0.75rem;
+    padding-right: 3rem; /* Make space for delete button */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s ease;
