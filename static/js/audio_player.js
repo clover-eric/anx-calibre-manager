@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                               (book.library_type === 'calibre' && dom.isMaintainer);
 
             const deleteButtonHtml = canDelete
-                ? `<button class="button-icon delete-button" title="${_('Delete Audiobook')}"><i class="fas fa-trash-alt"></i></button>`
+                ? `<button class="delete-audiobook-btn" title="${_('Delete Audiobook')}"><i class="fas fa-trash-alt"></i></button>`
                 : '';
 
              item.innerHTML = `
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (canDelete) {
-                item.querySelector('.delete-button').addEventListener('click', (e) => {
+                item.querySelector('.delete-audiobook-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     handleDelete(book.task_id, book.title);
                 });
@@ -205,7 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const handleDelete = async (taskId, title) => {
-        if (!confirm(_('Are you sure you want to delete the audiobook "%(title)s"? This action cannot be undone.', { title: title }))) {
+        const confirmationMessage = `${_('Are you sure you want to delete the audiobook')} "${title}"? ${_('This action cannot be undone.')}`;
+        if (!confirm(confirmationMessage)) {
             return;
         }
 

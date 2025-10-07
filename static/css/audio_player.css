@@ -151,6 +151,7 @@ body.theme-dark .library-toggle .button.active {
 }
 
 .audiobook-item {
+    position: relative;
     display: flex;
     gap: 1rem;
     padding: 0.75rem;
@@ -518,4 +519,33 @@ body.theme-dark .library-toggle .button.active {
         overflow-y: auto;
     }
     .full-player-content .player-cover { width: 80px; height: 80px; }
+}
+
+/* --- Delete Button (from chat_player.css) --- */
+.delete-audiobook-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    opacity: 1; /* Visible by default on mobile */
+    transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.delete-audiobook-btn:hover {
+    color: #e74c3c; /* A red color for delete actions */
+}
+
+/* --- Desktop-only hover effect for delete button --- */
+@media (min-width: 769px) {
+    .delete-audiobook-btn {
+        opacity: 0;
+    }
+    .audiobook-item:hover .delete-audiobook-btn {
+        opacity: 1;
+    }
 }
