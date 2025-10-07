@@ -10,14 +10,14 @@
         {% if g.user.theme == 'dark' %}
             <meta name="theme-color" content="#1f1f1f"/>
         {% elif g.user.theme == 'light' %}
-            <meta name="theme-color" content="#4A90E2"/>
+            <meta name="theme-color" content="#FFFFFF"/>
         {% else %}
             <!-- auto 模式：使用 CSS 媒体查询动态设置 -->
-            <meta name="theme-color" content="#4A90E2" media="(prefers-color-scheme: light)"/>
+            <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)"/>
             <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)"/>
         {% endif %}
     {% else %}
-        <meta name="theme-color" content="#4A90E2"/>
+        <meta name="theme-color" content="#FFFFFF"/>
     {% endif %}
     <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
