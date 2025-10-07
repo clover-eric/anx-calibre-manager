@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${deleteButtonHtml}
             `;
 
-            item.querySelector('.info, .cover').forEach(el => {
+            item.querySelectorAll('.info, .cover').forEach(el => {
                 el.addEventListener('click', () => {
                     document.querySelectorAll('.audiobook-item.active').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
