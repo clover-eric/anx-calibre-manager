@@ -2,7 +2,9 @@
 <html lang="{{ g.user.language if g.user and g.user.language else 'zh_Hans' }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>{{ _('Book Reader') }}</title>
 
     <!-- Translations for JS -->
@@ -41,6 +43,9 @@
         <div id="toc-view"></div>
     </div>
     <div id="header-bar" class="toolbar">
+        <a href="/" class="back-button" aria-label="Back to library">
+            <i class="fas fa-arrow-left"></i>
+        </a>
         <button id="side-bar-button" aria-label="Show sidebar">
             <i class="fas fa-bars"></i>
         </button>

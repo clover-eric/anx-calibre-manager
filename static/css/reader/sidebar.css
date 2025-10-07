@@ -3,9 +3,10 @@
     box-sizing: border-box;
     position: absolute;
     z-index: 2;
-    top: 0;
+    top: 40px; /* Match header-bar height */
+    bottom: 40px; /* Match nav-bar height */
     left: 0;
-    height: 100%;
+    height: auto; /* Let top and bottom define height */
     width: 320px;
     transform: translateX(-320px);
     display: flex;
