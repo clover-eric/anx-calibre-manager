@@ -75,8 +75,10 @@ def setup():
             flash(_('Username and password cannot be empty.'))
             return render_template('setup.html')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        import hashlib
+        kosync_userkey = hashlib.md5(password.encode('utf-8')).hexdigest()
         with closing(database.get_db()) as db:
-            db.execute("INSERT INTO users (username, password_hash, role, force_epub_conversion) VALUES (?, ?, 'admin', 1)", (username, hashed_password))
+            db.execute("INSERT INTO users (username, password_hash, role, force_epub_conversion, kosync_userkey) VALUES (?, ?, 'admin', 1, ?)", (username, hashed_password, kosync_userkey))
             db.commit()
         
         from anx_library import initialize_anx_user_data
