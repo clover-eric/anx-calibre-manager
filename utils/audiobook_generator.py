@@ -25,6 +25,8 @@ import string
 
 # --- 常量 ---
 _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
+SENTENCE_PAUSE_MS = 700  # 句子之间的停顿（毫秒）
+PARAGRAPH_PAUSE_MS = 900 # 段落之间的停顿（毫秒）
 
 # --- 配置 ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -64,26 +66,21 @@ def is_punctuation_or_whitespace(s: str) -> bool:
     return all(char.isspace() or char in punctuation_and_symbols for char in s)
 
 def split_text(text: str, max_chars: int, language: str) -> List[str]:
+    """
+    将文本分割成单个句子块。如果句子太长，则进一步分割。
+    """
     if not text: return []
     if max_chars <= 0: raise ValueError("max_chars must be positive")
     
     sentences = list(segment(language, text))
     chunks = []
-    current_chunk = ""
     
     for sentence in sentences:
-        space = " " if current_chunk else ""
-        if len(current_chunk) + len(space) + len(sentence) <= max_chars:
-            current_chunk += space + sentence
-        elif len(sentence) > max_chars:
-            if current_chunk: chunks.append(current_chunk)
-            sentence_chunks = split_long_sentence(sentence, max_chars)
-            chunks.extend(sentence_chunks[:-1])
-            current_chunk = sentence_chunks[-1]
+        if len(sentence) > max_chars:
+            chunks.extend(split_long_sentence(sentence, max_chars))
         else:
-            if current_chunk: chunks.append(current_chunk)
-            current_chunk = sentence
-    if current_chunk: chunks.append(current_chunk)
+            chunks.append(sentence)
+            
     return chunks
 
 # --- 数据类 ---
@@ -143,8 +140,8 @@ class EdgeTTSProvider(BaseTTSProvider):
         paragraphs = text.split(_PARAGRAPH_BREAK_MARKER)
         
         segments: list[AudioSegment] = []
-        paragraph_pause = AudioSegment.silent(duration=1500) # 1500ms 的段落停顿
-        sentence_pause = AudioSegment.silent(duration=900)  # 900ms 的句子停顿
+        paragraph_pause = AudioSegment.silent(duration=PARAGRAPH_PAUSE_MS)
+        sentence_pause = AudioSegment.silent(duration=SENTENCE_PAUSE_MS)
 
         # 预先计算总块数以提供更准确的日志
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
@@ -179,9 +176,8 @@ class EdgeTTSProvider(BaseTTSProvider):
                         )
                         segment = await communicate.get_audio_segment()
                         segments.append(segment)
-                        # 如果不是段落的最后一个句子块，则添加句子停顿
-                        if i < len(text_chunks) - 1:
-                            segments.append(sentence_pause)
+                        # 每个句子块（chunk）后面都添加停顿
+                        segments.append(sentence_pause)
                         break
                     except Exception as e:
                         # 增强日志：当 TTS 失败时，记录下导致失败的具体文本块内容
@@ -194,7 +190,10 @@ class EdgeTTSProvider(BaseTTSProvider):
                             return False
             
             # 在每个段落（除了最后一个）之后添加停顿
-            if para_idx < len(paragraphs) - 1:
+            if para_idx < len(paragraphs) - 1 and segments:
+                # 移除最后一个多余的句子停顿，替换为更长的段落停顿
+                if segments and segments[-1] == sentence_pause:
+                    segments.pop()
                 segments.append(paragraph_pause)
 
         if not segments:
@@ -231,8 +230,8 @@ class OpenAITTSProvider(BaseTTSProvider):
         paragraphs = text.split(_PARAGRAPH_BREAK_MARKER)
         
         segments: list[AudioSegment] = []
-        paragraph_pause = AudioSegment.silent(duration=500)
-        sentence_pause = AudioSegment.silent(duration=400)
+        paragraph_pause = AudioSegment.silent(duration=PARAGRAPH_PAUSE_MS)
+        sentence_pause = AudioSegment.silent(duration=SENTENCE_PAUSE_MS)
 
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
         if total_chunks == 0: total_chunks = 1
@@ -262,15 +261,17 @@ class OpenAITTSProvider(BaseTTSProvider):
                     audio_data = io.BytesIO(response.content)
                     segment = AudioSegment.from_mp3(audio_data)
                     segments.append(segment)
-                    # 如果不是段落的最后一个句子块，则添加句子停顿
-                    if i < len(text_chunks) - 1:
-                        segments.append(sentence_pause)
+                    # 每个句子块（chunk）后面都添加停顿
+                    segments.append(sentence_pause)
 
                 except Exception as e:
                     logger.error(f"OpenAI TTS error on chunk {chunk_counter}: {e}")
                     return False
             
-            if para_idx < len(paragraphs) - 1:
+            if para_idx < len(paragraphs) - 1 and segments:
+                # 移除最后一个多余的句子停顿，替换为更长的段落停顿
+                if segments and segments[-1] == sentence_pause:
+                    segments.pop()
                 segments.append(paragraph_pause)
 
         if not segments:
