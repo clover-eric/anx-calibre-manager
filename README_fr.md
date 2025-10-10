@@ -184,6 +184,8 @@ L'application est configurée via des variables d'environnement.
 | `DEFAULT_TTS_PROVIDER` | Le fournisseur TTS par défaut pour la génération de livres audio (`edge_tts` ou `openai_tts`). | `edge_tts` |
 | `DEFAULT_TTS_VOICE` | La voix par défaut pour le fournisseur TTS sélectionné. | `en-US-AriaNeural` |
 | `DEFAULT_TTS_RATE` | La vitesse de parole par défaut pour le fournisseur TTS (par ex., `+10%`). | `+0%` |
+| `DEFAULT_TTS_SENTENCE_PAUSE` | La durée de la pause par défaut entre les phrases en millisecondes. | `650` |
+| `DEFAULT_TTS_PARAGRAPH_PAUSE` | La durée de la pause par défaut entre les paragraphes en millisecondes. | `900` |
 | `DEFAULT_OPENAI_API_KEY` | Votre clé API OpenAI (requise si vous utilisez `openai_tts`). | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | URL de base personnalisée pour les API compatibles avec OpenAI. | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | Le modèle OpenAI à utiliser pour le TTS (par ex., `tts-1`). | `tts-1` |

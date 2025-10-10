@@ -183,6 +183,8 @@
 | `DEFAULT_TTS_PROVIDER` | 用于有声书生成的默认 TTS 提供商 (`edge_tts` 或 `openai_tts`)。 | `edge_tts` |
 | `DEFAULT_TTS_VOICE` | 所选 TTS 提供商的默认语音。 | `en-US-AriaNeural` |
 | `DEFAULT_TTS_RATE` | TTS 提供商的默认语速 (例如, `+10%`)。 | `+0%` |
+| `DEFAULT_TTS_SENTENCE_PAUSE` | 句子之间的默认停顿时间（毫秒）。 | `650` |
+| `DEFAULT_TTS_PARAGRAPH_PAUSE` | 段落之间的默认停顿时间（毫秒）。 | `900` |
 | `DEFAULT_OPENAI_API_KEY` | 您的 OpenAI API 密钥 (如果使用 `openai_tts` 则为必需)。 | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | 用于 OpenAI 兼容 API 的自定义基础 URL。 | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | 用于 TTS 的 OpenAI 模型 (例如, `tts-1`)。 | `tts-1` |

@@ -25,9 +25,7 @@ import string
 
 # --- 常量 ---
 _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
-SENTENCE_PAUSE_MS = 700  # 句子之间的停顿（毫秒）
-PARAGRAPH_PAUSE_MS = 900 # 段落之间的停顿（毫秒）
-
+ 
 # --- 配置 ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -91,6 +89,8 @@ class TTSConfig:
     rate: str = "+0%"
     volume: str = "+0%"
     pitch: str = "+0Hz"
+    sentence_pause_ms: int = 650
+    paragraph_pause_ms: int = 900
     api_key: str | None = None
     base_url: str | None = None
     model: str | None = None
@@ -140,9 +140,9 @@ class EdgeTTSProvider(BaseTTSProvider):
         paragraphs = text.split(_PARAGRAPH_BREAK_MARKER)
         
         segments: list[AudioSegment] = []
-        paragraph_pause = AudioSegment.silent(duration=PARAGRAPH_PAUSE_MS)
-        sentence_pause = AudioSegment.silent(duration=SENTENCE_PAUSE_MS)
-
+        paragraph_pause = AudioSegment.silent(duration=self.config.paragraph_pause_ms)
+        sentence_pause = AudioSegment.silent(duration=self.config.sentence_pause_ms)
+ 
         # 预先计算总块数以提供更准确的日志
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
         if total_chunks == 0: total_chunks = 1 # 避免除以零
@@ -230,9 +230,9 @@ class OpenAITTSProvider(BaseTTSProvider):
         paragraphs = text.split(_PARAGRAPH_BREAK_MARKER)
         
         segments: list[AudioSegment] = []
-        paragraph_pause = AudioSegment.silent(duration=PARAGRAPH_PAUSE_MS)
-        sentence_pause = AudioSegment.silent(duration=SENTENCE_PAUSE_MS)
-
+        paragraph_pause = AudioSegment.silent(duration=self.config.paragraph_pause_ms)
+        sentence_pause = AudioSegment.silent(duration=self.config.sentence_pause_ms)
+ 
         total_chunks = sum(len(split_text(p, max_chars, language)) for p in paragraphs if p.strip())
         if total_chunks == 0: total_chunks = 1
         chunk_counter = 0

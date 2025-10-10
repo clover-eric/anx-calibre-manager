@@ -183,6 +183,8 @@ The application is configured via environment variables.
 | `DEFAULT_TTS_PROVIDER` | The default TTS provider for audiobook generation (`edge_tts` or `openai_tts`). | `edge_tts` |
 | `DEFAULT_TTS_VOICE` | The default voice for the selected TTS provider. | `en-US-AriaNeural` |
 | `DEFAULT_TTS_RATE` | The default speech rate for the TTS provider (e.g., `+10%`). | `+0%` |
+| `DEFAULT_TTS_SENTENCE_PAUSE` | The default pause duration between sentences in milliseconds. | `650` |
+| `DEFAULT_TTS_PARAGRAPH_PAUSE` | The default pause duration between paragraphs in milliseconds. | `900` |
 | `DEFAULT_OPENAI_API_KEY` | Your OpenAI API key (required if using `openai_tts`). | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | Custom base URL for OpenAI-compatible APIs. | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | The OpenAI model to use for TTS (e.g., `tts-1`). | `tts-1` |

@@ -51,9 +51,11 @@ DEFAULT_CONFIG = {
     'DEFAULT_TTS_RATE': {'env': 'DEFAULT_TTS_RATE', 'default': '+40%'},
     'DEFAULT_TTS_VOLUME': {'env': 'DEFAULT_TTS_VOLUME', 'default': '+0%'},
     'DEFAULT_TTS_PITCH': {'env': 'DEFAULT_TTS_PITCH', 'default': '+0Hz'},
-
-    # Audiobook file cleanup settings
-    'AUDIOBOOK_CLEANUP_DAYS': {'env': 'AUDIOBOOK_CLEANUP_DAYS', 'default': 7}, # 0 means do not clean up
+    'DEFAULT_TTS_SENTENCE_PAUSE': {'env': 'DEFAULT_TTS_SENTENCE_PAUSE', 'default': 650},
+    'DEFAULT_TTS_PARAGRAPH_PAUSE': {'env': 'DEFAULT_TTS_PARAGRAPH_PAUSE', 'default': 900},
+ 
+     # Audiobook file cleanup settings
+     'AUDIOBOOK_CLEANUP_DAYS': {'env': 'AUDIOBOOK_CLEANUP_DAYS', 'default': 7}, # 0 means do not clean up
 
     # Large Language Model (LLM) settings for MCP
     'DEFAULT_LLM_PROVIDER': {'env': 'DEFAULT_LLM_PROVIDER', 'default': 'openai'},
@@ -92,7 +94,7 @@ class ConfigManager:
             # Priority 2: Environment variables
             elif os.environ.get(values['env']):
                 val = os.environ.get(values['env'])
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS']:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE']:
                     try:
                         loaded_config[key] = int(val)
                     except (ValueError, TypeError):
@@ -147,7 +149,7 @@ class ConfigManager:
                 if key in ['CALIBRE_PASSWORD', 'SMTP_PASSWORD'] and not value:
                     continue
 
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS'] and value is not None:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE'] and value is not None:
                     try:
                         current_config[key] = int(value)
                     except (ValueError, TypeError):

@@ -181,6 +181,14 @@
 | `SMTP_USERNAME` | SMTP 使用者名稱。 | `""` |
 | `SMTP_PASSWORD` | SMTP 密碼。 | `""` |
 | `SMTP_ENCRYPTION` | SMTP 加密類型 (`ssl`, `starttls`, `none`)。 | `ssl` |
+| `DEFAULT_TTS_PROVIDER` | 用於有聲書產生的預設 TTS 提供商 (`edge_tts` 或 `openai_tts`)。 | `edge_tts` |
+| `DEFAULT_TTS_VOICE` | 所選 TTS 提供商的預設語音。 | `en-US-AriaNeural` |
+| `DEFAULT_TTS_RATE` | TTS 提供商的預設語速 (例如, `+10%`)。 | `+0%` |
+| `DEFAULT_TTS_SENTENCE_PAUSE` | 句子之間的預設停頓時間（毫秒）。 | `650` |
+| `DEFAULT_TTS_PARAGRAPH_PAUSE` | 段落之間的預設停頓時間（毫秒）。 | `900` |
+| `DEFAULT_OPENAI_API_KEY` | 您的 OpenAI API 金鑰 (如果使用 `openai_tts` 則為必需)。 | `""` |
+| `DEFAULT_OPENAI_API_BASE_URL` | 用於 OpenAI 相容 API 的自訂基礎 URL。 | `https://api.openai.com/v1` |
+| `DEFAULT_OPENAI_API_MODEL` | 用於 TTS 的 OpenAI 模型 (例如, `tts-1`)。 | `tts-1` |
 | `DEFAULT_LLM_BASE_URL` | 大型語言模型 (LLM) API 的基礎 URL，需與 OpenAI API 格式相容。 | `""` |
 | `DEFAULT_LLM_API_KEY` | LLM 服務的 API 金鑰。 | `""` |
 | `DEFAULT_LLM_MODEL` | LLM 服務預設使用的模型 (例如, `gpt-4`)。 | `""` |

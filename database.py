@@ -91,7 +91,9 @@ def update_schema_if_needed(db):
         'tts_model': "TEXT",
         'tts_rate': "TEXT",
         'tts_volume': "TEXT",
-        'tts_pitch': "TEXT"
+        'tts_pitch': "TEXT",
+        'tts_sentence_pause_ms': "INTEGER",
+        'tts_paragraph_pause_ms': "INTEGER"
     }
     for col, col_type in tts_columns.items():
         if col not in columns:
@@ -326,6 +328,8 @@ def create_schema():
                             tts_rate TEXT,
                             tts_volume TEXT,
                             tts_pitch TEXT,
+                            tts_sentence_pause_ms INTEGER,
+                            tts_paragraph_pause_ms INTEGER,
                             llm_provider TEXT DEFAULT 'openai',
                             llm_api_key TEXT,
                             llm_base_url TEXT,

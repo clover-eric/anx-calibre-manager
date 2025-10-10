@@ -117,9 +117,11 @@ async function populateForms() {
     document.getElementById('tts_rate').value = userData.tts_rate || '+0%';
     document.getElementById('tts_volume').value = userData.tts_volume || '+0%';
     document.getElementById('tts_pitch').value = userData.tts_pitch || '+0Hz';
-
-    // Populate LLM settings
-    document.getElementById('llm_provider').value = userData.llm_provider || 'openai';
+    document.getElementById('tts_sentence_pause_ms').value = userData.tts_sentence_pause_ms || '650';
+    document.getElementById('tts_paragraph_pause_ms').value = userData.tts_paragraph_pause_ms || '900';
+ 
+     // Populate LLM settings
+     document.getElementById('llm_provider').value = userData.llm_provider || 'openai';
     document.getElementById('llm_base_url').value = userData.llm_base_url || '';
     document.getElementById('llm_api_key').value = userData.llm_api_key || '';
     document.getElementById('llm_model').value = userData.llm_model || '';

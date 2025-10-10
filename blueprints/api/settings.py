@@ -41,6 +41,8 @@ def user_settings_api():
                 'tts_rate': 'tts_rate',
                 'tts_volume': 'tts_volume',
                 'tts_pitch': 'tts_pitch',
+                'tts_sentence_pause_ms': 'tts_sentence_pause_ms',
+                'tts_paragraph_pause_ms': 'tts_paragraph_pause_ms',
                 'llm_provider': 'llm_provider',
                 'llm_api_key': 'llm_api_key',
                 'llm_base_url': 'llm_base_url',
@@ -97,7 +99,8 @@ def user_settings_api():
         # Load TTS settings, falling back to global defaults
         tts_fields = [
             'tts_provider', 'tts_voice', 'tts_api_key', 'tts_base_url',
-            'tts_model', 'tts_rate', 'tts_volume', 'tts_pitch'
+            'tts_model', 'tts_rate', 'tts_volume', 'tts_pitch',
+            'tts_sentence_pause_ms', 'tts_paragraph_pause_ms'
         ]
         for field in tts_fields:
             user_value = getattr(g.user, field, None)

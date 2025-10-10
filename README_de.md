@@ -184,6 +184,8 @@ Die Anwendung wird über Umgebungsvariablen konfiguriert.
 | `DEFAULT_TTS_PROVIDER` | Der Standard-TTS-Anbieter für die Hörbuchgenerierung (`edge_tts` oder `openai_tts`). | `edge_tts` |
 | `DEFAULT_TTS_VOICE` | Die Standardstimme für den ausgewählten TTS-Anbieter. | `en-US-AriaNeural` |
 | `DEFAULT_TTS_RATE` | Die Standard-Sprechgeschwindigkeit für den TTS-Anbieter (z. B. `+10%`). | `+0%` |
+| `DEFAULT_TTS_SENTENCE_PAUSE` | Die Standardpausendauer zwischen Sätzen in Millisekunden. | `650` |
+| `DEFAULT_TTS_PARAGRAPH_PAUSE` | Die Standardpausendauer zwischen Absätzen in Millisekunden. | `900` |
 | `DEFAULT_OPENAI_API_KEY` | Ihr OpenAI-API-Schlüssel (erforderlich, wenn `openai_tts` verwendet wird). | `""` |
 | `DEFAULT_OPENAI_API_BASE_URL` | Benutzerdefinierte Basis-URL für OpenAI-kompatible APIs. | `https://api.openai.com/v1` |
 | `DEFAULT_OPENAI_API_MODEL` | Das OpenAI-Modell, das für TTS verwendet werden soll (z. B. `tts-1`). | `tts-1` |

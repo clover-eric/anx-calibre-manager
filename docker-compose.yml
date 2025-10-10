@@ -29,6 +29,8 @@ services:
       - DEFAULT_TTS_PROVIDER=edge_tts # Default TTS provider: edge_tts or openai_tts
       - DEFAULT_TTS_VOICE=en-US-AriaNeural # Default TTS voice
       - DEFAULT_TTS_RATE=+0% # Default TTS rate, e.g., +10%
+      - DEFAULT_TTS_SENTENCE_PAUSE=650 # Default sentence pause in milliseconds
+      - DEFAULT_TTS_PARAGRAPH_PAUSE=900 # Default paragraph pause in milliseconds
       - DEFAULT_OPENAI_API_KEY= # Required if using openai_tts
       - DEFAULT_OPENAI_API_BASE_URL=https://api.openai.com/v1 # Custom base URL for OpenAI-compatible APIs
       - DEFAULT_OPENAI_API_MODEL=tts-1 # OpenAI model for TTS
