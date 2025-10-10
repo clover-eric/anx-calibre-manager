@@ -108,7 +108,7 @@ def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - au
                 logging.info(f"Running ebook-converter: {source_path} -> {dest_path}")
                 subprocess.run(
                     ['ebook-converter', source_path, dest_path],
-                    capture_output=True, text=True, check=True, timeout=1800
+                    capture_output=True, text=True, check=True, timeout=3600
                 )
                 epub_to_process_path = dest_path
             except Exception as e:
