@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 15:49+0800\n"
+"POT-Creation-Date: 2025-10-11 22:31+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -91,16 +91,16 @@ msgstr "注册成功！请登录。"
 msgid "An error occurred during registration"
 msgstr "注册过程中发生错误"
 
-#: blueprints/main.py:91 blueprints/stats.py:16
+#: blueprints/main.py:111 blueprints/stats.py:16
 msgid "0 minutes"
 msgstr "0 分钟"
 
-#: blueprints/main.py:95 blueprints/stats.py:20
+#: blueprints/main.py:115 blueprints/stats.py:20
 #, python-format
 msgid "%(hours)s hours %(minutes)s minutes"
 msgstr "%(hours)s 小时 %(minutes)s 分钟"
 
-#: blueprints/main.py:96 blueprints/stats.py:21
+#: blueprints/main.py:116 blueprints/stats.py:21
 #, python-format
 msgid "%(minutes)s minutes"
 msgstr "%(minutes)s 分钟"
@@ -129,7 +129,7 @@ msgstr "本书的有声书生成任务已在进行中。"
 msgid "Invalid 'library' type"
 msgstr "无效的 'library' 类型"
 
-#: blueprints/api/audiobook.py:230 static/js/page/translations.js:57
+#: blueprints/api/audiobook.py:230 static/js/page/translations.js:73
 #, python-format
 msgid "File error: %(error)s"
 msgstr "文件错误：%(error)s"
@@ -490,7 +490,7 @@ msgstr ""
 "---书籍内容结束---"
 
 #: blueprints/api/llm.py:233 blueprints/api/llm.py:300
-#: static/js/page/translations.js:68
+#: static/js/page/translations.js:84
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
@@ -500,12 +500,12 @@ msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
 #: blueprints/api/llm.py:235 blueprints/api/llm.py:302
-#: static/js/page/translations.js:60
+#: static/js/page/translations.js:76
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
 #: blueprints/api/llm.py:236 blueprints/api/llm.py:303
-#: static/js/page/translations.js:61
+#: static/js/page/translations.js:77
 msgid "Thinking..."
 msgstr "思考中..."
 
@@ -743,7 +743,7 @@ msgstr "没有可用的令牌。"
 msgid "Created at"
 msgstr "创建时间"
 
-#: static/js/settings.js:21 templates/index.html:156
+#: static/js/settings.js:21 templates/index.html:189
 msgid "Delete"
 msgstr "删除"
 
@@ -777,7 +777,7 @@ msgstr "发生错误"
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings.js:29 templates/index.html:84 templates/index.html:155
+#: static/js/settings.js:29 templates/index.html:117 templates/index.html:188
 msgid "Edit"
 msgstr "编辑"
 
@@ -849,351 +849,428 @@ msgstr "网络响应异常。"
 msgid "No changes detected."
 msgstr "未检测到任何更改。"
 
-#: static/js/page/translations.js:12
+#: static/js/page/translations.js:13 templates/index.html:50
+msgid "Calibre Connection Error"
+msgstr "Calibre 连接错误"
+
+#: static/js/page/translations.js:14 templates/index.html:54
+msgid "Calibre Authentication Error"
+msgstr "Calibre 身份验证错误"
+
+#: static/js/page/translations.js:15 templates/index.html:58
+msgid "Calibre Permission Error"
+msgstr "Calibre 权限错误"
+
+#: static/js/page/translations.js:16 templates/index.html:62
+msgid "Calibre HTTP Error"
+msgstr "Calibre HTTP 错误"
+
+#: static/js/page/translations.js:17 templates/index.html:66
+msgid "Calibre Request Error"
+msgstr "Calibre 请求错误"
+
+#: static/js/page/translations.js:18 templates/index.html:51
+#: templates/index.html:55 templates/index.html:59 templates/index.html:63
+#: templates/index.html:67
+msgid "Reason:"
+msgstr "原因："
+
+#: static/js/page/translations.js:19 templates/index.html:52
+#: templates/index.html:56 templates/index.html:60 templates/index.html:64
+#: templates/index.html:68
+msgid "Solution:"
+msgstr "解决方案："
+
+#: static/js/page/translations.js:20
+msgid ""
+"Check if the Calibre server is running and the URL in Settings -> Calibre"
+" Config is correct."
+msgstr "请检查 Calibre 服务器是否正在运行，以及“设置”->“Calibre 配置”中的 URL 是否正确。"
+
+#: static/js/page/translations.js:21
+msgid ""
+"Please ensure you are connecting to Calibre's content-server (default "
+"port: 8080), not calibre-web (default port: 8083). Check if the server is"
+" running and the URL in Settings -> Calibre Config is correct."
+msgstr "请确保您连接的是 Calibre 的内容服务器（默认端口：8080），而不是 calibre-web（默认端口：8083）。请检查服务器是否正在运行，以及“设置”->“Calibre 配置”中的 URL 是否正确。"
+
+#: static/js/page/translations.js:22
+msgid ""
+"Verify that the username and password in Settings -> Calibre Config are "
+"correct."
+msgstr "请验证“设置”->“Calibre 配置”中的用户名和密码是否正确。"
+
+#: static/js/page/translations.js:23 templates/index.html:71
+msgid "Original Error:"
+msgstr "原始错误："
+
+#: static/js/page/translations.js:24 templates/index.html:72
+msgid "Request URL (click to test):"
+msgstr "请求 URL（点击测试）："
+
+#: static/js/page/translations.js:25
+msgid ""
+"Ensure the Library ID in Settings -> Calibre Config is correct. Also, "
+"check if the user has write permissions in Calibre."
+msgstr "请确保“设置”->“Calibre 配置”中的书库 ID 正确。同时，请检查用户是否具有 Calibre 的写入权限。"
+
+#: static/js/page/translations.js:26
+msgid ""
+"The Calibre server returned an error. Please check the Calibre server "
+"logs for more details."
+msgstr "Calibre 服务器返回错误。请查看 Calibre 服务器日志以获取更多详细信息。"
+
+#: static/js/page/translations.js:27
+msgid ""
+"An unknown error occurred while connecting to Calibre. Please check the "
+"application logs."
+msgstr "连接到 Calibre 时发生未知错误。请检查应用程序日志。"
+
+#: static/js/page/translations.js:28
 msgid "Are you sure you want to delete this book? This action cannot be undone."
 msgstr "您确定要删除这本书吗？此操作无法撤消。"
 
-#: static/js/page/translations.js:13
+#: static/js/page/translations.js:29
 #, python-format
 msgid "Please enter a valid page number between 1 and %(totalPages)s."
 msgstr "请输入介于 1 和 %(totalPages)s 之间的有效页码。"
 
-#: static/js/page/translations.js:14
+#: static/js/page/translations.js:30
 msgid "Please select files to upload."
 msgstr "请选择要上传的文件。"
 
-#: static/js/page/translations.js:15
+#: static/js/page/translations.js:31
 msgid "Waiting..."
 msgstr "等待中..."
 
-#: static/js/page/translations.js:16
+#: static/js/page/translations.js:32
 msgid "Uploading..."
 msgstr "上传中..."
 
-#: static/js/page/translations.js:17
+#: static/js/page/translations.js:33
 msgid "Processing..."
 msgstr "处理中..."
 
-#: static/js/page/translations.js:18
+#: static/js/page/translations.js:34
 msgid "Upload failed"
 msgstr "上传失败"
 
-#: static/js/page/translations.js:19
+#: static/js/page/translations.js:35
 msgid "Network Error"
 msgstr "网络错误"
 
-#: static/js/page/translations.js:20
+#: static/js/page/translations.js:36
 msgid "Network error: Failed to connect to the server."
 msgstr "网络错误：无法连接到服务器。"
 
-#: static/js/page/translations.js:21
+#: static/js/page/translations.js:37
 msgid "All books uploaded successfully!"
 msgstr "所有图书上传成功！"
 
-#: static/js/page/translations.js:22
+#: static/js/page/translations.js:38
 msgid "Some files failed to upload. Please check the progress details."
 msgstr "部分文件上传失败。请查看进度详情。"
 
-#: static/js/page/translations.js:23
+#: static/js/page/translations.js:39
 msgid "Generating..."
 msgstr "生成中..."
 
-#: static/js/page/translations.js:24
+#: static/js/page/translations.js:40
 msgid "Download Audiobook"
 msgstr "下载有声书"
 
-#: static/js/page/translations.js:25
+#: static/js/page/translations.js:41
 msgid "Listen to Audiobook"
 msgstr "听有声书"
 
-#: static/js/page/translations.js:26
+#: static/js/page/translations.js:42
 msgid "Failed"
 msgstr "失败"
 
-#: static/js/page/translations.js:27
+#: static/js/page/translations.js:43
 msgid "Error"
 msgstr "错误"
 
-#: static/js/page/translations.js:28
+#: static/js/page/translations.js:44
 msgid "Success!"
 msgstr "成功！"
 
-#: static/js/page/translations.js:31
+#: static/js/page/translations.js:47
 msgid "Title"
 msgstr "标题"
 
-#: static/js/page/translations.js:32 templates/stats.html:123
+#: static/js/page/translations.js:48 templates/stats.html:123
 #: templates/stats.html:154
 msgid "Author"
 msgstr "作者"
 
-#: static/js/page/translations.js:33
+#: static/js/page/translations.js:49
 msgid "Authors (comma-separated)"
 msgstr "作者（逗号分隔）"
 
-#: static/js/page/translations.js:34
+#: static/js/page/translations.js:50
 msgid "Rating (0-5)"
 msgstr "评分 (0-5)"
 
-#: static/js/page/translations.js:35
+#: static/js/page/translations.js:51
 msgid "Reading Progress (%)"
 msgstr "阅读进度 (%)"
 
-#: static/js/page/translations.js:36 static/js/page/translations.js:101
-#: templates/index.html:73 templates/index.html:149
+#: static/js/page/translations.js:52 static/js/page/translations.js:117
+#: templates/index.html:106 templates/index.html:182
 msgid "Description"
 msgstr "描述"
 
-#: static/js/page/translations.js:37
+#: static/js/page/translations.js:53
 msgid "Note"
 msgstr "笔记"
 
-#: static/js/page/translations.js:38
+#: static/js/page/translations.js:54
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
 msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间才能生效。"
 
-#: static/js/page/translations.js:39 templates/index.html:63
-#: templates/index.html:142
+#: static/js/page/translations.js:55 templates/index.html:96
+#: templates/index.html:175
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/translations.js:40 templates/index.html:64
+#: static/js/page/translations.js:56 templates/index.html:97
 msgid "Publication Date"
 msgstr "出版日期"
 
-#: static/js/page/translations.js:41
+#: static/js/page/translations.js:57
 msgid "Tags (comma-separated)"
 msgstr "标签（逗号分隔）"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:58
 msgid "Library (custom field #library)"
 msgstr "书库（自定义字段 #library）"
 
-#: static/js/page/translations.js:43
+#: static/js/page/translations.js:59
 msgid "Read Date (custom field #readdate)"
 msgstr "阅读日期（自定义字段 #readdate）"
 
-#: static/js/page/translations.js:46
+#: static/js/page/translations.js:62
 msgid "Task queued"
 msgstr "任务已加入队列"
 
-#: static/js/page/translations.js:47
+#: static/js/page/translations.js:63
 msgid "Starting audiobook generation..."
 msgstr "开始生成有声书..."
 
-#: static/js/page/translations.js:48
+#: static/js/page/translations.js:64
 msgid "Parsing EPUB file..."
 msgstr "正在解析 EPUB 文件..."
 
-#: static/js/page/translations.js:49
+#: static/js/page/translations.js:65
 #, python-format
 msgid "Processing: Chapter %(index)d/%(total)d"
 msgstr "正在处理章节：%(index)d/%(total)d"
 
-#: static/js/page/translations.js:50
+#: static/js/page/translations.js:66
 msgid "Merging audio files..."
 msgstr "正在合并音频文件..."
 
-#: static/js/page/translations.js:51
+#: static/js/page/translations.js:67
 msgid "Writing book metadata..."
 msgstr "正在写入书籍元数据..."
 
-#: static/js/page/translations.js:52
+#: static/js/page/translations.js:68
 msgid "Cleaning up temporary files..."
 msgstr "正在清理临时文件..."
 
-#: static/js/page/translations.js:53
+#: static/js/page/translations.js:69
 msgid "Audiobook generated successfully!"
 msgstr "有声书生成成功！"
 
-#: static/js/page/translations.js:54
+#: static/js/page/translations.js:70
 msgid "Could not extract any chapters from the EPUB file."
 msgstr "无法从 EPUB 文件中提取任何章节。"
 
-#: static/js/page/translations.js:55
+#: static/js/page/translations.js:71
 msgid "All chapters are empty or could not be converted to audio."
 msgstr "所有章节均为空或无法转换为音频。"
 
-#: static/js/page/translations.js:56
+#: static/js/page/translations.js:72
 #, python-format
 msgid "An unknown error occurred: %(error)s"
 msgstr "发生未知错误：%(error)s"
 
-#: static/js/page/translations.js:62 templates/chat_player.html:63
+#: static/js/page/translations.js:78 templates/chat_player.html:63
 #: templates/chat_player.html:76
 msgid "Updated"
 msgstr "已更新"
 
-#: static/js/page/translations.js:63 templates/chat_player.html:65
+#: static/js/page/translations.js:79 templates/chat_player.html:65
 #: templates/chat_player.html:78
 msgid "Delete Chat"
 msgstr "删除聊天"
 
-#: static/js/page/translations.js:64
+#: static/js/page/translations.js:80
 msgid "Failed to fetch chat history."
 msgstr "获取聊天记录失败。"
 
-#: static/js/page/translations.js:65
+#: static/js/page/translations.js:81
 msgid "Error loading history:"
 msgstr "加载历史记录时出错："
 
-#: static/js/page/translations.js:66
+#: static/js/page/translations.js:82
 msgid "Failed to get a response from the AI."
 msgstr "未能从 AI 处获得回应。"
 
-#: static/js/page/translations.js:67
+#: static/js/page/translations.js:83
 msgid "An error occurred:"
 msgstr "发生错误："
 
-#: static/js/page/translations.js:69
+#: static/js/page/translations.js:85
 msgid "years ago"
 msgstr "年前"
 
-#: static/js/page/translations.js:70
+#: static/js/page/translations.js:86
 msgid "months ago"
 msgstr "个月前"
 
-#: static/js/page/translations.js:71
+#: static/js/page/translations.js:87
 msgid "days ago"
 msgstr "天前"
 
-#: static/js/page/translations.js:72
+#: static/js/page/translations.js:88
 msgid "hours ago"
 msgstr "小时前"
 
-#: static/js/page/translations.js:73
+#: static/js/page/translations.js:89
 msgid "minutes ago"
 msgstr "分钟前"
 
-#: static/js/page/translations.js:74
+#: static/js/page/translations.js:90
 msgid "just now"
 msgstr "刚刚"
 
-#: static/js/page/translations.js:75
+#: static/js/page/translations.js:91
 msgid ""
 "Are you sure you want to delete this chat session? This action cannot be "
 "undone."
 msgstr "您确定要删除此聊天会话吗？此操作无法撤消。"
 
-#: static/js/page/translations.js:76
+#: static/js/page/translations.js:92
 msgid "Failed to delete the session."
 msgstr "删除会话失败。"
 
-#: static/js/page/translations.js:77
+#: static/js/page/translations.js:93
 msgid "Error:"
 msgstr "错误："
 
-#: static/js/page/translations.js:78
+#: static/js/page/translations.js:94
 msgid "Zoom In"
 msgstr "放大"
 
-#: static/js/page/translations.js:79
+#: static/js/page/translations.js:95
 msgid "Zoom Out"
 msgstr "缩小"
 
-#: static/js/page/translations.js:80
+#: static/js/page/translations.js:96
 msgid "Reset Zoom"
 msgstr "重置缩放"
 
-#: static/js/page/translations.js:81
+#: static/js/page/translations.js:97
 msgid "Download SVG"
 msgstr "下载 SVG"
 
-#: static/js/page/translations.js:82
+#: static/js/page/translations.js:98
 msgid "Mermaid Render Error"
 msgstr "Mermaid 渲染错误"
 
-#: static/js/page/translations.js:85
+#: static/js/page/translations.js:101
 msgid "Failed to fetch audiobook list."
 msgstr "获取有声书列表失败。"
 
-#: static/js/page/translations.js:86
+#: static/js/page/translations.js:102
 msgid "Delete Audiobook"
 msgstr "删除有声书"
 
-#: static/js/page/translations.js:87
+#: static/js/page/translations.js:103
 #, python-format
 msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
 "cannot be undone."
 msgstr "您确定要删除有声书 “%(title)s” 吗？此操作无法撤销。"
 
-#: static/js/page/translations.js:88
+#: static/js/page/translations.js:104
 #, python-format
 msgid "Error: %(message)s"
 msgstr "错误：%(message)s"
 
-#: static/js/page/translations.js:89
+#: static/js/page/translations.js:105
 msgid "Failed to delete audiobook."
 msgstr "删除有声书失败。"
 
-#: static/js/page/translations.js:90
+#: static/js/page/translations.js:106
 msgid "An unexpected error occurred."
 msgstr "发生意外错误。"
 
-#: static/js/page/translations.js:91
+#: static/js/page/translations.js:107
 msgid "chapters"
 msgstr "章"
 
-#: static/js/page/translations.js:92
+#: static/js/page/translations.js:108
 msgid "No chapters available."
 msgstr "无可用章节。"
 
-#: static/js/page/translations.js:93
+#: static/js/page/translations.js:109
 msgid "More"
 msgstr "更多"
 
-#: static/js/page/translations.js:94
+#: static/js/page/translations.js:110
 msgid "Less"
 msgstr "收起"
 
-#: static/js/page/translations.js:95
+#: static/js/page/translations.js:111
 msgid "Album"
 msgstr "专辑"
 
-#: static/js/page/translations.js:96
+#: static/js/page/translations.js:112
 msgid "Album Artist"
 msgstr "专辑艺术家"
 
-#: static/js/page/translations.js:97
+#: static/js/page/translations.js:113
 msgid "Genre"
 msgstr "类型"
 
-#: static/js/page/translations.js:98
+#: static/js/page/translations.js:114
 msgid "Year"
 msgstr "年份"
 
-#: static/js/page/translations.js:99
+#: static/js/page/translations.js:115
 msgid "Composer"
 msgstr "作曲家"
 
-#: static/js/page/translations.js:100
+#: static/js/page/translations.js:116
 msgid "Comment"
 msgstr "评论"
 
-#: static/js/page/translations.js:102 templates/audio_player.html:73
+#: static/js/page/translations.js:118 templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "上一章"
 
-#: static/js/page/translations.js:103 templates/audio_player.html:75
+#: static/js/page/translations.js:119 templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "下一章"
 
-#: static/js/page/translations.js:104
+#: static/js/page/translations.js:120
 msgid "Seek Backward 10s"
 msgstr "快退 10 秒"
 
-#: static/js/page/translations.js:105
+#: static/js/page/translations.js:121
 msgid "Seek Forward 30s"
 msgstr "快进 30 秒"
 
-#: static/js/page/translations.js:106 templates/audio_player.html:74
+#: static/js/page/translations.js:122 templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "播放/暂停"
 
-#: static/js/page/translations.js:107
+#: static/js/page/translations.js:123
 msgid "Playback Speed"
 msgstr "播放速度"
 
@@ -1209,7 +1286,7 @@ msgstr "返回主书库"
 msgid "Calibre Library"
 msgstr "Calibre 书库"
 
-#: templates/audio_player.html:29 templates/index.html:116
+#: templates/audio_player.html:29 templates/index.html:149
 msgid "Anx Library"
 msgstr "Anx 书库"
 
@@ -1246,12 +1323,12 @@ msgstr "设置"
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:67
+#: templates/base.html:106 templates/index.html:3 templates/index.html:100
 msgid "Library"
 msgstr "书库"
 
 #: templates/base.html:110 templates/chat_player.html:53
-#: templates/index.html:80
+#: templates/index.html:113
 msgid "Anx"
 msgstr "Anx"
 
@@ -1303,136 +1380,157 @@ msgstr "输入您的消息..."
 msgid "Send"
 msgstr "发送"
 
-#: templates/index.html:19
+#: templates/index.html:20
 msgid "Home"
 msgstr "主页"
 
-#: templates/index.html:21
+#: templates/index.html:22
 msgid "Search Calibre books..."
 msgstr "搜索 Calibre 图书..."
 
-#: templates/index.html:24 templates/index.html:189
+#: templates/index.html:25 templates/index.html:222
 msgid "Upload"
 msgstr "上传"
 
-#: templates/index.html:28 templates/index.html:97
+#: templates/index.html:29 templates/index.html:130
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "共 %(total_books)s 本书 (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:33 templates/index.html:102
+#: templates/index.html:34 templates/index.html:135
 msgid "20/page"
 msgstr "20/页"
 
-#: templates/index.html:34 templates/index.html:103
+#: templates/index.html:35 templates/index.html:136
 msgid "50/page"
 msgstr "50/页"
 
-#: templates/index.html:35 templates/index.html:104
+#: templates/index.html:36 templates/index.html:137
 msgid "100/page"
 msgstr "100/页"
 
-#: templates/index.html:37 templates/index.html:106
+#: templates/index.html:38 templates/index.html:139
 msgid "Previous"
 msgstr "上一页"
 
-#: templates/index.html:39 templates/index.html:108
+#: templates/index.html:40 templates/index.html:141
 msgid "Go"
 msgstr "前往"
 
-#: templates/index.html:40 templates/index.html:109
+#: templates/index.html:41 templates/index.html:142
 msgid "Next"
 msgstr "下一页"
 
-#: templates/index.html:55 templates/index.html:135
+#: templates/index.html:51
+msgid "Could not connect to the Calibre server."
+msgstr "无法连接到 Calibre 服务器。"
+
+#: templates/index.html:55
+msgid "The server returned a 401 Unauthorized error."
+msgstr "服务器返回 401 未授权错误。"
+
+#: templates/index.html:59
+msgid "The server returned a 403 Forbidden error."
+msgstr "服务器返回 403 禁止访问错误。"
+
+#: templates/index.html:63
+#, python-format
+msgid "The server returned an HTTP %(status_code)s error."
+msgstr "服务器返回 HTTP %(status_code)s 错误。"
+
+#: templates/index.html:67
+msgid "An unknown error occurred while connecting to Calibre."
+msgstr "连接到 Calibre 时发生未知错误。"
+
+#: templates/index.html:88 templates/index.html:168
 msgid "Ask AI"
 msgstr "询问 AI"
 
-#: templates/index.html:61 templates/index.html:141 templates/stats.html:125
+#: templates/index.html:94 templates/index.html:174 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "评分"
 
-#: templates/index.html:62
+#: templates/index.html:95
 msgid "Formats"
 msgstr "格式"
 
-#: templates/index.html:71
+#: templates/index.html:104
 msgid "Read Date"
 msgstr "阅读日期"
 
-#: templates/index.html:78 templates/index.html:154
+#: templates/index.html:111 templates/index.html:187
 msgid "Download"
 msgstr "下载"
 
-#: templates/index.html:79
+#: templates/index.html:112
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:88 templates/index.html:159
+#: templates/index.html:121 templates/index.html:192
 msgid "Generate Audiobook"
 msgstr "生成有声书"
 
-#: templates/index.html:93
+#: templates/index.html:126
 msgid "No books in Calibre library."
 msgstr "Calibre 书库中没有图书。"
 
-#: templates/index.html:119
+#: templates/index.html:152
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:119 templates/settings.html:291
+#: templates/index.html:152 templates/settings.html:291
 msgid "Click to copy"
 msgstr "点击复制"
 
-#: templates/index.html:143
+#: templates/index.html:176
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: templates/index.html:144 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:177 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
-#: templates/index.html:145
+#: templates/index.html:178
 msgid "Note Count"
 msgstr "笔记数量"
 
-#: templates/index.html:146
+#: templates/index.html:179
 msgid "Creation Time"
 msgstr "创建时间"
 
-#: templates/index.html:147
+#: templates/index.html:180
 msgid "Update Time"
 msgstr "更新时间"
 
-#: templates/index.html:148
+#: templates/index.html:181
 msgid "Producer"
 msgstr "制作者"
 
-#: templates/index.html:165
+#: templates/index.html:198
 msgid "No books in Anx library."
 msgstr "Anx 书库中没有图书。"
 
-#: templates/index.html:177
+#: templates/index.html:210
 msgid "Upload Books"
 msgstr "上传图书"
 
-#: templates/index.html:183
+#: templates/index.html:216
 msgid "Select files:"
 msgstr "选择文件："
 
-#: templates/index.html:188 templates/index.html:205
+#: templates/index.html:221 templates/index.html:238
 #: templates/settings.html:178 templates/settings.html:451
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:198
+#: templates/index.html:231
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:206 templates/settings.html:450
+#: templates/index.html:239 templates/settings.html:450
 msgid "Save"
 msgstr "保存"
 
@@ -1471,23 +1569,23 @@ msgstr "没有帐户？"
 msgid "Register here"
 msgstr "在此注册"
 
-#: templates/reader.html:8
+#: templates/reader.html:10
 msgid "Book Reader"
 msgstr "图书阅读器"
 
-#: templates/reader.html:86
+#: templates/reader.html:88
 msgid "TTS Settings"
 msgstr "TTS 设置"
 
-#: templates/reader.html:88 templates/settings.html:99
+#: templates/reader.html:90 templates/settings.html:99
 msgid "Rate"
 msgstr "语速"
 
-#: templates/reader.html:93 templates/settings.html:109
+#: templates/reader.html:95 templates/settings.html:109
 msgid "Pitch"
 msgstr "音高"
 
-#: templates/reader.html:98 templates/settings.html:76
+#: templates/reader.html:100 templates/settings.html:76
 msgid "Voice"
 msgstr "声音"
 

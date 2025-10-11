@@ -6,6 +6,7 @@
 <!-- Data Island for Books -->
 <script id="anx-books-data" type="application/json">{{ anx_books | tojson | safe }}</script>
 <script id="calibre-books-data" type="application/json">{{ calibre_books | tojson | safe }}</script>
+<script id="calibre-error-data" type="application/json">{{ calibre_error | tojson | safe }}</script>
 
 <div class="main-content" data-username="{{ g.user.username }}">
     <div class="library-container">
@@ -41,6 +42,38 @@
                 </form>
             </div>
             <div class="book-list" id="calibre-book-list">
+                {% if calibre_error %}
+                <div class="error-container">
+                    <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="error-details">
+                        {% if calibre_error.code == 'CONNECTION_ERROR' %}
+                            <h3>{{ _('Calibre Connection Error') }}</h3>
+                            <p><strong>{{ _('Reason:') }}</strong> {{ _('Could not connect to the Calibre server.') }}</p>
+                            <p><strong >{{ _('Solution:') }}</strong> <span id="calibre-error-solution"></span></p>
+                        {% elif calibre_error.code == 'UNAUTHORIZED' %}
+                            <h3>{{ _('Calibre Authentication Error') }}</h3>
+                            <p><strong>{{ _('Reason:') }}</strong> {{ _('The server returned a 401 Unauthorized error.') }}</p>
+                            <p><strong >{{ _('Solution:') }}</strong> <span id="calibre-error-solution"></span></p>
+                        {% elif calibre_error.code == 'FORBIDDEN' %}
+                            <h3>{{ _('Calibre Permission Error') }}</h3>
+                            <p><strong>{{ _('Reason:') }}</strong> {{ _('The server returned a 403 Forbidden error.') }}</p>
+                            <p><strong >{{ _('Solution:') }}</strong> <span id="calibre-error-solution"></span></p>
+                        {% elif calibre_error.code == 'HTTP_ERROR' %}
+                            <h3>{{ _('Calibre HTTP Error') }}</h3>
+                            <p><strong>{{ _('Reason:') }}</strong> {{ _('The server returned an HTTP %(status_code)s error.', status_code=calibre_error.status_code) }}</p>
+                            <p><strong >{{ _('Solution:') }}</strong> <span id="calibre-error-solution"></span></p>
+                        {% else %}
+                            <h3>{{ _('Calibre Request Error') }}</h3>
+                            <p><strong>{{ _('Reason:') }}</strong> {{ _('An unknown error occurred while connecting to Calibre.') }}</p>
+                            <p><strong >{{ _('Solution:') }}</strong> <span id="calibre-error-solution"></span></p>
+                        {% endif %}
+                        <div class="error-raw-message">
+                            <p><strong>{{ _('Original Error:') }}</strong> <code>{{ calibre_error.message }}</code></p>
+                            <p><strong>{{ _('Request URL (click to test):') }}</strong> <a href="{{ calibre_error.calibre_url }}" target="_blank" rel="noopener noreferrer"><code>{{ calibre_error.calibre_url }}</code></a></p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 {% for book in calibre_books %}
                 <div class="book-row" data-book-id="{{ book.id }}">
                     <div class="cover-wrapper">

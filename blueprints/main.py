@@ -3,6 +3,7 @@ import re
 import requests
 import io
 import os
+from urllib.parse import urlencode
 from flask import Blueprint, render_template, request, g, redirect, url_for, send_from_directory, send_file, make_response
 from flask_babel import gettext as _
 from requests.auth import HTTPDigestAuth
@@ -28,24 +29,29 @@ def login_required(f):
 
 def get_calibre_books(search_query="", page=1, page_size=20):
     config = config_manager.config
+    full_url = config.get('CALIBRE_URL', '')
     try:
-        library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
+        library_id = config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
         offset = (page - 1) * page_size
         search_params = { 'query': search_query, 'num': page_size, 'offset': offset, 'library_id': library_id, 'sort': 'id', 'sort_order': 'desc' }
         headers = {'User-Agent': 'Mozilla/5.0'}
-        search_response = requests.get(f"{config['CALIBRE_URL']}/ajax/search", params=search_params, auth=get_calibre_auth(), headers=headers)
+        
+        base_url = f"{config['CALIBRE_URL']}/ajax/search"
+        full_url = f"{base_url}?{urlencode(search_params)}"
+
+        search_response = requests.get(base_url, params=search_params, auth=get_calibre_auth(), headers=headers)
         search_response.raise_for_status()
         search_data = search_response.json()
         book_ids = search_data.get('book_ids', [])
         total_books = search_data.get('total_num', 0)
-        if not book_ids: return [], 0
+        if not book_ids: return [], 0, None
         books_data = {}
         chunk_size = 100
         for i in range(0, len(book_ids), chunk_size):
             chunk = book_ids[i:i + chunk_size]
             if not chunk: continue
-            requested_fields = 'all' # Request all fields to get format_metadata
-            books_params = {'ids': ",".join(map(str, chunk)), 'library_id': config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library'), 'fields': requested_fields}
+            requested_fields = 'all'
+            books_params = {'ids': ",".join(map(str, chunk)), 'library_id': library_id, 'fields': requested_fields}
             books_response = requests.get(f"{config['CALIBRE_URL']}/ajax/books", params=books_params, auth=get_calibre_auth(), headers=headers)
             books_response.raise_for_status()
             books_data.update(books_response.json())
@@ -55,7 +61,7 @@ def get_calibre_books(search_query="", page=1, page_size=20):
             bid_str = str(bid)
             if bid_str in books_data:
                 book_dict = books_data[bid_str]
-                if book_dict: # Ensure book data is not None
+                if book_dict:
                     book_dict['id'] = bid
                     books.append(book_dict)
         
@@ -64,7 +70,7 @@ def get_calibre_books(search_query="", page=1, page_size=20):
             power = 1024
             n = 0
             power_labels = {0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
-            while size >= power and n < len(power_labels) -1 :
+            while size >= power and n < len(power_labels) - 1:
                 size /= power
                 n += 1
             return f"{size:.1f} {power_labels[n]}"
@@ -78,13 +84,27 @@ def get_calibre_books(search_query="", page=1, page_size=20):
                     formats_with_sizes.append(f"{fmt.upper()} ({format_bytes(size)})")
             
             book['formats_with_sizes'] = formats_with_sizes
-            # Also keep the simple format list for other uses
             book['formats'] = list(format_metadata.keys()) if isinstance(format_metadata, dict) else []
 
-        return books, total_books
+        return books, total_books, None
+    except requests.exceptions.ConnectionError as e:
+        print(f"Error getting Calibre books: {e}")
+        return [], 0, {'code': 'CONNECTION_ERROR', 'message': str(e), 'calibre_url': full_url}
+    except requests.exceptions.HTTPError as e:
+        print(f"Error getting Calibre books: {e}")
+        error_info = {'message': str(e), 'calibre_url': e.response.url}
+        if e.response.status_code == 401:
+            error_info['code'] = 'UNAUTHORIZED'
+        elif e.response.status_code == 403:
+            error_info['code'] = 'FORBIDDEN'
+        else:
+            error_info['code'] = 'HTTP_ERROR'
+            error_info['status_code'] = e.response.status_code
+        return [], 0, error_info
     except requests.exceptions.RequestException as e:
         print(f"Error getting Calibre books: {e}")
-        return [], 0
+        url_from_req = e.request.url if e.request else full_url
+        return [], 0, {'code': 'REQUEST_EXCEPTION', 'message': str(e), 'calibre_url': url_from_req}
 
 def format_reading_time(seconds):
     if not seconds or seconds == 0:
@@ -101,7 +121,7 @@ def index():
     search_query = request.args.get('search', '')
     page = request.args.get('page', 1, type=int)
     page_size = request.args.get('page_size', 20, type=int)
-    calibre_books, total_calibre_books = get_calibre_books(search_query, page, page_size)
+    calibre_books, total_calibre_books, calibre_error = get_calibre_books(search_query, page, page_size)
     
     anx_books = get_anx_books(g.user.username)
     for book in anx_books:
@@ -114,7 +134,8 @@ def index():
                            calibre_books=calibre_books,
                            anx_books=anx_books,
                            search_query=search_query,
-                           pagination=pagination))
+                           pagination=pagination,
+                           calibre_error=calibre_error))
     response.headers['Accept-CH'] = 'Sec-CH-Prefers-Color-Scheme'
     return response
 @main_bp.route('/sw.js')

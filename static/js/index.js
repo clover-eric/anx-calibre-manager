@@ -1,6 +1,6 @@
 import { setupMobileView, setupAnxWebDavUrl } from './page/ui.js';
 import { setupEventHandlers } from './page/handlers.js';
-import { initializeTranslations } from './page/translations.js';
+import { t, initializeTranslations } from './page/translations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Initialize Translations ---
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data ---
     const anxBooksData = JSON.parse(document.getElementById('anx-books-data').textContent);
     const calibreBooksData = JSON.parse(document.getElementById('calibre-books-data').textContent);
+    const calibreErrorData = JSON.parse(document.getElementById('calibre-error-data').textContent);
     let currentEditing = { type: null, id: null };
 
     // --- DOM Elements ---
@@ -38,4 +39,30 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAnxWebDavUrl(domElements.anxWebDavUrlElement, username);
     setupEventHandlers(domElements, data, currentEditing);
     window.addEventListener('resize', () => setupMobileView(domElements.calibreLibrary, domElements.anxLibrary, domElements.navHome, domElements.navAnx));
+
+    // --- Handle Calibre Error Display ---
+    if (calibreErrorData) {
+        const solutionElement = document.getElementById('calibre-error-solution');
+        if (solutionElement) {
+            let solutionText = '';
+            switch (calibreErrorData.code) {
+                case 'CONNECTION_ERROR':
+                    solutionText = t.solutionConnectionErrorV2;
+                    break;
+                case 'UNAUTHORIZED':
+                    solutionText = t.solutionUnauthorized;
+                    break;
+                case 'FORBIDDEN':
+                    solutionText = t.solutionForbidden;
+                    break;
+                case 'HTTP_ERROR':
+                    solutionText = t.solutionHttpError;
+                    break;
+                default:
+                    solutionText = t.solutionRequestError;
+                    break;
+            }
+            solutionElement.textContent = solutionText;
+        }
+    }
 });

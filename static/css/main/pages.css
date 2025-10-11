@@ -398,3 +398,60 @@
 .dark-mode .prompt-card {
     background-color: #2c2c2c;
 }
+/* Calibre Error Container */
+.error-container {
+    background-color: var(--color-error-background);
+    border: 1px solid var(--color-error-border);
+    border-radius: var(--border-radius-large);
+    padding: 1.5rem;
+    margin: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    color: var(--color-error-text);
+}
+
+.error-icon {
+    font-size: 2rem;
+    color: var(--color-error-icon);
+    margin-top: 0.25rem;
+}
+
+.error-details h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--color-error-title);
+}
+
+.error-details p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.error-details strong {
+    color: var(--color-text-primary);
+}
+
+.error-raw-message {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-error-border);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.error-raw-message code {
+    background-color: var(--color-background-tertiary);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--border-radius-small);
+    word-break: break-all;
+}
+
+.error-raw-message a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.error-raw-message a:hover {
+    text-decoration: underline;
+}

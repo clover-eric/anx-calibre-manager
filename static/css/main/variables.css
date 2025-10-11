@@ -11,6 +11,13 @@
     --success-color: #28a745;
     --shadow: 0 4px 8px rgba(0,0,0,0.05);
     --border-radius: 8px;
+
+    /* Error Colors */
+    --color-error-background: #ffebee;
+    --color-error-border: #e57373;
+    --color-error-text: #b71c1c;
+    --color-error-title: #c62828;
+    --color-error-icon: #f44336;
 }
 
 .dark-mode {
@@ -25,4 +32,11 @@
     --warning-color: #ffd43b;
     --success-color: #40c057;
     --shadow: 0 4px 8px rgba(0,0,0,0.25);
+
+    /* Error Colors */
+    --color-error-background: #2d1a1a;
+    --color-error-border: #5c2b2b;
+    --color-error-text: #ffcdd2;
+    --color-error-title: #ef9a9a;
+    --color-error-icon: #e57373;
 }

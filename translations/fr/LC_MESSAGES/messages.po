@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 15:49+0800\n"
+"POT-Creation-Date: 2025-10-11 22:31+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -94,16 +94,16 @@ msgstr "Inscription réussie ! Veuillez vous connecter."
 msgid "An error occurred during registration"
 msgstr "Une erreur s'est produite lors de l'inscription"
 
-#: blueprints/main.py:91 blueprints/stats.py:16
+#: blueprints/main.py:111 blueprints/stats.py:16
 msgid "0 minutes"
 msgstr "0 minutes"
 
-#: blueprints/main.py:95 blueprints/stats.py:20
+#: blueprints/main.py:115 blueprints/stats.py:20
 #, python-format
 msgid "%(hours)s hours %(minutes)s minutes"
 msgstr "%(hours)s heures %(minutes)s minutes"
 
-#: blueprints/main.py:96 blueprints/stats.py:21
+#: blueprints/main.py:116 blueprints/stats.py:21
 #, python-format
 msgid "%(minutes)s minutes"
 msgstr "%(minutes)s minutes"
@@ -132,7 +132,7 @@ msgstr "Une tâche pour ce livre est déjà en cours."
 msgid "Invalid 'library' type"
 msgstr "Type de 'library' invalide"
 
-#: blueprints/api/audiobook.py:230 static/js/page/translations.js:57
+#: blueprints/api/audiobook.py:230 static/js/page/translations.js:73
 #, python-format
 msgid "File error: %(error)s"
 msgstr "Erreur de fichier : %(error)s"
@@ -516,7 +516,7 @@ msgstr ""
 "---FIN DU CONTENU DU LIVRE---"
 
 #: blueprints/api/llm.py:233 blueprints/api/llm.py:300
-#: static/js/page/translations.js:68
+#: static/js/page/translations.js:84
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Veuillez fournir un résumé complet et une critique approfondie de ce "
@@ -528,12 +528,12 @@ msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Échec de la communication avec le fournisseur LLM : %(error)s"
 
 #: blueprints/api/llm.py:235 blueprints/api/llm.py:302
-#: static/js/page/translations.js:60
+#: static/js/page/translations.js:76
 msgid "Extracting entire book content..."
 msgstr "Extraction du contenu complet du livre..."
 
 #: blueprints/api/llm.py:236 blueprints/api/llm.py:303
-#: static/js/page/translations.js:61
+#: static/js/page/translations.js:77
 msgid "Thinking..."
 msgstr "Réflexion..."
 
@@ -781,7 +781,7 @@ msgstr "Aucun jeton disponible."
 msgid "Created at"
 msgstr "Créé à"
 
-#: static/js/settings.js:21 templates/index.html:156
+#: static/js/settings.js:21 templates/index.html:189
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -817,7 +817,7 @@ msgstr "Une erreur est survenue"
 msgid "Please enter a test recipient email address."
 msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
 
-#: static/js/settings.js:29 templates/index.html:84 templates/index.html:155
+#: static/js/settings.js:29 templates/index.html:117 templates/index.html:188
 msgid "Edit"
 msgstr "Modifier"
 
@@ -889,110 +889,202 @@ msgstr "La réponse du réseau n'était pas bonne."
 msgid "No changes detected."
 msgstr "Aucun changement détecté."
 
-#: static/js/page/translations.js:12
+#: static/js/page/translations.js:13 templates/index.html:50
+msgid "Calibre Connection Error"
+msgstr "Erreur de connexion à Calibre"
+
+#: static/js/page/translations.js:14 templates/index.html:54
+msgid "Calibre Authentication Error"
+msgstr "Erreur d'authentification Calibre"
+
+#: static/js/page/translations.js:15 templates/index.html:58
+msgid "Calibre Permission Error"
+msgstr "Erreur de permission Calibre"
+
+#: static/js/page/translations.js:16 templates/index.html:62
+msgid "Calibre HTTP Error"
+msgstr "Erreur HTTP Calibre"
+
+#: static/js/page/translations.js:17 templates/index.html:66
+msgid "Calibre Request Error"
+msgstr "Erreur de requête Calibre"
+
+#: static/js/page/translations.js:18 templates/index.html:51
+#: templates/index.html:55 templates/index.html:59 templates/index.html:63
+#: templates/index.html:67
+msgid "Reason:"
+msgstr "Raison :"
+
+#: static/js/page/translations.js:19 templates/index.html:52
+#: templates/index.html:56 templates/index.html:60 templates/index.html:64
+#: templates/index.html:68
+msgid "Solution:"
+msgstr "Solution :"
+
+#: static/js/page/translations.js:20
+msgid ""
+"Check if the Calibre server is running and the URL in Settings -> Calibre"
+" Config is correct."
+msgstr ""
+"Vérifiez si le serveur Calibre est en cours d'exécution et si l'URL dans "
+"Paramètres -> Configuration de Calibre est correcte."
+
+#: static/js/page/translations.js:21
+msgid ""
+"Please ensure you are connecting to Calibre's content-server (default "
+"port: 8080), not calibre-web (default port: 8083). Check if the server is"
+" running and the URL in Settings -> Calibre Config is correct."
+msgstr ""
+"Veuillez vous assurer que vous vous connectez au serveur de contenu de "
+"Calibre (port par défaut : 8080), et non à calibre-web (port par défaut : "
+"8083). Vérifiez si le serveur est en cours d'exécution et si l'URL dans "
+"Paramètres -> Configuration de Calibre est correcte."
+
+#: static/js/page/translations.js:22
+msgid ""
+"Verify that the username and password in Settings -> Calibre Config are "
+"correct."
+msgstr ""
+"Vérifiez que le nom d'utilisateur et le mot de passe dans Paramètres -> "
+"Configuration de Calibre sont corrects."
+
+#: static/js/page/translations.js:23 templates/index.html:71
+msgid "Original Error:"
+msgstr "Erreur originale :"
+
+#: static/js/page/translations.js:24 templates/index.html:72
+msgid "Request URL (click to test):"
+msgstr "URL de la requête (cliquez pour tester) :"
+
+#: static/js/page/translations.js:25
+msgid ""
+"Ensure the Library ID in Settings -> Calibre Config is correct. Also, "
+"check if the user has write permissions in Calibre."
+msgstr ""
+"Assurez-vous que l'ID de la bibliothèque dans Paramètres -> Configuration de "
+"Calibre est correct. Vérifiez également si l'utilisateur dispose des "
+"autorisations d'écriture dans Calibre."
+
+#: static/js/page/translations.js:26
+msgid ""
+"The Calibre server returned an error. Please check the Calibre server "
+"logs for more details."
+msgstr ""
+"Le serveur Calibre a retourné une erreur. Veuillez consulter les journaux du "
+"serveur Calibre pour plus de détails."
+
+#: static/js/page/translations.js:27
+msgid ""
+"An unknown error occurred while connecting to Calibre. Please check the "
+"application logs."
+msgstr ""
+"Une erreur inconnue s'est produite lors de la connexion à Calibre. Veuillez "
+"consulter les journaux de l'application."
+
+#: static/js/page/translations.js:28
 msgid "Are you sure you want to delete this book? This action cannot be undone."
 msgstr ""
 "Êtes-vous sûr de vouloir supprimer ce livre ? Cette action est "
 "irréversible."
 
-#: static/js/page/translations.js:13
+#: static/js/page/translations.js:29
 #, python-format
 msgid "Please enter a valid page number between 1 and %(totalPages)s."
 msgstr "Veuillez saisir un numéro de page valide entre 1 et %(totalPages)s."
 
-#: static/js/page/translations.js:14
+#: static/js/page/translations.js:30
 msgid "Please select files to upload."
 msgstr "Veuillez sélectionner les fichiers à téléverser."
 
-#: static/js/page/translations.js:15
+#: static/js/page/translations.js:31
 msgid "Waiting..."
 msgstr "En attente..."
 
-#: static/js/page/translations.js:16
+#: static/js/page/translations.js:32
 msgid "Uploading..."
 msgstr "Téléversement en cours..."
 
-#: static/js/page/translations.js:17
+#: static/js/page/translations.js:33
 msgid "Processing..."
 msgstr "Traitement en cours..."
 
-#: static/js/page/translations.js:18
+#: static/js/page/translations.js:34
 msgid "Upload failed"
 msgstr "Le téléversement a échoué"
 
-#: static/js/page/translations.js:19
+#: static/js/page/translations.js:35
 msgid "Network Error"
 msgstr "Erreur réseau"
 
-#: static/js/page/translations.js:20
+#: static/js/page/translations.js:36
 msgid "Network error: Failed to connect to the server."
 msgstr "Erreur réseau : Échec de la connexion au serveur."
 
-#: static/js/page/translations.js:21
+#: static/js/page/translations.js:37
 msgid "All books uploaded successfully!"
 msgstr "Tous les livres ont été téléversés avec succès !"
 
-#: static/js/page/translations.js:22
+#: static/js/page/translations.js:38
 msgid "Some files failed to upload. Please check the progress details."
 msgstr ""
 "Certains fichiers n'ont pas pu être téléversés. Veuillez vérifier les "
 "détails de la progression."
 
-#: static/js/page/translations.js:23
+#: static/js/page/translations.js:39
 msgid "Generating..."
 msgstr "Génération en cours..."
 
-#: static/js/page/translations.js:24
+#: static/js/page/translations.js:40
 msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
-#: static/js/page/translations.js:25
+#: static/js/page/translations.js:41
 msgid "Listen to Audiobook"
 msgstr "Écouter le livre audio"
 
-#: static/js/page/translations.js:26
+#: static/js/page/translations.js:42
 msgid "Failed"
 msgstr "Échec"
 
-#: static/js/page/translations.js:27
+#: static/js/page/translations.js:43
 msgid "Error"
 msgstr "Erreur"
 
-#: static/js/page/translations.js:28
+#: static/js/page/translations.js:44
 msgid "Success!"
 msgstr "Succès !"
 
-#: static/js/page/translations.js:31
+#: static/js/page/translations.js:47
 msgid "Title"
 msgstr "Titre"
 
-#: static/js/page/translations.js:32 templates/stats.html:123
+#: static/js/page/translations.js:48 templates/stats.html:123
 #: templates/stats.html:154
 msgid "Author"
 msgstr "Auteur"
 
-#: static/js/page/translations.js:33
+#: static/js/page/translations.js:49
 msgid "Authors (comma-separated)"
 msgstr "Auteurs (séparés par des virgules)"
 
-#: static/js/page/translations.js:34
+#: static/js/page/translations.js:50
 msgid "Rating (0-5)"
 msgstr "Note (0-5)"
 
-#: static/js/page/translations.js:35
+#: static/js/page/translations.js:51
 msgid "Reading Progress (%)"
 msgstr "Progression de la lecture (%)"
 
-#: static/js/page/translations.js:36 static/js/page/translations.js:101
-#: templates/index.html:73 templates/index.html:149
+#: static/js/page/translations.js:52 static/js/page/translations.js:117
+#: templates/index.html:106 templates/index.html:182
 msgid "Description"
 msgstr "Description"
 
-#: static/js/page/translations.js:37
+#: static/js/page/translations.js:53
 msgid "Note"
 msgstr "Note"
 
-#: static/js/page/translations.js:38
+#: static/js/page/translations.js:54
 msgid ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
@@ -1000,124 +1092,124 @@ msgstr ""
 "Les mises à jour de métadonnées pour les livres Calibre sont asynchrones "
 "et peuvent prendre un moment à s'appliquer."
 
-#: static/js/page/translations.js:39 templates/index.html:63
-#: templates/index.html:142
+#: static/js/page/translations.js:55 templates/index.html:96
+#: templates/index.html:175
 msgid "Publisher"
 msgstr "Éditeur"
 
-#: static/js/page/translations.js:40 templates/index.html:64
+#: static/js/page/translations.js:56 templates/index.html:97
 msgid "Publication Date"
 msgstr "Date de publication"
 
-#: static/js/page/translations.js:41
+#: static/js/page/translations.js:57
 msgid "Tags (comma-separated)"
 msgstr "Étiquettes (séparées par des virgules)"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:58
 msgid "Library (custom field #library)"
 msgstr "Bibliothèque (champ personnalisé #library)"
 
-#: static/js/page/translations.js:43
+#: static/js/page/translations.js:59
 msgid "Read Date (custom field #readdate)"
 msgstr "Date de lecture (champ personnalisé #readdate)"
 
-#: static/js/page/translations.js:46
+#: static/js/page/translations.js:62
 msgid "Task queued"
 msgstr "Tâche mise en file d'attente"
 
-#: static/js/page/translations.js:47
+#: static/js/page/translations.js:63
 msgid "Starting audiobook generation..."
 msgstr "Démarrage de la génération du livre audio..."
 
-#: static/js/page/translations.js:48
+#: static/js/page/translations.js:64
 msgid "Parsing EPUB file..."
 msgstr "Analyse du fichier EPUB..."
 
-#: static/js/page/translations.js:49
+#: static/js/page/translations.js:65
 #, python-format
 msgid "Processing: Chapter %(index)d/%(total)d"
 msgstr "Traitement : Chapitre %(index)d/%(total)d"
 
-#: static/js/page/translations.js:50
+#: static/js/page/translations.js:66
 msgid "Merging audio files..."
 msgstr "Fusion des fichiers audio..."
 
-#: static/js/page/translations.js:51
+#: static/js/page/translations.js:67
 msgid "Writing book metadata..."
 msgstr "Écriture des métadonnées du livre..."
 
-#: static/js/page/translations.js:52
+#: static/js/page/translations.js:68
 msgid "Cleaning up temporary files..."
 msgstr "Nettoyage des fichiers temporaires..."
 
-#: static/js/page/translations.js:53
+#: static/js/page/translations.js:69
 msgid "Audiobook generated successfully!"
 msgstr "Livre audio généré avec succès !"
 
-#: static/js/page/translations.js:54
+#: static/js/page/translations.js:70
 msgid "Could not extract any chapters from the EPUB file."
 msgstr "Impossible d'extraire des chapitres du fichier EPUB."
 
-#: static/js/page/translations.js:55
+#: static/js/page/translations.js:71
 msgid "All chapters are empty or could not be converted to audio."
 msgstr "Tous les chapitres sont vides ou n'ont pas pu être convertis en audio."
 
-#: static/js/page/translations.js:56
+#: static/js/page/translations.js:72
 #, python-format
 msgid "An unknown error occurred: %(error)s"
 msgstr "Une erreur inconnue est survenue : %(error)s"
 
-#: static/js/page/translations.js:62 templates/chat_player.html:63
+#: static/js/page/translations.js:78 templates/chat_player.html:63
 #: templates/chat_player.html:76
 msgid "Updated"
 msgstr "Mis à jour"
 
-#: static/js/page/translations.js:63 templates/chat_player.html:65
+#: static/js/page/translations.js:79 templates/chat_player.html:65
 #: templates/chat_player.html:78
 msgid "Delete Chat"
 msgstr "Supprimer la discussion"
 
-#: static/js/page/translations.js:64
+#: static/js/page/translations.js:80
 msgid "Failed to fetch chat history."
 msgstr "Échec de la récupération de l'historique des discussions."
 
-#: static/js/page/translations.js:65
+#: static/js/page/translations.js:81
 msgid "Error loading history:"
 msgstr "Erreur lors du chargement de l'historique :"
 
-#: static/js/page/translations.js:66
+#: static/js/page/translations.js:82
 msgid "Failed to get a response from the AI."
 msgstr "Impossible d'obtenir une réponse de l'IA."
 
-#: static/js/page/translations.js:67
+#: static/js/page/translations.js:83
 msgid "An error occurred:"
 msgstr "Une erreur est survenue :"
 
-#: static/js/page/translations.js:69
+#: static/js/page/translations.js:85
 msgid "years ago"
 msgstr "ans"
 
-#: static/js/page/translations.js:70
+#: static/js/page/translations.js:86
 msgid "months ago"
 msgstr "mois"
 
-#: static/js/page/translations.js:71
+#: static/js/page/translations.js:87
 msgid "days ago"
 msgstr "jours"
 
-#: static/js/page/translations.js:72
+#: static/js/page/translations.js:88
 msgid "hours ago"
 msgstr "heures"
 
-#: static/js/page/translations.js:73
+#: static/js/page/translations.js:89
 msgid "minutes ago"
 msgstr "minutes"
 
-#: static/js/page/translations.js:74
+#: static/js/page/translations.js:90
 msgid "just now"
 msgstr "à l'instant"
 
-#: static/js/page/translations.js:75
+#: static/js/page/translations.js:91
 msgid ""
 "Are you sure you want to delete this chat session? This action cannot be "
 "undone."
@@ -1125,43 +1217,43 @@ msgstr ""
 "Êtes-vous sûr de vouloir supprimer cette session de discussion ? Cette "
 "action est irréversible."
 
-#: static/js/page/translations.js:76
+#: static/js/page/translations.js:92
 msgid "Failed to delete the session."
 msgstr "Échec de la suppression de la session."
 
-#: static/js/page/translations.js:77
+#: static/js/page/translations.js:93
 msgid "Error:"
 msgstr "Erreur :"
 
-#: static/js/page/translations.js:78
+#: static/js/page/translations.js:94
 msgid "Zoom In"
 msgstr "Agrandir"
 
-#: static/js/page/translations.js:79
+#: static/js/page/translations.js:95
 msgid "Zoom Out"
 msgstr "Réduire"
 
-#: static/js/page/translations.js:80
+#: static/js/page/translations.js:96
 msgid "Reset Zoom"
 msgstr "Réinitialiser le zoom"
 
-#: static/js/page/translations.js:81
+#: static/js/page/translations.js:97
 msgid "Download SVG"
 msgstr "Télécharger le SVG"
 
-#: static/js/page/translations.js:82
+#: static/js/page/translations.js:98
 msgid "Mermaid Render Error"
 msgstr "Erreur de rendu Mermaid"
 
-#: static/js/page/translations.js:85
+#: static/js/page/translations.js:101
 msgid "Failed to fetch audiobook list."
 msgstr "Échec de la récupération de la liste des livres audio."
 
-#: static/js/page/translations.js:86
+#: static/js/page/translations.js:102
 msgid "Delete Audiobook"
 msgstr "Supprimer le livre audio"
 
-#: static/js/page/translations.js:87
+#: static/js/page/translations.js:103
 #, python-format
 msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
@@ -1170,80 +1262,80 @@ msgstr ""
 "Êtes-vous sûr de vouloir supprimer le livre audio \"%(title)s\" ? Cette "
 "action est irréversible."
 
-#: static/js/page/translations.js:88
+#: static/js/page/translations.js:104
 #, python-format
 msgid "Error: %(message)s"
 msgstr "Erreur : %(message)s"
 
-#: static/js/page/translations.js:89
+#: static/js/page/translations.js:105
 msgid "Failed to delete audiobook."
 msgstr "Échec de la suppression du livre audio."
 
-#: static/js/page/translations.js:90
+#: static/js/page/translations.js:106
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue est survenue."
 
-#: static/js/page/translations.js:91
+#: static/js/page/translations.js:107
 msgid "chapters"
 msgstr "chapitres"
 
-#: static/js/page/translations.js:92
+#: static/js/page/translations.js:108
 msgid "No chapters available."
 msgstr "Aucun chapitre disponible."
 
-#: static/js/page/translations.js:93
+#: static/js/page/translations.js:109
 msgid "More"
 msgstr "Plus"
 
-#: static/js/page/translations.js:94
+#: static/js/page/translations.js:110
 msgid "Less"
 msgstr "Moins"
 
-#: static/js/page/translations.js:95
+#: static/js/page/translations.js:111
 msgid "Album"
 msgstr "Album"
 
-#: static/js/page/translations.js:96
+#: static/js/page/translations.js:112
 msgid "Album Artist"
 msgstr "Artiste de l'album"
 
-#: static/js/page/translations.js:97
+#: static/js/page/translations.js:113
 msgid "Genre"
 msgstr "Genre"
 
-#: static/js/page/translations.js:98
+#: static/js/page/translations.js:114
 msgid "Year"
 msgstr "Année"
 
-#: static/js/page/translations.js:99
+#: static/js/page/translations.js:115
 msgid "Composer"
 msgstr "Compositeur"
 
-#: static/js/page/translations.js:100
+#: static/js/page/translations.js:116
 msgid "Comment"
 msgstr "Commentaire"
 
-#: static/js/page/translations.js:102 templates/audio_player.html:73
+#: static/js/page/translations.js:118 templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "Chapitre précédent"
 
-#: static/js/page/translations.js:103 templates/audio_player.html:75
+#: static/js/page/translations.js:119 templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "Chapitre suivant"
 
-#: static/js/page/translations.js:104
+#: static/js/page/translations.js:120
 msgid "Seek Backward 10s"
 msgstr "Reculer de 10s"
 
-#: static/js/page/translations.js:105
+#: static/js/page/translations.js:121
 msgid "Seek Forward 30s"
 msgstr "Avancer de 30s"
 
-#: static/js/page/translations.js:106 templates/audio_player.html:74
+#: static/js/page/translations.js:122 templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "Lecture/Pause"
 
-#: static/js/page/translations.js:107
+#: static/js/page/translations.js:123
 msgid "Playback Speed"
 msgstr "Vitesse de lecture"
 
@@ -1259,7 +1351,7 @@ msgstr "Retour à la bibliothèque principale"
 msgid "Calibre Library"
 msgstr "Bibliothèque Calibre"
 
-#: templates/audio_player.html:29 templates/index.html:116
+#: templates/audio_player.html:29 templates/index.html:149
 msgid "Anx Library"
 msgstr "Bibliothèque Anx"
 
@@ -1296,12 +1388,12 @@ msgstr "Paramètres"
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:67
+#: templates/base.html:106 templates/index.html:3 templates/index.html:100
 msgid "Library"
 msgstr "Bibliothèque"
 
 #: templates/base.html:110 templates/chat_player.html:53
-#: templates/index.html:80
+#: templates/index.html:113
 msgid "Anx"
 msgstr "Anx"
 
@@ -1353,81 +1445,103 @@ msgstr "Tapez votre message..."
 msgid "Send"
 msgstr "Envoyer"
 
-#: templates/index.html:19
+#: templates/index.html:20
 msgid "Home"
 msgstr "Accueil"
 
-#: templates/index.html:21
+#: templates/index.html:22
 msgid "Search Calibre books..."
 msgstr "Rechercher des livres Calibre..."
 
-#: templates/index.html:24 templates/index.html:189
+#: templates/index.html:25 templates/index.html:222
 msgid "Upload"
 msgstr "Téléverser"
 
-#: templates/index.html:28 templates/index.html:97
+#: templates/index.html:29 templates/index.html:130
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "Total %(total_books)s livres (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:33 templates/index.html:102
+#: templates/index.html:34 templates/index.html:135
 msgid "20/page"
 msgstr "20/page"
 
-#: templates/index.html:34 templates/index.html:103
+#: templates/index.html:35 templates/index.html:136
 msgid "50/page"
 msgstr "50/page"
 
-#: templates/index.html:35 templates/index.html:104
+#: templates/index.html:36 templates/index.html:137
 msgid "100/page"
 msgstr "100/page"
 
-#: templates/index.html:37 templates/index.html:106
+#: templates/index.html:38 templates/index.html:139
 msgid "Previous"
 msgstr "Précédent"
 
-#: templates/index.html:39 templates/index.html:108
+#: templates/index.html:40 templates/index.html:141
 msgid "Go"
 msgstr "Aller"
 
-#: templates/index.html:40 templates/index.html:109
+#: templates/index.html:41 templates/index.html:142
 msgid "Next"
 msgstr "Suivant"
 
-#: templates/index.html:55 templates/index.html:135
+#: templates/index.html:51
+#, python-format
+msgid "Could not connect to the Calibre server."
+msgstr "Impossible de se connecter au serveur Calibre."
+
+#: templates/index.html:55
+msgid "The server returned a 401 Unauthorized error."
+msgstr "Le serveur a retourné une erreur 401 Non autorisé."
+
+#: templates/index.html:59
+msgid "The server returned a 403 Forbidden error."
+msgstr "Le serveur a retourné une erreur 403 Interdit."
+
+#: templates/index.html:63
+#, python-format
+msgid "The server returned an HTTP %(status_code)s error."
+msgstr "Le serveur a retourné une erreur HTTP %(status_code)s."
+
+#: templates/index.html:67
+msgid "An unknown error occurred while connecting to Calibre."
+msgstr "Une erreur inconnue s'est produite lors de la connexion à Calibre."
+
+#: templates/index.html:88 templates/index.html:168
 msgid "Ask AI"
 msgstr "Demander à l'IA"
 
-#: templates/index.html:61 templates/index.html:141 templates/stats.html:125
+#: templates/index.html:94 templates/index.html:174 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Note"
 
-#: templates/index.html:62
+#: templates/index.html:95
 msgid "Formats"
 msgstr "Formats"
 
-#: templates/index.html:71
+#: templates/index.html:104
 msgid "Read Date"
 msgstr "Date de lecture"
 
-#: templates/index.html:78 templates/index.html:154
+#: templates/index.html:111 templates/index.html:187
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/index.html:79
+#: templates/index.html:112
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:88 templates/index.html:159
+#: templates/index.html:121 templates/index.html:192
 msgid "Generate Audiobook"
 msgstr "Générer un livre audio"
 
-#: templates/index.html:93
+#: templates/index.html:126
 msgid "No books in Calibre library."
 msgstr "Aucun livre dans la bibliothèque Calibre."
 
-#: templates/index.html:119
+#: templates/index.html:152
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -1436,56 +1550,56 @@ msgstr ""
 "synchroniser (le nom d'utilisateur et le mot de passe sont vos "
 "identifiants de connexion) :"
 
-#: templates/index.html:119 templates/settings.html:291
+#: templates/index.html:152 templates/settings.html:291
 msgid "Click to copy"
 msgstr "Cliquez pour copier"
 
-#: templates/index.html:143
+#: templates/index.html:176
 msgid "Reading Progress"
 msgstr "Progression de la lecture"
 
-#: templates/index.html:144 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:177 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Temps de lecture total"
 
-#: templates/index.html:145
+#: templates/index.html:178
 msgid "Note Count"
 msgstr "Nombre de notes"
 
-#: templates/index.html:146
+#: templates/index.html:179
 msgid "Creation Time"
 msgstr "Date de création"
 
-#: templates/index.html:147
+#: templates/index.html:180
 msgid "Update Time"
 msgstr "Date de mise à jour"
 
-#: templates/index.html:148
+#: templates/index.html:181
 msgid "Producer"
 msgstr "Producteur"
 
-#: templates/index.html:165
+#: templates/index.html:198
 msgid "No books in Anx library."
 msgstr "Aucun livre dans la bibliothèque Anx."
 
-#: templates/index.html:177
+#: templates/index.html:210
 msgid "Upload Books"
 msgstr "Téléverser des livres"
 
-#: templates/index.html:183
+#: templates/index.html:216
 msgid "Select files:"
 msgstr "Sélectionner des fichiers :"
 
-#: templates/index.html:188 templates/index.html:205
+#: templates/index.html:221 templates/index.html:238
 #: templates/settings.html:178 templates/settings.html:451
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/index.html:198
+#: templates/index.html:231
 msgid "Edit Book Information"
 msgstr "Modifier les informations du livre"
 
-#: templates/index.html:206 templates/settings.html:450
+#: templates/index.html:239 templates/settings.html:450
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1524,23 +1638,23 @@ msgstr "Vous n'avez pas de compte ?"
 msgid "Register here"
 msgstr "Inscrivez-vous ici"
 
-#: templates/reader.html:8
+#: templates/reader.html:10
 msgid "Book Reader"
 msgstr "Lecteur de livres"
 
-#: templates/reader.html:86
+#: templates/reader.html:88
 msgid "TTS Settings"
 msgstr "Paramètres TTS"
 
-#: templates/reader.html:88 templates/settings.html:99
+#: templates/reader.html:90 templates/settings.html:99
 msgid "Rate"
 msgstr "Vitesse"
 
-#: templates/reader.html:93 templates/settings.html:109
+#: templates/reader.html:95 templates/settings.html:109
 msgid "Pitch"
 msgstr "Hauteur"
 
-#: templates/reader.html:98 templates/settings.html:76
+#: templates/reader.html:100 templates/settings.html:76
 msgid "Voice"
 msgstr "Voix"
 
