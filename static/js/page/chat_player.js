@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesContainer: document.querySelector('.messages-container'),
         chatInput: document.getElementById('chat-input'),
         sendButton: document.getElementById('send-button'),
+        menuToggleBtn: document.querySelector('.menu-toggle-btn'),
+        menuDropdown: document.querySelector('.menu-dropdown'),
+        exportChatBtn: document.getElementById('export-chat-btn'),
     };
 
     // --- API Functions ---
@@ -612,6 +615,76 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     dom.chatInput.addEventListener('input', autoResizeTextarea);
+
+    dom.menuToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dom.menuDropdown.classList.toggle('visible');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dom.menuDropdown.contains(e.target) && !dom.menuToggleBtn.contains(e.target)) {
+            dom.menuDropdown.classList.remove('visible');
+        }
+    });
+
+    dom.exportChatBtn.addEventListener('click', () => {
+        dom.menuDropdown.classList.remove('visible');
+        const chatTitle = dom.chatTitle.textContent || 'chat';
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, '');
+        const filename = `${chatTitle}_${timestamp}.png`;
+
+        const exportContainer = document.createElement('div');
+        exportContainer.className = 'export-container';
+
+        const header = document.createElement('div');
+        header.className = 'export-header';
+        header.textContent = chatTitle;
+        exportContainer.appendChild(header);
+
+        const contentToCapture = dom.messagesContainer.cloneNode(true);
+        exportContainer.appendChild(contentToCapture);
+
+        const footer = document.createElement('div');
+        footer.className = 'export-footer';
+        footer.innerHTML = `
+            <p>${t.exportedBy}</p>
+            <p>${t.aiDisclaimer}</p>
+        `;
+        exportContainer.appendChild(footer);
+
+        document.body.appendChild(exportContainer);
+
+        const style = document.createElement('style');
+        style.innerHTML = `.message:hover .message-actions { visibility: hidden !important; }`;
+        document.head.appendChild(style);
+
+        html2canvas(exportContainer, {
+            useCORS: true,
+            backgroundColor: getComputedStyle(dom.body).getPropertyValue('--background-color'),
+            onclone: (clonedDoc) => {
+                clonedDoc.querySelectorAll('.mermaid svg').forEach(svg => {
+                    const styleSheets = Array.from(clonedDoc.styleSheets);
+                    let cssText = '';
+                    styleSheets.forEach(sheet => {
+                        try {
+                            Array.from(sheet.cssRules).forEach(rule => { cssText += rule.cssText; });
+                        } catch (e) { console.warn("Cannot access stylesheet rules:", e); }
+                    });
+                    const styleEl = clonedDoc.createElement('style');
+                    styleEl.textContent = cssText;
+                    svg.insertBefore(styleEl, svg.firstChild);
+                });
+            }
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }).finally(() => {
+            document.head.removeChild(style);
+            document.body.removeChild(exportContainer);
+        });
+    });
 
     // --- Initial Load ---
     initTabs();

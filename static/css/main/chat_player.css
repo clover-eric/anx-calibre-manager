@@ -195,7 +195,62 @@ body.theme-dark .library-toggle .button.active,
 .chat-content-view { display: flex; flex-direction: column; height: 100%; width: 100%; }
 .chat-header { display: flex; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
 .chat-header .back-to-list-btn { display: none; background: none; border: none; color: var(--text-color-secondary); font-size: 1.2rem; margin-right: 1rem; cursor: pointer; }
-.chat-header h3 { margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-header h3 { margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
+
+/* --- Chat Header Menu --- */
+.chat-header-menu {
+    position: relative;
+    margin-left: auto;
+}
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+.menu-toggle-btn:hover {
+    background-color: var(--hover-color);
+}
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 10;
+    min-width: 180px;
+    padding: 0.5rem 0;
+}
+.menu-dropdown.visible {
+    display: block;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+.menu-item:hover {
+    background-color: var(--hover-color);
+}
+.menu-item i {
+    width: 16px;
+    text-align: center;
+    color: var(--text-color-secondary);
+}
 
 .messages-container { flex-grow: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
 .message {
@@ -450,4 +505,34 @@ body.theme-dark .library-toggle .button.active,
 .loading-status {
     font-style: italic;
     color: var(--text-color-secondary);
+}
+
+/* --- Export Container Styles --- */
+.export-container {
+    position: absolute;
+    left: -9999px; /* Move off-screen */
+    top: auto;
+    width: 800px; /* Define a fixed width for consistent output */
+    padding: 1rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+.export-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.export-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    color: var(--text-color-secondary);
+    text-align: center;
+}
+.export-footer p {
+    margin: 0.25rem 0;
 }

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         // Initialization is now handled dynamically in chat_player.js to support themes
@@ -94,6 +95,12 @@
                 <header class="chat-header">
                     <button class="back-to-list-btn"><i class="fas fa-arrow-left"></i></button>
                     <h3 class="chat-title marquee"><span></span></h3>
+                    <div class="chat-header-menu">
+                        <button class="menu-toggle-btn" title="{{ _('Menu') }}"><i class="fas fa-ellipsis-v"></i></button>
+                        <div class="menu-dropdown">
+                            <button class="menu-item" id="export-chat-btn"><i class="fas fa-image"></i> {{ _('Export as Image') }}</button>
+                        </div>
+                    </div>
                 </header>
                 <div class="messages-container"></div>
                 <footer class="chat-input-area">
