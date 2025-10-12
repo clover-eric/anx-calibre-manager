@@ -292,7 +292,16 @@ export function setupEventHandlers(
                         if (!res.ok) return res.json().then(err => { throw new Error(err.error) });
                         return res.json();
                     });
-                handleButtonAnimation(target, apiCall);
+                handleButtonAnimation(target, apiCall, () => { location.reload(); });
+                break;
+            }
+            case 'push-anx-to-calibre': {
+                const apiCall = fetch_with_token(`/api/push_anx_to_calibre/${id}`, { method: 'POST' })
+                    .then(res => {
+                        if (!res.ok) return res.json().then(err => { throw new Error(err.error) });
+                        return res.json();
+                    });
+                handleButtonAnimation(target, apiCall, () => { location.reload(); });
                 break;
             }
             case 'send-kindle': {

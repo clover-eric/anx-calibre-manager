@@ -30,12 +30,12 @@ def upload_to_calibre_api():
             
             job_id = str(uuid.uuid4())
             
-            library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library') 
+            library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
             
             add_duplicates = config_manager.config.get('CALIBRE_ADD_DUPLICATES', False)
-            add_duplicates_flag = 'y' if add_duplicates else 'n' 
+            add_duplicates_flag = 'y' if add_duplicates else 'n'
 
-            encoded_filename = requests.utils.quote(filename) 
+            encoded_filename = requests.utils.quote(filename)
 
             url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/{job_id}/{add_duplicates_flag}/{encoded_filename}/{library_id}"
             

@@ -153,7 +153,7 @@ export function finalizeAudiobookButton(button, task, originalText) {
 
 
 // --- Button Animation Handler ---
-export function handleButtonAnimation(button, apiPromise) {
+export function handleButtonAnimation(button, apiPromise, onSuccess = null) {
     if (button.classList.contains('in-progress')) return;
 
     const buttonText = button.querySelector('.button-text');
@@ -188,10 +188,10 @@ export function handleButtonAnimation(button, apiPromise) {
                     progressOverlay.style.transition = 'width 1.5s ease-out';
                 }, 50);
 
-                if (originalText === "Anx") {
-                    location.reload();
+                if (onSuccess) {
+                    onSuccess();
                 }
-            }, 7000);
+            }, 2000);
         })
         .catch(error => {
             alert(`${t.error}: ${error.message}`);

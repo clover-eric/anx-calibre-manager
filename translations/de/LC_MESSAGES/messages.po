@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 20:50+0800\n"
+"POT-Creation-Date: 2025-10-12 22:41+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -205,21 +205,21 @@ msgstr "Falscher Bestätigungscode."
 msgid "2FA has been disabled."
 msgstr "2FA wurde deaktiviert."
 
-#: blueprints/api/books.py:32
+#: blueprints/api/books.py:36
 msgid "Anx database not found."
 msgstr "Anx-Datenbank nicht gefunden."
 
-#: blueprints/api/books.py:41
+#: blueprints/api/books.py:45
 #, python-format
 msgid "Book file with ID %(book_id)s not found."
 msgstr "Buchdatei mit ID %(book_id)s nicht gefunden."
 
-#: blueprints/api/books.py:48
+#: blueprints/api/books.py:52
 #, python-format
 msgid "Error downloading book: %(error)s"
 msgstr "Fehler beim Herunterladen des Buches: %(error)s"
 
-#: blueprints/api/books.py:159
+#: blueprints/api/books.py:163
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
@@ -227,29 +227,29 @@ msgstr ""
 "Dieses Buch muss in EPUB konvertiert werden, aber das `ebook-"
 "converter`-Tool fehlt in der aktuellen Umgebung."
 
-#: blueprints/api/books.py:163
+#: blueprints/api/books.py:167
 msgid "Unable to process or convert the book."
 msgstr "Buch kann nicht verarbeitet oder konvertiert werden."
 
-#: blueprints/api/books.py:168 blueprints/api/books.py:253
+#: blueprints/api/books.py:172 blueprints/api/books.py:257
 msgid "Book details not found."
 msgstr "Buchdetails nicht gefunden."
 
-#: blueprints/api/books.py:179
+#: blueprints/api/books.py:183
 msgid "This book has no available formats."
 msgstr "Dieses Buch hat keine verfügbaren Formate."
 
-#: blueprints/api/books.py:185
+#: blueprints/api/books.py:189
 msgid "Unable to download the book."
 msgstr "Buch kann nicht heruntergeladen werden."
 
-#: blueprints/api/books.py:190
+#: blueprints/api/books.py:194
 msgid "Please configure your Kindle email in user settings first."
 msgstr ""
 "Bitte konfigurieren Sie zuerst Ihre Kindle-E-Mail in den "
 "Benutzereinstellungen."
 
-#: blueprints/api/books.py:197
+#: blueprints/api/books.py:201
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
@@ -257,11 +257,11 @@ msgstr ""
 "Dieses Buch muss in EPUB konvertiert werden, aber das `ebook-"
 "converter`-Tool fehlt. Bitte installieren Sie es im System-PATH."
 
-#: blueprints/api/books.py:200
+#: blueprints/api/books.py:204
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "EPUB-Datei für das Buch kann nicht abgerufen oder verarbeitet werden."
 
-#: blueprints/api/books.py:247
+#: blueprints/api/books.py:251
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
@@ -269,19 +269,19 @@ msgstr ""
 "Dieses Buch muss in EPUB konvertiert werden, aber das `ebook-"
 "converter`-Tool fehlt."
 
-#: blueprints/api/books.py:260
+#: blueprints/api/books.py:264
 msgid "No pushable format found."
 msgstr "Kein pushbares Format gefunden."
 
-#: blueprints/api/books.py:265
+#: blueprints/api/books.py:269
 msgid "Error downloading or processing the book."
 msgstr "Fehler beim Herunterladen oder Verarbeiten des Buches."
 
-#: blueprints/api/books.py:271
+#: blueprints/api/books.py:275 blueprints/api/books.py:405
 msgid "User directory not configured."
 msgstr "Benutzerverzeichnis nicht konfiguriert."
 
-#: blueprints/api/books.py:291
+#: blueprints/api/books.py:295
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
@@ -290,19 +290,31 @@ msgstr ""
 "Buch '%(filename)s' gepusht. Verarbeitet: %(processed)s, Übersprungen: "
 "%(skipped)s."
 
-#: blueprints/api/books.py:317
+#: blueprints/api/books.py:321
 msgid "Missing book ID."
 msgstr "Fehlende Buch-ID."
 
-#: blueprints/api/calibre.py:20
-msgid "No file part."
-msgstr "Kein Dateiteil."
+#: blueprints/api/books.py:397
+#, python-format
+msgid "Anx book with ID %(book_id)s not found."
+msgstr "Anx-Buch mit ID %(book_id)s nicht gefunden."
 
-#: blueprints/api/calibre.py:24
-msgid "No selected file."
-msgstr "Keine Datei ausgewählt."
+#: blueprints/api/books.py:401
+#, python-format
+msgid "File path for book with ID %(book_id)s is missing."
+msgstr "Dateipfad für Buch mit ID %(book_id)s fehlt."
 
-#: blueprints/api/calibre.py:85
+#: blueprints/api/books.py:409
+#, python-format
+msgid "Book file not found at path: %(path)s"
+msgstr "Buchdatei unter Pfad nicht gefunden: %(path)s"
+
+#: blueprints/api/books.py:415
+#, python-format
+msgid "Failed to read book file: %(error)s"
+msgstr "Fehler beim Lesen der Buchdatei: %(error)s"
+
+#: blueprints/api/books.py:448 blueprints/api/calibre.py:85
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
@@ -311,24 +323,33 @@ msgstr ""
 "Buch '%(title)s' erfolgreich hochgeladen, ID: %(book_id)s (aber "
 "Aktualisierung der Quelle fehlgeschlagen)."
 
-#: blueprints/api/calibre.py:94
+#: blueprints/api/books.py:453 blueprints/api/calibre.py:94
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "Buch '%(title)s' erfolgreich hochgeladen, ID: %(book_id)s."
 
-#: blueprints/api/calibre.py:102
+#: blueprints/api/books.py:458 blueprints/api/calibre.py:102
 msgid "Upload failed, book may already exist."
 msgstr "Upload fehlgeschlagen, Buch existiert möglicherweise bereits."
 
-#: blueprints/api/calibre.py:108
+#: blueprints/api/books.py:463 blueprints/api/calibre.py:108
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre-Server hat einen Fehler zurückgegeben: %(code)s - %(text)s"
 
-#: blueprints/api/calibre.py:118 blueprints/api/calibre.py:190
+#: blueprints/api/books.py:467 blueprints/api/calibre.py:118
+#: blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Fehler beim Verbinden mit dem Calibre-Server: %(error)s"
+
+#: blueprints/api/calibre.py:20
+msgid "No file part."
+msgstr "Kein Dateiteil."
+
+#: blueprints/api/calibre.py:24
+msgid "No selected file."
+msgstr "Keine Datei ausgewählt."
 
 #: blueprints/api/calibre.py:129
 msgid "Book not found"
@@ -778,7 +799,7 @@ msgstr "Keine verfügbaren Token."
 msgid "Created at"
 msgstr "Erstellt um"
 
-#: static/js/settings.js:21 templates/index.html:189
+#: static/js/settings.js:21 templates/index.html:190
 msgid "Delete"
 msgstr "Löschen"
 
@@ -814,7 +835,7 @@ msgstr "Ein Fehler ist aufgetreten"
 msgid "Please enter a test recipient email address."
 msgstr "Bitte geben Sie eine Test-Empfänger-E-Mail-Adresse ein."
 
-#: static/js/settings.js:29 templates/index.html:117 templates/index.html:188
+#: static/js/settings.js:29 templates/index.html:117 templates/index.html:189
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1426,7 +1447,7 @@ msgstr "Kauf mir einen Kaffee ☕"
 msgid "AI Chat"
 msgstr "KI-Chat"
 
-#: templates/chat_player.html:53
+#: templates/chat_player.html:53 templates/index.html:188
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -1462,7 +1483,7 @@ msgstr "Startseite"
 msgid "Search Calibre books..."
 msgstr "Calibre-Bücher suchen..."
 
-#: templates/index.html:25 templates/index.html:222
+#: templates/index.html:25 templates/index.html:223
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -1541,7 +1562,7 @@ msgstr "Herunterladen"
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:121 templates/index.html:192
+#: templates/index.html:121 templates/index.html:193
 msgid "Generate Audiobook"
 msgstr "Hörbuch generieren"
 
@@ -1586,28 +1607,28 @@ msgstr "Aktualisierungszeit"
 msgid "Producer"
 msgstr "Hersteller"
 
-#: templates/index.html:198
+#: templates/index.html:199
 msgid "No books in Anx library."
 msgstr "Keine Bücher in der Anx-Bibliothek."
 
-#: templates/index.html:210
+#: templates/index.html:211
 msgid "Upload Books"
 msgstr "Bücher hochladen"
 
-#: templates/index.html:216
+#: templates/index.html:217
 msgid "Select files:"
 msgstr "Dateien auswählen:"
 
-#: templates/index.html:221 templates/index.html:238
+#: templates/index.html:222 templates/index.html:239
 #: templates/settings.html:178 templates/settings.html:451
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: templates/index.html:231
+#: templates/index.html:232
 msgid "Edit Book Information"
 msgstr "Buchinformationen bearbeiten"
 
-#: templates/index.html:239 templates/settings.html:450
+#: templates/index.html:240 templates/settings.html:450
 msgid "Save"
 msgstr "Speichern"
 

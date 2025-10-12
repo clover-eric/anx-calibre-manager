@@ -5,6 +5,9 @@ import logging
 import shutil
 import subprocess
 import tempfile
+import mimetypes
+import uuid
+import requests
 from flask import Blueprint, request, jsonify, g, send_file, send_from_directory
 from flask_babel import gettext as _
 from contextlib import closing
@@ -20,6 +23,7 @@ from anx_library import (
 from .calibre import download_calibre_book, get_calibre_book_details
 from .email_service import send_email_with_config
 from epub_fixer import fix_epub_for_kindle
+from utils.auth import get_calibre_auth
 from utils.covers import get_calibre_cover_data
 from utils.text import random_english_text, safe_title, safe_author
 
@@ -384,3 +388,81 @@ def delete_anx_book_api(book_id):
         return jsonify({'message': message})
     else:
         return jsonify({'error': message}), 500
+
+
+@books_bp.route('/push_anx_to_calibre/<int:book_id>', methods=['POST'])
+def push_anx_to_calibre_api(book_id):
+    book_details = get_anx_book_details(g.user.username, book_id)
+    if not book_details:
+        return jsonify({'error': _('Anx book with ID %(book_id)s not found.', book_id=book_id)}), 404
+
+    file_path = book_details.get('file_path')
+    if not file_path:
+        return jsonify({'error': _('File path for book with ID %(book_id)s is missing.', book_id=book_id)}), 404
+
+    dirs = get_anx_user_dirs(g.user.username)
+    if not dirs:
+        return jsonify({'error': _('User directory not configured.')}), 500
+
+    full_file_path = os.path.join(dirs['base'], 'data', file_path)
+    if not os.path.exists(full_file_path):
+        return jsonify({'error': _('Book file not found at path: %(path)s', path=full_file_path)}), 404
+
+    try:
+        with open(full_file_path, 'rb') as f:
+            file_content = f.read()
+    except IOError as e:
+        return jsonify({'error': _('Failed to read book file: %(error)s', error=str(e))}), 500
+
+    filename = os.path.basename(full_file_path)
+    mimetype, _unused = mimetypes.guess_type(filename)
+
+    # --- Start: Adapted Calibre Upload Logic ---
+    job_id = str(uuid.uuid4())
+    library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
+    add_duplicates = config_manager.config.get('CALIBRE_ADD_DUPLICATES', False)
+    add_duplicates_flag = 'y' if add_duplicates else 'n'
+    encoded_filename = requests.utils.quote(filename)
+    url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/{job_id}/{add_duplicates_flag}/{encoded_filename}/{library_id}"
+
+    try:
+        headers = {'Content-Type': mimetype or 'application/octet-stream'}
+        response = requests.post(url, data=file_content, auth=get_calibre_auth(), headers=headers)
+        response.raise_for_status()
+        res_json = response.json()
+
+        if res_json.get("book_id"):
+            uploaded_book_id = res_json["book_id"]
+            try:
+                uploaded_book_details = get_calibre_book_details(uploaded_book_id)
+                if (uploaded_book_details and "user_metadata" in uploaded_book_details and
+                        "#library" in uploaded_book_details["user_metadata"]):
+                    update_payload = {"changes": {"#library": g.user.username}}
+                    update_url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{uploaded_book_id}/{library_id}"
+                    update_response = requests.post(update_url, json=update_payload, auth=get_calibre_auth())
+                    update_response.raise_for_status()
+                    logging.info(f"Successfully updated #library for book {uploaded_book_id}")
+            except Exception as e:
+                logging.error(f"Failed to update #library for book {uploaded_book_id}: {e}")
+                return jsonify({
+                    'message': _("Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to update source).",
+                                 title=res_json.get('title'), book_id=uploaded_book_id)
+                })
+
+            return jsonify({
+                'message': _("Book '%(title)s' uploaded successfully, ID: %(book_id)s.",
+                             title=res_json.get('title'), book_id=uploaded_book_id)
+            })
+        else:
+            return jsonify({
+                'error': _("Upload failed, book may already exist."),
+                'details': res_json.get("duplicates")
+            }), 409
+
+    except requests.exceptions.HTTPError as e:
+        error_message = _("Calibre server returned an error: %(code)s - %(text)s",
+                          code=e.response.status_code, text=e.response.text)
+        return jsonify({'error': error_message}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': _("Error connecting to Calibre server: %(error)s", error=e)}), 500
+    # --- End: Adapted Calibre Upload Logic ---
