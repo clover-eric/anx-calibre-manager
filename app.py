@@ -85,6 +85,9 @@ class AnxDomainController(BaseDomainController):
 def create_app():
     app = Flask(__name__)
 
+    # --- Version ---
+    APP_VERSION = "__VERSION__"
+    
     # --- Babel Configuration ---
     LANGUAGES = {
         'en': 'English',
@@ -183,7 +186,8 @@ def create_app():
         return dict(
             available_languages=app.config['LANGUAGES'],
             get_locale=get_locale,
-            cache_buster=int(time.time())  # Cache buster
+            cache_buster=int(time.time()),  # Cache buster
+            app_version=APP_VERSION
         )
 
     @app.before_request

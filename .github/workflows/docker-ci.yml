@@ -25,6 +25,17 @@ jobs:
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           sed -i "s/const CACHE_NAME = 'anx-calibre-manager-datetime';/const CACHE_NAME = 'anx-calibre-manager-${TIMESTAMP}';/" ./static/sw.js
 
+      - name: Set Version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            VERSION=${{ github.ref_name }}
+          else
+            VERSION=${{ github.sha }}
+            VERSION=${VERSION:0:7}
+          fi
+          echo "Setting version to $VERSION"
+          sed -i "s/__VERSION__/$VERSION/g" app.py
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
