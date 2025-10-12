@@ -221,6 +221,9 @@
                         <p>"{{ _('Push the book \'Dune\' to my Anx reader.') }}"</p>
                     </div>
                     <div class="prompt-item">
+                        <p>"{{ _('Upload the book \'The Three-Body Problem\' from my Anx library to Calibre.') }}"</p>
+                    </div>
+                    <div class="prompt-item">
                         <p>"{{ _('Generate an audiobook for the book \'The Three-Body Problem\'.') }}"</p>
                     </div>
                     <div class="prompt-item">
@@ -266,6 +269,7 @@
                 <li><strong>get_recent_books</strong>: {{ _('Get recent books from a library. Parameters: `library_type` (str, "anx" or "calibre"), `limit` (int, optional)') }}</li>
                 <li><strong>get_book_details</strong>: {{ _('Get details for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
                 <li><strong>push_calibre_book_to_anx</strong>: {{ _('Push a Calibre book to the user\'s Anx library. Parameters: `book_id` (int)') }}</li>
+                <li><strong>push_anx_book_to_calibre</strong>: {{ _('Upload a book from the user\'s Anx library to the public Calibre library. Parameters: `book_id` (int)') }}</li>
                 <li><strong>send_calibre_book_to_kindle</strong>: {{ _('Send a Calibre book to the user\'s configured Kindle email. Parameters: `book_id` (int)') }}</li>
                 <li><strong>get_table_of_contents</strong>: {{ _('Get the table of contents for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
                 <li><strong>get_chapter_content</strong>: {{ _('Get the content of a specific chapter. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int), `chapter_number` (int)') }}</li>

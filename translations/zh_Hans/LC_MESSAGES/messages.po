@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 22:41+0800\n"
+"POT-Creation-Date: 2025-10-12 23:26+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -265,7 +265,7 @@ msgstr "未找到可推送的格式。"
 msgid "Error downloading or processing the book."
 msgstr "下载或处理图书时出错。"
 
-#: blueprints/api/books.py:275 blueprints/api/books.py:405
+#: blueprints/api/books.py:275 blueprints/api/books.py:409
 msgid "User directory not configured."
 msgstr "用户目录未配置。"
 
@@ -280,48 +280,48 @@ msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过�
 msgid "Missing book ID."
 msgstr "缺少图书 ID。"
 
-#: blueprints/api/books.py:397
+#: blueprints/api/books.py:401
 #, python-format
 msgid "Anx book with ID %(book_id)s not found."
 msgstr "未找到 ID 为 %(book_id)s 的 Anx 图书。"
 
-#: blueprints/api/books.py:401
+#: blueprints/api/books.py:405
 #, python-format
 msgid "File path for book with ID %(book_id)s is missing."
 msgstr "缺少 ID 为 %(book_id)s 的图书文件路径。"
 
-#: blueprints/api/books.py:409
+#: blueprints/api/books.py:413
 #, python-format
 msgid "Book file not found at path: %(path)s"
 msgstr "在路径 %(path)s 未找到图书文件"
 
-#: blueprints/api/books.py:415
+#: blueprints/api/books.py:419
 #, python-format
 msgid "Failed to read book file: %(error)s"
 msgstr "读取图书文件失败：%(error)s"
 
-#: blueprints/api/books.py:448 blueprints/api/calibre.py:85
+#: blueprints/api/books.py:452 blueprints/api/calibre.py:85
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s（但更新来源失败）。"
 
-#: blueprints/api/books.py:453 blueprints/api/calibre.py:94
+#: blueprints/api/books.py:458 blueprints/api/calibre.py:94
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s。"
 
-#: blueprints/api/books.py:458 blueprints/api/calibre.py:102
+#: blueprints/api/books.py:464 blueprints/api/calibre.py:102
 msgid "Upload failed, book may already exist."
 msgstr "上传失败，图书可能已存在。"
 
-#: blueprints/api/books.py:463 blueprints/api/calibre.py:108
+#: blueprints/api/books.py:470 blueprints/api/calibre.py:108
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre 服务器返回错误：%(code)s - %(text)s"
 
-#: blueprints/api/books.py:467 blueprints/api/calibre.py:118
+#: blueprints/api/books.py:474 blueprints/api/calibre.py:118
 #: blueprints/api/calibre.py:190
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
@@ -802,7 +802,7 @@ msgstr "请输入测试收件人电子邮件地址。"
 msgid "Edit"
 msgstr "编辑"
 
-#: static/js/settings.js:30 templates/settings.html:431
+#: static/js/settings.js:30 templates/settings.html:435
 msgid "Add"
 msgstr "添加"
 
@@ -1516,7 +1516,7 @@ msgid ""
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:152 templates/settings.html:291
+#: templates/index.html:152 templates/settings.html:295
 msgid "Click to copy"
 msgstr "点击复制"
 
@@ -1557,7 +1557,7 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:222 templates/index.html:239
-#: templates/settings.html:178 templates/settings.html:451
+#: templates/settings.html:178 templates/settings.html:455
 msgid "Cancel"
 msgstr "取消"
 
@@ -1565,7 +1565,7 @@ msgstr "取消"
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:240 templates/settings.html:450
+#: templates/index.html:240 templates/settings.html:454
 msgid "Save"
 msgstr "保存"
 
@@ -1578,13 +1578,13 @@ msgid "Login to Anx Calibre Manager"
 msgstr "登录 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:293
-#: templates/settings.html:433 templates/settings.html:460
+#: templates/settings.html:31 templates/settings.html:297
+#: templates/settings.html:437 templates/settings.html:464
 msgid "Username"
 msgstr "用户名"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:294 templates/settings.html:437
+#: templates/settings.html:298 templates/settings.html:441
 msgid "Password"
 msgstr "密码"
 
@@ -1696,7 +1696,7 @@ msgstr "个人资料"
 msgid "Change Password"
 msgstr "修改密码"
 
-#: templates/settings.html:36 templates/settings.html:339
+#: templates/settings.html:36 templates/settings.html:343
 msgid "Leave blank to keep unchanged"
 msgstr "留空则保持不变"
 
@@ -1972,74 +1972,78 @@ msgid "Push the book 'Dune' to my Anx reader."
 msgstr "将书籍《沙丘》推送到我的 Anx 阅读器。"
 
 #: templates/settings.html:224
+msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
+msgstr "将我的 Anx 书库中的《三体》上传到 Calibre。"
+
+#: templates/settings.html:227
 msgid "Generate an audiobook for the book 'The Three-Body Problem'."
 msgstr "为书籍《三体》生成有声书。"
 
-#: templates/settings.html:227
+#: templates/settings.html:230
 msgid ""
 "What is the status of the audiobook generation for 'The Three-Body "
 "Problem'?"
 msgstr "书籍《三体》的有声书生成状态如何？"
 
-#: templates/settings.html:231
+#: templates/settings.html:234
 msgid "Content Interaction & Summarization"
 msgstr "内容交互与摘要"
 
-#: templates/settings.html:233
+#: templates/settings.html:236
 msgid "Show me the table of contents for the book 'Foundation'."
 msgstr "显示书籍《基地》的目录。"
 
-#: templates/settings.html:236
+#: templates/settings.html:239
 msgid "Fetch the first chapter of 'Foundation' and give me a summary."
 msgstr "获取《基地》的第一章并给我一个摘要。"
 
-#: templates/settings.html:239
+#: templates/settings.html:242
 msgid ""
 "Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
 "what are the main ideas of psychohistory?"
 msgstr "根据书籍《基地》中的章节“心理史学家”，心理史学的主要思想是什么？"
 
-#: templates/settings.html:242
+#: templates/settings.html:245
 msgid ""
 "Read the entire book 'The Little Prince' and tell me what the fox's "
 "secret is."
 msgstr "阅读整本《小王子》，并告诉我狐狸的秘密是什么。"
 
-#: templates/settings.html:246
+#: templates/settings.html:249
 msgid "Reading Statistics & Progress"
 msgstr "阅读统计与进度"
 
-#: templates/settings.html:248
+#: templates/settings.html:251
 msgid ""
 "How many words is the book 'Dune' in total, and list the word count for "
 "each chapter."
 msgstr "《沙丘》这本书总共有多少字，并列出每个章节的字数。"
 
-#: templates/settings.html:251
+#: templates/settings.html:254
 msgid "How many books have I read this year?"
 msgstr "我今年读了多少本书？"
 
-#: templates/settings.html:254
+#: templates/settings.html:257
 msgid "What's my reading progress on 'Dune'?"
 msgstr "我的《沙丘》阅读进度如何？"
 
-#: templates/settings.html:257
+#: templates/settings.html:260
 msgid ""
 "Who is the author of 'Project Hail Mary' and how long have I been reading"
 " it?"
 msgstr "《Project Hail Mary》的作者是谁？这本书我读了多久了？"
 
-#: templates/settings.html:262
+#: templates/settings.html:265
 msgid "Available Tools"
 msgstr "可用工具"
 
-#: templates/settings.html:263
+#: templates/settings.html:266
 msgid ""
 "You can get a list of all available tools by calling the `tools/list` "
 "method. The currently supported tools are:"
 msgstr "你可以通过调用 `tools/list` 方法获取所有可用工具的列表。当前支持的工具包括："
 
-#: templates/settings.html:265
+#: templates/settings.html:268
 msgid ""
 "Search Calibre books using Calibre's search syntax. Parameters: "
 "`search_expression` (str), `limit` (int, optional)"
@@ -2047,7 +2051,7 @@ msgstr ""
 "使用 Calibre 的搜索语法搜索 Calibre 书籍。参数: `search_expression` (str), `limit` "
 "(int, 可选)"
 
-#: templates/settings.html:266
+#: templates/settings.html:269
 msgid ""
 "Get recent books from a library. Parameters: `library_type` (str, \"anx\""
 " or \"calibre\"), `limit` (int, optional)"
@@ -2055,29 +2059,35 @@ msgstr ""
 "从书库获取最近的书籍。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `limit` (int,"
 " 可选)"
 
-#: templates/settings.html:267
+#: templates/settings.html:270
 msgid ""
 "Get details for a book. Parameters: `library_type` (str, \"anx\" or "
 "\"calibre\"), `book_id` (int)"
 msgstr "获取书籍的详细信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
-#: templates/settings.html:268
+#: templates/settings.html:271
 msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
 msgstr "将 Calibre 书籍推送到用户的 Anx 书库。参数: `book_id` (int)"
 
-#: templates/settings.html:269
+#: templates/settings.html:272
+msgid ""
+"Upload a book from the user's Anx library to the public Calibre library. "
+"Parameters: `book_id` (int)"
+msgstr "将用户的 Anx 书库中的书籍上传到公共 Calibre 书库。参数: `book_id` (int)"
+
+#: templates/settings.html:273
 msgid ""
 "Send a Calibre book to the user's configured Kindle email. Parameters: "
 "`book_id` (int)"
 msgstr "将 Calibre 书籍发送到用户配置的 Kindle 邮箱。参数: `book_id` (int)"
 
-#: templates/settings.html:270
+#: templates/settings.html:274
 msgid ""
 "Get the table of contents for a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
 msgstr "获取书籍的目录。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
-#: templates/settings.html:271
+#: templates/settings.html:275
 msgid ""
 "Get the content of a specific chapter. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
@@ -2085,7 +2095,7 @@ msgstr ""
 "获取特定章节的内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int), `chapter_number` (int)"
 
-#: templates/settings.html:272
+#: templates/settings.html:276
 msgid ""
 "Get the entire text content of a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
@@ -2093,7 +2103,7 @@ msgstr ""
 "获取书籍的全部文本内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int)"
 
-#: templates/settings.html:273
+#: templates/settings.html:277
 msgid ""
 "Get word count statistics for a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
@@ -2101,17 +2111,17 @@ msgstr ""
 "获取书籍的字数统计信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int)"
 
-#: templates/settings.html:274
+#: templates/settings.html:278
 msgid ""
 "Generate an audiobook for a book. Parameters: `book_id` (int), "
 "`library_type` (str, \"anx\" or \"calibre\")"
 msgstr "为书籍生成有声书。参数: `book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
 
-#: templates/settings.html:275
+#: templates/settings.html:279
 msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
 msgstr "通过任务 ID 获取有声书生成状态。参数: `task_id` (str)"
 
-#: templates/settings.html:276
+#: templates/settings.html:280
 msgid ""
 "Get the latest audiobook task status for a book. Parameters: `book_id` "
 "(int), `library_type` (str, \"anx\" or \"calibre\")"
@@ -2119,7 +2129,7 @@ msgstr ""
 "获取书籍的最新有声书任务状态。参数: `book_id` (int), `library_type` (str, \"anx\" 或 "
 "\"calibre\")"
 
-#: templates/settings.html:277
+#: templates/settings.html:281
 msgid ""
 "Get reading statistics for the current user. `time_range` is a required "
 "parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
@@ -2130,67 +2140,67 @@ msgstr ""
 "是一个必需参数，可以是“all”、“today”、“this_week”、“this_month”、“this_year”、最近几天的天数（例如“7”、“30”）或日期范围"
 "“YYYY-MM-DD:YYYY-MM-DD”。"
 
-#: templates/settings.html:284
+#: templates/settings.html:288
 msgid "KOReader Sync Settings"
 msgstr "KOReader 同步设置"
 
-#: templates/settings.html:286
+#: templates/settings.html:290
 msgid "Step 1: Configure WebDAV Cloud Storage"
 msgstr "步骤 1：配置 WebDAV 云存储"
 
-#: templates/settings.html:288
+#: templates/settings.html:292
 msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
 msgstr "在 KOReader 中，转到 `云存储` -> `添加新的云存储`。"
 
-#: templates/settings.html:289
+#: templates/settings.html:293
 msgid "Select `WebDAV`."
 msgstr "选择 `WebDAV`。"
 
-#: templates/settings.html:290
+#: templates/settings.html:294
 msgid "Server address"
 msgstr "服务器地址"
 
-#: templates/settings.html:290
+#: templates/settings.html:294
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
 msgstr "填写以下地址，并<strong>确保路径以 `/` 结尾</strong>。"
 
-#: templates/settings.html:294
+#: templates/settings.html:298
 msgid "Your Anx Calibre Manager login password."
 msgstr "您的 Anx Calibre Manager 登录密码。"
 
-#: templates/settings.html:295
+#: templates/settings.html:299
 msgid "Folder"
 msgstr "文件夹"
 
-#: templates/settings.html:296
+#: templates/settings.html:300
 msgid ""
 "Click `Connect` and save. You should now be able to see your Anx library "
 "in KOReader's file browser."
 msgstr "点击 `连接` 并保存。您现在应该可以在 KOReader 的文件浏览器中看到您的 Anx 书库。"
 
-#: templates/settings.html:299
+#: templates/settings.html:303
 msgid "Step 2: Install and Configure the Sync Plugin"
 msgstr "步骤 2：安装和配置同步插件"
 
-#: templates/settings.html:302
+#: templates/settings.html:306
 msgid "Download Plugin"
 msgstr "下载插件"
 
-#: templates/settings.html:302
+#: templates/settings.html:306
 msgid "Click the button below to download the plugin zip file."
 msgstr "点击下面的按钮下载插件 zip 文件。"
 
-#: templates/settings.html:304
+#: templates/settings.html:308
 msgid "Download KOReader Plugin (.zip)"
 msgstr "下载 KOReader 插件 (.zip)"
 
-#: templates/settings.html:307
+#: templates/settings.html:311
 msgid "Install Plugin"
 msgstr "安装插件"
 
-#: templates/settings.html:307
+#: templates/settings.html:311
 msgid ""
 "Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
@@ -2200,339 +2210,339 @@ msgstr ""
 "解压下载的 `.zip` 文件，您将得到一个名为 `anx-calibre-manager-koreader-plugin.koplugin` "
 "的文件夹。将此<strong>整个文件夹</strong>复制到您的 KOReader 设备上的 `koreader/plugins/` 目录中。"
 
-#: templates/settings.html:308
+#: templates/settings.html:312
 msgid "Restart KOReader"
 msgstr "重启 KOReader"
 
-#: templates/settings.html:308
+#: templates/settings.html:312
 msgid ""
 "Completely close and reopen the KOReader application to load the new "
 "plugin."
 msgstr "完全关闭并重新打开 KOReader 应用程序以加载新插件。"
 
-#: templates/settings.html:309
+#: templates/settings.html:313
 msgid "Configure Sync Server"
 msgstr "配置同步服务器"
 
-#: templates/settings.html:311
+#: templates/settings.html:315
 msgid "Important"
 msgstr "重要提示"
 
-#: templates/settings.html:311
+#: templates/settings.html:315
 msgid ""
 "First, please open and start reading a book via the WebDAV set up in the "
 "previous step. The plugin menu will <strong>only appear in the reading "
 "interface</strong>."
 msgstr "首先，请通过上一步设置的 WebDAV 打开并开始阅读一本书。插件菜单将<strong>仅出现在阅读界面中</strong>。"
 
-#: templates/settings.html:312
+#: templates/settings.html:316
 msgid ""
 "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
 "`More tools` -> `ANX Calibre Manager`."
 msgstr "在阅读界面中，转到 `工具（扳手图标）` -> `下一页` -> `更多工具` -> `ANX Calibre Manager`。"
 
-#: templates/settings.html:313
+#: templates/settings.html:317
 msgid "Select `Custom sync server`."
 msgstr "选择 `自定义同步服务器`。"
 
-#: templates/settings.html:314
+#: templates/settings.html:318
 msgid "Custom sync server address"
 msgstr "自定义同步服务器地址"
 
-#: templates/settings.html:315
+#: templates/settings.html:319
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
 msgstr "返回上一级菜单，选择 `登录`，然后输入您的 Anx Calibre Manager 用户名和密码。"
 
-#: templates/settings.html:319
+#: templates/settings.html:323
 msgid ""
 "Once configured, the plugin will automatically or manually sync your "
 "reading progress and time. You can adjust settings like sync frequency in"
 " the plugin menu."
 msgstr "配置完成后，插件将自动或手动同步您的阅读进度和时间。您可以在插件菜单中调整同步频率等设置。"
 
-#: templates/settings.html:320
+#: templates/settings.html:324
 msgid "Note: Only supports epub book synchronization"
 msgstr "注意：仅支持 epub 图书同步"
 
-#: templates/settings.html:328
+#: templates/settings.html:332
 msgid "Calibre Connection"
 msgstr "Calibre 连接"
 
-#: templates/settings.html:330
+#: templates/settings.html:334
 msgid "Calibre Server URL"
 msgstr "Calibre 服务器 URL"
 
-#: templates/settings.html:334
+#: templates/settings.html:338
 msgid "Calibre Username"
 msgstr "Calibre 用户名"
 
-#: templates/settings.html:338
+#: templates/settings.html:342
 msgid "Calibre Password"
 msgstr "Calibre 密码"
 
-#: templates/settings.html:342
+#: templates/settings.html:346
 msgid "Default Calibre Library ID"
 msgstr "默认 Calibre 书库 ID"
 
-#: templates/settings.html:344
+#: templates/settings.html:348
 msgid ""
 "The default Calibre library ID for browsing, searching, and uploading "
 "books. Usually 'Calibre_Library'."
 msgstr "用于浏览、搜索和上传图书的默认 Calibre 书库 ID。通常是 'Calibre_Library'。"
 
-#: templates/settings.html:348
+#: templates/settings.html:352
 msgid "Allow uploading duplicate books"
 msgstr "允许上传重复的图书"
 
-#: templates/settings.html:349
+#: templates/settings.html:353
 msgid ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
 msgstr "如果启用，即使检测到重复，Calibre 也会将图书添加为新副本。"
 
-#: templates/settings.html:351
+#: templates/settings.html:355
 msgid "Path Settings"
 msgstr "路径设置"
 
-#: templates/settings.html:353
+#: templates/settings.html:357
 msgid "WebDAV Root Path"
 msgstr "WebDAV 根路径"
 
-#: templates/settings.html:355
+#: templates/settings.html:359
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
 msgstr "这是存储所有用户 Anx 书库的基本路径。用户文件夹将在此路径下自动创建（例如，/webdav/username）。"
 
-#: templates/settings.html:358
+#: templates/settings.html:362
 msgid "Default Settings"
 msgstr "默认设置"
 
-#: templates/settings.html:360
+#: templates/settings.html:364
 msgid "Default Format Priority for New Users"
 msgstr "新用户的默认格式优先级"
 
-#: templates/settings.html:362
+#: templates/settings.html:366
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
 msgstr "新用户的默认格式优先级，以逗号分隔，例如：azw3,mobi,epub"
 
-#: templates/settings.html:365
+#: templates/settings.html:369
 msgid "Audiobook Settings"
 msgstr "有声书设置"
 
-#: templates/settings.html:367
+#: templates/settings.html:371
 msgid "Audiobook File Retention Period (days)"
 msgstr "有声书文件保留期限（天）"
 
-#: templates/settings.html:369
+#: templates/settings.html:373
 msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
 msgstr "自动删除超过此天数的已生成有声书文件。设置为 0 可禁用清理。"
 
-#: templates/settings.html:372
+#: templates/settings.html:376
 msgid "Manual Cleanup"
 msgstr "手动清理"
 
-#: templates/settings.html:373
+#: templates/settings.html:377
 msgid "Clean Up All Audiobooks Now"
 msgstr "立即清理所有有声书"
 
-#: templates/settings.html:374
+#: templates/settings.html:378
 msgid ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
 msgstr "立即删除所有生成的有声书文件并更新其数据库记录。"
 
-#: templates/settings.html:377
+#: templates/settings.html:381
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "SMTP 设置（用于发送到 Kindle）"
 
-#: templates/settings.html:379
+#: templates/settings.html:383
 msgid "SMTP Server"
 msgstr "SMTP 服务器"
 
-#: templates/settings.html:383
+#: templates/settings.html:387
 msgid "SMTP Port"
 msgstr "SMTP 端口"
 
-#: templates/settings.html:387
+#: templates/settings.html:391
 msgid "SMTP Username (usually your email)"
 msgstr "SMTP 用户名（通常是您的电子邮件）"
 
-#: templates/settings.html:391
+#: templates/settings.html:395
 msgid "SMTP Password"
 msgstr "SMTP 密码"
 
-#: templates/settings.html:395
+#: templates/settings.html:399
 msgid "Encryption Method"
 msgstr "加密方法"
 
-#: templates/settings.html:397
+#: templates/settings.html:401
 msgid "None"
 msgstr "无"
 
-#: templates/settings.html:398
+#: templates/settings.html:402
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:399
+#: templates/settings.html:403
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:401
+#: templates/settings.html:405
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
 msgstr "SSL/TLS 通常用于端口 465，STARTTLS 通常用于端口 587。"
 
-#: templates/settings.html:404
+#: templates/settings.html:408
 msgid "Security"
 msgstr "安全"
 
-#: templates/settings.html:406
+#: templates/settings.html:410
 msgid "Login Failure Lock Threshold"
 msgstr "登录失败锁定阈值"
 
-#: templates/settings.html:408
+#: templates/settings.html:412
 msgid "Set to 0 to disable this feature."
 msgstr "设置为 0 以禁用此功能。"
 
-#: templates/settings.html:411
+#: templates/settings.html:415
 msgid "Session Lifetime (days)"
 msgstr "会话生命周期（天）"
 
-#: templates/settings.html:413
+#: templates/settings.html:417
 msgid "The number of days a user's session remains valid after logging in."
 msgstr "用户登录后会话保持有效的天数。"
 
-#: templates/settings.html:417
+#: templates/settings.html:421
 msgid "Test Inbox"
 msgstr "测试收件箱"
 
-#: templates/settings.html:418
+#: templates/settings.html:422
 msgid "Enter an email address to receive a test email"
 msgstr "输入一个电子邮件地址以接收测试邮件"
 
-#: templates/settings.html:421
+#: templates/settings.html:425
 msgid "Send Test Email"
 msgstr "发送测试邮件"
 
-#: templates/settings.html:422
+#: templates/settings.html:426
 msgid "Save Global Settings"
 msgstr "保存全局设置"
 
-#: templates/settings.html:431
+#: templates/settings.html:435
 msgid "New User"
 msgstr "新用户"
 
-#: templates/settings.html:439
+#: templates/settings.html:443
 msgid "Leave blank to not change the existing user's password."
 msgstr "留空则不更改现有用户的密码。"
 
-#: templates/settings.html:442 templates/settings.html:461
+#: templates/settings.html:446 templates/settings.html:465
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings.html:444
+#: templates/settings.html:448
 msgid "Normal User"
 msgstr "普通用户"
 
-#: templates/settings.html:445
+#: templates/settings.html:449
 msgid "Calibre Library Maintainer"
 msgstr "Calibre 书库维护员"
 
-#: templates/settings.html:446
+#: templates/settings.html:450
 msgid "Administrator"
 msgstr "管理员"
 
-#: templates/settings.html:455
+#: templates/settings.html:459
 msgid "Existing Users"
 msgstr "现有用户"
 
-#: templates/settings.html:459
+#: templates/settings.html:463
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:462 templates/settings.html:506
+#: templates/settings.html:466 templates/settings.html:510
 msgid "Actions"
 msgstr "操作"
 
-#: templates/settings.html:474
+#: templates/settings.html:478
 msgid "Generate New Invite Code"
 msgstr "生成新的邀请码"
 
-#: templates/settings.html:476
+#: templates/settings.html:480
 msgid "Custom Invite Code"
 msgstr "自定义邀请码"
 
-#: templates/settings.html:477
+#: templates/settings.html:481
 msgid "Leave blank to auto-generate"
 msgstr "留空则自动生成"
 
-#: templates/settings.html:478
+#: templates/settings.html:482
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 msgstr "自定义邀请码（可选）。如果留空，将生成一个随机码。"
 
-#: templates/settings.html:481
+#: templates/settings.html:485
 msgid "Maximum Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:483
+#: templates/settings.html:487
 msgid "How many times this invite code can be used"
 msgstr "此邀请码可以使用的次数"
 
-#: templates/settings.html:486
+#: templates/settings.html:490
 msgid "Expires After (Hours)"
 msgstr "过期时间（小时）"
 
-#: templates/settings.html:487
+#: templates/settings.html:491
 msgid "Leave blank for no expiration"
 msgstr "留空则永不过期"
 
-#: templates/settings.html:488
+#: templates/settings.html:492
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "此邀请码将在此小时数后过期（可选）"
 
-#: templates/settings.html:491
+#: templates/settings.html:495
 msgid "Generate Invite Code"
 msgstr "生成邀请码"
 
-#: templates/settings.html:495
+#: templates/settings.html:499
 msgid "Existing Invite Codes"
 msgstr "现有邀请码"
 
-#: templates/settings.html:499
+#: templates/settings.html:503
 msgid "Code"
 msgstr "代码"
 
-#: templates/settings.html:500
+#: templates/settings.html:504
 msgid "Max Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:501
+#: templates/settings.html:505
 msgid "Current Uses"
 msgstr "当前使用次数"
 
-#: templates/settings.html:502
+#: templates/settings.html:506
 msgid "Created By"
 msgstr "创建者"
 
-#: templates/settings.html:503
+#: templates/settings.html:507
 msgid "Created At"
 msgstr "创建于"
 
-#: templates/settings.html:504
+#: templates/settings.html:508
 msgid "Expires At"
 msgstr "过期于"
 
-#: templates/settings.html:505
+#: templates/settings.html:509
 msgid "Status"
 msgstr "状态"
 

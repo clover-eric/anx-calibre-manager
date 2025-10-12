@@ -297,6 +297,7 @@ Voici quelques exemples de prompts en langage naturel que vous pourriez utiliser
 - **Gestion de Livres**:
   - > "Quels sont les 5 derniers livres ajoutés ? Envoyez le premier à mon Kindle."
   - > "Pousser le livre 'Dune' sur mon lecteur Anx."
+  - > "Téléverser le livre 'Le Problème à trois corps' de ma bibliothèque Anx vers Calibre."
   - > "Générer un livre audio pour le livre 'Le Problème à trois corps'."
   - > "Quel est le statut de la génération du livre audio pour 'Le Problème à trois corps' ?"
 
@@ -338,6 +339,8 @@ Vous pouvez obtenir une liste de tous les outils disponibles en appelant la mét
 -   **`get_book_details`**: Obtenir les détails d'un livre spécifique dans une bibliothèque.
     -   **Paramètres**: `library_type` (chaîne de caractères, 'anx' ou 'calibre'), `book_id` (entier).
 -   **`push_calibre_book_to_anx`**: Pousser un livre de la bibliothèque Calibre vers la bibliothèque Anx de l'utilisateur.
+    -   **Paramètres**: `book_id` (entier).
+-   **`push_anx_book_to_calibre`**: Téléverser un livre de la bibliothèque Anx de l'utilisateur vers la bibliothèque publique Calibre.
     -   **Paramètres**: `book_id` (entier).
 -   **`send_calibre_book_to_kindle`**: Envoyer un livre de la bibliothèque Calibre à l'e-mail Kindle configuré par l'utilisateur.
     -   **Paramètres**: `book_id` (entier).

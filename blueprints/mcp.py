@@ -16,7 +16,7 @@ from epub_fixer import fix_epub_for_kindle
 from .main import get_calibre_books
 # Rename the original function to avoid conflicts
 from .api.calibre import get_calibre_book_details as get_raw_calibre_book_details
-from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic
+from .api.books import _push_calibre_to_anx_logic, _send_to_kindle_logic, _push_anx_to_calibre_logic
 from anx_library import get_anx_books, get_anx_book_details as get_raw_anx_book_details
 from utils.epub_chapter_parser import get_parsed_chapters
 from utils.epub_utils import _count_words
@@ -113,6 +113,9 @@ def push_calibre_book_to_anx(book_id: int):
 
 def send_calibre_book_to_kindle(book_id: int):
     return _send_to_kindle_logic(dict(g.user), book_id)
+
+def push_anx_book_to_calibre(book_id: int):
+    return _push_anx_to_calibre_logic(dict(g.user), book_id)
 
 def get_table_of_contents(library_type: str, book_id: int):
     """获取指定书籍的目录章节列表。如果书籍不是 EPUB 格式，会自动尝试转换。"""
@@ -356,6 +359,11 @@ TOOLS = {
         'function': push_calibre_book_to_anx,
         'params': {'book_id': int},
         'description': '将指定的 Calibre 书籍推送到当前用户的 Anx 书库（正在看的书库）。'
+    },
+    'push_anx_book_to_calibre': {
+        'function': push_anx_book_to_calibre,
+        'params': {'book_id': int},
+        'description': '将指定的 Anx 书籍（正在看的书库）上传到公共 Calibre 书库。'
     },
     'send_calibre_book_to_kindle': {
         'function': send_calibre_book_to_kindle,

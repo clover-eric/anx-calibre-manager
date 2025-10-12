@@ -296,6 +296,7 @@ Here are a few examples of natural language prompts you could use with an AI age
 - **Book Management**:
   - > "What are the 5 most recently added books? Send the first one to my Kindle."
   - > "Push the book 'Dune' to my Anx reader."
+  - > "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
   - > "Generate an audiobook for the book 'The Three-Body Problem'."
   - > "What is the status of the audiobook generation for 'The Three-Body Problem'?"
 
@@ -337,6 +338,8 @@ You can get a list of all available tools by calling the `tools/list` method. Th
 -   **`get_book_details`**: Get details for a specific book in a library.
     -   **Parameters**: `library_type` (string, 'anx' or 'calibre'), `book_id` (integer).
 -   **`push_calibre_book_to_anx`**: Push a book from the Calibre library to the user's Anx library.
+    -   **Parameters**: `book_id` (integer).
+-   **`push_anx_book_to_calibre`**: Upload a book from the user's Anx library to the public Calibre library.
     -   **Parameters**: `book_id` (integer).
 -   **`send_calibre_book_to_kindle`**: Send a book from the Calibre library to the user's configured Kindle email.
     -   **Parameters**: `book_id` (integer).

@@ -297,6 +297,7 @@
 - **書籍管理**:
   - > "最近新增的5本書是哪些？把第一本傳送到我的 Kindle。"
   - > "將《沙丘》這本書推送到我的 Anx 閱讀器上。"
+  - > "將我 Anx 書庫中的《三體》上傳到 Calibre。"
   - > "為《三體》這本書產生有聲書。"
   - > "《三體》的有聲書產生狀態如何？"
 
@@ -338,6 +339,8 @@
 -   **`get_book_details`**: 取得指定書庫中某本書的詳細資訊。
     -   **參數**: `library_type` (字串, 'anx' 或 'calibre'), `book_id` (整數)。
 -   **`push_calibre_book_to_anx`**: 將 Calibre 書庫中的書籍推送到使用者的 Anx 書庫。
+    -   **參數**: `book_id` (整數)。
+-   **`push_anx_book_to_calibre`**: 將使用者 Anx 書庫中的書籍上傳到公共 Calibre 書庫。
     -   **參數**: `book_id` (整數)。
 -   **`send_calibre_book_to_kindle`**: 將 Calibre 書庫中的書籍傳送到使用者設定的 Kindle 電子郵件。
     -   **參數**: `book_id` (整數)。

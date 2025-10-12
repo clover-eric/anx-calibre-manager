@@ -297,6 +297,7 @@ Hier sind einige Beispiele für natürlichsprachige Prompts, die Sie mit einem K
 - **Buchverwaltung**:
   - > "Was sind die 5 zuletzt hinzugefügten Bücher? Sende das erste an meinen Kindle."
   - > "Schiebe das Buch 'Dune' auf meinen Anx-Reader."
+  - > "Lade das Buch 'Die drei Sonnen' aus meiner Anx-Bibliothek nach Calibre hoch."
   - > "Generiere ein Hörbuch für das Buch 'Die drei Sonnen'."
   - > "Wie ist der Status der Hörbuchgenerierung für 'Die drei Sonnen'?"
 
@@ -338,6 +339,8 @@ Sie können eine Liste aller verfügbaren Werkzeuge erhalten, indem Sie die Meth
 -   **`get_book_details`**: Holen Sie sich Details zu einem bestimmten Buch in einer Bibliothek.
     -   **Parameter**: `library_type` (string, 'anx' oder 'calibre'), `book_id` (integer).
 -   **`push_calibre_book_to_anx`**: Schieben Sie ein Buch aus der Calibre-Bibliothek in die Anx-Bibliothek des Benutzers.
+    -   **Parameter**: `book_id` (integer).
+-   **`push_anx_book_to_calibre`**: Laden Sie ein Buch aus der Anx-Bibliothek des Benutzers in die öffentliche Calibre-Bibliothek hoch.
     -   **Parameter**: `book_id` (integer).
 -   **`send_calibre_book_to_kindle`**: Senden Sie ein Buch aus der Calibre-Bibliothek an die konfigurierte Kindle-E-Mail des Benutzers.
     -   **Parameter**: `book_id` (integer).

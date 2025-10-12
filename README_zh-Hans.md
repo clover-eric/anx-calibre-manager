@@ -296,6 +296,7 @@
 - **书籍管理**:
   - > "最近添加的5本书是哪些？把第一本发送到我的 Kindle。"
   - > "将《沙丘》这本书推送到我的 Anx 阅读器上。"
+  - > "将我 Anx 书库中的《三体》上传到 Calibre。"
   - > "为《三体》这本书生成有声书。"
   - > "《三体》的有声书生成状态如何？"
 
@@ -337,6 +338,8 @@
 -   **`get_book_details`**: 获取指定书库中某本书的详细信息。
     -   **参数**: `library_type` (字符串, 'anx' 或 'calibre'), `book_id` (整数)。
 -   **`push_calibre_book_to_anx`**: 将 Calibre 书库中的书籍推送到用户的 Anx 书库。
+    -   **参数**: `book_id` (整数)。
+-   **`push_anx_book_to_calibre`**: 将用户 Anx 书库中的书籍上传到公共 Calibre 书库。
     -   **参数**: `book_id` (整数)。
 -   **`send_calibre_book_to_kindle`**: 将 Calibre 书库中的书籍发送到用户配置的 Kindle 邮箱。
     -   **参数**: `book_id` (整数)。
