@@ -99,6 +99,10 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     session_event = json.dumps(session_data)
     yield f"event: session_start\ndata: {session_event}\n\n"
 
+    # --- Re-yield thinking status right before the blocking API call ---
+    stage_message = json.dumps({"message": translated_strings['waiting_for_model']})
+    yield f"event: stage_update\ndata: {stage_message}\n\n"
+
     try:
         response = requests.post(endpoint, headers=headers, json=payload, timeout=300, stream=True)
         response.raise_for_status()
