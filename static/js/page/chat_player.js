@@ -157,12 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (statusSpan) {
                                 statusSpan.textContent = data.message;
                             }
-                            // "思考中" is Chinese for "Thinking". Start countdown only for this stage.
-                            if (data.message && data.message.includes('思考')) {
+                            // Check for the language-independent stage identifier
+                            if (data.stage === 'thinking') {
                                 startCountdown();
-                            } else {
-                                stopCountdown();
                             }
+                            // The countdown is now only stopped by the arrival of the first data chunk, or end/error events.
+                            // This makes the timer resilient to any other intermediate stage_update events.
                         } else if (eventType === 'end') {
                             stopCountdown();
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);

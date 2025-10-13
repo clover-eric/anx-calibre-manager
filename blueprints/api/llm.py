@@ -33,7 +33,7 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     It receives all necessary data as arguments to avoid working outside of an application context.
     """
     # --- Get book content using the new unified and cached function ---
-    stage_message = json.dumps({"message": translated_strings['extracting_book_content']})
+    stage_message = json.dumps({"stage": "extracting", "message": translated_strings['extracting_book_content']})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
 
     book_content = None
@@ -56,7 +56,7 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
         return
 
     # --- Call LLM ---
-    stage_message = json.dumps({"message": translated_strings['waiting_for_model']})
+    stage_message = json.dumps({"stage": "thinking", "message": translated_strings['waiting_for_model']})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
     
     if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
@@ -100,7 +100,7 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     yield f"event: session_start\ndata: {session_event}\n\n"
 
     # --- Re-yield thinking status right before the blocking API call ---
-    stage_message = json.dumps({"message": translated_strings['waiting_for_model']})
+    stage_message = json.dumps({"stage": "thinking", "message": translated_strings['waiting_for_model']})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
 
     try:
