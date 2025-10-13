@@ -181,7 +181,6 @@ def cleanup_all_audiobooks():
 def cleanup_incomplete_tasks():
     """清理所有未完成的有声书任务及其临时文件。"""
     try:
-        logger.info("Starting cleanup of incomplete audiobook tasks.")
         
         with closing(get_db()) as db:
             cursor = db.cursor()
@@ -191,7 +190,6 @@ def cleanup_incomplete_tasks():
             incomplete_tasks = cursor.fetchall()
             
             if not incomplete_tasks:
-                logger.info("No incomplete tasks found to clean up.")
                 return
 
             count = 0
