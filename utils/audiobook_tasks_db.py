@@ -177,3 +177,63 @@ def cleanup_all_audiobooks():
     except Exception as e:
         logger.error(f"An error occurred during manual audiobook cleanup: {e}")
         return 0
+
+def cleanup_incomplete_tasks():
+    """清理所有未完成的有声书任务及其临时文件。"""
+    try:
+        logger.info("Starting cleanup of incomplete audiobook tasks.")
+        
+        with closing(get_db()) as db:
+            cursor = db.cursor()
+            
+            # 查找所有未完成的任务
+            cursor.execute("SELECT * FROM audiobook_tasks WHERE status NOT IN ('success', 'error', 'cleaned')")
+            incomplete_tasks = cursor.fetchall()
+            
+            if not incomplete_tasks:
+                logger.info("No incomplete tasks found to clean up.")
+                return
+
+            count = 0
+            audiobooks_dir = "/audiobooks" # 临时文件所在的目录
+
+            for task in incomplete_tasks:
+                task_id = task['task_id']
+                book_id = task['book_id']
+                logger.warning(f"Cleaning up incomplete task {task_id} for book {book_id}.")
+
+                # 1. 删除可能的临时文件
+                try:
+                    # 删除 concat list 文件
+                    concat_file = os.path.join(audiobooks_dir, f"concat_list_{book_id}.txt")
+                    if os.path.exists(concat_file):
+                        os.remove(concat_file)
+                        logger.info(f"Removed temporary concat file: {concat_file}")
+
+                    # 删除临时的章节音频文件 (temp_{book_id}_{index:04d}.m4a)
+                    # 我们不知道有多少章节，所以需要扫描目录
+                    for filename in os.listdir(audiobooks_dir):
+                        if filename.startswith(f"temp_{book_id}_") and filename.endswith(".m4a"):
+                            temp_audio_path = os.path.join(audiobooks_dir, filename)
+                            os.remove(temp_audio_path)
+                            logger.info(f"Removed temporary chapter audio: {temp_audio_path}")
+                
+                except Exception as e:
+                    logger.error(f"Error cleaning up temporary files for task {task_id}: {e}")
+                    # 即使文件清理失败，我们仍然继续删除数据库记录
+
+                # 2. 删除数据库中的任务记录
+                try:
+                    cursor.execute("DELETE FROM audiobook_progress WHERE task_id = ?", (task_id,))
+                    cursor.execute("DELETE FROM audiobook_tasks WHERE task_id = ?", (task_id,))
+                    count += 1
+                except Exception as e:
+                    logger.error(f"Error deleting database records for task {task_id}: {e}")
+                    db.rollback() # 如果数据库删除失败，则回滚本次操作
+                    continue # 继续处理下一个任务
+            
+            db.commit()
+            logger.info(f"Incomplete task cleanup complete. Removed {count} task records.")
+
+    except Exception as e:
+        logger.error(f"An error occurred during incomplete task cleanup: {e}")

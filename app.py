@@ -137,6 +137,10 @@ def create_app():
 
     database.create_schema()
 
+    # Clean up incomplete audiobook tasks on startup
+    from utils.audiobook_tasks_db import cleanup_incomplete_tasks
+    cleanup_incomplete_tasks()
+
     from blueprints.main import main_bp
     from blueprints.auth import auth_bp
     from blueprints.mcp import mcp_bp
