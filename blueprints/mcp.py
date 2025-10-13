@@ -84,13 +84,13 @@ def search_calibre_books(search_expression: str, limit: int = 20):
     根据一个搜索表达式在 Calibre 书库中搜索书籍。
     该函数直接使用 Calibre 强大的搜索查询语言。
     """
-    books, _unused = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
+    books, _total_books, _error = get_calibre_books(search_query=search_expression, page=1, page_size=limit)
     return [format_calibre_book_data_for_mcp(book) for book in books if book]
 
 def get_recent_books(library_type: str, limit: int = 20):
     """获取指定书库（'anx' 或 'calibre'）中最近添加的书籍列表。"""
     if library_type == 'calibre':
-        books, _unused = get_calibre_books(page=1, page_size=limit)
+        books, _total_books, _error = get_calibre_books(page=1, page_size=limit)
         return [format_calibre_book_data_for_mcp(book) for book in books if book]
     elif library_type == 'anx':
         books = get_anx_books(g.user['username'])
