@@ -65,27 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Could not find message content element to stream response.");
             return;
         }
+        
+        // Initial loading indicator without countdown
         modelMessageContent.innerHTML = `
             <div class="loading-indicator">
                 <div class="spinner"></div>
                 <span class="loading-status"></span>
-                <span class="countdown-timer">60</span>
             </div>
         `;
+        
         let fullResponse = '';
         let buffer = '';
-        
-        // --- FIX: Start countdown immediately on loading state ---
-        const timerSpan = modelMessageContent.querySelector('.countdown-timer');
-        let seconds = 60;
-        const countdownInterval = setInterval(() => {
-            seconds--;
-            if (timerSpan) timerSpan.textContent = `${seconds}`;
-            if (seconds <= 0) {
+        let countdownInterval = null;
+
+        const stopCountdown = () => {
+            if (countdownInterval) {
                 clearInterval(countdownInterval);
-                if (timerSpan) timerSpan.textContent = `>60`;
+                countdownInterval = null;
+                const timerSpan = modelMessageContent.querySelector('.countdown-timer');
+                if (timerSpan) timerSpan.remove();
             }
-        }, 1000);
+        };
+
+        const startCountdown = () => {
+            stopCountdown(); // Ensure no multiple timers
+            const loadingIndicator = modelMessageContent.querySelector('.loading-indicator');
+            if (!loadingIndicator) return;
+
+            const timerSpan = document.createElement('span');
+            timerSpan.className = 'countdown-timer';
+            timerSpan.textContent = '60';
+            loadingIndicator.appendChild(timerSpan);
+            
+            let seconds = 60;
+            countdownInterval = setInterval(() => {
+                seconds--;
+                timerSpan.textContent = `${seconds}`;
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    timerSpan.textContent = `>60`;
+                }
+            }, 1000);
+        };
 
         try {
             if (!response.ok) {
@@ -135,8 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (statusSpan) {
                                 statusSpan.textContent = data.message;
                             }
+                            // "思考中" is Chinese for "Thinking". Start countdown only for this stage.
+                            if (data.message && data.message.includes('思考')) {
+                                startCountdown();
+                            } else {
+                                stopCountdown();
+                            }
                         } else if (eventType === 'end') {
-                            clearInterval(countdownInterval);
+                            stopCountdown();
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
                             if (sessionItem) {
                                 const timeAgoEl = sessionItem.querySelector('.time-ago');
@@ -154,13 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     actionsContainer.appendChild(deleteButton);
                                 }
                             }
-                            return;
+                            return; // End of stream, exit the function
                         } else if (eventType === 'error') {
+                            stopCountdown();
                             throw new Error(data.error || t.anErrorOccurred);
                         }
                     } else if (dataMatch) {
                         if (!firstChunkReceived) {
-                            clearInterval(countdownInterval);
+                            stopCountdown();
                             modelMessageContent.innerHTML = '';
                             firstChunkReceived = true;
                         }
@@ -175,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            clearInterval(countdownInterval);
+            stopCountdown();
             console.error(error);
             modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         }
