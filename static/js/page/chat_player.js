@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const startCountdown = () => {
-            stopCountdown(); // Ensure no multiple timers
+            if (countdownInterval) return; // Prevent restarting if already running
             const loadingIndicator = modelMessageContent.querySelector('.loading-indicator');
             if (!loadingIndicator) return;
 
