@@ -263,7 +263,7 @@ body.theme-dark .library-toggle .button.active,
 }
 .message.model {
     align-self: flex-start;
-    max-width: 100%;
+    width: 100%;
 }
 
 .message-content {

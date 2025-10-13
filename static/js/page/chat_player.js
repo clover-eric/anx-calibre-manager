@@ -652,6 +652,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const exportContainer = document.createElement('div');
         exportContainer.className = 'export-container';
 
+        // Set width based on the current chat view to ensure the export matches what the user sees
+        const chatWidth = dom.chatContentView.offsetWidth;
+        exportContainer.style.width = `${chatWidth}px`;
+
         const header = document.createElement('div');
         header.className = 'export-header';
         header.textContent = chatTitle;
