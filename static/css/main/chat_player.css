@@ -518,7 +518,7 @@ body.theme-dark .library-toggle .button.active,
     position: absolute;
     left: -9999px; /* Move off-screen */
     top: auto;
-    width: 1000px; /* Increased width for better output */
+    width: 800px; /* Define a fixed width for consistent output */
     padding: 1rem;
     background-color: var(--background-color);
     color: var(--text-color);

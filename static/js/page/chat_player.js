@@ -69,12 +69,23 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="loading-indicator">
                 <div class="spinner"></div>
                 <span class="loading-status"></span>
-                <span class="countdown-timer" style="display: none;">(60s)</span>
+                <span class="countdown-timer">60</span>
             </div>
         `;
         let fullResponse = '';
         let buffer = '';
-        let countdownInterval;
+        
+        // --- FIX: Start countdown immediately on loading state ---
+        const timerSpan = modelMessageContent.querySelector('.countdown-timer');
+        let seconds = 60;
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            if (timerSpan) timerSpan.textContent = `${seconds}`;
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                if (timerSpan) timerSpan.textContent = `>60`;
+            }
+        }, 1000);
 
         try {
             if (!response.ok) {
@@ -121,25 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         } else if (eventType === 'stage_update') {
                             const statusSpan = modelMessageWrapper.querySelector('.loading-status');
-                            const timerSpan = modelMessageWrapper.querySelector('.countdown-timer');
                             if (statusSpan) {
                                 statusSpan.textContent = data.message;
                             }
-                            // Start countdown on the "thinking" stage
-                            if (data.stage === 'thinking' && timerSpan) {
-                                timerSpan.style.display = 'inline';
-                                let seconds = 60;
-                                countdownInterval = setInterval(() => {
-                                    seconds--;
-                                    timerSpan.textContent = `(${seconds})`;
-                                    if (seconds <= 0) {
-                                        clearInterval(countdownInterval);
-                                        timerSpan.textContent = `(>60)`;
-                                    }
-                                }, 1000);
-                            }
                         } else if (eventType === 'end') {
-                            if (countdownInterval) clearInterval(countdownInterval);
+                            clearInterval(countdownInterval);
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
                             if (sessionItem) {
                                 const timeAgoEl = sessionItem.querySelector('.time-ago');
@@ -163,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else if (dataMatch) {
                         if (!firstChunkReceived) {
-                            if (countdownInterval) clearInterval(countdownInterval);
+                            clearInterval(countdownInterval);
                             modelMessageContent.innerHTML = '';
                             firstChunkReceived = true;
                         }
@@ -178,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            if (countdownInterval) clearInterval(countdownInterval);
+            clearInterval(countdownInterval);
             console.error(error);
             modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         }
@@ -681,20 +678,6 @@ document.addEventListener('DOMContentLoaded', () => {
             useCORS: true,
             backgroundColor: getComputedStyle(dom.body).getPropertyValue('--background-color'),
             scale: 2, // Render at 2x resolution
-            onclone: (clonedDoc) => {
-                clonedDoc.querySelectorAll('.mermaid svg').forEach(svg => {
-                    const styleSheets = Array.from(clonedDoc.styleSheets);
-                    let cssText = '';
-                    styleSheets.forEach(sheet => {
-                        try {
-                            Array.from(sheet.cssRules).forEach(rule => { cssText += rule.cssText; });
-                        } catch (e) { console.warn("Cannot access stylesheet rules:", e); }
-                    });
-                    const styleEl = clonedDoc.createElement('style');
-                    styleEl.textContent = cssText;
-                    svg.insertBefore(styleEl, svg.firstChild);
-                });
-            }
         }).then(canvas => {
             const link = document.createElement('a');
             link.download = filename;
