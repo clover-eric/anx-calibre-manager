@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 23:26+0800\n"
+"POT-Creation-Date: 2025-10-13 18:12+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -1082,7 +1082,7 @@ msgstr "Rating (0-5)"
 msgid "Reading Progress (%)"
 msgstr "Reading Progress (%)"
 
-#: static/js/page/translations.js:52 static/js/page/translations.js:120
+#: static/js/page/translations.js:52 static/js/page/translations.js:123
 #: templates/index.html:106 templates/index.html:182
 msgid "Description"
 msgstr "Description"
@@ -1265,15 +1265,27 @@ msgstr "Download SVG"
 msgid "Mermaid Render Error"
 msgstr "Mermaid Render Error"
 
+#: static/js/page/translations.js:102
+msgid "Empty response, retrying..."
+msgstr "Empty response, retrying..."
+
+#: static/js/page/translations.js:103
+msgid "Error, retrying..."
+msgstr "Error, retrying..."
+
 #: static/js/page/translations.js:104
+msgid "All retry attempts failed due to empty responses."
+msgstr "All retry attempts failed due to empty responses."
+
+#: static/js/page/translations.js:107
 msgid "Failed to fetch audiobook list."
 msgstr "Failed to fetch audiobook list."
 
-#: static/js/page/translations.js:105
+#: static/js/page/translations.js:108
 msgid "Delete Audiobook"
 msgstr "Delete Audiobook"
 
-#: static/js/page/translations.js:106
+#: static/js/page/translations.js:109
 #, python-format
 msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
@@ -1282,80 +1294,80 @@ msgstr ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
 "cannot be undone."
 
-#: static/js/page/translations.js:107
+#: static/js/page/translations.js:110
 #, python-format
 msgid "Error: %(message)s"
 msgstr "Error: %(message)s"
 
-#: static/js/page/translations.js:108
+#: static/js/page/translations.js:111
 msgid "Failed to delete audiobook."
 msgstr "Failed to delete audiobook."
 
-#: static/js/page/translations.js:109
+#: static/js/page/translations.js:112
 msgid "An unexpected error occurred."
 msgstr "An unexpected error occurred."
 
-#: static/js/page/translations.js:110
+#: static/js/page/translations.js:113
 msgid "chapters"
 msgstr "chapters"
 
-#: static/js/page/translations.js:111
+#: static/js/page/translations.js:114
 msgid "No chapters available."
 msgstr "No chapters available."
 
-#: static/js/page/translations.js:112
+#: static/js/page/translations.js:115
 msgid "More"
 msgstr "More"
 
-#: static/js/page/translations.js:113
+#: static/js/page/translations.js:116
 msgid "Less"
 msgstr "Less"
 
-#: static/js/page/translations.js:114
+#: static/js/page/translations.js:117
 msgid "Album"
 msgstr "Album"
 
-#: static/js/page/translations.js:115
+#: static/js/page/translations.js:118
 msgid "Album Artist"
 msgstr "Album Artist"
 
-#: static/js/page/translations.js:116
+#: static/js/page/translations.js:119
 msgid "Genre"
 msgstr "Genre"
 
-#: static/js/page/translations.js:117
+#: static/js/page/translations.js:120
 msgid "Year"
 msgstr "Year"
 
-#: static/js/page/translations.js:118
+#: static/js/page/translations.js:121
 msgid "Composer"
 msgstr "Composer"
 
-#: static/js/page/translations.js:119
+#: static/js/page/translations.js:122
 msgid "Comment"
 msgstr "Comment"
 
-#: static/js/page/translations.js:121 templates/audio_player.html:73
+#: static/js/page/translations.js:124 templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "Previous Chapter"
 
-#: static/js/page/translations.js:122 templates/audio_player.html:75
+#: static/js/page/translations.js:125 templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "Next Chapter"
 
-#: static/js/page/translations.js:123
+#: static/js/page/translations.js:126
 msgid "Seek Backward 10s"
 msgstr "Seek Backward 10s"
 
-#: static/js/page/translations.js:124
+#: static/js/page/translations.js:127
 msgid "Seek Forward 30s"
 msgstr "Seek Forward 30s"
 
-#: static/js/page/translations.js:125 templates/audio_player.html:74
+#: static/js/page/translations.js:128 templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "Play/Pause"
 
-#: static/js/page/translations.js:126
+#: static/js/page/translations.js:129
 msgid "Playback Speed"
 msgstr "Playback Speed"
 

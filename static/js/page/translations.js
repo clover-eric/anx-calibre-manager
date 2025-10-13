@@ -99,6 +99,9 @@ export function initializeTranslations() {
         resetZoom: _('Reset Zoom'),
         downloadSVG: _('Download SVG'),
         mermaidRenderError: _('Mermaid Render Error'),
+        emptyResponseRetry: _('Empty response, retrying...'),
+        errorResponseRetry: _('Error, retrying...'),
+        allRetriesFailedEmpty: _('All retry attempts failed due to empty responses.'),
 
         // Audio Player
         failedToFetchAudiobookList: _('Failed to fetch audiobook list.'),

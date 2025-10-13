@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 23:26+0800\n"
+"POT-Creation-Date: 2025-10-13 18:12+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -1093,7 +1093,7 @@ msgstr "Bewertung (0-5)"
 msgid "Reading Progress (%)"
 msgstr "Lesefortschritt (%)"
 
-#: static/js/page/translations.js:52 static/js/page/translations.js:120
+#: static/js/page/translations.js:52 static/js/page/translations.js:123
 #: templates/index.html:106 templates/index.html:182
 msgid "Description"
 msgstr "Beschreibung"
@@ -1275,15 +1275,27 @@ msgstr "SVG herunterladen"
 msgid "Mermaid Render Error"
 msgstr "Mermaid-Renderfehler"
 
+#: static/js/page/translations.js:102
+msgid "Empty response, retrying..."
+msgstr "Leere Antwort, versuche es erneut..."
+
+#: static/js/page/translations.js:103
+msgid "Error, retrying..."
+msgstr "Fehler, versuche es erneut..."
+
 #: static/js/page/translations.js:104
+msgid "All retry attempts failed due to empty responses."
+msgstr "Alle Wiederholungsversuche sind aufgrund leerer Antworten fehlgeschlagen."
+
+#: static/js/page/translations.js:107
 msgid "Failed to fetch audiobook list."
 msgstr "Fehler beim Abrufen der Hörbuchliste."
 
-#: static/js/page/translations.js:105
+#: static/js/page/translations.js:108
 msgid "Delete Audiobook"
 msgstr "Hörbuch löschen"
 
-#: static/js/page/translations.js:106
+#: static/js/page/translations.js:109
 #, python-format
 msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
@@ -1292,80 +1304,80 @@ msgstr ""
 "Sind Sie sicher, dass Sie das Hörbuch \"%(title)s\" löschen möchten? "
 "Diese Aktion kann nicht rückgängig gemacht werden."
 
-#: static/js/page/translations.js:107
+#: static/js/page/translations.js:110
 #, python-format
 msgid "Error: %(message)s"
 msgstr "Fehler: %(message)s"
 
-#: static/js/page/translations.js:108
+#: static/js/page/translations.js:111
 msgid "Failed to delete audiobook."
 msgstr "Hörbuch konnte nicht gelöscht werden."
 
-#: static/js/page/translations.js:109
+#: static/js/page/translations.js:112
 msgid "An unexpected error occurred."
 msgstr "Ein unerwarteter Fehler ist aufgetreten."
 
-#: static/js/page/translations.js:110
+#: static/js/page/translations.js:113
 msgid "chapters"
 msgstr "Kapitel"
 
-#: static/js/page/translations.js:111
+#: static/js/page/translations.js:114
 msgid "No chapters available."
 msgstr "Keine Kapitel verfügbar."
 
-#: static/js/page/translations.js:112
+#: static/js/page/translations.js:115
 msgid "More"
 msgstr "Mehr"
 
-#: static/js/page/translations.js:113
+#: static/js/page/translations.js:116
 msgid "Less"
 msgstr "Weniger"
 
-#: static/js/page/translations.js:114
+#: static/js/page/translations.js:117
 msgid "Album"
 msgstr "Album"
 
-#: static/js/page/translations.js:115
+#: static/js/page/translations.js:118
 msgid "Album Artist"
 msgstr "Albumkünstler"
 
-#: static/js/page/translations.js:116
+#: static/js/page/translations.js:119
 msgid "Genre"
 msgstr "Genre"
 
-#: static/js/page/translations.js:117
+#: static/js/page/translations.js:120
 msgid "Year"
 msgstr "Jahr"
 
-#: static/js/page/translations.js:118
+#: static/js/page/translations.js:121
 msgid "Composer"
 msgstr "Komponist"
 
-#: static/js/page/translations.js:119
+#: static/js/page/translations.js:122
 msgid "Comment"
 msgstr "Kommentar"
 
-#: static/js/page/translations.js:121 templates/audio_player.html:73
+#: static/js/page/translations.js:124 templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "Vorheriges Kapitel"
 
-#: static/js/page/translations.js:122 templates/audio_player.html:75
+#: static/js/page/translations.js:125 templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "Nächstes Kapitel"
 
-#: static/js/page/translations.js:123
+#: static/js/page/translations.js:126
 msgid "Seek Backward 10s"
 msgstr "10s zurückspulen"
 
-#: static/js/page/translations.js:124
+#: static/js/page/translations.js:127
 msgid "Seek Forward 30s"
 msgstr "30s vorspulen"
 
-#: static/js/page/translations.js:125 templates/audio_player.html:74
+#: static/js/page/translations.js:128 templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "Wiedergabe/Pause"
 
-#: static/js/page/translations.js:126
+#: static/js/page/translations.js:129
 msgid "Playback Speed"
 msgstr "Wiedergabegeschwindigkeit"
 
@@ -2063,7 +2075,9 @@ msgstr "Schiebe das Buch 'Dune' auf meinen Anx-Reader."
 
 #: templates/settings.html:224
 msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
-msgstr "Lade das Buch 'Die drei Sonnen' aus meiner Anx-Bibliothek nach Calibre hoch."
+msgstr ""
+"Lade das Buch 'Die drei Sonnen' aus meiner Anx-Bibliothek nach Calibre "
+"hoch."
 
 #: templates/settings.html:227
 msgid "Generate an audiobook for the book 'The Three-Body Problem'."

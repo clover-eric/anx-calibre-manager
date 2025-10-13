@@ -32,36 +32,39 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     Internal generator function to handle LLM response generation.
     It receives all necessary data as arguments to avoid working outside of an application context.
     """
-    # --- Get book content using the new unified and cached function ---
-    stage_message = json.dumps({"stage": "extracting", "message": translated_strings['extracting_book_content']})
+    # --- Pre-fetch translated strings to use in the generator safely ---
+    extracting_msg = translated_strings['extracting_book_content']
+    thinking_msg = translated_strings['waiting_for_model']
+    get_content_fail_msg = translated_strings['failed_to_get_book_content']
+    extract_text_fail_msg = translated_strings['could_not_extract_text']
+    llm_config_fail_msg = translated_strings['llm_settings_not_configured']
+    llm_comm_fail_msg = translated_strings['llm_communication_failed']
+
+    # --- Get book content ---
+    stage_message = json.dumps({"stage": "extracting", "message": extracting_msg})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
 
-    book_content = None
     content_result = {}
     with app.app_context():
-        # We need to set g.user within the context for the MCP function to work correctly
         g.user = user_info_dict
         content_result = get_entire_book_content(library_type=book_type, book_id=book_id)
 
     if 'error' in content_result:
-        error_text = translated_strings['failed_to_get_book_content'] % {'error': content_result['error']}
-        error_message = json.dumps({"error": error_text})
-        yield f"event: error\ndata: {error_message}\n\n"
+        error_text = get_content_fail_msg % {'error': content_result['error']}
+        yield f"event: error\ndata: {json.dumps({'error': error_text})}\n\n"
         return
     
     book_content = content_result.get('full_text', '')
     if not book_content:
-        error_message = json.dumps({"error": translated_strings['could_not_extract_text']})
-        yield f"event: error\ndata: {error_message}\n\n"
+        yield f"event: error\ndata: {json.dumps({'error': extract_text_fail_msg})}\n\n"
         return
 
-    # --- Call LLM ---
-    stage_message = json.dumps({"stage": "thinking", "message": translated_strings['waiting_for_model']})
+    # --- Prepare for LLM call ---
+    stage_message = json.dumps({"stage": "thinking", "message": thinking_msg})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
     
     if not all([user_info_dict['llm_base_url'], user_info_dict['llm_api_key'], user_info_dict['llm_model']]):
-        error_message = json.dumps({"error": translated_strings['llm_settings_not_configured']})
-        yield f"event: error\ndata: {error_message}\n\n"
+        yield f"event: error\ndata: {json.dumps({'error': llm_config_fail_msg})}\n\n"
         return
 
     headers = {'Authorization': f"Bearer {user_info_dict['llm_api_key']}", 'Content-Type': 'application/json'}
@@ -96,11 +99,9 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
     session_data = {"session_id": session_id}
     if user_message_id:
         session_data["user_message_id"] = user_message_id
-    session_event = json.dumps(session_data)
-    yield f"event: session_start\ndata: {session_event}\n\n"
+    yield f"event: session_start\ndata: {json.dumps(session_data)}\n\n"
 
-    # --- Re-yield thinking status right before the blocking API call ---
-    stage_message = json.dumps({"stage": "thinking", "message": translated_strings['waiting_for_model']})
+    stage_message = json.dumps({"stage": "thinking", "message": thinking_msg})
     yield f"event: stage_update\ndata: {stage_message}\n\n"
 
     try:
@@ -117,13 +118,10 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
                         break
                     
                     data = json.loads(json_str)
-                    # Add a check to ensure 'choices' is not an empty list
                     if 'choices' in data and data['choices'] and data['choices'][0].get('delta', {}).get('content'):
                         chunk = data['choices'][0]['delta']['content']
                         full_response_content.append(chunk)
-                        
-                        sse_data = json.dumps({"chunk": chunk})
-                        yield f"data: {sse_data}\n\n"
+                        yield f"data: {json.dumps({'chunk': chunk})}\n\n"
         
         final_text = "".join(full_response_content)
         with closing(database.get_db()) as db:
@@ -135,13 +133,11 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
             model_message_id = cursor.lastrowid
             db.commit()
 
-        end_data = json.dumps({"model_message_id": model_message_id})
-        yield f"event: end\ndata: {end_data}\n\n"
+        yield f"event: end\ndata: {json.dumps({'model_message_id': model_message_id})}\n\n"
 
     except Exception as e:
-        error_text = translated_strings['llm_communication_failed'] % {'error': str(e)}
-        error_message = json.dumps({"error": error_text})
-        yield f"event: error\ndata: {error_message}\n\n"
+        error_text = llm_comm_fail_msg % {'error': str(e)}
+        yield f"event: error\ndata: {json.dumps({'error': error_text})}\n\n"
 
 @llm_bp.route('/history', methods=['GET'])
 @login_required_api

@@ -62,21 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const streamAndRenderResponse = async (response, modelMessageWrapper, userMessageWrapper = null) => {
         const modelMessageContent = modelMessageWrapper.querySelector('.message-content');
         if (!modelMessageContent) {
-            console.error("Could not find message content element to stream response.");
-            return;
+            console.error("Could not find message content element.");
+            return false; // Indicate failure
         }
-        
-        // Initial loading indicator without countdown
-        modelMessageContent.innerHTML = `
-            <div class="loading-indicator">
-                <div class="spinner"></div>
-                <span class="loading-status"></span>
-            </div>
-        `;
-        
+
         let fullResponse = '';
         let buffer = '';
         let countdownInterval = null;
+        let firstChunkReceived = false;
 
         const stopCountdown = () => {
             if (countdownInterval) {
@@ -88,15 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const startCountdown = () => {
-            if (countdownInterval) return; // Prevent restarting if already running
+            if (countdownInterval) return;
             const loadingIndicator = modelMessageContent.querySelector('.loading-indicator');
             if (!loadingIndicator) return;
-
             const timerSpan = document.createElement('span');
             timerSpan.className = 'countdown-timer';
             timerSpan.textContent = '60';
             loadingIndicator.appendChild(timerSpan);
-            
             let seconds = 60;
             countdownInterval = setInterval(() => {
                 seconds--;
@@ -109,104 +100,155 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         };
 
-        try {
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || t.failedToGetResponse);
-            }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || t.failedToGetResponse);
+        }
 
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let firstChunkReceived = false;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-                buffer += decoder.decode(value, { stream: true });
-                const lines = buffer.split('\n\n');
-                buffer = lines.pop();
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n\n');
+            buffer = lines.pop();
 
-                for (const block of lines) {
-                    const eventMatch = block.match(/^event: (.*)$/m);
-                    const dataMatch = block.match(/^data: (.*)$/m);
+            for (const block of lines) {
+                const eventMatch = block.match(/^event: (.*)$/m);
+                const dataMatch = block.match(/^data: (.*)$/m);
 
-                    if (eventMatch) {
-                        const eventType = eventMatch[1];
-                        const dataStr = dataMatch ? dataMatch[1] : '{}';
-                        const data = JSON.parse(dataStr);
+                if (eventMatch) {
+                    const eventType = eventMatch[1];
+                    const dataStr = dataMatch ? dataMatch[1] : '{}';
+                    const data = JSON.parse(dataStr);
 
-                        if (eventType === 'session_start') {
-                            const isNewSession = !currentSession.sessionId;
-                            currentSession.sessionId = data.session_id;
-                            if (isNewSession) addSessionToListUI(currentSession);
-
-                            if (data.user_message_id && userMessageWrapper) {
-                                if (!userMessageWrapper.dataset.messageId) {
-                                    userMessageWrapper.dataset.messageId = data.user_message_id;
-                                    
-                                    const regenerateBtn = userMessageWrapper.querySelector('.regenerate-btn');
-                                    const deleteBtn = userMessageWrapper.querySelector('.delete-btn');
-                                    
-                                    if (regenerateBtn) regenerateBtn.disabled = false;
-                                    if (deleteBtn) deleteBtn.disabled = false;
-                                }
+                    if (eventType === 'session_start') {
+                        const isNewSession = !currentSession.sessionId;
+                        currentSession.sessionId = data.session_id;
+                        if (isNewSession) addSessionToListUI(currentSession);
+                        if (data.user_message_id && userMessageWrapper) {
+                            if (!userMessageWrapper.dataset.messageId) {
+                                userMessageWrapper.dataset.messageId = data.user_message_id;
+                                const regenerateBtn = userMessageWrapper.querySelector('.regenerate-btn');
+                                const deleteBtn = userMessageWrapper.querySelector('.delete-btn');
+                                if (regenerateBtn) regenerateBtn.disabled = false;
+                                if (deleteBtn) deleteBtn.disabled = false;
                             }
-                        } else if (eventType === 'stage_update') {
-                            const statusSpan = modelMessageWrapper.querySelector('.loading-status');
-                            if (statusSpan) {
+                        }
+                    } else if (eventType === 'stage_update') {
+                        const statusSpan = modelMessageWrapper.querySelector('.loading-status');
+                        if (statusSpan) {
+                            const currentText = statusSpan.textContent || '';
+                            // A retry message is more specific and important than a generic "Thinking..." message.
+                            // If a retry message is already displayed, don't overwrite it.
+                            const isDisplayingRetry = currentText.includes(t.emptyResponseRetry) || currentText.includes(t.errorResponseRetry);
+                            
+                            if (!isDisplayingRetry) {
                                 statusSpan.textContent = data.message;
                             }
-                            // Check for the language-independent stage identifier
-                            if (data.stage === 'thinking') {
-                                startCountdown();
-                            }
-                            // The countdown is now only stopped by the arrival of the first data chunk, or end/error events.
-                            // This makes the timer resilient to any other intermediate stage_update events.
-                        } else if (eventType === 'end') {
-                            stopCountdown();
-                            const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
-                            if (sessionItem) {
-                                const timeAgoEl = sessionItem.querySelector('.time-ago');
-                                if (timeAgoEl) {
-                                    timeAgoEl.textContent = t.justNow;
-                                    timeAgoEl.dataset.timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-                                }
-                            }
-                            
-                            if (data.model_message_id && modelMessageWrapper) {
-                                modelMessageWrapper.dataset.messageId = data.model_message_id;
-                                const actionsContainer = modelMessageWrapper.querySelector('.message-actions');
-                                if (actionsContainer) {
-                                    const deleteButton = createActionButton(t.delete, 'fa-trash-alt', 'delete-btn', () => deleteMessageHandler(modelMessageWrapper));
-                                    actionsContainer.appendChild(deleteButton);
-                                }
-                            }
-                            return; // End of stream, exit the function
-                        } else if (eventType === 'error') {
-                            stopCountdown();
-                            throw new Error(data.error || t.anErrorOccurred);
                         }
-                    } else if (dataMatch) {
+                        if (data.stage === 'thinking') {
+                            startCountdown();
+                        }
+                    } else if (eventType === 'end') {
+                        stopCountdown();
+                        if (!firstChunkReceived) {
+                            return false; // Signal empty response for retry
+                        }
+                        const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
+                        if (sessionItem) {
+                            const timeAgoEl = sessionItem.querySelector('.time-ago');
+                            if (timeAgoEl) {
+                                timeAgoEl.textContent = t.justNow;
+                                timeAgoEl.dataset.timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                            }
+                        }
+                        if (data.model_message_id && modelMessageWrapper) {
+                            modelMessageWrapper.dataset.messageId = data.model_message_id;
+                            const actionsContainer = modelMessageWrapper.querySelector('.message-actions');
+                            if (actionsContainer) {
+                                const deleteButton = createActionButton(t.delete, 'fa-trash-alt', 'delete-btn', () => deleteMessageHandler(modelMessageWrapper));
+                                actionsContainer.appendChild(deleteButton);
+                            }
+                        }
+                        return true; // Signal success
+                    } else if (eventType === 'error') {
+                        stopCountdown();
+                        throw new Error(data.error || t.anErrorOccurred);
+                    }
+                } else if (dataMatch) {
+                    const data = JSON.parse(dataMatch[1]);
+                    if (data.chunk) {
                         if (!firstChunkReceived) {
                             stopCountdown();
                             modelMessageContent.innerHTML = '';
                             firstChunkReceived = true;
                         }
-                        const data = JSON.parse(dataMatch[1]);
-                        if (data.chunk) {
-                            fullResponse += data.chunk;
-                            modelMessageContent.innerHTML = marked.parse(fullResponse);
-                            renderMermaid(modelMessageContent);
-                            dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
-                        }
+                        fullResponse += data.chunk;
+                        modelMessageContent.innerHTML = marked.parse(fullResponse);
+                        renderMermaid(modelMessageContent);
+                        dom.messagesContainer.scrollTop = dom.messagesContainer.scrollHeight;
                     }
                 }
             }
-        } catch (error) {
-            stopCountdown();
-            console.error(error);
-            modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
+        }
+        return true; // Should be reached only if stream ends without 'end' event but with data
+    };
+
+    const attemptFetchWithRetry = async (url, options, modelMessageWrapper, userMessageWrapper = null, maxRetries = 3) => {
+        const modelMessageContent = modelMessageWrapper.querySelector('.message-content');
+        if (!modelMessageContent) {
+            console.error("Could not find message content element for retry logic.");
+            return;
+        }
+        modelMessageContent.innerHTML = `
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <span class="loading-status"></span>
+            </div>
+        `;
+
+        let attempt = 0;
+        while (attempt < maxRetries) {
+            attempt++;
+            try {
+                const response = await fetch(url, options);
+                const success = await streamAndRenderResponse(response, modelMessageWrapper, userMessageWrapper);
+                
+                if (success) {
+                    return; // Exit if successful
+                }
+                
+                // Handle empty response, prepare for retry
+                if (attempt < maxRetries) {
+                    const statusSpan = modelMessageWrapper.querySelector('.loading-status');
+                    if (statusSpan) {
+                        statusSpan.textContent = `${t.emptyResponseRetry} (${attempt}/${maxRetries})`;
+                    }
+                    const timer = modelMessageWrapper.querySelector('.countdown-timer');
+                    if(timer) timer.remove();
+                } else {
+                    modelMessageWrapper.remove(); // All retries failed for empty response
+                    addMessageToUI({ role: 'model', content: t.allRetriesFailedEmpty });
+                }
+
+            } catch (error) {
+                console.error(`Attempt ${attempt} failed:`, error);
+                
+                if (attempt >= maxRetries) {
+                    modelMessageWrapper.remove(); // Clean up the loading message
+                    addMessageToUI({ role: 'model', content: `${t.anErrorOccurred} ${error.message}` });
+                    return;
+                }
+                
+                const statusSpan = modelMessageWrapper.querySelector('.loading-status');
+                if (statusSpan) {
+                    statusSpan.textContent = `${t.errorResponseRetry} (${attempt}/${maxRetries})`;
+                }
+            }
         }
     };
 
@@ -223,21 +265,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         dom.sendButton.disabled = true;
         const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
+        
+        const url = '/api/llm/regenerate';
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message_id: parseInt(messageId) }),
+        };
 
-        try {
-            const response = await fetch('/api/llm/regenerate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message_id: parseInt(messageId) }),
-            });
-            await streamAndRenderResponse(response, modelMessageWrapper);
-        } catch (error) {
-            console.error('Regeneration fetch failed:', error);
-            const contentEl = modelMessageWrapper.querySelector('.message-content');
-            if (contentEl) contentEl.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
-        } finally {
-            dom.sendButton.disabled = false;
-        }
+        await attemptFetchWithRetry(url, options, modelMessageWrapper);
+        dom.sendButton.disabled = false;
     };
 
     const sendMessage = async (message) => {
@@ -250,26 +287,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
 
-        try {
-            const response = await fetch('/api/llm/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    session_id: currentSession.sessionId,
-                    book_id: currentSession.bookId,
-                    book_type: currentSession.bookType,
-                    book_title: currentSession.bookTitle,
-                    message: message,
-                }),
-            });
-            await streamAndRenderResponse(response, modelMessageWrapper, userMessageWrapper);
-        } catch (error) {
-            console.error('Send message fetch failed:', error);
-            const contentEl = modelMessageWrapper.querySelector('.message-content');
-            if (contentEl) contentEl.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
-        } finally {
-            dom.sendButton.disabled = false;
-        }
+        const url = '/api/llm/chat';
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                session_id: currentSession.sessionId,
+                book_id: currentSession.bookId,
+                book_type: currentSession.bookType,
+                book_title: currentSession.bookTitle,
+                message: message,
+            }),
+        };
+
+        await attemptFetchWithRetry(url, options, modelMessageWrapper, userMessageWrapper);
+        dom.sendButton.disabled = false;
     };
 
     // --- Helper functions for creating UI elements ---

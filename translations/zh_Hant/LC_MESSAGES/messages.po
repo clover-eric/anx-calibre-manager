@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-12 23:26+0800\n"
+"POT-Creation-Date: 2025-10-13 18:12+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -1039,7 +1039,7 @@ msgstr "評分 (0-5)"
 msgid "Reading Progress (%)"
 msgstr "閱讀進度 (%)"
 
-#: static/js/page/translations.js:52 static/js/page/translations.js:120
+#: static/js/page/translations.js:52 static/js/page/translations.js:123
 #: templates/index.html:106 templates/index.html:182
 msgid "Description"
 msgstr "描述"
@@ -1218,95 +1218,107 @@ msgstr "下載 SVG"
 msgid "Mermaid Render Error"
 msgstr "Mermaid 渲染錯誤"
 
+#: static/js/page/translations.js:102
+msgid "Empty response, retrying..."
+msgstr "回應為空，正在重試..."
+
+#: static/js/page/translations.js:103
+msgid "Error, retrying..."
+msgstr "發生錯誤，正在重試..."
+
 #: static/js/page/translations.js:104
+msgid "All retry attempts failed due to empty responses."
+msgstr "所有重試嘗試均因空回應而失敗。"
+
+#: static/js/page/translations.js:107
 msgid "Failed to fetch audiobook list."
 msgstr "獲取有聲書列表失敗。"
 
-#: static/js/page/translations.js:105
+#: static/js/page/translations.js:108
 msgid "Delete Audiobook"
 msgstr "刪除有聲書"
 
-#: static/js/page/translations.js:106
+#: static/js/page/translations.js:109
 #, python-format
 msgid ""
 "Are you sure you want to delete the audiobook \"%(title)s\"? This action "
 "cannot be undone."
 msgstr "您確定要刪除有聲書「%(title)s」嗎？此操作無法復原。"
 
-#: static/js/page/translations.js:107
+#: static/js/page/translations.js:110
 #, python-format
 msgid "Error: %(message)s"
 msgstr "錯誤：%(message)s"
 
-#: static/js/page/translations.js:108
+#: static/js/page/translations.js:111
 msgid "Failed to delete audiobook."
 msgstr "刪除有聲書失敗。"
 
-#: static/js/page/translations.js:109
+#: static/js/page/translations.js:112
 msgid "An unexpected error occurred."
 msgstr "發生非預期的錯誤。"
 
-#: static/js/page/translations.js:110
+#: static/js/page/translations.js:113
 msgid "chapters"
 msgstr "章"
 
-#: static/js/page/translations.js:111
+#: static/js/page/translations.js:114
 msgid "No chapters available."
 msgstr "無可用章節。"
 
-#: static/js/page/translations.js:112
+#: static/js/page/translations.js:115
 msgid "More"
 msgstr "更多"
 
-#: static/js/page/translations.js:113
+#: static/js/page/translations.js:116
 msgid "Less"
 msgstr "收合"
 
-#: static/js/page/translations.js:114
+#: static/js/page/translations.js:117
 msgid "Album"
 msgstr "專輯"
 
-#: static/js/page/translations.js:115
+#: static/js/page/translations.js:118
 msgid "Album Artist"
 msgstr "專輯藝術家"
 
-#: static/js/page/translations.js:116
+#: static/js/page/translations.js:119
 msgid "Genre"
 msgstr "類型"
 
-#: static/js/page/translations.js:117
+#: static/js/page/translations.js:120
 msgid "Year"
 msgstr "年份"
 
-#: static/js/page/translations.js:118
+#: static/js/page/translations.js:121
 msgid "Composer"
 msgstr "作曲家"
 
-#: static/js/page/translations.js:119
+#: static/js/page/translations.js:122
 msgid "Comment"
 msgstr "評論"
 
-#: static/js/page/translations.js:121 templates/audio_player.html:73
+#: static/js/page/translations.js:124 templates/audio_player.html:73
 msgid "Previous Chapter"
 msgstr "上一章"
 
-#: static/js/page/translations.js:122 templates/audio_player.html:75
+#: static/js/page/translations.js:125 templates/audio_player.html:75
 msgid "Next Chapter"
 msgstr "下一章"
 
-#: static/js/page/translations.js:123
+#: static/js/page/translations.js:126
 msgid "Seek Backward 10s"
 msgstr "快退 10 秒"
 
-#: static/js/page/translations.js:124
+#: static/js/page/translations.js:127
 msgid "Seek Forward 30s"
 msgstr "快進 30 秒"
 
-#: static/js/page/translations.js:125 templates/audio_player.html:74
+#: static/js/page/translations.js:128 templates/audio_player.html:74
 msgid "Play/Pause"
 msgstr "播放/暫停"
 
-#: static/js/page/translations.js:126
+#: static/js/page/translations.js:129
 msgid "Playback Speed"
 msgstr "播放速度"
 
