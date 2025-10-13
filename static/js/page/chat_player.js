@@ -69,10 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="loading-indicator">
                 <div class="spinner"></div>
                 <span class="loading-status"></span>
+                <span class="countdown-timer" style="display: none;">(60s)</span>
             </div>
         `;
         let fullResponse = '';
         let buffer = '';
+        let countdownInterval;
 
         try {
             if (!response.ok) {
@@ -119,10 +121,25 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         } else if (eventType === 'stage_update') {
                             const statusSpan = modelMessageWrapper.querySelector('.loading-status');
+                            const timerSpan = modelMessageWrapper.querySelector('.countdown-timer');
                             if (statusSpan) {
                                 statusSpan.textContent = data.message;
                             }
+                            // Start countdown on the "thinking" stage
+                            if (data.stage === 'thinking' && timerSpan) {
+                                timerSpan.style.display = 'inline';
+                                let seconds = 60;
+                                countdownInterval = setInterval(() => {
+                                    seconds--;
+                                    timerSpan.textContent = `(${seconds})`;
+                                    if (seconds <= 0) {
+                                        clearInterval(countdownInterval);
+                                        timerSpan.textContent = `(>60)`;
+                                    }
+                                }, 1000);
+                            }
                         } else if (eventType === 'end') {
+                            if (countdownInterval) clearInterval(countdownInterval);
                             const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
                             if (sessionItem) {
                                 const timeAgoEl = sessionItem.querySelector('.time-ago');
@@ -146,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else if (dataMatch) {
                         if (!firstChunkReceived) {
+                            if (countdownInterval) clearInterval(countdownInterval);
                             modelMessageContent.innerHTML = '';
                             firstChunkReceived = true;
                         }
@@ -160,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
+            if (countdownInterval) clearInterval(countdownInterval);
             console.error(error);
             modelMessageContent.innerHTML = marked.parse(`${t.anErrorOccurred} ${error.message}`);
         }
@@ -661,6 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
         html2canvas(exportContainer, {
             useCORS: true,
             backgroundColor: getComputedStyle(dom.body).getPropertyValue('--background-color'),
+            scale: 2, // Render at 2x resolution
             onclone: (clonedDoc) => {
                 clonedDoc.querySelectorAll('.mermaid svg').forEach(svg => {
                     const styleSheets = Array.from(clonedDoc.styleSheets);

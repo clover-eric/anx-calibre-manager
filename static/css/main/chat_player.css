@@ -507,12 +507,18 @@ body.theme-dark .library-toggle .button.active,
     color: var(--text-color-secondary);
 }
 
+.countdown-timer {
+    font-size: 0.9em;
+    color: var(--text-color-secondary);
+    margin-left: 8px;
+}
+
 /* --- Export Container Styles --- */
 .export-container {
     position: absolute;
     left: -9999px; /* Move off-screen */
     top: auto;
-    width: 800px; /* Define a fixed width for consistent output */
+    width: 1000px; /* Increased width for better output */
     padding: 1rem;
     background-color: var(--background-color);
     color: var(--text-color);
