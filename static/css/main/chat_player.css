@@ -72,6 +72,7 @@ body {
     flex-direction: column;
     height: 100%;
     background-color: var(--background-color-alt);
+    min-height: 0; /* Fix for flexbox overflow */
 }
 
 /* --- Header --- */
@@ -189,10 +190,10 @@ body.theme-dark .library-toggle .button.active,
 .empty-list-message i { font-size: 3rem; margin-bottom: 1rem; }
 
 /* --- Detail View (Chat) --- */
-.detail-view { flex-grow: 1; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.detail-view { flex-grow: 1; display: flex; flex-direction: column; height: 100%; overflow: hidden; min-height: 0; /* Fix for flexbox overflow */ }
 .placeholder-view { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; color: var(--text-color-secondary); }
 .placeholder-view i { font-size: 4rem; margin-bottom: 1rem; }
-.chat-content-view { display: flex; flex-direction: column; height: 100%; width: 100%; }
+.chat-content-view { display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden; min-height: 0; }
 .chat-header { display: flex; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
 .chat-header .back-to-list-btn { display: none; background: none; border: none; color: var(--text-color-secondary); font-size: 1.2rem; margin-right: 1rem; cursor: pointer; }
 .chat-header h3 { margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
