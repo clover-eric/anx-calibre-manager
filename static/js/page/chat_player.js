@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true; // Should be reached only if stream ends without 'end' event but with data
     };
 
-    const attemptFetchWithRetry = async (url, options, modelMessageWrapper, userMessageWrapper = null, maxRetries = 3) => {
+    const attemptFetchWithRetry = async (initialUrl, initialOptions, modelMessageWrapper, userMessageWrapper = null, maxRetries = 3) => {
         const modelMessageContent = modelMessageWrapper.querySelector('.message-content');
         if (!modelMessageContent) {
             console.error("Could not find message content element for retry logic.");
@@ -212,16 +212,19 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         let attempt = 0;
+        let currentUrl = initialUrl;
+        let currentOptions = initialOptions;
+
         while (attempt < maxRetries) {
             attempt++;
             try {
-                const response = await fetch(url, options);
+                const response = await fetch(currentUrl, currentOptions);
                 const success = await streamAndRenderResponse(response, modelMessageWrapper, userMessageWrapper);
-                
+
                 if (success) {
                     return; // Exit if successful
                 }
-                
+
                 // Handle empty response, prepare for retry
                 if (attempt < maxRetries) {
                     const statusSpan = modelMessageWrapper.querySelector('.loading-status');
@@ -237,17 +240,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error(`Attempt ${attempt} failed:`, error);
-                
+
                 if (attempt >= maxRetries) {
                     modelMessageWrapper.remove(); // Clean up the loading message
                     addMessageToUI({ role: 'model', content: `${t.anErrorOccurred} ${error.message}` });
                     return;
                 }
-                
+
                 const statusSpan = modelMessageWrapper.querySelector('.loading-status');
                 if (statusSpan) {
                     statusSpan.textContent = `${t.errorResponseRetry} (${attempt}/${maxRetries})`;
                 }
+            }
+
+            // After a failed attempt, check if we should switch to regenerate
+            if (userMessageWrapper && userMessageWrapper.dataset.messageId) {
+                currentUrl = '/api/llm/regenerate';
+                currentOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message_id: parseInt(userMessageWrapper.dataset.messageId) }),
+                };
             }
         }
     };
@@ -287,8 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modelMessageWrapper = addMessageToUI({ role: 'model', content: '' });
 
-        const url = '/api/llm/chat';
-        const options = {
+        const initialUrl = '/api/llm/chat';
+        const initialOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -300,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
         };
 
-        await attemptFetchWithRetry(url, options, modelMessageWrapper, userMessageWrapper);
+        await attemptFetchWithRetry(initialUrl, initialOptions, modelMessageWrapper, userMessageWrapper);
         dom.sendButton.disabled = false;
     };
 
