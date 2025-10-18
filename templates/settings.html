@@ -441,6 +441,11 @@
                 <input type="number" id="SESSION_LIFETIME_DAYS" name="SESSION_LIFETIME_DAYS" min="1">
                 <small>{{ _('The number of days a user\'s session remains valid after logging in.') }}</small>
             </div>
+            <div class="form-group">
+                <input type="checkbox" id="REQUIRE_INVITE_CODE" name="REQUIRE_INVITE_CODE" value="true" style="width: auto; margin-right: 5px;">
+                <label for="REQUIRE_INVITE_CODE" style="display: inline;">{{ _('Require Invite Code for Registration') }}</label></br>
+                <small>{{ _('If enabled, users must provide a valid invite code to register. Admins can generate invite codes in the Invite Code Management tab.') }}</small>
+            </div>
 
             <div class="form-group">
                 <label for="test_email_address">{{ _('Test Inbox') }}</label>

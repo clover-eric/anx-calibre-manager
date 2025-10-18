@@ -424,6 +424,7 @@ window.saveGlobalSettings = async function(event, force = false) {
     // Explicitly handle checkboxes to ensure they are sent even when false
     data.CALIBRE_ADD_DUPLICATES = form.querySelector('#CALIBRE_ADD_DUPLICATES').checked;
     data.DISABLE_NORMAL_USER_UPLOAD = form.querySelector('#DISABLE_NORMAL_USER_UPLOAD').checked;
+    data.REQUIRE_INVITE_CODE = form.querySelector('#REQUIRE_INVITE_CODE').checked;
 
 
     if (force) {
