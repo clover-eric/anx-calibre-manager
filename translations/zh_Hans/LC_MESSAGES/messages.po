@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 20:03+0800\n"
+"POT-Creation-Date: 2025-10-18 20:43+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -836,7 +836,7 @@ msgstr "请输入测试收件人电子邮件地址。"
 msgid "Edit"
 msgstr "编辑"
 
-#: static/js/settings.js:30 templates/settings.html:460
+#: static/js/settings.js:30 templates/settings.html:465
 msgid "Add"
 msgstr "添加"
 
@@ -912,15 +912,15 @@ msgstr "TTS 配置方案保存成功！"
 msgid "Failed to save TTS profile"
 msgstr "保存 TTS 配置方案失败"
 
-#: static/js/settings.js:50 static/js/settings.js:1023
+#: static/js/settings.js:50 static/js/settings.js:1024
 msgid "An error occurred while saving the profile"
 msgstr "保存配置方案时发生错误"
 
-#: static/js/settings.js:51 static/js/settings.js:1033
+#: static/js/settings.js:51 static/js/settings.js:1034
 msgid "Please select a profile to update"
 msgstr "请选择要更新的配置方案"
 
-#: static/js/settings.js:52 static/js/settings.js:1040
+#: static/js/settings.js:52 static/js/settings.js:1041
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "更新配置方案 “{name}” 吗？"
@@ -933,15 +933,15 @@ msgstr "TTS 配置方案更新成功！"
 msgid "Failed to update TTS profile"
 msgstr "更新 TTS 配置方案失败"
 
-#: static/js/settings.js:55 static/js/settings.js:1062
+#: static/js/settings.js:55 static/js/settings.js:1063
 msgid "An error occurred while updating the profile"
 msgstr "更新配置方案时发生错误"
 
-#: static/js/settings.js:56 static/js/settings.js:1072
+#: static/js/settings.js:56 static/js/settings.js:1073
 msgid "Please select a profile to delete"
 msgstr "请选择要删除的配置方案"
 
-#: static/js/settings.js:57 static/js/settings.js:1079
+#: static/js/settings.js:57 static/js/settings.js:1080
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "删除配置方案 “{name}” 吗？此操作无法撤销。"
@@ -954,35 +954,35 @@ msgstr "TTS 配置方案删除成功！"
 msgid "Failed to delete TTS profile"
 msgstr "删除 TTS 配置方案失败"
 
-#: static/js/settings.js:60 static/js/settings.js:1095
+#: static/js/settings.js:60 static/js/settings.js:1096
 msgid "An error occurred while deleting the profile"
 msgstr "删除配置方案时发生错误"
 
-#: static/js/settings.js:61 static/js/settings.js:999
+#: static/js/settings.js:61 static/js/settings.js:1000
 msgid "Please enter a name for this LLM profile:"
 msgstr "请输入此 LLM 配置方案的名称："
 
-#: static/js/settings.js:62 static/js/settings.js:1017
+#: static/js/settings.js:62 static/js/settings.js:1018
 msgid "LLM profile saved successfully!"
 msgstr "LLM 配置方案保存成功！"
 
-#: static/js/settings.js:63 static/js/settings.js:1020
+#: static/js/settings.js:63 static/js/settings.js:1021
 msgid "Failed to save LLM profile"
 msgstr "保存 LLM 配置方案失败"
 
-#: static/js/settings.js:64 static/js/settings.js:1056
+#: static/js/settings.js:64 static/js/settings.js:1057
 msgid "LLM profile updated successfully!"
 msgstr "LLM 配置方案更新成功！"
 
-#: static/js/settings.js:65 static/js/settings.js:1059
+#: static/js/settings.js:65 static/js/settings.js:1060
 msgid "Failed to update LLM profile"
 msgstr "更新 LLM 配置方案失败"
 
-#: static/js/settings.js:66 static/js/settings.js:1088
+#: static/js/settings.js:66 static/js/settings.js:1089
 msgid "LLM profile deleted successfully!"
 msgstr "LLM 配置方案删除成功！"
 
-#: static/js/settings.js:67 static/js/settings.js:1092
+#: static/js/settings.js:67 static/js/settings.js:1093
 msgid "Failed to delete LLM profile"
 msgstr "删除 LLM 配置方案失败"
 
@@ -1693,7 +1693,7 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:480
+#: templates/settings.html:198 templates/settings.html:485
 msgid "Cancel"
 msgstr "取消"
 
@@ -1701,7 +1701,7 @@ msgstr "取消"
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:244 templates/settings.html:479
+#: templates/index.html:244 templates/settings.html:484
 msgid "Save"
 msgstr "保存"
 
@@ -1715,12 +1715,12 @@ msgstr "登录 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:462 templates/settings.html:489
+#: templates/settings.html:467 templates/settings.html:494
 msgid "Username"
 msgstr "用户名"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:466
+#: templates/settings.html:318 templates/settings.html:471
 msgid "Password"
 msgstr "密码"
 
@@ -2470,7 +2470,7 @@ msgstr "禁止普通用户上传"
 msgid ""
 "If enabled, users with the \"user\" role will not be able to upload books"
 " to Calibre."
-msgstr "如果启用，具有"普通用户"角色的用户将无法上传图书到 Calibre。"
+msgstr "如果启用，具有\"普通用户\"角色的用户将无法上传图书到 Calibre。"
 
 #: templates/settings.html:380
 msgid "Path Settings"
@@ -2591,128 +2591,138 @@ msgid "The number of days a user's session remains valid after logging in."
 msgstr "用户登录后会话保持有效的天数。"
 
 #: templates/settings.html:446
+msgid "Require Invite Code for Registration"
+msgstr "注册时需要邀请码"
+
+#: templates/settings.html:447
+msgid ""
+"If enabled, users must provide a valid invite code to register. Admins "
+"can generate invite codes in the Invite Code Management tab."
+msgstr "如果启用，用户必须提供有效的邀请码才能注册。管理员可以在邀请码管理标签页中生成邀请码。"
+
+#: templates/settings.html:451
 msgid "Test Inbox"
 msgstr "测试收件箱"
 
-#: templates/settings.html:447
+#: templates/settings.html:452
 msgid "Enter an email address to receive a test email"
 msgstr "输入一个电子邮件地址以接收测试邮件"
 
-#: templates/settings.html:450
+#: templates/settings.html:455
 msgid "Send Test Email"
 msgstr "发送测试邮件"
 
-#: templates/settings.html:451
+#: templates/settings.html:456
 msgid "Save Global Settings"
 msgstr "保存全局设置"
 
-#: templates/settings.html:460
+#: templates/settings.html:465
 msgid "New User"
 msgstr "新用户"
 
-#: templates/settings.html:468
+#: templates/settings.html:473
 msgid "Leave blank to not change the existing user's password."
 msgstr "留空则不更改现有用户的密码。"
 
-#: templates/settings.html:471 templates/settings.html:490
+#: templates/settings.html:476 templates/settings.html:495
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings.html:473
+#: templates/settings.html:478
 msgid "Normal User"
 msgstr "普通用户"
 
-#: templates/settings.html:474
+#: templates/settings.html:479
 msgid "Calibre Library Maintainer"
 msgstr "Calibre 书库维护员"
 
-#: templates/settings.html:475
+#: templates/settings.html:480
 msgid "Administrator"
 msgstr "管理员"
 
-#: templates/settings.html:484
+#: templates/settings.html:489
 msgid "Existing Users"
 msgstr "现有用户"
 
-#: templates/settings.html:488
+#: templates/settings.html:493
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:491 templates/settings.html:535
+#: templates/settings.html:496 templates/settings.html:540
 msgid "Actions"
 msgstr "操作"
 
-#: templates/settings.html:503
+#: templates/settings.html:508
 msgid "Generate New Invite Code"
 msgstr "生成新的邀请码"
 
-#: templates/settings.html:505
+#: templates/settings.html:510
 msgid "Custom Invite Code"
 msgstr "自定义邀请码"
 
-#: templates/settings.html:506
+#: templates/settings.html:511
 msgid "Leave blank to auto-generate"
 msgstr "留空则自动生成"
 
-#: templates/settings.html:507
+#: templates/settings.html:512
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 msgstr "自定义邀请码（可选）。如果留空，将生成一个随机码。"
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Maximum Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid "How many times this invite code can be used"
 msgstr "此邀请码可以使用的次数"
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Expires After (Hours)"
 msgstr "过期时间（小时）"
 
-#: templates/settings.html:516
+#: templates/settings.html:521
 msgid "Leave blank for no expiration"
 msgstr "留空则永不过期"
 
-#: templates/settings.html:517
+#: templates/settings.html:522
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "此邀请码将在此小时数后过期（可选）"
 
-#: templates/settings.html:520
+#: templates/settings.html:525
 msgid "Generate Invite Code"
 msgstr "生成邀请码"
 
-#: templates/settings.html:524
+#: templates/settings.html:529
 msgid "Existing Invite Codes"
 msgstr "现有邀请码"
 
-#: templates/settings.html:528
+#: templates/settings.html:533
 msgid "Code"
 msgstr "代码"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Max Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:530
+#: templates/settings.html:535
 msgid "Current Uses"
 msgstr "当前使用次数"
 
-#: templates/settings.html:531
+#: templates/settings.html:536
 msgid "Created By"
 msgstr "创建者"
 
-#: templates/settings.html:532
+#: templates/settings.html:537
 msgid "Created At"
 msgstr "创建于"
 
-#: templates/settings.html:533
+#: templates/settings.html:538
 msgid "Expires At"
 msgstr "过期于"
 
-#: templates/settings.html:534
+#: templates/settings.html:539
 msgid "Status"
 msgstr "状态"
 

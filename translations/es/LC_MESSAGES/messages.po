@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 20:03+0800\n"
+"POT-Creation-Date: 2025-10-18 20:43+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -878,7 +878,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Editar"
 
-#: static/js/settings.js:30 templates/settings.html:460
+#: static/js/settings.js:30 templates/settings.html:465
 msgid "Add"
 msgstr "Añadir"
 
@@ -954,15 +954,15 @@ msgstr "¡Perfil de TTS guardado correctamente!"
 msgid "Failed to save TTS profile"
 msgstr "Error al guardar el perfil de TTS"
 
-#: static/js/settings.js:50 static/js/settings.js:1023
+#: static/js/settings.js:50 static/js/settings.js:1024
 msgid "An error occurred while saving the profile"
 msgstr "Ocurrió un error al guardar el perfil"
 
-#: static/js/settings.js:51 static/js/settings.js:1033
+#: static/js/settings.js:51 static/js/settings.js:1034
 msgid "Please select a profile to update"
 msgstr "Por favor, selecciona un perfil para actualizar"
 
-#: static/js/settings.js:52 static/js/settings.js:1040
+#: static/js/settings.js:52 static/js/settings.js:1041
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "¿Actualizar perfil \"{name}\"?"
@@ -975,15 +975,15 @@ msgstr "¡Perfil de TTS actualizado correctamente!"
 msgid "Failed to update TTS profile"
 msgstr "Error al actualizar el perfil de TTS"
 
-#: static/js/settings.js:55 static/js/settings.js:1062
+#: static/js/settings.js:55 static/js/settings.js:1063
 msgid "An error occurred while updating the profile"
 msgstr "Ocurrió un error al actualizar el perfil"
 
-#: static/js/settings.js:56 static/js/settings.js:1072
+#: static/js/settings.js:56 static/js/settings.js:1073
 msgid "Please select a profile to delete"
 msgstr "Por favor, selecciona un perfil para eliminar"
 
-#: static/js/settings.js:57 static/js/settings.js:1079
+#: static/js/settings.js:57 static/js/settings.js:1080
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "¿Eliminar perfil \"{name}\"? Esta acción no se puede deshacer."
@@ -996,35 +996,35 @@ msgstr "¡Perfil de TTS eliminado correctamente!"
 msgid "Failed to delete TTS profile"
 msgstr "Error al eliminar el perfil de TTS"
 
-#: static/js/settings.js:60 static/js/settings.js:1095
+#: static/js/settings.js:60 static/js/settings.js:1096
 msgid "An error occurred while deleting the profile"
 msgstr "Ocurrió un error al eliminar el perfil"
 
-#: static/js/settings.js:61 static/js/settings.js:999
+#: static/js/settings.js:61 static/js/settings.js:1000
 msgid "Please enter a name for this LLM profile:"
 msgstr "Por favor, introduce un nombre para este perfil de LLM:"
 
-#: static/js/settings.js:62 static/js/settings.js:1017
+#: static/js/settings.js:62 static/js/settings.js:1018
 msgid "LLM profile saved successfully!"
 msgstr "¡Perfil de LLM guardado correctamente!"
 
-#: static/js/settings.js:63 static/js/settings.js:1020
+#: static/js/settings.js:63 static/js/settings.js:1021
 msgid "Failed to save LLM profile"
 msgstr "Error al guardar el perfil de LLM"
 
-#: static/js/settings.js:64 static/js/settings.js:1056
+#: static/js/settings.js:64 static/js/settings.js:1057
 msgid "LLM profile updated successfully!"
 msgstr "¡Perfil de LLM actualizado correctamente!"
 
-#: static/js/settings.js:65 static/js/settings.js:1059
+#: static/js/settings.js:65 static/js/settings.js:1060
 msgid "Failed to update LLM profile"
 msgstr "Error al actualizar el perfil de LLM"
 
-#: static/js/settings.js:66 static/js/settings.js:1088
+#: static/js/settings.js:66 static/js/settings.js:1089
 msgid "LLM profile deleted successfully!"
 msgstr "¡Perfil de LLM eliminado correctamente!"
 
-#: static/js/settings.js:67 static/js/settings.js:1092
+#: static/js/settings.js:67 static/js/settings.js:1093
 msgid "Failed to delete LLM profile"
 msgstr "Error al eliminar el perfil de LLM"
 
@@ -1761,7 +1761,7 @@ msgid "Select files:"
 msgstr "Seleccionar archivos:"
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:480
+#: templates/settings.html:198 templates/settings.html:485
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1769,7 +1769,7 @@ msgstr "Cancelar"
 msgid "Edit Book Information"
 msgstr "Editar información del libro"
 
-#: templates/index.html:244 templates/settings.html:479
+#: templates/index.html:244 templates/settings.html:484
 msgid "Save"
 msgstr "Guardar"
 
@@ -1783,12 +1783,12 @@ msgstr "Iniciar sesión en Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:462 templates/settings.html:489
+#: templates/settings.html:467 templates/settings.html:494
 msgid "Username"
 msgstr "Nombre de usuario"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:466
+#: templates/settings.html:318 templates/settings.html:471
 msgid "Password"
 msgstr "Contraseña"
 
@@ -2619,7 +2619,9 @@ msgstr "Desactivar subidas para usuarios normales"
 msgid ""
 "If enabled, users with the \"user\" role will not be able to upload books"
 " to Calibre."
-msgstr "Si está activado, los usuarios con el rol \"usuario\" no podrán subir libros a Calibre."
+msgstr ""
+"Si está activado, los usuarios con el rol \"usuario\" no podrán subir "
+"libros a Calibre."
 
 #: templates/settings.html:380
 msgid "Path Settings"
@@ -2754,72 +2756,82 @@ msgstr ""
 " iniciar sesión."
 
 #: templates/settings.html:446
+msgid "Require Invite Code for Registration"
+msgstr "Requerir código de invitación para el registro"
+
+#: templates/settings.html:447
+msgid ""
+"If enabled, users must provide a valid invite code to register. Admins "
+"can generate invite codes in the Invite Code Management tab."
+msgstr "Si está activado, los usuarios deben proporcionar un código de invitación válido para registrarse. Los administradores pueden generar códigos de invitación en la pestaña de Gestión de códigos de invitación."
+
+#: templates/settings.html:451
 msgid "Test Inbox"
 msgstr "Bandeja de entrada de prueba"
 
-#: templates/settings.html:447
+#: templates/settings.html:452
 msgid "Enter an email address to receive a test email"
 msgstr ""
 "Introduce una dirección de correo electrónico para recibir un correo de "
 "prueba"
 
-#: templates/settings.html:450
+#: templates/settings.html:455
 msgid "Send Test Email"
 msgstr "Enviar correo de prueba"
 
-#: templates/settings.html:451
+#: templates/settings.html:456
 msgid "Save Global Settings"
 msgstr "Guardar ajustes globales"
 
-#: templates/settings.html:460
+#: templates/settings.html:465
 msgid "New User"
 msgstr "Nuevo usuario"
 
-#: templates/settings.html:468
+#: templates/settings.html:473
 msgid "Leave blank to not change the existing user's password."
 msgstr "Dejar en blanco para no cambiar la contraseña del usuario existente."
 
-#: templates/settings.html:471 templates/settings.html:490
+#: templates/settings.html:476 templates/settings.html:495
 msgid "Role"
 msgstr "Rol"
 
-#: templates/settings.html:473
+#: templates/settings.html:478
 msgid "Normal User"
 msgstr "Usuario normal"
 
-#: templates/settings.html:474
+#: templates/settings.html:479
 msgid "Calibre Library Maintainer"
 msgstr "Mantenedor de la biblioteca de Calibre"
 
-#: templates/settings.html:475
+#: templates/settings.html:480
 msgid "Administrator"
 msgstr "Administrador"
 
-#: templates/settings.html:484
+#: templates/settings.html:489
 msgid "Existing Users"
 msgstr "Usuarios existentes"
 
-#: templates/settings.html:488
+#: templates/settings.html:493
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:491 templates/settings.html:535
+#: templates/settings.html:496 templates/settings.html:540
 msgid "Actions"
 msgstr "Acciones"
 
-#: templates/settings.html:503
+#: templates/settings.html:508
 msgid "Generate New Invite Code"
 msgstr "Generar nuevo código de invitación"
 
-#: templates/settings.html:505
+#: templates/settings.html:510
 msgid "Custom Invite Code"
 msgstr "Código de invitación personalizado"
 
-#: templates/settings.html:506
+#: templates/settings.html:511
 msgid "Leave blank to auto-generate"
 msgstr "Dejar en blanco para autogenerar"
 
-#: templates/settings.html:507
+#: templates/settings.html:512
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
@@ -2827,61 +2839,61 @@ msgstr ""
 "Código de invitación personalizado (opcional). Si se deja en blanco, se "
 "generará un código aleatorio."
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Maximum Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid "How many times this invite code can be used"
 msgstr "Cuántas veces se puede usar este código de invitación"
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Expires After (Hours)"
 msgstr "Expira después de (horas)"
 
-#: templates/settings.html:516
+#: templates/settings.html:521
 msgid "Leave blank for no expiration"
 msgstr "Dejar en blanco para que no caduque"
 
-#: templates/settings.html:517
+#: templates/settings.html:522
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr ""
 "Número de horas después de las cuales caducará este código de invitación "
 "(opcional)"
 
-#: templates/settings.html:520
+#: templates/settings.html:525
 msgid "Generate Invite Code"
 msgstr "Generar código de invitación"
 
-#: templates/settings.html:524
+#: templates/settings.html:529
 msgid "Existing Invite Codes"
 msgstr "Códigos de invitación existentes"
 
-#: templates/settings.html:528
+#: templates/settings.html:533
 msgid "Code"
 msgstr "Código"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Max Uses"
 msgstr "Usos máximos"
 
-#: templates/settings.html:530
+#: templates/settings.html:535
 msgid "Current Uses"
 msgstr "Usos actuales"
 
-#: templates/settings.html:531
+#: templates/settings.html:536
 msgid "Created By"
 msgstr "Creado por"
 
-#: templates/settings.html:532
+#: templates/settings.html:537
 msgid "Created At"
 msgstr "Creado el"
 
-#: templates/settings.html:533
+#: templates/settings.html:538
 msgid "Expires At"
 msgstr "Expira el"
 
-#: templates/settings.html:534
+#: templates/settings.html:539
 msgid "Status"
 msgstr "Estado"
 
