@@ -265,11 +265,46 @@ class OpenAITTSProvider(BaseTTSProvider):
                         response_format="mp3",
                     )
                     
-                    audio_data = io.BytesIO(response.content)
-                    segment = AudioSegment.from_mp3(audio_data)
-                    segments.append(segment)
-                    # 每个句子块（chunk）后面都添加停顿
-                    segments.append(sentence_pause)
+                    # 智能检测并处理不同音频格式
+                    audio_bytes = response.content
+                    logger.debug(f"Received {len(audio_bytes)} bytes. First 12 bytes: {audio_bytes[:12]}")
+                    
+                    # 使用临时文件避免流式数据的 seek 问题
+                    import tempfile
+                    with tempfile.NamedTemporaryFile(suffix='.audio', delete=False) as tmp_file:
+                        tmp_file.write(audio_bytes)
+                        tmp_path = tmp_file.name
+                    
+                    try:
+                        # 检测音频格式
+                        if audio_bytes.startswith(b'RIFF') and b'WAVE' in audio_bytes[:20]:
+                            # WAV 格式
+                            logger.debug("Detected WAV format")
+                            segment = AudioSegment.from_file(tmp_path, format="wav")
+                        elif audio_bytes.startswith(b'ID3') or audio_bytes.startswith(b'\xff\xfb') or audio_bytes.startswith(b'\xff\xf3'):
+                            # MP3 格式 (ID3 标签或 MPEG 帧头)
+                            logger.debug("Detected MP3 format")
+                            segment = AudioSegment.from_file(tmp_path, format="mp3")
+                        elif audio_bytes.startswith(b'OggS'):
+                            # OGG 格式
+                            logger.debug("Detected OGG format")
+                            segment = AudioSegment.from_file(tmp_path, format="ogg")
+                        elif audio_bytes.startswith(b'fLaC'):
+                            # FLAC 格式
+                            logger.debug("Detected FLAC format")
+                            segment = AudioSegment.from_file(tmp_path, format="flac")
+                        else:
+                            # 未知格式,让 pydub 自动检测
+                            logger.warning(f"Unknown audio format. First 20 bytes: {audio_bytes[:20].hex()}")
+                            segment = AudioSegment.from_file(tmp_path)
+                        
+                        segments.append(segment)
+                        # 每个句子块（chunk）后面都添加停顿
+                        segments.append(sentence_pause)
+                    finally:
+                        # 确保删除临时文件
+                        if os.path.exists(tmp_path):
+                            os.remove(tmp_path)
 
                 except Exception as e:
                     logger.error(f"OpenAI TTS error on chunk {chunk_counter}: {e}")

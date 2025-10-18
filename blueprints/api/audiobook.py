@@ -159,7 +159,7 @@ def generate_audiobook_route():
         tts_config = TTSConfig(**tts_config_data)
         
         # 根据 provider 实例化不同的提供者
-        if provider == 'openai_tts':
+        if provider == 'openai':
             tts_provider = OpenAITTSProvider(tts_config)
         else: # 默认为 edge_tts
             tts_provider = EdgeTTSProvider(tts_config)
