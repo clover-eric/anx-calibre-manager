@@ -175,6 +175,7 @@
 | `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | 預設的 Calibre 庫 ID。詳情請參閱[如何找到我的 `library_id`](#4-我如何找到我的-library_id)。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允許上傳重複的書籍。 | `false` |
+| `DISABLE_NORMAL_USER_UPLOAD` | 當設定為 `true` 時，禁用「普通使用者」角色的書籍上傳功能，僅管理員和維護者可上傳書籍。 | `false` |
 | `REQUIRE_INVITE_CODE` | 註冊時是否需要邀請碼。 | `true` |
 | `SMTP_SERVER` | 用於傳送郵件 (例如，推送到 Kindle) 的 SMTP 伺服器。 | `""` |
 | `SMTP_PORT` | SMTP 埠號。 | `587` |

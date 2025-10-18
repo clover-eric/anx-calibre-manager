@@ -175,6 +175,7 @@
 | `CALIBRE_DEFAULT_LIBRARY_ID` | 默认的 Calibre 库 ID。详情请参阅[如何找到我的 `library_id`](#4-我如何找到我的-library_id)。 | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | 是否允许上传重复的书籍。 | `false` |
 | `REQUIRE_INVITE_CODE` | 注册时是否需要邀请码。 | `true` |
+| `DISABLE_NORMAL_USER_UPLOAD` | 当设置为 `true` 时，禁用"普通用户"角色的书籍上传功能，仅管理员和维护者可上传书籍。 | `false` |
 | `SMTP_SERVER` | 用于发送邮件 (例如，推送到 Kindle) 的 SMTP 服务器。 | `""` |
 | `SMTP_PORT` | SMTP 端口。 | `587` |
 | `SMTP_USERNAME` | SMTP 用户名。 | `""` |

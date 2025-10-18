@@ -175,6 +175,7 @@ The application is configured via environment variables.
 | `CALIBRE_DEFAULT_LIBRARY_ID` | The default Calibre library ID. See [How to find my `library_id`](#4-how-do-i-find-my-library_id) for details. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Whether to allow uploading duplicate books. | `false` |
 | `REQUIRE_INVITE_CODE` | Whether to require an invite code for registration. | `true` |
+| `DISABLE_NORMAL_USER_UPLOAD` | When set to `true`, it disables the book upload functionality for users with the 'User' role, only Admins and Maintainers can upload books. | `false` |
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
 | `SMTP_USERNAME` | SMTP username. | `""` |

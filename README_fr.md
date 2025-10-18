@@ -175,6 +175,7 @@ L'application est configurée via des variables d'environnement.
 | `CALIBRE_PASSWORD` | Mot de passe pour votre serveur Calibre. Voir [Dépannage](#1-pourquoi-ny-a-t-il-pas-de-livres-dans-ma-liste-calibre) si vous avez des problèmes de connexion. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | L'ID de la bibliothèque Calibre par défaut. Voir [Comment trouver mon `library_id`](#4-comment-trouver-mon-library_id) pour plus de détails. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Autoriser le téléversement de livres en double. | `false` |
+| `DISABLE_NORMAL_USER_UPLOAD` | Lorsqu'il est défini sur `true`, désactive la fonctionnalité de téléversement de livres pour les utilisateurs avec le rôle 'Utilisateur', seuls les administrateurs et les mainteneurs peuvent téléverser des livres. | `false` |
 | `REQUIRE_INVITE_CODE` | Exiger un code d'invitation pour l'inscription. | `true` |
 | `SMTP_SERVER` | Serveur SMTP pour l'envoi d'e-mails (ex: pour Kindle). | `""` |
 | `SMTP_PORT` | Port SMTP. | `587` |

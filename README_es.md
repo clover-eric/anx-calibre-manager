@@ -175,6 +175,7 @@ La aplicación se configura a través de variables de entorno.
 | `CALIBRE_PASSWORD` | Contraseña para tu servidor Calibre. Consulta [Solución de Problemas](#1-por-qué-no-hay-libros-en-mi-lista-de-calibre) si tienes problemas de conexión. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | El ID de la biblioteca de Calibre predeterminada. Para más detalles, consulta [Cómo encuentro mi `library_id`](#4-cómo-encuentro-mi-library_id). | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Si se permite subir libros duplicados. | `false` |
+| `DISABLE_NORMAL_USER_UPLOAD` | Cuando se establece en `true`, deshabilita la función de carga de libros para usuarios con el rol 'Usuario', solo los Administradores y Mantenedores pueden cargar libros. | `false` |
 | `REQUIRE_INVITE_CODE` | Si se requiere un código de invitación para el registro. | `true` |
 | `SMTP_SERVER` | Servidor SMTP para enviar correos electrónicos (ej., para Kindle). | `""` |
 | `SMTP_PORT` | Puerto SMTP. | `587` |
