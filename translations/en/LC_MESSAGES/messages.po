@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-13 18:12+0800\n"
+"POT-Creation-Date: 2025-10-18 18:41+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -623,20 +623,28 @@ msgstr "Session not found or permission denied."
 msgid "Chat session deleted successfully."
 msgstr "Chat session deleted successfully."
 
-#: blueprints/api/settings.py:78
+#: blueprints/api/settings.py:79
 msgid "User settings updated."
 msgstr "User settings updated."
 
-#: blueprints/api/settings.py:135
+#: blueprints/api/settings.py:147
+#, python-format
+msgid ""
+"There are currently %(count)s audiobook generation task(s) in progress. "
+"Updating the configuration will restart the server workers and interrupt "
+"these tasks. Do you want to continue?"
+msgstr "There are currently %(count)s audiobook generation task(s) in progress. Updating the configuration will restart the server workers and interrupt these tasks. Do you want to continue?"
+
+#: blueprints/api/settings.py:157
 msgid "Global settings updated."
 msgstr "Global settings updated."
 
-#: blueprints/api/settings.py:145
+#: blueprints/api/settings.py:167
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "%(count)s audiobook files have been cleaned up."
 
-#: blueprints/api/settings.py:147
+#: blueprints/api/settings.py:169
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "An error occurred during cleanup: %(error)s"

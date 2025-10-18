@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-13 18:12+0800\n"
+"POT-Creation-Date: 2025-10-18 18:41+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -429,7 +429,7 @@ msgstr "书籍 ID 和类型是必需的。"
 
 #: blueprints/api/llm.py:158
 msgid "No history found for this book."
-msgstr "未找到该书籍的曆史记录。"
+msgstr "未找到该书籍的历史记录。"
 
 #: blueprints/api/llm.py:174
 msgid "MCP module is not available, cannot process book content."
@@ -597,20 +597,28 @@ msgstr "会话未找到或权限被拒绝。"
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
-#: blueprints/api/settings.py:78
+#: blueprints/api/settings.py:79
 msgid "User settings updated."
 msgstr "用户设置已更新。"
 
-#: blueprints/api/settings.py:135
+#: blueprints/api/settings.py:147
+#, python-format
+msgid ""
+"There are currently %(count)s audiobook generation task(s) in progress. "
+"Updating the configuration will restart the server workers and interrupt "
+"these tasks. Do you want to continue?"
+msgstr "当前有 %(count)s 个有声书生成任务正在进行中。更新配置将重启服务器工作进程并中断这些任务。您确定要继续吗？"
+
+#: blueprints/api/settings.py:157
 msgid "Global settings updated."
 msgstr "全局设置已更新。"
 
-#: blueprints/api/settings.py:145
+#: blueprints/api/settings.py:167
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "已清理 %(count)s 个有声书文件。"
 
-#: blueprints/api/settings.py:147
+#: blueprints/api/settings.py:169
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "清理过程中发生错误：%(error)s"
@@ -1826,7 +1834,7 @@ msgstr "音高。例如：+10Hz 或 -10Hz。"
 
 #: templates/settings.html:114
 msgid "Sentence Pause (ms)"
-msgstr "句间停顿(毫秒)"
+msgstr "句间停顿（毫秒）"
 
 #: templates/settings.html:116
 msgid "Pause duration between sentences in milliseconds."
@@ -1834,7 +1842,7 @@ msgstr "句子之间的停顿时间（毫秒）。"
 
 #: templates/settings.html:119
 msgid "Paragraph Pause (ms)"
-msgstr "段间停顿(毫秒)"
+msgstr "段间停顿（毫秒）"
 
 #: templates/settings.html:121
 msgid "Pause duration between paragraphs in milliseconds."

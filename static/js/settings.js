@@ -393,19 +393,33 @@ window.deleteMcpToken = async function(tokenId) {
 }
 
 // --- Admin Functions ---
-window.saveGlobalSettings = async function(event) {
+window.saveGlobalSettings = async function(event, force = false) {
     event.preventDefault();
     const form = event.target;
     const data = Object.fromEntries(new FormData(form).entries());
+
+    if (force) {
+        data._force_update = true;
+    }
+
     const response = await fetch('/api/global_settings', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     });
+
     const result = await response.json();
-    alert(result.message || result.error);
-    if (response.ok) {
-        location.reload();
+
+    if (response.ok && result.require_confirmation) {
+        if (confirm(result.warning)) {
+            // 用户确认，强制保存
+            await window.saveGlobalSettings(event, true);
+        }
+    } else {
+        alert(result.message || result.error);
+        if (response.ok) {
+            location.reload();
+        }
     }
 }
 

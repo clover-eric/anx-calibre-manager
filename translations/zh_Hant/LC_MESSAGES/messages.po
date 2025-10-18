@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-13 18:12+0800\n"
+"POT-Creation-Date: 2025-10-18 18:41+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -597,20 +597,28 @@ msgstr "會話未找到或權限被拒絕。"
 msgid "Chat session deleted successfully."
 msgstr "聊天會話已成功刪除。"
 
-#: blueprints/api/settings.py:78
+#: blueprints/api/settings.py:79
 msgid "User settings updated."
 msgstr "使用者設定已更新。"
 
-#: blueprints/api/settings.py:135
+#: blueprints/api/settings.py:147
+#, python-format
+msgid ""
+"There are currently %(count)s audiobook generation task(s) in progress. "
+"Updating the configuration will restart the server workers and interrupt "
+"these tasks. Do you want to continue?"
+msgstr "目前有 %(count)s 個有聲書生成任務正在進行中。更新設定將重新啟動伺服器工作執行緒並中斷這些任務。您確定要繼續嗎？"
+
+#: blueprints/api/settings.py:157
 msgid "Global settings updated."
 msgstr "全域設定已更新。"
 
-#: blueprints/api/settings.py:145
+#: blueprints/api/settings.py:167
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "已清理 %(count)s 個有聲書檔案。"
 
-#: blueprints/api/settings.py:147
+#: blueprints/api/settings.py:169
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "清理過程中發生錯誤：%(error)s"
@@ -1126,7 +1134,6 @@ msgid "Export as Image"
 msgstr "匯出為圖片"
 
 #: static/js/page/translations.js:77
-#, fuzzy
 msgid "Exported by Anx Calibre Manager by ptbsare"
 msgstr "由 ptbsare 的 Anx Calibre Manager 匯出"
 
@@ -1827,7 +1834,7 @@ msgstr "音高。例如：+10Hz 或 -10Hz。"
 
 #: templates/settings.html:114
 msgid "Sentence Pause (ms)"
-msgstr "句間停頓(毫秒)"
+msgstr "句間停頓（毫秒）"
 
 #: templates/settings.html:116
 msgid "Pause duration between sentences in milliseconds."
@@ -1835,7 +1842,7 @@ msgstr "句子之間的停頓時間（毫秒）。"
 
 #: templates/settings.html:119
 msgid "Paragraph Pause (ms)"
-msgstr "段間停頓(毫秒)"
+msgstr "段間停頓（毫秒）"
 
 #: templates/settings.html:121
 msgid "Pause duration between paragraphs in milliseconds."

@@ -8,6 +8,7 @@ import database
 import config_manager
 from utils.audiobook_tasks_db import cleanup_all_audiobooks
 from utils.decorators import admin_required_api
+from utils.audiobook_tasks_db import cleanup_incomplete_tasks
 
 settings_bp = Blueprint('settings', __name__, url_prefix='/api')
 
@@ -129,6 +130,27 @@ def user_settings_api():
 def global_settings_api():
     if request.method == 'POST':
         data = request.get_json()
+        
+        # 检查是否强制执行（用户已确认）
+        force_update = data.pop('_force_update', False)
+        
+        with closing(database.get_db()) as db:
+            active_tasks = db.execute(
+                "SELECT COUNT(*) as count FROM audiobook_tasks WHERE status IN ('progress', 'start')"
+            ).fetchone()['count']
+
+        # 如果不是强制执行，且有活跃任务，则返回确认请求
+        if not force_update and active_tasks > 0:
+            return jsonify({
+                'require_confirmation': True,
+                'active_tasks_count': active_tasks,
+                'warning': _('There are currently %(count)s audiobook generation task(s) in progress. Updating the configuration will restart the server workers and interrupt these tasks. Do you want to continue?', count=active_tasks)
+            }), 200
+        
+        # 如果是强制执行，且有活跃任务，则先清理
+        if force_update and active_tasks > 0:
+            cleanup_incomplete_tasks()
+        
         # Handle checkbox boolean value
         data['CALIBRE_ADD_DUPLICATES'] = data.get('CALIBRE_ADD_DUPLICATES') == 'true'
         config_manager.config.save_config(data)
