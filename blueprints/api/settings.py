@@ -151,8 +151,18 @@ def global_settings_api():
         if force_update and active_tasks > 0:
             cleanup_incomplete_tasks()
         
-        # Handle checkbox boolean value
-        data['CALIBRE_ADD_DUPLICATES'] = data.get('CALIBRE_ADD_DUPLICATES') == 'true'
+        # Handle checkbox boolean values - ensure they are properly converted
+        # These checkboxes send boolean values from frontend, but we need to handle both
+        # boolean and string 'true'/'false' for compatibility
+        for checkbox_field in ['CALIBRE_ADD_DUPLICATES', 'DISABLE_NORMAL_USER_UPLOAD', 'REQUIRE_INVITE_CODE']:
+            if checkbox_field in data:
+                value = data[checkbox_field]
+                # Convert to boolean: handle both boolean type and string 'true'
+                if isinstance(value, bool):
+                    data[checkbox_field] = value
+                else:
+                    data[checkbox_field] = str(value).lower() == 'true'
+        
         config_manager.config.save_config(data)
         return jsonify({'message': _('Global settings updated.')})
     else: # GET
