@@ -87,7 +87,7 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
 ### Voraussetzungen
 
 - [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
-- Ein vorhandener Calibre-Server (optional, aber für die meisten Funktionen erforderlich). Wir empfehlen die Verwendung des [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker-Images.
+- Ein vorhandener Calibre-Server (optional, aber für die meisten Funktionen erforderlich). Wir empfehlen die Verwendung des [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker-Images. Für eine leichtgewichtige Alternative ziehen Sie [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) in Betracht (Hinweis: Der Standardport ist `8085`).
 
 ### Schnellstart (Docker Run)
 
