@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 18:41+0800\n"
+"POT-Creation-Date: 2025-10-18 19:25+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -435,7 +435,8 @@ msgstr "找不到本書的歷史記錄。"
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP 模塊不可用，無法處理書籍內容。"
 
-#: blueprints/api/llm.py:184
+#: blueprints/api/llm.py:184 blueprints/api/service_configs.py:31
+#: blueprints/api/service_configs.py:57
 msgid "Missing required fields."
 msgstr "缺少必填欄位。"
 
@@ -596,6 +597,26 @@ msgstr "會話未找到或權限被拒絕。"
 #: blueprints/api/llm.py:370
 msgid "Chat session deleted successfully."
 msgstr "聊天會話已成功刪除。"
+
+#: blueprints/api/service_configs.py:12 blueprints/api/service_configs.py:34
+msgid "Invalid config type specified."
+msgstr "指定的設定類型無效。"
+
+#: blueprints/api/service_configs.py:45
+msgid "Configuration profile saved successfully."
+msgstr "設定預設集儲存成功。"
+
+#: blueprints/api/service_configs.py:48 blueprints/api/service_configs.py:68
+msgid "A profile with this name already exists."
+msgstr "具有此名稱的設定預設集已存在。"
+
+#: blueprints/api/service_configs.py:66
+msgid "Configuration profile updated successfully."
+msgstr "設定預設集更新成功。"
+
+#: blueprints/api/service_configs.py:75
+msgid "Configuration profile deleted successfully."
+msgstr "設定預設集刪除成功。"
 
 #: blueprints/api/settings.py:79
 msgid "User settings updated."
@@ -772,7 +793,8 @@ msgstr "沒有可用的權杖。"
 msgid "Created at"
 msgstr "建立時間"
 
-#: static/js/settings.js:21 templates/index.html:190
+#: static/js/settings.js:21 templates/index.html:190 templates/settings.html:73
+#: templates/settings.html:141
 msgid "Delete"
 msgstr "刪除"
 
@@ -810,7 +832,7 @@ msgstr "請輸入測試收件人的電子郵件地址。"
 msgid "Edit"
 msgstr "編輯"
 
-#: static/js/settings.js:30 templates/settings.html:435
+#: static/js/settings.js:30 templates/settings.html:455
 msgid "Add"
 msgstr "新增"
 
@@ -869,6 +891,97 @@ msgstr "刪除失敗：{error}"
 #: static/js/settings.js:44
 msgid "Delete failed"
 msgstr "刪除失敗"
+
+#: static/js/settings.js:46
+msgid "Current Settings"
+msgstr "目前設定"
+
+#: static/js/settings.js:47
+msgid "Please enter a name for this TTS profile:"
+msgstr "請為此 TTS 設定預設集輸入一個名稱："
+
+#: static/js/settings.js:48
+msgid "TTS profile saved successfully!"
+msgstr "TTS 設定預設集儲存成功！"
+
+#: static/js/settings.js:49
+msgid "Failed to save TTS profile"
+msgstr "儲存 TTS 設定預設集失敗"
+
+#: static/js/settings.js:50 static/js/settings.js:1018
+msgid "An error occurred while saving the profile"
+msgstr "儲存設定預設集時發生錯誤"
+
+#: static/js/settings.js:51 static/js/settings.js:1028
+msgid "Please select a profile to update"
+msgstr "請選取要更新的設定預設集"
+
+#: static/js/settings.js:52 static/js/settings.js:1035
+#, python-brace-format
+msgid "Update profile \"{name}\"?"
+msgstr "更新設定預設集「{name}」？"
+
+#: static/js/settings.js:53
+msgid "TTS profile updated successfully!"
+msgstr "TTS 設定預設集更新成功！"
+
+#: static/js/settings.js:54
+msgid "Failed to update TTS profile"
+msgstr "更新 TTS 設定預設集失敗"
+
+#: static/js/settings.js:55 static/js/settings.js:1057
+msgid "An error occurred while updating the profile"
+msgstr "更新設定預設集時發生錯誤"
+
+#: static/js/settings.js:56 static/js/settings.js:1067
+msgid "Please select a profile to delete"
+msgstr "請選取要刪除的設定預設集"
+
+#: static/js/settings.js:57 static/js/settings.js:1074
+#, python-brace-format
+msgid "Delete profile \"{name}\"? This cannot be undone."
+msgstr "刪除設定預設集「{name}」？此操作無法復原。"
+
+#: static/js/settings.js:58
+msgid "TTS profile deleted successfully!"
+msgstr "TTS 設定預設集刪除成功！"
+
+#: static/js/settings.js:59
+msgid "Failed to delete TTS profile"
+msgstr "刪除 TTS 設定預設集失敗"
+
+#: static/js/settings.js:60 static/js/settings.js:1090
+msgid "An error occurred while deleting the profile"
+msgstr "刪除設定預設集時發生錯誤"
+
+#: static/js/settings.js:61 static/js/settings.js:994
+msgid "Please enter a name for this LLM profile:"
+msgstr "請為此 LLM 設定預設集輸入一個名稱："
+
+#: static/js/settings.js:62 static/js/settings.js:1012
+msgid "LLM profile saved successfully!"
+msgstr "LLM 設定預設集儲存成功！"
+
+#: static/js/settings.js:63 static/js/settings.js:1015
+msgid "Failed to save LLM profile"
+msgstr "儲存 LLM 設定預設集失敗"
+
+#: static/js/settings.js:64 static/js/settings.js:1051
+msgid "LLM profile updated successfully!"
+msgstr "LLM 設定預設集更新成功！"
+
+#: static/js/settings.js:65 static/js/settings.js:1054
+#, python-format
+msgid "Failed to update LLM profile"
+msgstr "更新 LLM 設定預設集失敗"
+
+#: static/js/settings.js:66 static/js/settings.js:1083
+msgid "LLM profile deleted successfully!"
+msgstr "LLM 設定預設集刪除成功！"
+
+#: static/js/settings.js:67 static/js/settings.js:1087
+msgid "Failed to delete LLM profile"
+msgstr "刪除 LLM 設定預設集失敗"
 
 #: static/js/page/translations.js:10
 msgid "Network response was not ok."
@@ -1536,7 +1649,7 @@ msgid ""
 "(username and password are your login credentials):"
 msgstr "請在 Anx 閱讀器設定頁面輸入 WebDAV 位址以進行同步（使用者名稱和密碼是您的登入憑證）："
 
-#: templates/index.html:152 templates/settings.html:295
+#: templates/index.html:152 templates/settings.html:315
 msgid "Click to copy"
 msgstr "點擊複製"
 
@@ -1577,7 +1690,7 @@ msgid "Select files:"
 msgstr "選取檔案："
 
 #: templates/index.html:222 templates/index.html:239
-#: templates/settings.html:178 templates/settings.html:455
+#: templates/settings.html:198 templates/settings.html:475
 msgid "Cancel"
 msgstr "取消"
 
@@ -1585,7 +1698,7 @@ msgstr "取消"
 msgid "Edit Book Information"
 msgstr "編輯圖書資訊"
 
-#: templates/index.html:240 templates/settings.html:454
+#: templates/index.html:240 templates/settings.html:474
 msgid "Save"
 msgstr "儲存"
 
@@ -1598,13 +1711,13 @@ msgid "Login to Anx Calibre Manager"
 msgstr "登入 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:297
-#: templates/settings.html:437 templates/settings.html:464
+#: templates/settings.html:31 templates/settings.html:317
+#: templates/settings.html:457 templates/settings.html:484
 msgid "Username"
 msgstr "使用者名稱"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:298 templates/settings.html:441
+#: templates/settings.html:318 templates/settings.html:461
 msgid "Password"
 msgstr "密碼"
 
@@ -1632,15 +1745,15 @@ msgstr "圖書閱讀器"
 msgid "TTS Settings"
 msgstr "TTS 設定"
 
-#: templates/reader.html:90 templates/settings.html:99
+#: templates/reader.html:90 templates/settings.html:109
 msgid "Rate"
 msgstr "語速"
 
-#: templates/reader.html:95 templates/settings.html:109
+#: templates/reader.html:95 templates/settings.html:119
 msgid "Pitch"
 msgstr "音高"
 
-#: templates/reader.html:100 templates/settings.html:76
+#: templates/reader.html:100 templates/settings.html:86
 msgid "Voice"
 msgstr "聲音"
 
@@ -1716,7 +1829,7 @@ msgstr "個人資料"
 msgid "Change Password"
 msgstr "變更密碼"
 
-#: templates/settings.html:36 templates/settings.html:343
+#: templates/settings.html:36 templates/settings.html:363
 msgid "Leave blank to keep unchanged"
 msgstr "留空則保持不變"
 
@@ -1775,295 +1888,319 @@ msgid "Audiobook Generation Settings"
 msgstr "有聲書產生設定"
 
 #: templates/settings.html:68
+msgid "TTS Profile"
+msgstr "TTS 設定預設集"
+
+#: templates/settings.html:71 templates/settings.html:139
+msgid "Save Preset"
+msgstr "儲存預設集"
+
+#: templates/settings.html:72 templates/settings.html:140
+msgid "Save As Preset"
+msgstr "另存為預設集"
+
+#: templates/settings.html:75
+msgid "Load, save or delete TTS configuration profiles."
+msgstr "載入、儲存或刪除 TTS 設定預設集。"
+
+#: templates/settings.html:78
 msgid "TTS Provider"
 msgstr "TTS 提供者"
 
-#: templates/settings.html:73
+#: templates/settings.html:83
 msgid "The text-to-speech service provider to use."
 msgstr "要使用的文字轉語音服務提供者。"
 
-#: templates/settings.html:77
+#: templates/settings.html:87
 msgid "Select or type a voice"
 msgstr "選擇或自定義朗讀音色"
 
-#: templates/settings.html:81
+#: templates/settings.html:91
 msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
 msgstr "用於產生的語音。例如，Edge TTS 的 zh-CN-YunjianNeural。"
 
-#: templates/settings.html:84 templates/settings.html:138
+#: templates/settings.html:94 templates/settings.html:158
 msgid "API Key"
 msgstr "API 金鑰"
 
-#: templates/settings.html:86
+#: templates/settings.html:96
 msgid "API key for the selected provider (if required)."
 msgstr "所選提供者的 API 金鑰（如果需要）。"
 
-#: templates/settings.html:89 templates/settings.html:133
+#: templates/settings.html:99 templates/settings.html:153
 msgid "Base URL"
 msgstr "基礎 URL"
 
-#: templates/settings.html:91
+#: templates/settings.html:101
 msgid "Custom base URL for the API (for proxies or self-hosted models)."
 msgstr "API 的自訂基礎 URL（適用於代理或自託管模型）。"
 
-#: templates/settings.html:94 templates/settings.html:143
+#: templates/settings.html:104 templates/settings.html:163
 msgid "Model"
 msgstr "模型"
 
-#: templates/settings.html:96
+#: templates/settings.html:106
 msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
 msgstr "要使用的特定模型，例如 tts-1-hd（如果提供者支援）。"
 
-#: templates/settings.html:101
+#: templates/settings.html:111
 #, python-format
 msgid "Speaking rate. e.g., +10%% or -10%%."
 msgstr "語速。例如：+10%% 或 -10%%。"
 
-#: templates/settings.html:104
+#: templates/settings.html:114
 msgid "Volume"
 msgstr "音量"
 
-#: templates/settings.html:106
+#: templates/settings.html:116
 #, python-format
 msgid "Volume level. e.g., +10%% or -10%%."
 msgstr "音量大小。例如：+10%% 或 -10%%。"
 
-#: templates/settings.html:111
+#: templates/settings.html:121
 msgid "Speaking pitch. e.g., +10Hz or -10Hz."
 msgstr "音高。例如：+10Hz 或 -10Hz。"
 
-#: templates/settings.html:114
+#: templates/settings.html:124
 msgid "Sentence Pause (ms)"
 msgstr "句間停頓（毫秒）"
 
-#: templates/settings.html:116
+#: templates/settings.html:126
 msgid "Pause duration between sentences in milliseconds."
 msgstr "句子之間的停頓時間（毫秒）。"
 
-#: templates/settings.html:119
+#: templates/settings.html:129
 msgid "Paragraph Pause (ms)"
 msgstr "段間停頓（毫秒）"
 
-#: templates/settings.html:121
+#: templates/settings.html:131
 msgid "Pause duration between paragraphs in milliseconds."
 msgstr "段落之間的停頓時間（毫秒）。"
 
-#: templates/settings.html:124
+#: templates/settings.html:134
 msgid "LLM Provider Settings"
 msgstr "LLM 供應商設定"
 
-#: templates/settings.html:126
+#: templates/settings.html:136
+msgid "LLM Profile"
+msgstr "LLM 設定預設集"
+
+#: templates/settings.html:143
+msgid "Load, save or delete LLM configuration profiles."
+msgstr "載入、儲存或刪除 LLM 設定預設集。"
+
+#: templates/settings.html:146
 msgid "LLM Provider"
 msgstr "LLM 供應商"
 
-#: templates/settings.html:130
+#: templates/settings.html:150
 msgid "The Large Language Model provider to use for MCP."
 msgstr "用於 MCP 的大型語言模型供應商。"
 
-#: templates/settings.html:135
+#: templates/settings.html:155
 msgid "Custom base URL for the API (e.g., for proxies or self-hosted models)."
 msgstr "API 的自訂基礎 URL（例如，用於代理或自託管模型）。"
 
-#: templates/settings.html:140
+#: templates/settings.html:160
 msgid "API key for the selected provider."
 msgstr "所選供應商的 API 金鑰。"
 
-#: templates/settings.html:144
+#: templates/settings.html:164
 msgid "Select or type a model"
 msgstr "選取或輸入一個模型"
 
-#: templates/settings.html:148
+#: templates/settings.html:168
 msgid "The specific model to use, e.g., gpt-4o."
 msgstr "要使用的具體模型，例如 gpt-4o。"
 
-#: templates/settings.html:151
+#: templates/settings.html:171
 msgid "Statistics Settings"
 msgstr "統計設定"
 
-#: templates/settings.html:154
+#: templates/settings.html:174
 msgid "Enable Reading Statistics Page"
 msgstr "啟用閱讀統計頁面"
 
-#: templates/settings.html:155
+#: templates/settings.html:175
 msgid "Allows you to view your reading statistics after logging in."
 msgstr "允許您在登入後檢視您的閱讀統計資料。"
 
-#: templates/settings.html:159
+#: templates/settings.html:179
 msgid "Make Statistics Page Public"
 msgstr "將統計頁面設為公開"
 
-#: templates/settings.html:160
+#: templates/settings.html:180
 msgid ""
 "If enabled, your statistics page will be publicly accessible without "
 "needing to log in."
 msgstr "如果啟用，您的統計頁面將無需登入即可公開存取。"
 
-#: templates/settings.html:163
+#: templates/settings.html:183
 msgid "Your Statistics Page URL"
 msgstr "您的統計頁面 URL"
 
-#: templates/settings.html:167
+#: templates/settings.html:187
 msgid "Two-Factor Authentication (2FA)"
 msgstr "兩步驟驗證 (2FA)"
 
-#: templates/settings.html:170
+#: templates/settings.html:190
 msgid "Please use your authenticator app to scan this QR code:"
 msgstr "請使用您的驗證器應用程式掃描此二維碼："
 
-#: templates/settings.html:172
+#: templates/settings.html:192
 msgid "Or manually enter the key:"
 msgstr "或手動輸入金鑰："
 
-#: templates/settings.html:174
+#: templates/settings.html:194
 msgid "Verification Code"
 msgstr "驗證碼"
 
-#: templates/settings.html:175
+#: templates/settings.html:195
 msgid "Enter the 6-digit code to complete setup"
 msgstr "輸入 6 位數代碼以完成設定"
 
-#: templates/settings.html:177
+#: templates/settings.html:197
 msgid "Verify and Enable"
 msgstr "驗證並啟用"
 
-#: templates/settings.html:182
+#: templates/settings.html:202
 msgid "Save User Settings"
 msgstr "儲存使用者設定"
 
-#: templates/settings.html:189
+#: templates/settings.html:209
 msgid "MCP API Tokens"
 msgstr "MCP API 權杖"
 
-#: templates/settings.html:190
+#: templates/settings.html:210
 msgid ""
 "You can use these tokens to interact with your library via the MCP "
 "protocol."
 msgstr "您可以使用這些權杖透過 MCP 協定與您的書庫進行互動。"
 
-#: templates/settings.html:195
+#: templates/settings.html:215
 msgid "Generate New Token"
 msgstr "產生新權杖"
 
-#: templates/settings.html:199
+#: templates/settings.html:219
 msgid "MCP Endpoint"
 msgstr "MCP 端點"
 
-#: templates/settings.html:201
+#: templates/settings.html:221
 msgid "Authentication"
 msgstr "認證"
 
-#: templates/settings.html:202
+#: templates/settings.html:222
 msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
 msgstr "透過在 URL 後附加 `?token=YOUR_TOKEN` 參數進行身分驗證。"
 
-#: templates/settings.html:203
+#: templates/settings.html:223
 msgid "Prompt Examples"
 msgstr "提示詞範例"
 
-#: templates/settings.html:204
+#: templates/settings.html:224
 msgid ""
 "Here are some examples of natural language prompts you can use with an AI"
 " agent. The agent will intelligently call one or more tools to fulfill "
 "your request."
 msgstr "這裡有一些自然語言提示詞的範例，您可以將其用於 AI 代理。代理將智慧地呼叫一個或多個工具來滿足您的請求。"
 
-#: templates/settings.html:207
+#: templates/settings.html:227
 msgid "Simple & Advanced Search"
 msgstr "簡單與進階搜尋"
 
-#: templates/settings.html:209
+#: templates/settings.html:229
 msgid "Find books about Python programming."
 msgstr "尋找關於 Python 程式設計的書籍。"
 
-#: templates/settings.html:212
+#: templates/settings.html:232
 msgid "Search for science fiction books by Isaac Asimov published after 1950."
 msgstr "搜尋以撒·艾西莫夫在 1950 年後出版的科幻小說。"
 
-#: templates/settings.html:216
+#: templates/settings.html:236
 msgid "Book Management"
 msgstr "書籍管理"
 
-#: templates/settings.html:218
+#: templates/settings.html:238
 msgid "What are the 5 most recently added books? Send the first one to my Kindle."
 msgstr "最近新增的 5 本書是哪些？將第一本傳送到我的 Kindle。"
 
-#: templates/settings.html:221
+#: templates/settings.html:241
 msgid "Push the book 'Dune' to my Anx reader."
 msgstr "將書籍《沙丘》推送到我的 Anx 閱讀器。"
 
-#: templates/settings.html:224
+#: templates/settings.html:244
 msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
 msgstr "將我的 Anx 書庫中的《三體》上傳到 Calibre。"
 
-#: templates/settings.html:227
+#: templates/settings.html:247
 msgid "Generate an audiobook for the book 'The Three-Body Problem'."
 msgstr "為書籍《三體》產生有聲書。"
 
-#: templates/settings.html:230
+#: templates/settings.html:250
 msgid ""
 "What is the status of the audiobook generation for 'The Three-Body "
 "Problem'?"
 msgstr "書籍《三體》的有聲書產生狀態如何？"
 
-#: templates/settings.html:234
+#: templates/settings.html:254
 msgid "Content Interaction & Summarization"
 msgstr "內容互動與摘要"
 
-#: templates/settings.html:236
+#: templates/settings.html:256
 msgid "Show me the table of contents for the book 'Foundation'."
 msgstr "顯示書籍《基地》的目錄。"
 
-#: templates/settings.html:239
+#: templates/settings.html:259
 msgid "Fetch the first chapter of 'Foundation' and give me a summary."
 msgstr "擷取《基地》的第一章並給我一份摘要。"
 
-#: templates/settings.html:242
+#: templates/settings.html:262
 msgid ""
 "Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
 "what are the main ideas of psychohistory?"
 msgstr "根據書籍《基地》中的「心理史學家」一章，心理史學的主要思想是什麼？"
 
-#: templates/settings.html:245
+#: templates/settings.html:265
 msgid ""
 "Read the entire book 'The Little Prince' and tell me what the fox's "
 "secret is."
 msgstr "閱讀整本《小王子》，並告訴我狐狸的秘密是什麼。"
 
-#: templates/settings.html:249
+#: templates/settings.html:269
 msgid "Reading Statistics & Progress"
 msgstr "閱讀統計與進度"
 
-#: templates/settings.html:251
+#: templates/settings.html:271
 msgid ""
 "How many words is the book 'Dune' in total, and list the word count for "
 "each chapter."
 msgstr "《沙丘》這本書總共有多少字，並列出每個章節的字數。"
 
-#: templates/settings.html:254
+#: templates/settings.html:274
 msgid "How many books have I read this year?"
 msgstr "我今年讀了多少本書？"
 
-#: templates/settings.html:257
+#: templates/settings.html:277
 msgid "What's my reading progress on 'Dune'?"
 msgstr "我的《沙丘》閱讀進度如何？"
 
-#: templates/settings.html:260
+#: templates/settings.html:280
 msgid ""
 "Who is the author of 'Project Hail Mary' and how long have I been reading"
 " it?"
 msgstr "《Project Hail Mary》的作者是誰？這本書我讀了多久了？"
 
-#: templates/settings.html:265
+#: templates/settings.html:285
 msgid "Available Tools"
 msgstr "可用工具"
 
-#: templates/settings.html:266
+#: templates/settings.html:286
 msgid ""
 "You can get a list of all available tools by calling the `tools/list` "
 "method. The currently supported tools are:"
 msgstr "您可以透過呼叫 `tools/list` 方法取得所有可用工具的清單。目前支援的工具如下："
 
-#: templates/settings.html:268
+#: templates/settings.html:288
 msgid ""
 "Search Calibre books using Calibre's search syntax. Parameters: "
 "`search_expression` (str), `limit` (int, optional)"
@@ -2071,7 +2208,7 @@ msgstr ""
 "使用 Calibre 的搜尋語法搜尋 Calibre 書籍。參數：`search_expression` (str), `limit` (int,"
 " 可選)"
 
-#: templates/settings.html:269
+#: templates/settings.html:289
 msgid ""
 "Get recent books from a library. Parameters: `library_type` (str, \"anx\""
 " or \"calibre\"), `limit` (int, optional)"
@@ -2079,35 +2216,35 @@ msgstr ""
 "從書庫獲取最近的書籍。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `limit` (int, "
 "可選)"
 
-#: templates/settings.html:270
+#: templates/settings.html:290
 msgid ""
 "Get details for a book. Parameters: `library_type` (str, \"anx\" or "
 "\"calibre\"), `book_id` (int)"
 msgstr "獲取書籍的詳細資訊。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
-#: templates/settings.html:271
+#: templates/settings.html:291
 msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
 msgstr "將 Calibre 書籍推送到使用者的 Anx 書庫。參數：`book_id` (int)"
 
-#: templates/settings.html:272
+#: templates/settings.html:292
 msgid ""
 "Upload a book from the user's Anx library to the public Calibre library. "
 "Parameters: `book_id` (int)"
 msgstr "將使用者的 Anx 書庫中的書籍上傳到公共 Calibre 書庫。參數：`book_id` (int)"
 
-#: templates/settings.html:273
+#: templates/settings.html:293
 msgid ""
 "Send a Calibre book to the user's configured Kindle email. Parameters: "
 "`book_id` (int)"
 msgstr "將 Calibre 書籍傳送到使用者設定的 Kindle 電子郵件。參數：`book_id` (int)"
 
-#: templates/settings.html:274
+#: templates/settings.html:294
 msgid ""
 "Get the table of contents for a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
 msgstr "取得書籍的目錄。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
 
-#: templates/settings.html:275
+#: templates/settings.html:295
 msgid ""
 "Get the content of a specific chapter. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
@@ -2115,7 +2252,7 @@ msgstr ""
 "取得特定章節的內容。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int), `chapter_number` (int)"
 
-#: templates/settings.html:276
+#: templates/settings.html:296
 msgid ""
 "Get the entire text content of a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
@@ -2123,7 +2260,7 @@ msgstr ""
 "取得書籍的全部文字內容。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int)"
 
-#: templates/settings.html:277
+#: templates/settings.html:297
 msgid ""
 "Get word count statistics for a book. Parameters: `library_type` (str, "
 "\"anx\" or \"calibre\"), `book_id` (int)"
@@ -2131,17 +2268,17 @@ msgstr ""
 "取得書籍的字數統計資訊。參數：`library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
 "(int)"
 
-#: templates/settings.html:278
+#: templates/settings.html:298
 msgid ""
 "Generate an audiobook for a book. Parameters: `book_id` (int), "
 "`library_type` (str, \"anx\" or \"calibre\")"
 msgstr "為書籍產生有聲書。參數：`book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
 
-#: templates/settings.html:279
+#: templates/settings.html:299
 msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
 msgstr "透過任務 ID 取得有聲書產生狀態。參數：`task_id` (str)"
 
-#: templates/settings.html:280
+#: templates/settings.html:300
 msgid ""
 "Get the latest audiobook task status for a book. Parameters: `book_id` "
 "(int), `library_type` (str, \"anx\" or \"calibre\")"
@@ -2149,7 +2286,7 @@ msgstr ""
 "取得書籍的最新有聲書任務狀態。參數：`book_id` (int), `library_type` (str, \"anx\" 或 "
 "\"calibre\")"
 
-#: templates/settings.html:281
+#: templates/settings.html:301
 msgid ""
 "Get reading statistics for the current user. `time_range` is a required "
 "parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
@@ -2160,67 +2297,67 @@ msgstr ""
 "是一個必要參數，可以是「all」、「today」、「this_week」、「this_month」、「this_year」、最近幾天的天數（例如「7」、「30」）或日期範圍"
 "「YYYY-MM-DD:YYYY-MM-DD」。"
 
-#: templates/settings.html:288
+#: templates/settings.html:308
 msgid "KOReader Sync Settings"
 msgstr "KOReader 同步設定"
 
-#: templates/settings.html:290
+#: templates/settings.html:310
 msgid "Step 1: Configure WebDAV Cloud Storage"
 msgstr "第一步：設定 WebDAV 雲端儲存"
 
-#: templates/settings.html:292
+#: templates/settings.html:312
 msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
 msgstr "在 KOReader 中，前往 `雲端儲存` -> `新增雲端儲存`。"
 
-#: templates/settings.html:293
+#: templates/settings.html:313
 msgid "Select `WebDAV`."
 msgstr "選取 `WebDAV`。"
 
-#: templates/settings.html:294
+#: templates/settings.html:314
 msgid "Server address"
 msgstr "伺服器位址"
 
-#: templates/settings.html:294
+#: templates/settings.html:314
 msgid ""
 "Fill in the address below, and <strong>ensure the path ends with a "
 "`/`</strong>."
 msgstr "填寫以下位址，並<strong>確保路徑以 `/` 結尾</strong>。"
 
-#: templates/settings.html:298
+#: templates/settings.html:318
 msgid "Your Anx Calibre Manager login password."
 msgstr "您的 Anx Calibre Manager登入密碼。"
 
-#: templates/settings.html:299
+#: templates/settings.html:319
 msgid "Folder"
 msgstr "資料夾"
 
-#: templates/settings.html:300
+#: templates/settings.html:320
 msgid ""
 "Click `Connect` and save. You should now be able to see your Anx library "
 "in KOReader's file browser."
 msgstr "點擊 `連線` 並儲存。您現在應該可以在 KOReader 的檔案瀏覽器中看到您的 Anx 書庫。"
 
-#: templates/settings.html:303
+#: templates/settings.html:323
 msgid "Step 2: Install and Configure the Sync Plugin"
 msgstr "第二步：安裝並設定同步外掛程式"
 
-#: templates/settings.html:306
+#: templates/settings.html:326
 msgid "Download Plugin"
 msgstr "下載外掛程式"
 
-#: templates/settings.html:306
+#: templates/settings.html:326
 msgid "Click the button below to download the plugin zip file."
 msgstr "點擊下方按鈕下載外掛程式 zip 檔案。"
 
-#: templates/settings.html:308
+#: templates/settings.html:328
 msgid "Download KOReader Plugin (.zip)"
 msgstr "下載 KOReader 外掛程式 (.zip)"
 
-#: templates/settings.html:311
+#: templates/settings.html:331
 msgid "Install Plugin"
 msgstr "安裝外掛程式"
 
-#: templates/settings.html:311
+#: templates/settings.html:331
 msgid ""
 "Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
 "calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
@@ -2230,339 +2367,339 @@ msgstr ""
 "解壓縮下載的 `.zip` 檔案，您會得到一個名為 `anx-calibre-manager-koreader-plugin.koplugin` "
 "的資料夾。將這個<strong>整個資料夾</strong>複製到您 KOReader 裝置上的 `koreader/plugins/` 目錄中。"
 
-#: templates/settings.html:312
+#: templates/settings.html:332
 msgid "Restart KOReader"
 msgstr "重新啟動 KOReader"
 
-#: templates/settings.html:312
+#: templates/settings.html:332
 msgid ""
 "Completely close and reopen the KOReader application to load the new "
 "plugin."
 msgstr "完全關閉並重新開啟 KOReader 應用程式以載入新的外掛程式。"
 
-#: templates/settings.html:313
+#: templates/settings.html:333
 msgid "Configure Sync Server"
 msgstr "設定同步伺服器"
 
-#: templates/settings.html:315
+#: templates/settings.html:335
 msgid "Important"
 msgstr "重要提示"
 
-#: templates/settings.html:315
+#: templates/settings.html:335
 msgid ""
 "First, please open and start reading a book via the WebDAV set up in the "
 "previous step. The plugin menu will <strong>only appear in the reading "
 "interface</strong>."
 msgstr "首先，請透過上一步設定的 WebDAV 開啟並開始閱讀一本書。外掛程式選單將<strong>僅在閱讀介面中出現</strong>。"
 
-#: templates/settings.html:316
+#: templates/settings.html:336
 msgid ""
 "In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
 "`More tools` -> `ANX Calibre Manager`."
 msgstr "在閱讀介面中，前往 `工具（扳手圖示）` -> `下一頁` -> `更多工具` -> `ANX Calibre Manager`。"
 
-#: templates/settings.html:317
+#: templates/settings.html:337
 msgid "Select `Custom sync server`."
 msgstr "選取 `自訂同步伺服器`。"
 
-#: templates/settings.html:318
+#: templates/settings.html:338
 msgid "Custom sync server address"
 msgstr "自訂同步伺服器位址"
 
-#: templates/settings.html:319
+#: templates/settings.html:339
 msgid ""
 "Return to the previous menu, select `Login`, and enter your Anx Calibre "
 "Manager username and password."
 msgstr "返回上一層選單，選取 `登入`，然後輸入您的 Anx Calibre Manager使用者名稱和密碼。"
 
-#: templates/settings.html:323
+#: templates/settings.html:343
 msgid ""
 "Once configured, the plugin will automatically or manually sync your "
 "reading progress and time. You can adjust settings like sync frequency in"
 " the plugin menu."
 msgstr "設定完成後，外掛程式將自動或手動同步您的閱讀進度和時間。您可以在外掛程式選單中調整同步頻率等設定。"
 
-#: templates/settings.html:324
+#: templates/settings.html:344
 msgid "Note: Only supports epub book synchronization"
 msgstr "注意：僅支援 epub 格式的圖書同步"
 
-#: templates/settings.html:332
+#: templates/settings.html:352
 msgid "Calibre Connection"
 msgstr "Calibre 連線"
 
-#: templates/settings.html:334
+#: templates/settings.html:354
 msgid "Calibre Server URL"
 msgstr "Calibre 伺服器 URL"
 
-#: templates/settings.html:338
+#: templates/settings.html:358
 msgid "Calibre Username"
 msgstr "Calibre 使用者名稱"
 
-#: templates/settings.html:342
+#: templates/settings.html:362
 msgid "Calibre Password"
 msgstr "Calibre 密碼"
 
-#: templates/settings.html:346
+#: templates/settings.html:366
 msgid "Default Calibre Library ID"
 msgstr "預設 Calibre 書庫 ID"
 
-#: templates/settings.html:348
+#: templates/settings.html:368
 msgid ""
 "The default Calibre library ID for browsing, searching, and uploading "
 "books. Usually 'Calibre_Library'."
 msgstr "用於瀏覽、搜尋和上傳圖書的預設 Calibre 書庫 ID。通常是 'Calibre_Library'。"
 
-#: templates/settings.html:352
+#: templates/settings.html:372
 msgid "Allow uploading duplicate books"
 msgstr "允許上傳重複的圖書"
 
-#: templates/settings.html:353
+#: templates/settings.html:373
 msgid ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
 msgstr "如果啟用，即使 Calibre 偵測到重複項，也會將該書新增為新的副本。"
 
-#: templates/settings.html:355
+#: templates/settings.html:375
 msgid "Path Settings"
 msgstr "路徑設定"
 
-#: templates/settings.html:357
+#: templates/settings.html:377
 msgid "WebDAV Root Path"
 msgstr "WebDAV 根路徑"
 
-#: templates/settings.html:359
+#: templates/settings.html:379
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
 msgstr "這是儲存所有使用者 Anx 書庫的基礎路徑。使用者資料夾將在此路徑下自動建立（例如，/webdav/username）。"
 
-#: templates/settings.html:362
+#: templates/settings.html:382
 msgid "Default Settings"
 msgstr "預設設定"
 
-#: templates/settings.html:364
+#: templates/settings.html:384
 msgid "Default Format Priority for New Users"
 msgstr "新使用者的預設格式優先級"
 
-#: templates/settings.html:366
+#: templates/settings.html:386
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
 msgstr "新使用者的預設格式優先級，用逗號分隔，例如：azw3,mobi,epub"
 
-#: templates/settings.html:369
+#: templates/settings.html:389
 msgid "Audiobook Settings"
 msgstr "有聲書設定"
 
-#: templates/settings.html:371
+#: templates/settings.html:391
 msgid "Audiobook File Retention Period (days)"
 msgstr "有聲書檔案保留天數"
 
-#: templates/settings.html:373
+#: templates/settings.html:393
 msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
 msgstr "自動刪除超過此天數的已產生有聲書檔案。設定為 0 以停用清理。"
 
-#: templates/settings.html:376
+#: templates/settings.html:396
 msgid "Manual Cleanup"
 msgstr "手動清理"
 
-#: templates/settings.html:377
+#: templates/settings.html:397
 msgid "Clean Up All Audiobooks Now"
 msgstr "立即清理所有有聲書"
 
-#: templates/settings.html:378
+#: templates/settings.html:398
 msgid ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
 msgstr "立即刪除所有產生的有聲書檔案並更新其資料庫記錄。"
 
-#: templates/settings.html:381
+#: templates/settings.html:401
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "SMTP 設定（用於傳送到 Kindle）"
 
-#: templates/settings.html:383
+#: templates/settings.html:403
 msgid "SMTP Server"
 msgstr "SMTP 伺服器"
 
-#: templates/settings.html:387
+#: templates/settings.html:407
 msgid "SMTP Port"
 msgstr "SMTP 連接埠"
 
-#: templates/settings.html:391
+#: templates/settings.html:411
 msgid "SMTP Username (usually your email)"
 msgstr "SMTP 使用者名稱（通常是您的電子郵件）"
 
-#: templates/settings.html:395
+#: templates/settings.html:415
 msgid "SMTP Password"
 msgstr "SMTP 密碼"
 
-#: templates/settings.html:399
+#: templates/settings.html:419
 msgid "Encryption Method"
 msgstr "加密方式"
 
-#: templates/settings.html:401
+#: templates/settings.html:421
 msgid "None"
 msgstr "無"
 
-#: templates/settings.html:402
+#: templates/settings.html:422
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:403
+#: templates/settings.html:423
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:405
+#: templates/settings.html:425
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
 msgstr "SSL/TLS 通常用於連接埠 465，STARTTLS 通常用於連接埠 587。"
 
-#: templates/settings.html:408
+#: templates/settings.html:428
 msgid "Security"
 msgstr "安全性"
 
-#: templates/settings.html:410
+#: templates/settings.html:430
 msgid "Login Failure Lock Threshold"
 msgstr "登入失敗鎖定閾值"
 
-#: templates/settings.html:412
+#: templates/settings.html:432
 msgid "Set to 0 to disable this feature."
 msgstr "設定為 0 以停用此功能。"
 
-#: templates/settings.html:415
+#: templates/settings.html:435
 msgid "Session Lifetime (days)"
 msgstr "工作階段有效期（天）"
 
-#: templates/settings.html:417
+#: templates/settings.html:437
 msgid "The number of days a user's session remains valid after logging in."
 msgstr "使用者登入後其工作階段保持有效的天數。"
 
-#: templates/settings.html:421
+#: templates/settings.html:441
 msgid "Test Inbox"
 msgstr "測試收件匣"
 
-#: templates/settings.html:422
+#: templates/settings.html:442
 msgid "Enter an email address to receive a test email"
 msgstr "輸入一個電子郵件地址以接收測試郵件"
 
-#: templates/settings.html:425
+#: templates/settings.html:445
 msgid "Send Test Email"
 msgstr "傳送測試郵件"
 
-#: templates/settings.html:426
+#: templates/settings.html:446
 msgid "Save Global Settings"
 msgstr "儲存全域設定"
 
-#: templates/settings.html:435
+#: templates/settings.html:455
 msgid "New User"
 msgstr "新使用者"
 
-#: templates/settings.html:443
+#: templates/settings.html:463
 msgid "Leave blank to not change the existing user's password."
 msgstr "留空則不變更現有使用者的密碼。"
 
-#: templates/settings.html:446 templates/settings.html:465
+#: templates/settings.html:466 templates/settings.html:485
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings.html:448
+#: templates/settings.html:468
 msgid "Normal User"
 msgstr "一般使用者"
 
-#: templates/settings.html:449
+#: templates/settings.html:469
 msgid "Calibre Library Maintainer"
 msgstr "Calibre 書庫維護員"
 
-#: templates/settings.html:450
+#: templates/settings.html:470
 msgid "Administrator"
 msgstr "管理員"
 
-#: templates/settings.html:459
+#: templates/settings.html:479
 msgid "Existing Users"
 msgstr "現有使用者"
 
-#: templates/settings.html:463
+#: templates/settings.html:483
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:466 templates/settings.html:510
+#: templates/settings.html:486 templates/settings.html:530
 msgid "Actions"
 msgstr "操作"
 
-#: templates/settings.html:478
+#: templates/settings.html:498
 msgid "Generate New Invite Code"
 msgstr "產生新的邀請碼"
 
-#: templates/settings.html:480
+#: templates/settings.html:500
 msgid "Custom Invite Code"
 msgstr "自訂邀請碼"
 
-#: templates/settings.html:481
+#: templates/settings.html:501
 msgid "Leave blank to auto-generate"
 msgstr "留空則自動產生"
 
-#: templates/settings.html:482
+#: templates/settings.html:502
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 msgstr "自訂邀請碼（可選）。如果留空，將會產生一個隨機碼。"
 
-#: templates/settings.html:485
+#: templates/settings.html:505
 msgid "Maximum Uses"
 msgstr "最大使用次數"
 
-#: templates/settings.html:487
+#: templates/settings.html:507
 msgid "How many times this invite code can be used"
 msgstr "此邀請碼可使用的次數"
 
-#: templates/settings.html:490
+#: templates/settings.html:510
 msgid "Expires After (Hours)"
 msgstr "過期時間（小時）"
 
-#: templates/settings.html:491
+#: templates/settings.html:511
 msgid "Leave blank for no expiration"
 msgstr "留空則永不過期"
 
-#: templates/settings.html:492
+#: templates/settings.html:512
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "此邀請碼將在此小時數後過期（可選）"
 
-#: templates/settings.html:495
+#: templates/settings.html:515
 msgid "Generate Invite Code"
 msgstr "產生邀請碼"
 
-#: templates/settings.html:499
+#: templates/settings.html:519
 msgid "Existing Invite Codes"
 msgstr "現有邀請碼"
 
-#: templates/settings.html:503
+#: templates/settings.html:523
 msgid "Code"
 msgstr "代碼"
 
-#: templates/settings.html:504
+#: templates/settings.html:524
 msgid "Max Uses"
 msgstr "最大使用次數"
 
-#: templates/settings.html:505
+#: templates/settings.html:525
 msgid "Current Uses"
 msgstr "目前使用次數"
 
-#: templates/settings.html:506
+#: templates/settings.html:526
 msgid "Created By"
 msgstr "建立者"
 
-#: templates/settings.html:507
+#: templates/settings.html:527
 msgid "Created At"
 msgstr "建立於"
 
-#: templates/settings.html:508
+#: templates/settings.html:528
 msgid "Expires At"
 msgstr "過期於"
 
-#: templates/settings.html:509
+#: templates/settings.html:529
 msgid "Status"
 msgstr "狀態"
 

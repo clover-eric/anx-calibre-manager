@@ -199,3 +199,18 @@
     width: 100%;
     box-sizing: border-box;
 }
+/* Profile Controls */
+.profile-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.profile-controls select {
+    flex-grow: 1;
+}
+
+.profile-controls button {
+    flex-shrink: 0;
+    padding: 5px 8px;
+}

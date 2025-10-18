@@ -41,7 +41,30 @@ const t = {
     operationFailed: _('Operation failed'),
     confirmDeleteInvite: _('Are you sure you want to delete this invite code?'),
     deleteFailedWithError: _('Delete failed: {error}'),
-    deleteFailed: _('Delete failed')
+    deleteFailed: _('Delete failed'),
+    // Service Config Profiles
+    currentSettings: _('Current Settings'),
+    enterTTSProfileName: _('Please enter a name for this TTS profile:'),
+    ttsProfileSaved: _('TTS profile saved successfully!'),
+    failedToSaveTTSProfile: _('Failed to save TTS profile'),
+    errorSavingProfile: _('An error occurred while saving the profile'),
+    selectProfileToUpdate: _('Please select a profile to update'),
+    updateProfileConfirm: _('Update profile "{name}"?'),
+    ttsProfileUpdated: _('TTS profile updated successfully!'),
+    failedToUpdateTTSProfile: _('Failed to update TTS profile'),
+    errorUpdatingProfile: _('An error occurred while updating the profile'),
+    selectProfileToDelete: _('Please select a profile to delete'),
+    deleteProfileConfirm: _('Delete profile "{name}"? This cannot be undone.'),
+    ttsProfileDeleted: _('TTS profile deleted successfully!'),
+    failedToDeleteTTSProfile: _('Failed to delete TTS profile'),
+    errorDeletingProfile: _('An error occurred while deleting the profile'),
+    enterLLMProfileName: _('Please enter a name for this LLM profile:'),
+    llmProfileSaved: _('LLM profile saved successfully!'),
+    failedToSaveLLMProfile: _('Failed to save LLM profile'),
+    llmProfileUpdated: _('LLM profile updated successfully!'),
+    failedToUpdateLLMProfile: _('Failed to update LLM profile'),
+    llmProfileDeleted: _('LLM profile deleted successfully!'),
+    failedToDeleteLLMProfile: _('Failed to delete LLM profile')
 };
 
 // --- Tab Control ---
@@ -735,3 +758,372 @@ window.deleteInviteCode = async function(codeId) {
 }
 
 // 邀请码加载已经在 populateForms 函数中处理
+
+// ==================== Service Config Profiles Management ====================
+
+// Storage for loaded profiles
+let ttsProfiles = [];
+let llmProfiles = [];
+
+// --- TTS Profile Functions ---
+async function loadTTSProfiles() {
+    try {
+        const response = await fetch('/api/service_configs/tts');
+        if (response.ok) {
+            ttsProfiles = await response.json();
+            populateTTSProfileSelect();
+        }
+    } catch (error) {
+        console.error('Error loading TTS profiles:', error);
+    }
+}
+
+function populateTTSProfileSelect() {
+    const select = document.getElementById('tts_profile_select');
+    select.innerHTML = '<option value="">-- ' + t.currentSettings + ' --</option>';
+    
+    ttsProfiles.forEach(profile => {
+        const option = document.createElement('option');
+        option.value = profile.id;
+        option.textContent = profile.profile_name;
+        select.appendChild(option);
+    });
+}
+
+function getCurrentTTSFormData() {
+    return {
+        provider: document.getElementById('tts_provider').value,
+        voice: document.getElementById('tts_voice').value,
+        api_key: document.getElementById('tts_api_key').value,
+        base_url: document.getElementById('tts_base_url').value,
+        model: document.getElementById('tts_model').value,
+        rate: document.getElementById('tts_rate').value,
+        volume: document.getElementById('tts_volume').value,
+        pitch: document.getElementById('tts_pitch').value,
+        sentence_pause_ms: document.getElementById('tts_sentence_pause_ms').value,
+        paragraph_pause_ms: document.getElementById('tts_paragraph_pause_ms').value
+    };
+}
+
+function loadTTSFormData(configData) {
+    if (configData.provider) document.getElementById('tts_provider').value = configData.provider;
+    if (configData.voice) document.getElementById('tts_voice').value = configData.voice;
+    if (configData.api_key) document.getElementById('tts_api_key').value = configData.api_key;
+    if (configData.base_url) document.getElementById('tts_base_url').value = configData.base_url;
+    if (configData.model) document.getElementById('tts_model').value = configData.model;
+    if (configData.rate) document.getElementById('tts_rate').value = configData.rate;
+    if (configData.volume) document.getElementById('tts_volume').value = configData.volume;
+    if (configData.pitch) document.getElementById('tts_pitch').value = configData.pitch;
+    if (configData.sentence_pause_ms) document.getElementById('tts_sentence_pause_ms').value = configData.sentence_pause_ms;
+    if (configData.paragraph_pause_ms) document.getElementById('tts_paragraph_pause_ms').value = configData.paragraph_pause_ms;
+    
+    updateTTS_UI();
+}
+
+window.onTTSProfileChange = function() {
+    const select = document.getElementById('tts_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) return;
+    
+    const profile = ttsProfiles.find(p => p.id == profileId);
+    if (profile) {
+        loadTTSFormData(profile.config_data);
+    }
+};
+
+window.saveTTSProfileAsNew = async function() {
+    const profileName = prompt(t.enterTTSProfileName);
+    if (!profileName || !profileName.trim()) return;
+    
+    const configData = getCurrentTTSFormData();
+    
+    try {
+        const response = await fetch('/api/service_configs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                config_type: 'tts',
+                profile_name: profileName.trim(),
+                config_data: configData
+            })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(t.ttsProfileSaved);
+            await loadTTSProfiles();
+        } else {
+            alert(result.error || t.failedToSaveTTSProfile);
+        }
+    } catch (error) {
+        alert(t.errorSavingProfile);
+        console.error(error);
+    }
+};
+
+window.updateTTSProfile = async function() {
+    const select = document.getElementById('tts_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) {
+        alert(t.selectProfileToUpdate);
+        return;
+    }
+    
+    const profile = ttsProfiles.find(p => p.id == profileId);
+    if (!profile) return;
+    
+    if (!confirm(t.updateProfileConfirm.replace('{name}', profile.profile_name))) return;
+    
+    const configData = getCurrentTTSFormData();
+    
+    try {
+        const response = await fetch(`/api/service_configs/${profileId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                profile_name: profile.profile_name,
+                config_data: configData
+            })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(t.ttsProfileUpdated);
+            await loadTTSProfiles();
+        } else {
+            alert(result.error || t.failedToUpdateTTSProfile);
+        }
+    } catch (error) {
+        alert(t.errorUpdatingProfile);
+        console.error(error);
+    }
+};
+
+window.deleteTTSProfile = async function() {
+    const select = document.getElementById('tts_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) {
+        alert(t.selectProfileToDelete);
+        return;
+    }
+    
+    const profile = ttsProfiles.find(p => p.id == profileId);
+    if (!profile) return;
+    
+    if (!confirm(t.deleteProfileConfirm.replace('{name}', profile.profile_name))) return;
+    
+    try {
+        const response = await fetch(`/api/service_configs/${profileId}`, {
+            method: 'DELETE'
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(t.ttsProfileDeleted);
+            await loadTTSProfiles();
+            select.value = '';
+        } else {
+            alert(result.error || t.failedToDeleteTTSProfile);
+        }
+    } catch (error) {
+        alert(t.errorDeletingProfile);
+        console.error(error);
+    }
+};
+
+// --- LLM Profile Functions ---
+async function loadLLMProfiles() {
+    try {
+        const response = await fetch('/api/service_configs/llm');
+        if (response.ok) {
+            llmProfiles = await response.json();
+            populateLLMProfileSelect();
+        }
+    } catch (error) {
+        console.error('Error loading LLM profiles:', error);
+    }
+}
+
+function populateLLMProfileSelect() {
+    const select = document.getElementById('llm_profile_select');
+    select.innerHTML = '<option value="">-- ' + t.currentSettings + ' --</option>';
+    
+    llmProfiles.forEach(profile => {
+        const option = document.createElement('option');
+        option.value = profile.id;
+        option.textContent = profile.profile_name;
+        select.appendChild(option);
+    });
+}
+
+function getCurrentLLMFormData() {
+    return {
+        provider: document.getElementById('llm_provider').value,
+        base_url: document.getElementById('llm_base_url').value,
+        api_key: document.getElementById('llm_api_key').value,
+        model: document.getElementById('llm_model').value
+    };
+}
+
+function loadLLMFormData(configData) {
+    if (configData.provider) document.getElementById('llm_provider').value = configData.provider;
+    if (configData.base_url) document.getElementById('llm_base_url').value = configData.base_url;
+    if (configData.api_key) document.getElementById('llm_api_key').value = configData.api_key;
+    if (configData.model) document.getElementById('llm_model').value = configData.model;
+    
+    toggleLLMSettings();
+    fetchLLMModels();
+}
+
+window.onLLMProfileChange = function() {
+    const select = document.getElementById('llm_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) return;
+    
+    const profile = llmProfiles.find(p => p.id == profileId);
+    if (profile) {
+        loadLLMFormData(profile.config_data);
+    }
+};
+
+window.saveLLMProfileAsNew = async function() {
+    const profileName = prompt(_('Please enter a name for this LLM profile:'));
+    if (!profileName || !profileName.trim()) return;
+    
+    const configData = getCurrentLLMFormData();
+    
+    try {
+        const response = await fetch('/api/service_configs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                config_type: 'llm',
+                profile_name: profileName.trim(),
+                config_data: configData
+            })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(_('LLM profile saved successfully!'));
+            await loadLLMProfiles();
+        } else {
+            alert(result.error || _('Failed to save LLM profile'));
+        }
+    } catch (error) {
+        alert(_('An error occurred while saving the profile'));
+        console.error(error);
+    }
+};
+
+window.updateLLMProfile = async function() {
+    const select = document.getElementById('llm_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) {
+        alert(_('Please select a profile to update'));
+        return;
+    }
+    
+    const profile = llmProfiles.find(p => p.id == profileId);
+    if (!profile) return;
+    
+    if (!confirm(_('Update profile "{name}"?').replace('{name}', profile.profile_name))) return;
+    
+    const configData = getCurrentLLMFormData();
+    
+    try {
+        const response = await fetch(`/api/service_configs/${profileId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                profile_name: profile.profile_name,
+                config_data: configData
+            })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(_('LLM profile updated successfully!'));
+            await loadLLMProfiles();
+        } else {
+            alert(result.error || _('Failed to update LLM profile'));
+        }
+    } catch (error) {
+        alert(_('An error occurred while updating the profile'));
+        console.error(error);
+    }
+};
+
+window.deleteLLMProfile = async function() {
+    const select = document.getElementById('llm_profile_select');
+    const profileId = select.value;
+    
+    if (!profileId) {
+        alert(_('Please select a profile to delete'));
+        return;
+    }
+    
+    const profile = llmProfiles.find(p => p.id == profileId);
+    if (!profile) return;
+    
+    if (!confirm(_('Delete profile "{name}"? This cannot be undone.').replace('{name}', profile.profile_name))) return;
+    
+    try {
+        const response = await fetch(`/api/service_configs/${profileId}`, {
+            method: 'DELETE'
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(_('LLM profile deleted successfully!'));
+            await loadLLMProfiles();
+            select.value = '';
+        } else {
+            alert(result.error || _('Failed to delete LLM profile'));
+        }
+    } catch (error) {
+        alert(_('An error occurred while deleting the profile'));
+        console.error(error);
+    }
+};
+
+// Initialize profile management after DOM is loaded
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load profiles
+    await loadTTSProfiles();
+    await loadLLMProfiles();
+    
+    // Attach event listeners
+    const ttsProfileSelect = document.getElementById('tts_profile_select');
+    const llmProfileSelect = document.getElementById('llm_profile_select');
+    
+    if (ttsProfileSelect) {
+        ttsProfileSelect.addEventListener('change', onTTSProfileChange);
+    }
+    
+    if (llmProfileSelect) {
+        llmProfileSelect.addEventListener('change', onLLMProfileChange);
+    }
+    
+    // Attach button event listeners
+    const saveTTSBtn = document.getElementById('save_tts_profile_as_new');
+    const updateTTSBtn = document.getElementById('update_tts_profile');
+    const deleteTTSBtn = document.getElementById('delete_tts_profile');
+    
+    if (saveTTSBtn) saveTTSBtn.addEventListener('click', saveTTSProfileAsNew);
+    if (updateTTSBtn) updateTTSBtn.addEventListener('click', updateTTSProfile);
+    if (deleteTTSBtn) deleteTTSBtn.addEventListener('click', deleteTTSProfile);
+    
+    const saveLLMBtn = document.getElementById('save_llm_profile_as_new');
+    const updateLLMBtn = document.getElementById('update_llm_profile');
+    const deleteLLMBtn = document.getElementById('delete_llm_profile');
+    
+    if (saveLLMBtn) saveLLMBtn.addEventListener('click', saveLLMProfileAsNew);
+    if (updateLLMBtn) updateLLMBtn.addEventListener('click', updateLLMProfile);
+    if (deleteLLMBtn) deleteLLMBtn.addEventListener('click', deleteLLMProfile);
+});

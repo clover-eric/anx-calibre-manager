@@ -163,6 +163,13 @@ def update_schema_if_needed(db):
             print("Migrating database: creating 'llm_chat_messages' table.")
             create_llm_chat_messages_table(cursor)
             db.commit()
+    
+        # 检查用户服务配置表是否存在
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='user_service_configs'")
+        if cursor.fetchone() is None:
+            print("Migrating database: creating 'user_service_configs' table.")
+            create_user_service_configs_table(cursor)
+            db.commit()
 
 
 def create_audiobook_progress_table(cursor):
@@ -225,6 +232,30 @@ def create_llm_chat_messages_table(cursor):
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (session_id) REFERENCES llm_chat_sessions (id) ON DELETE CASCADE
         );
+    ''')
+
+def create_user_service_configs_table(cursor):
+    """创建用户服务配置表的辅助函数"""
+    cursor.execute('''
+        CREATE TABLE user_service_configs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            config_type TEXT NOT NULL,
+            profile_name TEXT NOT NULL,
+            config_data TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+            UNIQUE(user_id, config_type, profile_name)
+        );
+    ''')
+    cursor.execute('''
+        CREATE TRIGGER update_user_service_configs_updated_at
+        AFTER UPDATE ON user_service_configs
+        FOR EACH ROW
+        BEGIN
+            UPDATE user_service_configs SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+        END;
     ''')
 
 def create_audiobook_tasks_table(cursor):
@@ -343,6 +374,7 @@ def create_schema():
                     create_audiobook_progress_table(cursor)
                     create_llm_chat_sessions_table(cursor)
                     create_llm_chat_messages_table(cursor)
+                    create_user_service_configs_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

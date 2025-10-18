@@ -65,6 +65,16 @@
 
             <h3>{{ _('Audiobook Generation Settings') }}</h3>
             <div class="form-group">
+                <label for="tts_profile_select">{{ _('TTS Profile') }}</label>
+                <div class="profile-controls">
+                    <select id="tts_profile_select" class="form-control"></select>
+                    <button type="button" id="update_tts_profile" class="button-small">{{ _('Save Preset') }}</button>
+                    <button type="button" id="save_tts_profile_as_new" class="button-small">{{ _('Save As Preset') }}</button>
+                    <button type="button" id="delete_tts_profile" class="button-small button-danger">{{ _('Delete') }}</button>
+                </div>
+                <small>{{ _('Load, save or delete TTS configuration profiles.') }}</small>
+            </div>
+            <div class="form-group">
                 <label for="tts_provider">{{ _('TTS Provider') }}</label>
                 <select id="tts_provider" name="tts_provider">
                     <option value="edge">Edge TTS</option>
@@ -122,6 +132,16 @@
             </div>
  
              <h3>{{ _('LLM Provider Settings') }}</h3>
+            <div class="form-group">
+                <label for="llm_profile_select">{{ _('LLM Profile') }}</label>
+                <div class="profile-controls">
+                    <select id="llm_profile_select" class="form-control"></select>
+                    <button type="button" id="update_llm_profile" class="button-small">{{ _('Save Preset') }}</button>
+                    <button type="button" id="save_llm_profile_as_new" class="button-small">{{ _('Save As Preset') }}</button>
+                    <button type="button" id="delete_llm_profile" class="button-small button-danger">{{ _('Delete') }}</button>
+                </div>
+                <small>{{ _('Load, save or delete LLM configuration profiles.') }}</small>
+            </div>
              <div class="form-group">
                 <label for="llm_provider">{{ _('LLM Provider') }}</label>
                 <select id="llm_provider" name="llm_provider">
