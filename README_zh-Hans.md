@@ -169,6 +169,8 @@
 | `CONFIG_DIR` | 用于存放数据库和 `settings.json` 的目录。 | `/config` |
 | `WEBDAV_DIR` | 用于存放 WebDAV 用户文件的基础目录。 | `/webdav` |
 | `SECRET_KEY` | **必需。** 用于会话安全的、长的、随机的字符串。 | `""` |
+| `LOGIN_MAX_ATTEMPTS` | 登录失败锁定阈值。设为 `0` 禁用此功能。 | `5` |
+| `SESSION_LIFETIME_DAYS` | 用户登录后会话保持有效的天数。 | `7` |
 | `CALIBRE_URL` | 您的 Calibre 内容服务器的 URL。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |
 | `CALIBRE_USERNAME` | 您的 Calibre 服务器的用户名。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |
 | `CALIBRE_PASSWORD` | 您的 Calibre 服务器的密码。如有连接问题，请参阅[问题排查](#1-为什么我的-calibre-列表没有书籍)。 | `""` |

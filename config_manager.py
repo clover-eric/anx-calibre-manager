@@ -95,7 +95,7 @@ class ConfigManager:
             # Priority 2: Environment variables
             elif os.environ.get(values['env']):
                 val = os.environ.get(values['env'])
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE']:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SESSION_LIFETIME_DAYS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE']:
                     try:
                         loaded_config[key] = int(val)
                     except (ValueError, TypeError):
@@ -150,7 +150,7 @@ class ConfigManager:
                 if key in ['CALIBRE_PASSWORD', 'SMTP_PASSWORD'] and not value:
                     continue
 
-                if key in ['LOGIN_MAX_ATTEMPTS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE'] and value is not None:
+                if key in ['LOGIN_MAX_ATTEMPTS', 'SESSION_LIFETIME_DAYS', 'SMTP_PORT', 'AUDIOBOOK_CLEANUP_DAYS', 'DEFAULT_TTS_SENTENCE_PAUSE', 'DEFAULT_TTS_PARAGRAPH_PAUSE'] and value is not None:
                     try:
                         current_config[key] = int(value)
                     except (ValueError, TypeError):

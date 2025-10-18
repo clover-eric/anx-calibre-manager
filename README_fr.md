@@ -170,6 +170,8 @@ L'application est configurée via des variables d'environnement.
 | `CONFIG_DIR` | Le répertoire pour la base de données et `settings.json`. | `/config` |
 | `WEBDAV_DIR` | Le répertoire de base pour les fichiers utilisateur WebDAV. | `/webdav` |
 | `SECRET_KEY` | **Requis.** Une longue chaîne aléatoire pour la sécurité des sessions. | `""` |
+| `LOGIN_MAX_ATTEMPTS` | Nombre maximum de tentatives de connexion avant le verrouillage du compte. Définir sur `0` pour désactiver. | `5` |
+| `SESSION_LIFETIME_DAYS` | Nombre de jours pendant lesquels une session utilisateur reste valide après la connexion. | `7` |
 | `CALIBRE_URL` | L'URL de votre serveur de contenu Calibre. Voir [Dépannage](#1-pourquoi-ny-a-t-il-pas-de-livres-dans-ma-liste-calibre) si vous avez des problèmes de connexion. | `""` |
 | `CALIBRE_USERNAME` | Nom d'utilisateur pour votre serveur Calibre. Voir [Dépannage](#1-pourquoi-ny-a-t-il-pas-de-livres-dans-ma-liste-calibre) si vous avez des problèmes de connexion. | `""` |
 | `CALIBRE_PASSWORD` | Mot de passe pour votre serveur Calibre. Voir [Dépannage](#1-pourquoi-ny-a-t-il-pas-de-livres-dans-ma-liste-calibre) si vous avez des problèmes de connexion. | `""` |

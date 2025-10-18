@@ -169,12 +169,13 @@ The application is configured via environment variables.
 | `CONFIG_DIR` | The directory for the database and `settings.json`. | `/config` |
 | `WEBDAV_DIR` | The base directory for WebDAV user files. | `/webdav` |
 | `SECRET_KEY` | **Required.** A long, random string for session security. | `""` |
+| `LOGIN_MAX_ATTEMPTS` | Maximum number of login attempts before account lockout. Set to `0` to disable. | `5` |
+| `SESSION_LIFETIME_DAYS` | Number of days a user session remains valid after login. | `7` |
 | `CALIBRE_URL` | The URL of your Calibre content server. See [Troubleshooting](#1-why-are-there-no-books-in-my-calibre-list) if you have connection issues. | `""` |
 | `CALIBRE_USERNAME` | Username for your Calibre server. See [Troubleshooting](#1-why-are-there-no-books-in-my-calibre-list) if you have connection issues. | `""` |
 | `CALIBRE_PASSWORD` | Password for your Calibre server. See [Troubleshooting](#1-why-are-there-no-books-in-my-calibre-list) if you have connection issues. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | The default Calibre library ID. See [How to find my `library_id`](#4-how-do-i-find-my-library_id) for details. | `Calibre_Library` |
 | `CALIBRE_ADD_DUPLICATES` | Whether to allow uploading duplicate books. | `false` |
-| `REQUIRE_INVITE_CODE` | Whether to require an invite code for registration. | `true` |
 | `DISABLE_NORMAL_USER_UPLOAD` | When set to `true`, it disables the book upload functionality for users with the 'User' role, only Admins and Maintainers can upload books. | `false` |
 | `SMTP_SERVER` | SMTP server for sending emails (e.g., for Kindle). | `""` |
 | `SMTP_PORT` | SMTP port. | `587` |
