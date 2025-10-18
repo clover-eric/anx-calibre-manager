@@ -421,6 +421,11 @@ window.saveGlobalSettings = async function(event, force = false) {
     const form = event.target;
     const data = Object.fromEntries(new FormData(form).entries());
 
+    // Explicitly handle checkboxes to ensure they are sent even when false
+    data.CALIBRE_ADD_DUPLICATES = form.querySelector('#CALIBRE_ADD_DUPLICATES').checked;
+    data.DISABLE_NORMAL_USER_UPLOAD = form.querySelector('#DISABLE_NORMAL_USER_UPLOAD').checked;
+
+
     if (force) {
         data._force_update = true;
     }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 19:25+0800\n"
+"POT-Creation-Date: 2025-10-18 20:03+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -300,76 +300,80 @@ msgstr "在路徑 %(path)s 未找到圖書檔案"
 msgid "Failed to read book file: %(error)s"
 msgstr "讀取圖書檔案失敗：%(error)s"
 
-#: blueprints/api/books.py:452 blueprints/api/calibre.py:85
+#: blueprints/api/books.py:452 blueprints/api/calibre.py:89
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 msgstr "書籍 '%(title)s' 上傳成功，ID：%(book_id)s（但更新來源失敗）。"
 
-#: blueprints/api/books.py:458 blueprints/api/calibre.py:94
+#: blueprints/api/books.py:458 blueprints/api/calibre.py:98
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "書籍 '%(title)s' 上傳成功，ID：%(book_id)s。"
 
-#: blueprints/api/books.py:464 blueprints/api/calibre.py:102
+#: blueprints/api/books.py:464 blueprints/api/calibre.py:106
 msgid "Upload failed, book may already exist."
 msgstr "上傳失敗，書籍可能已存在。"
 
-#: blueprints/api/books.py:470 blueprints/api/calibre.py:108
+#: blueprints/api/books.py:470 blueprints/api/calibre.py:112
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre 伺服器傳回錯誤：%(code)s - %(text)s"
 
-#: blueprints/api/books.py:474 blueprints/api/calibre.py:118
-#: blueprints/api/calibre.py:190
+#: blueprints/api/books.py:474 blueprints/api/calibre.py:122
+#: blueprints/api/calibre.py:194
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "連線至 Calibre 伺服器時發生錯誤：%(error)s"
 
-#: blueprints/api/calibre.py:20
+#: blueprints/api/books.py:480 blueprints/api/calibre.py:21
+msgid "You do not have permission to upload books."
+msgstr "您沒有權限上傳書籍。"
+
+#: blueprints/api/calibre.py:24
 msgid "No file part."
 msgstr "無檔案部分。"
 
-#: blueprints/api/calibre.py:24
+#: blueprints/api/calibre.py:28
 msgid "No selected file."
 msgstr "未選取檔案。"
 
-#: blueprints/api/calibre.py:129
+#: blueprints/api/calibre.py:133
 msgid "Book not found"
 msgstr "找不到書籍"
 
-#: blueprints/api/calibre.py:135
+#: blueprints/api/calibre.py:139
 msgid "You do not have permission to edit this book."
 msgstr "您沒有權限編輯此書籍。"
 
-#: blueprints/api/calibre.py:166
+#: blueprints/api/calibre.py:170
 msgid "No fields provided to update."
 msgstr "未提供要更新的欄位。"
 
-#: blueprints/api/calibre.py:181
+#: blueprints/api/calibre.py:185
 msgid "Metadata updated successfully."
 msgstr "中繼資料更新成功。"
 
-#: blueprints/api/calibre.py:183
+#: blueprints/api/calibre.py:187
 msgid "Calibre returned an unknown response."
 msgstr "Calibre 傳回未知的回應。"
 
-#: blueprints/api/calibre.py:185
+#: blueprints/api/calibre.py:189
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre 傳回無效的 JSON 回應：%(text)s"
 
-#: blueprints/api/calibre.py:188
+#: blueprints/api/calibre.py:192
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "連線至 Calibre 伺服器時發生錯誤：%(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:216
+#: blueprints/api/calibre.py:220
 msgid "Field parameter is required."
 msgstr "欄位參數為必填項。"
 
-#: blueprints/api/calibre.py:220
+#: blueprints/api/calibre.py:224
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "欄位 %(field)s 不支援自動完成。"
@@ -793,7 +797,7 @@ msgstr "沒有可用的權杖。"
 msgid "Created at"
 msgstr "建立時間"
 
-#: static/js/settings.js:21 templates/index.html:190 templates/settings.html:73
+#: static/js/settings.js:21 templates/index.html:194 templates/settings.html:73
 #: templates/settings.html:141
 msgid "Delete"
 msgstr "刪除"
@@ -828,11 +832,11 @@ msgstr "發生錯誤"
 msgid "Please enter a test recipient email address."
 msgstr "請輸入測試收件人的電子郵件地址。"
 
-#: static/js/settings.js:29 templates/index.html:117 templates/index.html:189
+#: static/js/settings.js:29 templates/index.html:119 templates/index.html:193
 msgid "Edit"
 msgstr "編輯"
 
-#: static/js/settings.js:30 templates/settings.html:455
+#: static/js/settings.js:30 templates/settings.html:460
 msgid "Add"
 msgstr "新增"
 
@@ -908,15 +912,15 @@ msgstr "TTS 設定預設集儲存成功！"
 msgid "Failed to save TTS profile"
 msgstr "儲存 TTS 設定預設集失敗"
 
-#: static/js/settings.js:50 static/js/settings.js:1018
+#: static/js/settings.js:50 static/js/settings.js:1023
 msgid "An error occurred while saving the profile"
 msgstr "儲存設定預設集時發生錯誤"
 
-#: static/js/settings.js:51 static/js/settings.js:1028
+#: static/js/settings.js:51 static/js/settings.js:1033
 msgid "Please select a profile to update"
 msgstr "請選取要更新的設定預設集"
 
-#: static/js/settings.js:52 static/js/settings.js:1035
+#: static/js/settings.js:52 static/js/settings.js:1040
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "更新設定預設集「{name}」？"
@@ -929,15 +933,15 @@ msgstr "TTS 設定預設集更新成功！"
 msgid "Failed to update TTS profile"
 msgstr "更新 TTS 設定預設集失敗"
 
-#: static/js/settings.js:55 static/js/settings.js:1057
+#: static/js/settings.js:55 static/js/settings.js:1062
 msgid "An error occurred while updating the profile"
 msgstr "更新設定預設集時發生錯誤"
 
-#: static/js/settings.js:56 static/js/settings.js:1067
+#: static/js/settings.js:56 static/js/settings.js:1072
 msgid "Please select a profile to delete"
 msgstr "請選取要刪除的設定預設集"
 
-#: static/js/settings.js:57 static/js/settings.js:1074
+#: static/js/settings.js:57 static/js/settings.js:1079
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "刪除設定預設集「{name}」？此操作無法復原。"
@@ -950,36 +954,35 @@ msgstr "TTS 設定預設集刪除成功！"
 msgid "Failed to delete TTS profile"
 msgstr "刪除 TTS 設定預設集失敗"
 
-#: static/js/settings.js:60 static/js/settings.js:1090
+#: static/js/settings.js:60 static/js/settings.js:1095
 msgid "An error occurred while deleting the profile"
 msgstr "刪除設定預設集時發生錯誤"
 
-#: static/js/settings.js:61 static/js/settings.js:994
+#: static/js/settings.js:61 static/js/settings.js:999
 msgid "Please enter a name for this LLM profile:"
 msgstr "請為此 LLM 設定預設集輸入一個名稱："
 
-#: static/js/settings.js:62 static/js/settings.js:1012
+#: static/js/settings.js:62 static/js/settings.js:1017
 msgid "LLM profile saved successfully!"
 msgstr "LLM 設定預設集儲存成功！"
 
-#: static/js/settings.js:63 static/js/settings.js:1015
+#: static/js/settings.js:63 static/js/settings.js:1020
 msgid "Failed to save LLM profile"
 msgstr "儲存 LLM 設定預設集失敗"
 
-#: static/js/settings.js:64 static/js/settings.js:1051
+#: static/js/settings.js:64 static/js/settings.js:1056
 msgid "LLM profile updated successfully!"
 msgstr "LLM 設定預設集更新成功！"
 
-#: static/js/settings.js:65 static/js/settings.js:1054
-#, python-format
+#: static/js/settings.js:65 static/js/settings.js:1059
 msgid "Failed to update LLM profile"
 msgstr "更新 LLM 設定預設集失敗"
 
-#: static/js/settings.js:66 static/js/settings.js:1083
+#: static/js/settings.js:66 static/js/settings.js:1088
 msgid "LLM profile deleted successfully!"
 msgstr "LLM 設定預設集刪除成功！"
 
-#: static/js/settings.js:67 static/js/settings.js:1087
+#: static/js/settings.js:67 static/js/settings.js:1092
 msgid "Failed to delete LLM profile"
 msgstr "刪除 LLM 設定預設集失敗"
 
@@ -991,35 +994,35 @@ msgstr "網路回應不正確。"
 msgid "No changes detected."
 msgstr "未偵測到任何變更。"
 
-#: static/js/page/translations.js:13 templates/index.html:50
+#: static/js/page/translations.js:13 templates/index.html:52
 msgid "Calibre Connection Error"
 msgstr "Calibre 連線錯誤"
 
-#: static/js/page/translations.js:14 templates/index.html:54
+#: static/js/page/translations.js:14 templates/index.html:56
 msgid "Calibre Authentication Error"
 msgstr "Calibre 身分驗證錯誤"
 
-#: static/js/page/translations.js:15 templates/index.html:58
+#: static/js/page/translations.js:15 templates/index.html:60
 msgid "Calibre Permission Error"
 msgstr "Calibre 權限錯誤"
 
-#: static/js/page/translations.js:16 templates/index.html:62
+#: static/js/page/translations.js:16 templates/index.html:64
 msgid "Calibre HTTP Error"
 msgstr "Calibre HTTP 錯誤"
 
-#: static/js/page/translations.js:17 templates/index.html:66
+#: static/js/page/translations.js:17 templates/index.html:68
 msgid "Calibre Request Error"
 msgstr "Calibre 請求錯誤"
 
-#: static/js/page/translations.js:18 templates/index.html:51
-#: templates/index.html:55 templates/index.html:59 templates/index.html:63
-#: templates/index.html:67
+#: static/js/page/translations.js:18 templates/index.html:53
+#: templates/index.html:57 templates/index.html:61 templates/index.html:65
+#: templates/index.html:69
 msgid "Reason:"
 msgstr "原因："
 
-#: static/js/page/translations.js:19 templates/index.html:52
-#: templates/index.html:56 templates/index.html:60 templates/index.html:64
-#: templates/index.html:68
+#: static/js/page/translations.js:19 templates/index.html:54
+#: templates/index.html:58 templates/index.html:62 templates/index.html:66
+#: templates/index.html:70
 msgid "Solution:"
 msgstr "解決方案："
 
@@ -1044,11 +1047,11 @@ msgid ""
 "correct."
 msgstr "請確認「設定」->「Calibre 設定」中的使用者名稱和密碼是否正確。"
 
-#: static/js/page/translations.js:23 templates/index.html:71
+#: static/js/page/translations.js:23 templates/index.html:73
 msgid "Original Error:"
 msgstr "原始錯誤："
 
-#: static/js/page/translations.js:24 templates/index.html:72
+#: static/js/page/translations.js:24 templates/index.html:74
 msgid "Request URL (click to test):"
 msgstr "請求 URL（點擊測試）："
 
@@ -1161,7 +1164,7 @@ msgid "Reading Progress (%)"
 msgstr "閱讀進度 (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:106 templates/index.html:182
+#: templates/index.html:108 templates/index.html:184
 msgid "Description"
 msgstr "描述"
 
@@ -1175,12 +1178,12 @@ msgid ""
 " to apply."
 msgstr "Calibre 圖書的中繼資料更新是非同步的，可能需要一些時間才能生效。"
 
-#: static/js/page/translations.js:55 templates/index.html:96
-#: templates/index.html:175
+#: static/js/page/translations.js:55 templates/index.html:98
+#: templates/index.html:177
 msgid "Publisher"
 msgstr "出版社"
 
-#: static/js/page/translations.js:56 templates/index.html:97
+#: static/js/page/translations.js:56 templates/index.html:99
 msgid "Publication Date"
 msgstr "出版日期"
 
@@ -1454,7 +1457,7 @@ msgstr "返回主書庫"
 msgid "Calibre Library"
 msgstr "Calibre 書庫"
 
-#: templates/audio_player.html:29 templates/index.html:149
+#: templates/audio_player.html:29 templates/index.html:151
 msgid "Anx Library"
 msgstr "Anx 書庫"
 
@@ -1491,12 +1494,12 @@ msgstr "設定"
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:100
+#: templates/base.html:106 templates/index.html:3 templates/index.html:102
 msgid "Library"
 msgstr "書庫"
 
 #: templates/base.html:110 templates/chat_player.html:54
-#: templates/index.html:113
+#: templates/index.html:115
 msgid "Anx"
 msgstr "Anx"
 
@@ -1520,7 +1523,7 @@ msgstr "請我喝杯咖啡 ☕"
 msgid "AI Chat"
 msgstr "AI 聊天"
 
-#: templates/chat_player.html:53 templates/index.html:188
+#: templates/chat_player.html:53 templates/index.html:191
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -1556,149 +1559,149 @@ msgstr "首頁"
 msgid "Search Calibre books..."
 msgstr "搜尋 Calibre 圖書..."
 
-#: templates/index.html:25 templates/index.html:223
+#: templates/index.html:26 templates/index.html:227
 msgid "Upload"
 msgstr "上傳"
 
-#: templates/index.html:29 templates/index.html:130
+#: templates/index.html:31 templates/index.html:132
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "共 %(total_books)s 本書 (第 %(page)s/%(total_pages)s 頁)"
 
-#: templates/index.html:34 templates/index.html:135
+#: templates/index.html:36 templates/index.html:137
 msgid "20/page"
 msgstr "20/頁"
 
-#: templates/index.html:35 templates/index.html:136
+#: templates/index.html:37 templates/index.html:138
 msgid "50/page"
 msgstr "50/頁"
 
-#: templates/index.html:36 templates/index.html:137
+#: templates/index.html:38 templates/index.html:139
 msgid "100/page"
 msgstr "100/頁"
 
-#: templates/index.html:38 templates/index.html:139
+#: templates/index.html:40 templates/index.html:141
 msgid "Previous"
 msgstr "上一頁"
 
-#: templates/index.html:40 templates/index.html:141
+#: templates/index.html:42 templates/index.html:143
 msgid "Go"
 msgstr "前往"
 
-#: templates/index.html:41 templates/index.html:142
+#: templates/index.html:43 templates/index.html:144
 msgid "Next"
 msgstr "下一頁"
 
-#: templates/index.html:51
+#: templates/index.html:53
 msgid "Could not connect to the Calibre server."
 msgstr "無法連線至 Calibre 伺服器。"
 
-#: templates/index.html:55
+#: templates/index.html:57
 msgid "The server returned a 401 Unauthorized error."
 msgstr "伺服器傳回 401 未經授權錯誤。"
 
-#: templates/index.html:59
+#: templates/index.html:61
 msgid "The server returned a 403 Forbidden error."
 msgstr "伺服器傳回 403 禁止存取錯誤。"
 
-#: templates/index.html:63
+#: templates/index.html:65
 #, python-format
 msgid "The server returned an HTTP %(status_code)s error."
 msgstr "伺服器傳回 HTTP %(status_code)s 錯誤。"
 
-#: templates/index.html:67
+#: templates/index.html:69
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "連線至 Calibre 時發生未知錯誤。"
 
-#: templates/index.html:88 templates/index.html:168
+#: templates/index.html:90 templates/index.html:170
 msgid "Ask AI"
 msgstr "詢問 AI"
 
-#: templates/index.html:94 templates/index.html:174 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:176 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "評分"
 
-#: templates/index.html:95
+#: templates/index.html:97
 msgid "Formats"
 msgstr "格式"
 
-#: templates/index.html:104
+#: templates/index.html:106
 msgid "Read Date"
 msgstr "閱讀日期"
 
-#: templates/index.html:111 templates/index.html:187
+#: templates/index.html:113 templates/index.html:189
 msgid "Download"
 msgstr "下載"
 
-#: templates/index.html:112
+#: templates/index.html:114
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:121 templates/index.html:193
+#: templates/index.html:123 templates/index.html:197
 msgid "Generate Audiobook"
 msgstr "產生有聲書"
 
-#: templates/index.html:126
+#: templates/index.html:128
 msgid "No books in Calibre library."
 msgstr "Calibre 書庫中沒有圖書。"
 
-#: templates/index.html:152
+#: templates/index.html:154
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "請在 Anx 閱讀器設定頁面輸入 WebDAV 位址以進行同步（使用者名稱和密碼是您的登入憑證）："
 
-#: templates/index.html:152 templates/settings.html:315
+#: templates/index.html:154 templates/settings.html:315
 msgid "Click to copy"
 msgstr "點擊複製"
 
-#: templates/index.html:176
+#: templates/index.html:178
 msgid "Reading Progress"
 msgstr "閱讀進度"
 
-#: templates/index.html:177 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "總閱讀時間"
 
-#: templates/index.html:178
+#: templates/index.html:180
 msgid "Note Count"
 msgstr "筆記數量"
 
-#: templates/index.html:179
+#: templates/index.html:181
 msgid "Creation Time"
 msgstr "建立時間"
 
-#: templates/index.html:180
+#: templates/index.html:182
 msgid "Update Time"
 msgstr "更新時間"
 
-#: templates/index.html:181
+#: templates/index.html:183
 msgid "Producer"
 msgstr "製作者"
 
-#: templates/index.html:199
+#: templates/index.html:203
 msgid "No books in Anx library."
 msgstr "Anx 書庫中沒有圖書。"
 
-#: templates/index.html:211
+#: templates/index.html:215
 msgid "Upload Books"
 msgstr "上傳圖書"
 
-#: templates/index.html:217
+#: templates/index.html:221
 msgid "Select files:"
 msgstr "選取檔案："
 
-#: templates/index.html:222 templates/index.html:239
-#: templates/settings.html:198 templates/settings.html:475
+#: templates/index.html:226 templates/index.html:243
+#: templates/settings.html:198 templates/settings.html:480
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:232
+#: templates/index.html:236
 msgid "Edit Book Information"
 msgstr "編輯圖書資訊"
 
-#: templates/index.html:240 templates/settings.html:474
+#: templates/index.html:244 templates/settings.html:479
 msgid "Save"
 msgstr "儲存"
 
@@ -1712,12 +1715,12 @@ msgstr "登入 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:457 templates/settings.html:484
+#: templates/settings.html:462 templates/settings.html:489
 msgid "Username"
 msgstr "使用者名稱"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:461
+#: templates/settings.html:318 templates/settings.html:466
 msgid "Password"
 msgstr "密碼"
 
@@ -2459,247 +2462,257 @@ msgid ""
 "duplicate."
 msgstr "如果啟用，即使 Calibre 偵測到重複項，也會將該書新增為新的副本。"
 
-#: templates/settings.html:375
+#: templates/settings.html:377
+msgid "Disable Uploads for Normal Users"
+msgstr "停用一般使用者的上傳功能"
+
+#: templates/settings.html:378
+msgid ""
+"If enabled, users with the \"user\" role will not be able to upload books"
+" to Calibre."
+msgstr "如果啟用，具有「使用者」角色的使用者將無法上傳書籍至 Calibre。"
+
+#: templates/settings.html:380
 msgid "Path Settings"
 msgstr "路徑設定"
 
-#: templates/settings.html:377
+#: templates/settings.html:382
 msgid "WebDAV Root Path"
 msgstr "WebDAV 根路徑"
 
-#: templates/settings.html:379
+#: templates/settings.html:384
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
 msgstr "這是儲存所有使用者 Anx 書庫的基礎路徑。使用者資料夾將在此路徑下自動建立（例如，/webdav/username）。"
 
-#: templates/settings.html:382
+#: templates/settings.html:387
 msgid "Default Settings"
 msgstr "預設設定"
 
-#: templates/settings.html:384
+#: templates/settings.html:389
 msgid "Default Format Priority for New Users"
 msgstr "新使用者的預設格式優先級"
 
-#: templates/settings.html:386
+#: templates/settings.html:391
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
 msgstr "新使用者的預設格式優先級，用逗號分隔，例如：azw3,mobi,epub"
 
-#: templates/settings.html:389
+#: templates/settings.html:394
 msgid "Audiobook Settings"
 msgstr "有聲書設定"
 
-#: templates/settings.html:391
+#: templates/settings.html:396
 msgid "Audiobook File Retention Period (days)"
 msgstr "有聲書檔案保留天數"
 
-#: templates/settings.html:393
+#: templates/settings.html:398
 msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
 msgstr "自動刪除超過此天數的已產生有聲書檔案。設定為 0 以停用清理。"
 
-#: templates/settings.html:396
+#: templates/settings.html:401
 msgid "Manual Cleanup"
 msgstr "手動清理"
 
-#: templates/settings.html:397
+#: templates/settings.html:402
 msgid "Clean Up All Audiobooks Now"
 msgstr "立即清理所有有聲書"
 
-#: templates/settings.html:398
+#: templates/settings.html:403
 msgid ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
 msgstr "立即刪除所有產生的有聲書檔案並更新其資料庫記錄。"
 
-#: templates/settings.html:401
+#: templates/settings.html:406
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "SMTP 設定（用於傳送到 Kindle）"
 
-#: templates/settings.html:403
+#: templates/settings.html:408
 msgid "SMTP Server"
 msgstr "SMTP 伺服器"
 
-#: templates/settings.html:407
+#: templates/settings.html:412
 msgid "SMTP Port"
 msgstr "SMTP 連接埠"
 
-#: templates/settings.html:411
+#: templates/settings.html:416
 msgid "SMTP Username (usually your email)"
 msgstr "SMTP 使用者名稱（通常是您的電子郵件）"
 
-#: templates/settings.html:415
+#: templates/settings.html:420
 msgid "SMTP Password"
 msgstr "SMTP 密碼"
 
-#: templates/settings.html:419
+#: templates/settings.html:424
 msgid "Encryption Method"
 msgstr "加密方式"
 
-#: templates/settings.html:421
+#: templates/settings.html:426
 msgid "None"
 msgstr "無"
 
-#: templates/settings.html:422
+#: templates/settings.html:427
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:423
+#: templates/settings.html:428
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:425
+#: templates/settings.html:430
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
 msgstr "SSL/TLS 通常用於連接埠 465，STARTTLS 通常用於連接埠 587。"
 
-#: templates/settings.html:428
+#: templates/settings.html:433
 msgid "Security"
 msgstr "安全性"
 
-#: templates/settings.html:430
+#: templates/settings.html:435
 msgid "Login Failure Lock Threshold"
 msgstr "登入失敗鎖定閾值"
 
-#: templates/settings.html:432
+#: templates/settings.html:437
 msgid "Set to 0 to disable this feature."
 msgstr "設定為 0 以停用此功能。"
 
-#: templates/settings.html:435
+#: templates/settings.html:440
 msgid "Session Lifetime (days)"
 msgstr "工作階段有效期（天）"
 
-#: templates/settings.html:437
+#: templates/settings.html:442
 msgid "The number of days a user's session remains valid after logging in."
 msgstr "使用者登入後其工作階段保持有效的天數。"
 
-#: templates/settings.html:441
+#: templates/settings.html:446
 msgid "Test Inbox"
 msgstr "測試收件匣"
 
-#: templates/settings.html:442
+#: templates/settings.html:447
 msgid "Enter an email address to receive a test email"
 msgstr "輸入一個電子郵件地址以接收測試郵件"
 
-#: templates/settings.html:445
+#: templates/settings.html:450
 msgid "Send Test Email"
 msgstr "傳送測試郵件"
 
-#: templates/settings.html:446
+#: templates/settings.html:451
 msgid "Save Global Settings"
 msgstr "儲存全域設定"
 
-#: templates/settings.html:455
+#: templates/settings.html:460
 msgid "New User"
 msgstr "新使用者"
 
-#: templates/settings.html:463
+#: templates/settings.html:468
 msgid "Leave blank to not change the existing user's password."
 msgstr "留空則不變更現有使用者的密碼。"
 
-#: templates/settings.html:466 templates/settings.html:485
+#: templates/settings.html:471 templates/settings.html:490
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings.html:468
+#: templates/settings.html:473
 msgid "Normal User"
 msgstr "一般使用者"
 
-#: templates/settings.html:469
+#: templates/settings.html:474
 msgid "Calibre Library Maintainer"
 msgstr "Calibre 書庫維護員"
 
-#: templates/settings.html:470
+#: templates/settings.html:475
 msgid "Administrator"
 msgstr "管理員"
 
-#: templates/settings.html:479
+#: templates/settings.html:484
 msgid "Existing Users"
 msgstr "現有使用者"
 
-#: templates/settings.html:483
+#: templates/settings.html:488
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:486 templates/settings.html:530
+#: templates/settings.html:491 templates/settings.html:535
 msgid "Actions"
 msgstr "操作"
 
-#: templates/settings.html:498
+#: templates/settings.html:503
 msgid "Generate New Invite Code"
 msgstr "產生新的邀請碼"
 
-#: templates/settings.html:500
+#: templates/settings.html:505
 msgid "Custom Invite Code"
 msgstr "自訂邀請碼"
 
-#: templates/settings.html:501
+#: templates/settings.html:506
 msgid "Leave blank to auto-generate"
 msgstr "留空則自動產生"
 
-#: templates/settings.html:502
+#: templates/settings.html:507
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 msgstr "自訂邀請碼（可選）。如果留空，將會產生一個隨機碼。"
 
-#: templates/settings.html:505
+#: templates/settings.html:510
 msgid "Maximum Uses"
 msgstr "最大使用次數"
 
-#: templates/settings.html:507
+#: templates/settings.html:512
 msgid "How many times this invite code can be used"
 msgstr "此邀請碼可使用的次數"
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Expires After (Hours)"
 msgstr "過期時間（小時）"
 
-#: templates/settings.html:511
+#: templates/settings.html:516
 msgid "Leave blank for no expiration"
 msgstr "留空則永不過期"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "此邀請碼將在此小時數後過期（可選）"
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Generate Invite Code"
 msgstr "產生邀請碼"
 
-#: templates/settings.html:519
+#: templates/settings.html:524
 msgid "Existing Invite Codes"
 msgstr "現有邀請碼"
 
-#: templates/settings.html:523
+#: templates/settings.html:528
 msgid "Code"
 msgstr "代碼"
 
-#: templates/settings.html:524
+#: templates/settings.html:529
 msgid "Max Uses"
 msgstr "最大使用次數"
 
-#: templates/settings.html:525
+#: templates/settings.html:530
 msgid "Current Uses"
 msgstr "目前使用次數"
 
-#: templates/settings.html:526
+#: templates/settings.html:531
 msgid "Created By"
 msgstr "建立者"
 
-#: templates/settings.html:527
+#: templates/settings.html:532
 msgid "Created At"
 msgstr "建立於"
 
-#: templates/settings.html:528
+#: templates/settings.html:533
 msgid "Expires At"
 msgstr "過期於"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Status"
 msgstr "狀態"
 

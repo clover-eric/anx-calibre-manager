@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 19:25+0800\n"
+"POT-Creation-Date: 2025-10-18 20:03+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -312,7 +312,7 @@ msgstr "Book file not found at path: %(path)s"
 msgid "Failed to read book file: %(error)s"
 msgstr "Failed to read book file: %(error)s"
 
-#: blueprints/api/books.py:452 blueprints/api/calibre.py:85
+#: blueprints/api/books.py:452 blueprints/api/calibre.py:89
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
@@ -321,69 +321,73 @@ msgstr ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 
-#: blueprints/api/books.py:458 blueprints/api/calibre.py:94
+#: blueprints/api/books.py:458 blueprints/api/calibre.py:98
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 
-#: blueprints/api/books.py:464 blueprints/api/calibre.py:102
+#: blueprints/api/books.py:464 blueprints/api/calibre.py:106
 msgid "Upload failed, book may already exist."
 msgstr "Upload failed, book may already exist."
 
-#: blueprints/api/books.py:470 blueprints/api/calibre.py:108
+#: blueprints/api/books.py:470 blueprints/api/calibre.py:112
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre server returned an error: %(code)s - %(text)s"
 
-#: blueprints/api/books.py:474 blueprints/api/calibre.py:118
-#: blueprints/api/calibre.py:190
+#: blueprints/api/books.py:474 blueprints/api/calibre.py:122
+#: blueprints/api/calibre.py:194
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Error connecting to Calibre server: %(error)s"
 
-#: blueprints/api/calibre.py:20
+#: blueprints/api/books.py:480 blueprints/api/calibre.py:21
+msgid "You do not have permission to upload books."
+msgstr "You do not have permission to upload books."
+
+#: blueprints/api/calibre.py:24
 msgid "No file part."
 msgstr "No file part."
 
-#: blueprints/api/calibre.py:24
+#: blueprints/api/calibre.py:28
 msgid "No selected file."
 msgstr "No selected file."
 
-#: blueprints/api/calibre.py:129
+#: blueprints/api/calibre.py:133
 msgid "Book not found"
 msgstr "Book not found"
 
-#: blueprints/api/calibre.py:135
+#: blueprints/api/calibre.py:139
 msgid "You do not have permission to edit this book."
 msgstr "You do not have permission to edit this book."
 
-#: blueprints/api/calibre.py:166
+#: blueprints/api/calibre.py:170
 msgid "No fields provided to update."
 msgstr "No fields provided to update."
 
-#: blueprints/api/calibre.py:181
+#: blueprints/api/calibre.py:185
 msgid "Metadata updated successfully."
 msgstr "Metadata updated successfully."
 
-#: blueprints/api/calibre.py:183
+#: blueprints/api/calibre.py:187
 msgid "Calibre returned an unknown response."
 msgstr "Calibre returned an unknown response."
 
-#: blueprints/api/calibre.py:185
+#: blueprints/api/calibre.py:189
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre returned an invalid JSON response: %(text)s"
 
-#: blueprints/api/calibre.py:188
+#: blueprints/api/calibre.py:192
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Error connecting to Calibre server: %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:216
+#: blueprints/api/calibre.py:220
 msgid "Field parameter is required."
 msgstr "Field parameter is required."
 
-#: blueprints/api/calibre.py:220
+#: blueprints/api/calibre.py:224
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Completions not supported for field: %(field)s"
@@ -826,7 +830,7 @@ msgstr "No available tokens."
 msgid "Created at"
 msgstr "Created at"
 
-#: static/js/settings.js:21 templates/index.html:190 templates/settings.html:73
+#: static/js/settings.js:21 templates/index.html:194 templates/settings.html:73
 #: templates/settings.html:141
 msgid "Delete"
 msgstr "Delete"
@@ -863,11 +867,11 @@ msgstr "An error occurred"
 msgid "Please enter a test recipient email address."
 msgstr "Please enter a test recipient email address."
 
-#: static/js/settings.js:29 templates/index.html:117 templates/index.html:189
+#: static/js/settings.js:29 templates/index.html:119 templates/index.html:193
 msgid "Edit"
 msgstr "Edit"
 
-#: static/js/settings.js:30 templates/settings.html:455
+#: static/js/settings.js:30 templates/settings.html:460
 msgid "Add"
 msgstr "Add"
 
@@ -943,15 +947,15 @@ msgstr "TTS profile saved successfully!"
 msgid "Failed to save TTS profile"
 msgstr "Failed to save TTS profile"
 
-#: static/js/settings.js:50 static/js/settings.js:1018
+#: static/js/settings.js:50 static/js/settings.js:1023
 msgid "An error occurred while saving the profile"
 msgstr "An error occurred while saving the profile"
 
-#: static/js/settings.js:51 static/js/settings.js:1028
+#: static/js/settings.js:51 static/js/settings.js:1033
 msgid "Please select a profile to update"
 msgstr "Please select a profile to update"
 
-#: static/js/settings.js:52 static/js/settings.js:1035
+#: static/js/settings.js:52 static/js/settings.js:1040
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "Update profile \"{name}\"?"
@@ -964,15 +968,15 @@ msgstr "TTS profile updated successfully!"
 msgid "Failed to update TTS profile"
 msgstr "Failed to update TTS profile"
 
-#: static/js/settings.js:55 static/js/settings.js:1057
+#: static/js/settings.js:55 static/js/settings.js:1062
 msgid "An error occurred while updating the profile"
 msgstr "An error occurred while updating the profile"
 
-#: static/js/settings.js:56 static/js/settings.js:1067
+#: static/js/settings.js:56 static/js/settings.js:1072
 msgid "Please select a profile to delete"
 msgstr "Please select a profile to delete"
 
-#: static/js/settings.js:57 static/js/settings.js:1074
+#: static/js/settings.js:57 static/js/settings.js:1079
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "Delete profile \"{name}\"? This cannot be undone."
@@ -985,36 +989,35 @@ msgstr "TTS profile deleted successfully!"
 msgid "Failed to delete TTS profile"
 msgstr "Failed to delete TTS profile"
 
-#: static/js/settings.js:60 static/js/settings.js:1090
+#: static/js/settings.js:60 static/js/settings.js:1095
 msgid "An error occurred while deleting the profile"
 msgstr "An error occurred while deleting the profile"
 
-#: static/js/settings.js:61 static/js/settings.js:994
+#: static/js/settings.js:61 static/js/settings.js:999
 msgid "Please enter a name for this LLM profile:"
 msgstr "Please enter a name for this LLM profile:"
 
-#: static/js/settings.js:62 static/js/settings.js:1012
+#: static/js/settings.js:62 static/js/settings.js:1017
 msgid "LLM profile saved successfully!"
 msgstr "LLM profile saved successfully!"
 
-#: static/js/settings.js:63 static/js/settings.js:1015
+#: static/js/settings.js:63 static/js/settings.js:1020
 msgid "Failed to save LLM profile"
 msgstr "Failed to save LLM profile"
 
-#: static/js/settings.js:64 static/js/settings.js:1051
+#: static/js/settings.js:64 static/js/settings.js:1056
 msgid "LLM profile updated successfully!"
 msgstr "LLM profile updated successfully!"
 
-#: static/js/settings.js:65 static/js/settings.js:1054
-#, python-format
+#: static/js/settings.js:65 static/js/settings.js:1059
 msgid "Failed to update LLM profile"
 msgstr "Failed to update LLM profile"
 
-#: static/js/settings.js:66 static/js/settings.js:1083
+#: static/js/settings.js:66 static/js/settings.js:1088
 msgid "LLM profile deleted successfully!"
 msgstr "LLM profile deleted successfully!"
 
-#: static/js/settings.js:67 static/js/settings.js:1087
+#: static/js/settings.js:67 static/js/settings.js:1092
 msgid "Failed to delete LLM profile"
 msgstr "Failed to delete LLM profile"
 
@@ -1026,35 +1029,35 @@ msgstr "Network response was not ok."
 msgid "No changes detected."
 msgstr "No changes detected."
 
-#: static/js/page/translations.js:13 templates/index.html:50
+#: static/js/page/translations.js:13 templates/index.html:52
 msgid "Calibre Connection Error"
 msgstr "Calibre Connection Error"
 
-#: static/js/page/translations.js:14 templates/index.html:54
+#: static/js/page/translations.js:14 templates/index.html:56
 msgid "Calibre Authentication Error"
 msgstr "Calibre Authentication Error"
 
-#: static/js/page/translations.js:15 templates/index.html:58
+#: static/js/page/translations.js:15 templates/index.html:60
 msgid "Calibre Permission Error"
 msgstr "Calibre Permission Error"
 
-#: static/js/page/translations.js:16 templates/index.html:62
+#: static/js/page/translations.js:16 templates/index.html:64
 msgid "Calibre HTTP Error"
 msgstr "Calibre HTTP Error"
 
-#: static/js/page/translations.js:17 templates/index.html:66
+#: static/js/page/translations.js:17 templates/index.html:68
 msgid "Calibre Request Error"
 msgstr "Calibre Request Error"
 
-#: static/js/page/translations.js:18 templates/index.html:51
-#: templates/index.html:55 templates/index.html:59 templates/index.html:63
-#: templates/index.html:67
+#: static/js/page/translations.js:18 templates/index.html:53
+#: templates/index.html:57 templates/index.html:61 templates/index.html:65
+#: templates/index.html:69
 msgid "Reason:"
 msgstr "Reason:"
 
-#: static/js/page/translations.js:19 templates/index.html:52
-#: templates/index.html:56 templates/index.html:60 templates/index.html:64
-#: templates/index.html:68
+#: static/js/page/translations.js:19 templates/index.html:54
+#: templates/index.html:58 templates/index.html:62 templates/index.html:66
+#: templates/index.html:70
 msgid "Solution:"
 msgstr "Solution:"
 
@@ -1084,11 +1087,11 @@ msgstr ""
 "Verify that the username and password in Settings -> Calibre Config are "
 "correct."
 
-#: static/js/page/translations.js:23 templates/index.html:71
+#: static/js/page/translations.js:23 templates/index.html:73
 msgid "Original Error:"
 msgstr "Original Error:"
 
-#: static/js/page/translations.js:24 templates/index.html:72
+#: static/js/page/translations.js:24 templates/index.html:74
 msgid "Request URL (click to test):"
 msgstr "Request URL (click to test):"
 
@@ -1207,7 +1210,7 @@ msgid "Reading Progress (%)"
 msgstr "Reading Progress (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:106 templates/index.html:182
+#: templates/index.html:108 templates/index.html:184
 msgid "Description"
 msgstr "Description"
 
@@ -1223,12 +1226,12 @@ msgstr ""
 "Metadata updates for Calibre books are asynchronous and may take a moment"
 " to apply."
 
-#: static/js/page/translations.js:55 templates/index.html:96
-#: templates/index.html:175
+#: static/js/page/translations.js:55 templates/index.html:98
+#: templates/index.html:177
 msgid "Publisher"
 msgstr "Publisher"
 
-#: static/js/page/translations.js:56 templates/index.html:97
+#: static/js/page/translations.js:56 templates/index.html:99
 msgid "Publication Date"
 msgstr "Publication Date"
 
@@ -1506,7 +1509,7 @@ msgstr "Back to main library"
 msgid "Calibre Library"
 msgstr "Calibre Library"
 
-#: templates/audio_player.html:29 templates/index.html:149
+#: templates/audio_player.html:29 templates/index.html:151
 msgid "Anx Library"
 msgstr "Anx Library"
 
@@ -1543,12 +1546,12 @@ msgstr "Settings"
 msgid "Logout"
 msgstr "Logout"
 
-#: templates/base.html:106 templates/index.html:3 templates/index.html:100
+#: templates/base.html:106 templates/index.html:3 templates/index.html:102
 msgid "Library"
 msgstr "Library"
 
 #: templates/base.html:110 templates/chat_player.html:54
-#: templates/index.html:113
+#: templates/index.html:115
 msgid "Anx"
 msgstr "Anx"
 
@@ -1572,7 +1575,7 @@ msgstr "Buy me a Coffee ☕"
 msgid "AI Chat"
 msgstr "AI Chat"
 
-#: templates/chat_player.html:53 templates/index.html:188
+#: templates/chat_player.html:53 templates/index.html:191
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -1608,94 +1611,94 @@ msgstr "Home"
 msgid "Search Calibre books..."
 msgstr "Search Calibre books..."
 
-#: templates/index.html:25 templates/index.html:223
+#: templates/index.html:26 templates/index.html:227
 msgid "Upload"
 msgstr "Upload"
 
-#: templates/index.html:29 templates/index.html:130
+#: templates/index.html:31 templates/index.html:132
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:34 templates/index.html:135
+#: templates/index.html:36 templates/index.html:137
 msgid "20/page"
 msgstr "20/page"
 
-#: templates/index.html:35 templates/index.html:136
+#: templates/index.html:37 templates/index.html:138
 msgid "50/page"
 msgstr "50/page"
 
-#: templates/index.html:36 templates/index.html:137
+#: templates/index.html:38 templates/index.html:139
 msgid "100/page"
 msgstr "100/page"
 
-#: templates/index.html:38 templates/index.html:139
+#: templates/index.html:40 templates/index.html:141
 msgid "Previous"
 msgstr "Previous"
 
-#: templates/index.html:40 templates/index.html:141
+#: templates/index.html:42 templates/index.html:143
 msgid "Go"
 msgstr "Go"
 
-#: templates/index.html:41 templates/index.html:142
+#: templates/index.html:43 templates/index.html:144
 msgid "Next"
 msgstr "Next"
 
-#: templates/index.html:51
+#: templates/index.html:53
 msgid "Could not connect to the Calibre server."
 msgstr "Could not connect to the Calibre server."
 
-#: templates/index.html:55
+#: templates/index.html:57
 msgid "The server returned a 401 Unauthorized error."
 msgstr "The server returned a 401 Unauthorized error."
 
-#: templates/index.html:59
+#: templates/index.html:61
 msgid "The server returned a 403 Forbidden error."
 msgstr "The server returned a 403 Forbidden error."
 
-#: templates/index.html:63
+#: templates/index.html:65
 #, python-format
 msgid "The server returned an HTTP %(status_code)s error."
 msgstr "The server returned an HTTP %(status_code)s error."
 
-#: templates/index.html:67
+#: templates/index.html:69
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "An unknown error occurred while connecting to Calibre."
 
-#: templates/index.html:88 templates/index.html:168
+#: templates/index.html:90 templates/index.html:170
 msgid "Ask AI"
 msgstr "Ask AI"
 
-#: templates/index.html:94 templates/index.html:174 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:176 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Rating"
 
-#: templates/index.html:95
+#: templates/index.html:97
 msgid "Formats"
 msgstr "Formats"
 
-#: templates/index.html:104
+#: templates/index.html:106
 msgid "Read Date"
 msgstr "Read Date"
 
-#: templates/index.html:111 templates/index.html:187
+#: templates/index.html:113 templates/index.html:189
 msgid "Download"
 msgstr "Download"
 
-#: templates/index.html:112
+#: templates/index.html:114
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:121 templates/index.html:193
+#: templates/index.html:123 templates/index.html:197
 msgid "Generate Audiobook"
 msgstr "Generate Audiobook"
 
-#: templates/index.html:126
+#: templates/index.html:128
 msgid "No books in Calibre library."
 msgstr "No books in Calibre library."
 
-#: templates/index.html:152
+#: templates/index.html:154
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -1703,56 +1706,56 @@ msgstr ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 
-#: templates/index.html:152 templates/settings.html:315
+#: templates/index.html:154 templates/settings.html:315
 msgid "Click to copy"
 msgstr "Click to copy"
 
-#: templates/index.html:176
+#: templates/index.html:178
 msgid "Reading Progress"
 msgstr "Reading Progress"
 
-#: templates/index.html:177 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Total Reading Time"
 
-#: templates/index.html:178
+#: templates/index.html:180
 msgid "Note Count"
 msgstr "Note Count"
 
-#: templates/index.html:179
+#: templates/index.html:181
 msgid "Creation Time"
 msgstr "Creation Time"
 
-#: templates/index.html:180
+#: templates/index.html:182
 msgid "Update Time"
 msgstr "Update Time"
 
-#: templates/index.html:181
+#: templates/index.html:183
 msgid "Producer"
 msgstr "Producer"
 
-#: templates/index.html:199
+#: templates/index.html:203
 msgid "No books in Anx library."
 msgstr "No books in Anx library."
 
-#: templates/index.html:211
+#: templates/index.html:215
 msgid "Upload Books"
 msgstr "Upload Books"
 
-#: templates/index.html:217
+#: templates/index.html:221
 msgid "Select files:"
 msgstr "Select files:"
 
-#: templates/index.html:222 templates/index.html:239
-#: templates/settings.html:198 templates/settings.html:475
+#: templates/index.html:226 templates/index.html:243
+#: templates/settings.html:198 templates/settings.html:480
 msgid "Cancel"
 msgstr "Cancel"
 
-#: templates/index.html:232
+#: templates/index.html:236
 msgid "Edit Book Information"
 msgstr "Edit Book Information"
 
-#: templates/index.html:240 templates/settings.html:474
+#: templates/index.html:244 templates/settings.html:479
 msgid "Save"
 msgstr "Save"
 
@@ -1766,12 +1769,12 @@ msgstr "Login to Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:457 templates/settings.html:484
+#: templates/settings.html:462 templates/settings.html:489
 msgid "Username"
 msgstr "Username"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:461
+#: templates/settings.html:318 templates/settings.html:466
 msgid "Password"
 msgstr "Password"
 
@@ -2571,15 +2574,27 @@ msgstr ""
 "If enabled, Calibre will add the book as a new copy even if it detects a "
 "duplicate."
 
-#: templates/settings.html:375
+#: templates/settings.html:377
+msgid "Disable Uploads for Normal Users"
+msgstr "Disable Uploads for Normal Users"
+
+#: templates/settings.html:378
+msgid ""
+"If enabled, users with the \"user\" role will not be able to upload books"
+" to Calibre."
+msgstr ""
+"If enabled, users with the \"user\" role will not be able to upload books"
+" to Calibre."
+
+#: templates/settings.html:380
 msgid "Path Settings"
 msgstr "Path Settings"
 
-#: templates/settings.html:377
+#: templates/settings.html:382
 msgid "WebDAV Root Path"
 msgstr "WebDAV Root Path"
 
-#: templates/settings.html:379
+#: templates/settings.html:384
 msgid ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
@@ -2587,15 +2602,15 @@ msgstr ""
 "This is the base path for storing all user Anx libraries. User folders "
 "will be automatically created under this path (e.g., /webdav/username)."
 
-#: templates/settings.html:382
+#: templates/settings.html:387
 msgid "Default Settings"
 msgstr "Default Settings"
 
-#: templates/settings.html:384
+#: templates/settings.html:389
 msgid "Default Format Priority for New Users"
 msgstr "Default Format Priority for New Users"
 
-#: templates/settings.html:386
+#: templates/settings.html:391
 msgid ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
@@ -2603,15 +2618,15 @@ msgstr ""
 "Default format priority for new users, separated by commas, e.g., "
 "azw3,mobi,epub"
 
-#: templates/settings.html:389
+#: templates/settings.html:394
 msgid "Audiobook Settings"
 msgstr "Audiobook Settings"
 
-#: templates/settings.html:391
+#: templates/settings.html:396
 msgid "Audiobook File Retention Period (days)"
 msgstr "Audiobook File Retention Period (days)"
 
-#: templates/settings.html:393
+#: templates/settings.html:398
 msgid ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
@@ -2619,15 +2634,15 @@ msgstr ""
 "Automatically delete generated audiobook files older than this number of "
 "days. Set to 0 to disable cleanup."
 
-#: templates/settings.html:396
+#: templates/settings.html:401
 msgid "Manual Cleanup"
 msgstr "Manual Cleanup"
 
-#: templates/settings.html:397
+#: templates/settings.html:402
 msgid "Clean Up All Audiobooks Now"
 msgstr "Clean Up All Audiobooks Now"
 
-#: templates/settings.html:398
+#: templates/settings.html:403
 msgid ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
@@ -2635,43 +2650,43 @@ msgstr ""
 "Immediately delete all generated audiobook files and update their "
 "database records."
 
-#: templates/settings.html:401
+#: templates/settings.html:406
 msgid "SMTP Settings (for Send to Kindle)"
 msgstr "SMTP Settings (for Send to Kindle)"
 
-#: templates/settings.html:403
+#: templates/settings.html:408
 msgid "SMTP Server"
 msgstr "SMTP Server"
 
-#: templates/settings.html:407
+#: templates/settings.html:412
 msgid "SMTP Port"
 msgstr "SMTP Port"
 
-#: templates/settings.html:411
+#: templates/settings.html:416
 msgid "SMTP Username (usually your email)"
 msgstr "SMTP Username (usually your email)"
 
-#: templates/settings.html:415
+#: templates/settings.html:420
 msgid "SMTP Password"
 msgstr "SMTP Password"
 
-#: templates/settings.html:419
+#: templates/settings.html:424
 msgid "Encryption Method"
 msgstr "Encryption Method"
 
-#: templates/settings.html:421
+#: templates/settings.html:426
 msgid "None"
 msgstr "None"
 
-#: templates/settings.html:422
+#: templates/settings.html:427
 msgid "STARTTLS"
 msgstr "STARTTLS"
 
-#: templates/settings.html:423
+#: templates/settings.html:428
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: templates/settings.html:425
+#: templates/settings.html:430
 msgid ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
@@ -2679,91 +2694,91 @@ msgstr ""
 "SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
 "587."
 
-#: templates/settings.html:428
+#: templates/settings.html:433
 msgid "Security"
 msgstr "Security"
 
-#: templates/settings.html:430
+#: templates/settings.html:435
 msgid "Login Failure Lock Threshold"
 msgstr "Login Failure Lock Threshold"
 
-#: templates/settings.html:432
+#: templates/settings.html:437
 msgid "Set to 0 to disable this feature."
 msgstr "Set to 0 to disable this feature."
 
-#: templates/settings.html:435
+#: templates/settings.html:440
 msgid "Session Lifetime (days)"
 msgstr "Session Lifetime (days)"
 
-#: templates/settings.html:437
+#: templates/settings.html:442
 msgid "The number of days a user's session remains valid after logging in."
 msgstr "The number of days a user's session remains valid after logging in."
 
-#: templates/settings.html:441
+#: templates/settings.html:446
 msgid "Test Inbox"
 msgstr "Test Inbox"
 
-#: templates/settings.html:442
+#: templates/settings.html:447
 msgid "Enter an email address to receive a test email"
 msgstr "Enter an email address to receive a test email"
 
-#: templates/settings.html:445
+#: templates/settings.html:450
 msgid "Send Test Email"
 msgstr "Send Test Email"
 
-#: templates/settings.html:446
+#: templates/settings.html:451
 msgid "Save Global Settings"
 msgstr "Save Global Settings"
 
-#: templates/settings.html:455
+#: templates/settings.html:460
 msgid "New User"
 msgstr "New User"
 
-#: templates/settings.html:463
+#: templates/settings.html:468
 msgid "Leave blank to not change the existing user's password."
 msgstr "Leave blank to not change the existing user's password."
 
-#: templates/settings.html:466 templates/settings.html:485
+#: templates/settings.html:471 templates/settings.html:490
 msgid "Role"
 msgstr "Role"
 
-#: templates/settings.html:468
+#: templates/settings.html:473
 msgid "Normal User"
 msgstr "Normal User"
 
-#: templates/settings.html:469
+#: templates/settings.html:474
 msgid "Calibre Library Maintainer"
 msgstr "Calibre Library Maintainer"
 
-#: templates/settings.html:470
+#: templates/settings.html:475
 msgid "Administrator"
 msgstr "Administrator"
 
-#: templates/settings.html:479
+#: templates/settings.html:484
 msgid "Existing Users"
 msgstr "Existing Users"
 
-#: templates/settings.html:483
+#: templates/settings.html:488
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:486 templates/settings.html:530
+#: templates/settings.html:491 templates/settings.html:535
 msgid "Actions"
 msgstr "Actions"
 
-#: templates/settings.html:498
+#: templates/settings.html:503
 msgid "Generate New Invite Code"
 msgstr "Generate New Invite Code"
 
-#: templates/settings.html:500
+#: templates/settings.html:505
 msgid "Custom Invite Code"
 msgstr "Custom Invite Code"
 
-#: templates/settings.html:501
+#: templates/settings.html:506
 msgid "Leave blank to auto-generate"
 msgstr "Leave blank to auto-generate"
 
-#: templates/settings.html:502
+#: templates/settings.html:507
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
@@ -2771,59 +2786,59 @@ msgstr ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 
-#: templates/settings.html:505
+#: templates/settings.html:510
 msgid "Maximum Uses"
 msgstr "Maximum Uses"
 
-#: templates/settings.html:507
+#: templates/settings.html:512
 msgid "How many times this invite code can be used"
 msgstr "How many times this invite code can be used"
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Expires After (Hours)"
 msgstr "Expires After (Hours)"
 
-#: templates/settings.html:511
+#: templates/settings.html:516
 msgid "Leave blank for no expiration"
 msgstr "Leave blank for no expiration"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "Number of hours after which this invite code will expire (optional)"
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Generate Invite Code"
 msgstr "Generate Invite Code"
 
-#: templates/settings.html:519
+#: templates/settings.html:524
 msgid "Existing Invite Codes"
 msgstr "Existing Invite Codes"
 
-#: templates/settings.html:523
+#: templates/settings.html:528
 msgid "Code"
 msgstr "Code"
 
-#: templates/settings.html:524
+#: templates/settings.html:529
 msgid "Max Uses"
 msgstr "Max Uses"
 
-#: templates/settings.html:525
+#: templates/settings.html:530
 msgid "Current Uses"
 msgstr "Current Uses"
 
-#: templates/settings.html:526
+#: templates/settings.html:531
 msgid "Created By"
 msgstr "Created By"
 
-#: templates/settings.html:527
+#: templates/settings.html:532
 msgid "Created At"
 msgstr "Created At"
 
-#: templates/settings.html:528
+#: templates/settings.html:533
 msgid "Expires At"
 msgstr "Expires At"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Status"
 msgstr "Status"
 

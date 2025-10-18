@@ -475,6 +475,10 @@ def _push_anx_to_calibre_logic(user_dict, book_id):
 
 @books_bp.route('/push_anx_to_calibre/<int:book_id>', methods=['POST'])
 def push_anx_to_calibre_api(book_id):
+    # Permission check for normal users
+    if config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD') and g.user.role == 'user':
+        return jsonify({'error': _('You do not have permission to upload books.')}), 403
+
     user_dict = {'username': g.user.username}
     result = _push_anx_to_calibre_logic(user_dict, book_id)
     

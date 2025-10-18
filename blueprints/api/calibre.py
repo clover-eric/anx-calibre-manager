@@ -16,6 +16,10 @@ calibre_bp = Blueprint('calibre', __name__, url_prefix='/api')
 
 @calibre_bp.route('/upload_to_calibre', methods=['POST'])
 def upload_to_calibre_api():
+    # Permission check for normal users
+    if config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD') and g.user.role == 'user':
+        return jsonify({'error': _('You do not have permission to upload books.')}), 403
+
     if 'books' not in request.files:
         return jsonify({'error': _('No file part.')}), 400
     

@@ -41,6 +41,7 @@ DEFAULT_CONFIG = {
 
     # Registration settings
     'REQUIRE_INVITE_CODE': {'env': 'REQUIRE_INVITE_CODE', 'default': True},
+    'DISABLE_NORMAL_USER_UPLOAD': {'env': 'DISABLE_NORMAL_USER_UPLOAD', 'default': False},
 
     # Text-to-Speech (TTS) settings for Audiobook Generation
     'DEFAULT_TTS_PROVIDER': {'env': 'DEFAULT_TTS_PROVIDER', 'default': 'edge'},
@@ -99,7 +100,7 @@ class ConfigManager:
                         loaded_config[key] = int(val)
                     except (ValueError, TypeError):
                         loaded_config[key] = values['default']
-                elif key in ['REQUIRE_INVITE_CODE']:
+                elif key in ['REQUIRE_INVITE_CODE', 'DISABLE_NORMAL_USER_UPLOAD']:
                     # Handle boolean values from environment variables
                     loaded_config[key] = val.lower() in ('true', '1', 'yes', 'on')
                 else:

@@ -372,6 +372,11 @@
                 <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">{{ _('Allow uploading duplicate books') }}</label></br>
                 <small>{{ _('If enabled, Calibre will add the book as a new copy even if it detects a duplicate.') }}</small>
             </div>
+            <div class="form-group">
+                <input type="checkbox" id="DISABLE_NORMAL_USER_UPLOAD" name="DISABLE_NORMAL_USER_UPLOAD" value="true" style="width: auto; margin-right: 5px;">
+                <label for="DISABLE_NORMAL_USER_UPLOAD" style="display: inline;">{{ _('Disable Uploads for Normal Users') }}</label></br>
+                <small>{{ _('If enabled, users with the "user" role will not be able to upload books to Calibre.') }}</small>
+            </div>
             <h3>{{ _('Path Settings') }}</h3>
             <div class="form-group">
                 <label for="WEBDAV_ROOT">{{ _('WebDAV Root Path') }}</label>

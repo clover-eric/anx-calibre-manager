@@ -22,7 +22,9 @@
                         <input type="text" name="search" placeholder="{{ _('Search Calibre books...') }}" value="{{ search_query }}">
                         <button type="submit" class="button-primary"><i class="fas fa-search"></i></button>
                     </form>
+                    {% if not (disable_normal_user_upload and g.user.role == 'user') %}
                     <button type="button" class="button-primary" data-action="show-upload-modal">{{ _('Upload') }}</button>
+                    {% endif %}
                 </div>
             </div>
             <div class="pagination-controls" data-total-pages="{{ pagination.total_pages }}">
@@ -185,7 +187,9 @@
                     <div class="actions">
                         <div class="actions-main">
                             <button class="button" data-action="download-anx" data-id="{{ book.id }}"><span class="button-text">{{ _('Download') }}</span></button>
+                            {% if not (disable_normal_user_upload and g.user.role == 'user') %}
                             <button class="button button-secondary" data-action="push-anx-to-calibre" data-id="{{ book.id }}"><span class="button-text">{{ _('Calibre') }}</span></button>
+                            {% endif %}
                             <button class="button edit-button" data-action="edit-anx" data-id="{{ book.id }}"><span class="button-text">{{ _('Edit') }}</span></button>
                             <button class="button button-danger" data-action="delete-anx" data-id="{{ book.id }}"><span class="button-text">{{ _('Delete') }}</span></button>
                         </div>

@@ -193,7 +193,8 @@ def create_app():
             available_languages=app.config['LANGUAGES'],
             get_locale=get_locale,
             cache_buster=int(time.time()),  # Cache buster
-            app_version=APP_VERSION
+            app_version=APP_VERSION,
+            disable_normal_user_upload=config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD', False)
         )
 
     @app.before_request
