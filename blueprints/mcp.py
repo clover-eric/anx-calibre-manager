@@ -104,7 +104,7 @@ def get_book_details(library_type: str, book_id: int):
         raw_details = get_raw_calibre_book_details(book_id)
         return format_calibre_book_data_for_mcp(raw_details)
     elif library_type == 'anx':
-        return get_raw_anx_book_details(g.user['username'], book_id)
+        return get_raw_anx_book_details(g.user['username'], book_id, as_dict=True)
     else:
         return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
@@ -127,8 +127,8 @@ def get_table_of_contents(library_type: str, book_id: int):
             book_details = get_raw_calibre_book_details(book_id)
             book_title = book_details.get('title', 'N/A')
         elif library_type == 'anx':
-            book_details = get_raw_anx_book_details(g.user['username'], book_id)
-            book_title = book_details.get('title', 'N/A')
+            book_details = get_raw_anx_book_details(g.user['username'], book_id, as_dict=True)
+            book_title = book_details.get('title', 'N/A') if book_details else 'N/A'
         else:
             return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
@@ -155,8 +155,8 @@ def get_chapter_content(library_type: str, book_id: int, chapter_number: int):
             book_details = get_raw_calibre_book_details(book_id)
             book_title = book_details.get('title', 'N/A')
         elif library_type == 'anx':
-            book_details = get_raw_anx_book_details(g.user['username'], book_id)
-            book_title = book_details.get('title', 'N/A')
+            book_details = get_raw_anx_book_details(g.user['username'], book_id, as_dict=True)
+            book_title = book_details.get('title', 'N/A') if book_details else 'N/A'
         else:
             return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
@@ -183,8 +183,8 @@ def get_entire_book_content(library_type: str, book_id: int):
             book_details = get_raw_calibre_book_details(book_id)
             book_title = book_details.get('title', 'N/A')
         elif library_type == 'anx':
-            book_details = get_raw_anx_book_details(g.user['username'], book_id)
-            book_title = book_details.get('title', 'N/A')
+            book_details = get_raw_anx_book_details(g.user['username'], book_id, as_dict=True)
+            book_title = book_details.get('title', 'N/A') if book_details else 'N/A'
         else:
             return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 
@@ -217,8 +217,8 @@ def get_word_count_statistics(library_type: str, book_id: int):
             book_details = get_raw_calibre_book_details(book_id)
             book_title = book_details.get('title', 'N/A')
         elif library_type == 'anx':
-            book_details = get_raw_anx_book_details(g.user['username'], book_id)
-            book_title = book_details.get('title', 'N/A')
+            book_details = get_raw_anx_book_details(g.user['username'], book_id, as_dict=True)
+            book_title = book_details.get('title', 'N/A') if book_details else 'N/A'
         else:
             return {"error": "无效的书库类型。请使用 'calibre' 或 'anx'。"}
 

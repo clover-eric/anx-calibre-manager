@@ -446,6 +446,11 @@
                 <label for="REQUIRE_INVITE_CODE" style="display: inline;">{{ _('Require Invite Code for Registration') }}</label></br>
                 <small>{{ _('If enabled, users must provide a valid invite code to register. Admins can generate invite codes in the Invite Code Management tab.') }}</small>
             </div>
+            <div class="form-group">
+                <input type="checkbox" id="ENABLE_ACTIVITY_LOG" name="ENABLE_ACTIVITY_LOG" value="true" style="width: auto; margin-right: 5px;">
+                <label for="ENABLE_ACTIVITY_LOG" style="display: inline;">{{ _('Enable User Activity Logging') }}</label></br>
+                <small>{{ _('If enabled, the system will record user activities such as login, download, upload, and other operations in the database for audit purposes.') }}</small>
+            </div>
 
             <div class="form-group">
                 <label for="test_email_address">{{ _('Test Inbox') }}</label>

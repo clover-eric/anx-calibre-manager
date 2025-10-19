@@ -9,6 +9,7 @@ import config_manager
 from utils.audiobook_tasks_db import cleanup_all_audiobooks
 from utils.decorators import admin_required_api
 from utils.audiobook_tasks_db import cleanup_incomplete_tasks
+from utils.activity_logger import log_activity, ActivityType
 
 settings_bp = Blueprint('settings', __name__, url_prefix='/api')
 
@@ -22,7 +23,9 @@ def user_settings_api():
             params = []
 
             # Password update
+            password_updated = False
             if data.get('new_password'):
+                password_updated = True
                 hashed = bcrypt.hashpw(data['new_password'].encode('utf-8'), bcrypt.gensalt())
                 kosync_userkey = hashlib.md5(data['new_password'].encode('utf-8')).hexdigest()
                 updates.append("password_hash = ?")
@@ -75,6 +78,12 @@ def user_settings_api():
                 # 如果更新了语言设置，同步更新session中的语言
                 if 'language' in data:
                     session['language'] = data['language']
+                
+                # 记录活动日志
+                if password_updated:
+                    log_activity(ActivityType.UPDATE_PASSWORD, success=True)
+                # detail 不需要国际化，因为它记录的是原始数据
+                log_activity(ActivityType.UPDATE_USER_SETTINGS, success=True, detail=json.dumps({k: v for k, v in data.items() if k != 'new_password'}))
 
         return jsonify({'success': True, 'message': _('User settings updated.')})
     else: # GET
@@ -164,6 +173,7 @@ def global_settings_api():
                     data[checkbox_field] = str(value).lower() == 'true'
         
         config_manager.config.save_config(data)
+        log_activity(ActivityType.UPDATE_GLOBAL_SETTINGS, success=True, detail=_('Global settings updated'))
         return jsonify({'message': _('Global settings updated.')})
     else: # GET
         return jsonify(config_manager.config.get_all())
@@ -174,6 +184,8 @@ def cleanup_audiobooks_api():
     """手动触发清理所有已生成的有声书文件。"""
     try:
         cleaned_count = cleanup_all_audiobooks()
+        log_activity(ActivityType.DELETE_AUDIOBOOK, success=True, detail=_('Cleaned up %(count)s audiobook files', count=cleaned_count))
         return jsonify({'success': True, 'message': _('%(count)s audiobook files have been cleaned up.', count=cleaned_count)})
     except Exception as e:
+        log_activity(ActivityType.DELETE_AUDIOBOOK, success=False, failure_reason=_('An error occurred during cleanup: %(error)s', error=str(e)))
         return jsonify({'error': _('An error occurred during cleanup: %(error)s', error=str(e))}), 500

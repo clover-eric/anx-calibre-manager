@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 20:43+0800\n"
+"POT-Creation-Date: 2025-10-19 11:19+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,27 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/auth.py:31
-msgid "Session invalid, please login again."
-msgstr "Session invalid, please login again."
-
-#: blueprints/auth.py:35
-msgid "Two-factor authentication code is incorrect."
-msgstr "Two-factor authentication code is incorrect."
-
-#: blueprints/auth.py:43
+#: blueprints/auth.py:26 blueprints/auth.py:141
 msgid "Username or password is incorrect."
 msgstr "Username or password is incorrect."
 
-#: blueprints/auth.py:52
+#: blueprints/auth.py:42
+#, python-format
+msgid "Account is locked. Please try again in %(minutes)s minutes."
+msgstr "Account is locked. Please try again in %(minutes)s minutes."
+
+#: blueprints/auth.py:63
+msgid "Session invalid, please login again."
+msgstr "Session invalid, please login again."
+
+#: blueprints/auth.py:67
+msgid "Two-factor authentication code is incorrect."
+msgstr "Two-factor authentication code is incorrect."
+
+#: blueprints/auth.py:119
+msgid "Too many failed login attempts. Account locked for 30 minutes."
+msgstr "Too many failed login attempts. Account locked for 30 minutes."
+
+#: blueprints/auth.py:139
+#, python-format
+msgid "Username or password is incorrect. %(remaining)s attempt(s) remaining."
+msgstr "Username or password is incorrect. %(remaining)s attempt(s) remaining."
+
+#: blueprints/auth.py:169
 msgid "You have been logged out successfully."
 msgstr "You have been logged out successfully."
 
-#: blueprints/auth.py:75
+#: blueprints/auth.py:192
 msgid "Username and password cannot be empty."
 msgstr "Username and password cannot be empty."
 
-#: blueprints/auth.py:87
+#: blueprints/auth.py:204
 #, python-format
 msgid ""
 "Administrator account created, but failed to initialize Anx library: "
@@ -47,15 +61,15 @@ msgstr ""
 "Administrator account created, but failed to initialize Anx library: "
 "%(message)s"
 
-#: blueprints/auth.py:89
+#: blueprints/auth.py:206
 msgid "Administrator account has been created, please login."
 msgstr "Administrator account has been created, please login."
 
-#: blueprints/auth.py:111
+#: blueprints/auth.py:228
 msgid "Username and password cannot be empty"
 msgstr "Username and password cannot be empty"
 
-#: blueprints/auth.py:114 static/js/register.js:6
+#: blueprints/auth.py:231 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -63,35 +77,35 @@ msgstr ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
 
-#: blueprints/auth.py:117 static/js/register.js:5
+#: blueprints/auth.py:234 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "Password must be at least 6 characters"
 
-#: blueprints/auth.py:122
+#: blueprints/api/users.py:54 blueprints/auth.py:239
 msgid "Username already exists"
 msgstr "Username already exists"
 
-#: blueprints/auth.py:126
+#: blueprints/auth.py:243
 msgid "Please enter invite code"
 msgstr "Please enter invite code"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:252
 msgid "Invite code is invalid"
 msgstr "Invite code is invalid"
 
-#: blueprints/auth.py:138
+#: blueprints/auth.py:255
 msgid "Invite code has reached usage limit"
 msgstr "Invite code has reached usage limit"
 
-#: blueprints/auth.py:143
+#: blueprints/auth.py:260
 msgid "Invite code has expired"
 msgstr "Invite code has expired"
 
-#: blueprints/auth.py:174 static/js/register.js:7
+#: blueprints/auth.py:299 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "Registration successful! Please login."
 
-#: blueprints/auth.py:180
+#: blueprints/auth.py:305
 msgid "An error occurred during registration"
 msgstr "An error occurred during registration"
 
@@ -121,105 +135,109 @@ msgstr "This user's stats page is private."
 msgid "Anx library not found for this user."
 msgstr "Anx library not found for this user."
 
-#: blueprints/api/audiobook.py:111 blueprints/api/audiobook.py:257
+#: blueprints/api/audiobook.py:79 blueprints/api/audiobook.py:201
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' or 'library' is missing from the request"
 
-#: blueprints/api/audiobook.py:120
+#: blueprints/api/audiobook.py:94
 msgid "A task for this book is already in progress."
 msgstr "A task for this book is already in progress."
 
-#: blueprints/api/audiobook.py:181
+#: blueprints/api/audiobook.py:139
 msgid "Invalid 'library' type"
 msgstr "Invalid 'library' type"
 
-#: blueprints/api/audiobook.py:230 static/js/page/translations.js:73
+#: blueprints/api/audiobook.py:175 static/js/page/translations.js:73
 #, python-format
 msgid "File error: %(error)s"
 msgstr "File error: %(error)s"
 
-#: blueprints/api/audiobook.py:234
+#: blueprints/api/audiobook.py:180
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "An unknown error occurred while starting the task: %(error)s"
 
-#: blueprints/api/audiobook.py:244 blueprints/api/audiobook.py:274
-#: blueprints/api/audiobook.py:327
+#: blueprints/api/audiobook.py:190 blueprints/api/audiobook.py:219
+#: blueprints/api/audiobook.py:277
 msgid "Task not found"
 msgstr "Task not found"
 
-#: blueprints/api/audiobook.py:278
+#: blueprints/api/audiobook.py:225
 msgid "Forbidden"
 msgstr "Forbidden"
 
-#: blueprints/api/audiobook.py:282
+#: blueprints/api/audiobook.py:230
 msgid "Audiobook is not ready for download"
 msgstr "Audiobook is not ready for download"
 
-#: blueprints/api/audiobook.py:287
+#: blueprints/api/audiobook.py:237
 msgid "File not found on server"
 msgstr "File not found on server"
 
-#: blueprints/api/audiobook.py:314
+#: blueprints/api/audiobook.py:257
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "Could not send file: %(error)s"
 
-#: blueprints/api/audiobook.py:319
+#: blueprints/api/audiobook.py:264
 msgid "Authentication required"
 msgstr "Authentication required"
 
-#: blueprints/api/audiobook.py:334
+#: blueprints/api/audiobook.py:286
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "Permission denied to delete this Anx audiobook"
 
-#: blueprints/api/audiobook.py:337 utils/decorators.py:19
+#: blueprints/api/audiobook.py:291 utils/decorators.py:19
 msgid "Maintainer or administrator permission required."
 msgstr "Maintainer or administrator permission required."
 
-#: blueprints/api/audiobook.py:353
+#: blueprints/api/audiobook.py:309
 msgid "Audiobook deleted successfully"
 msgstr "Audiobook deleted successfully"
 
-#: blueprints/api/audiobook.py:358
+#: blueprints/api/audiobook.py:313
 msgid "An error occurred during deletion"
 msgstr "An error occurred during deletion"
 
-#: blueprints/api/auth_2fa.py:15
+#: blueprints/api/auth_2fa.py:16
 msgid "2FA is already enabled."
 msgstr "2FA is already enabled."
 
-#: blueprints/api/auth_2fa.py:30
+#: blueprints/api/auth_2fa.py:31
 msgid "No pending 2FA setup request found."
 msgstr "No pending 2FA setup request found."
 
-#: blueprints/api/auth_2fa.py:36
+#: blueprints/api/auth_2fa.py:38
 msgid "2FA has been successfully enabled!"
 msgstr "2FA has been successfully enabled!"
 
-#: blueprints/api/auth_2fa.py:38
+#: blueprints/api/auth_2fa.py:40
+msgid "Incorrect verification code"
+msgstr "Incorrect verification code."
+
+#: blueprints/api/auth_2fa.py:41
 msgid "Incorrect verification code."
 msgstr "Incorrect verification code."
 
-#: blueprints/api/auth_2fa.py:45
+#: blueprints/api/auth_2fa.py:49
 msgid "2FA has been disabled."
 msgstr "2FA has been disabled."
 
-#: blueprints/api/books.py:36
+#: blueprints/api/books.py:37
 msgid "Anx database not found."
 msgstr "Anx database not found."
 
-#: blueprints/api/books.py:45
+#: blueprints/api/books.py:48
 #, python-format
 msgid "Book file with ID %(book_id)s not found."
 msgstr "Book file with ID %(book_id)s not found."
 
-#: blueprints/api/books.py:52
+#: blueprints/api/books.py:59
 #, python-format
 msgid "Error downloading book: %(error)s"
 msgstr "Error downloading book: %(error)s"
 
-#: blueprints/api/books.py:163
+#: blueprints/api/books.py:175
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
@@ -227,27 +245,27 @@ msgstr ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
 
-#: blueprints/api/books.py:167
+#: blueprints/api/books.py:182
 msgid "Unable to process or convert the book."
 msgstr "Unable to process or convert the book."
 
-#: blueprints/api/books.py:172 blueprints/api/books.py:257
+#: blueprints/api/books.py:188 blueprints/api/books.py:286
 msgid "Book details not found."
 msgstr "Book details not found."
 
-#: blueprints/api/books.py:183
+#: blueprints/api/books.py:201
 msgid "This book has no available formats."
 msgstr "This book has no available formats."
 
-#: blueprints/api/books.py:189
+#: blueprints/api/books.py:210
 msgid "Unable to download the book."
 msgstr "Unable to download the book."
 
-#: blueprints/api/books.py:194
+#: blueprints/api/books.py:217
 msgid "Please configure your Kindle email in user settings first."
 msgstr "Please configure your Kindle email in user settings first."
 
-#: blueprints/api/books.py:201
+#: blueprints/api/books.py:224
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
@@ -255,11 +273,16 @@ msgstr ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
 
-#: blueprints/api/books.py:204
+#: blueprints/api/books.py:227
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "Unable to get or process the EPUB file for the book."
 
-#: blueprints/api/books.py:251
+#: blueprints/api/books.py:263 blueprints/api/books.py:347
+#: blueprints/api/books.py:539 static/js/settings.js:38
+msgid "Unknown error"
+msgstr "Unknown error"
+
+#: blueprints/api/books.py:280
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
@@ -267,19 +290,19 @@ msgstr ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
 
-#: blueprints/api/books.py:264
+#: blueprints/api/books.py:293
 msgid "No pushable format found."
 msgstr "No pushable format found."
 
-#: blueprints/api/books.py:269
+#: blueprints/api/books.py:298
 msgid "Error downloading or processing the book."
 msgstr "Error downloading or processing the book."
 
-#: blueprints/api/books.py:275 blueprints/api/books.py:409
+#: blueprints/api/books.py:304 blueprints/api/books.py:454
 msgid "User directory not configured."
 msgstr "User directory not configured."
 
-#: blueprints/api/books.py:295
+#: blueprints/api/books.py:324
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
@@ -288,31 +311,31 @@ msgstr ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
 "%(skipped)s."
 
-#: blueprints/api/books.py:321
+#: blueprints/api/books.py:356
 msgid "Missing book ID."
 msgstr "Missing book ID."
 
-#: blueprints/api/books.py:401
+#: blueprints/api/books.py:444
 #, python-format
 msgid "Anx book with ID %(book_id)s not found."
 msgstr "Anx book with ID %(book_id)s not found."
 
-#: blueprints/api/books.py:405
+#: blueprints/api/books.py:450
 #, python-format
 msgid "File path for book with ID %(book_id)s is missing."
 msgstr "File path for book with ID %(book_id)s is missing."
 
-#: blueprints/api/books.py:413
+#: blueprints/api/books.py:458
 #, python-format
 msgid "Book file not found at path: %(path)s"
 msgstr "Book file not found at path: %(path)s"
 
-#: blueprints/api/books.py:419
+#: blueprints/api/books.py:464
 #, python-format
 msgid "Failed to read book file: %(error)s"
 msgstr "Failed to read book file: %(error)s"
 
-#: blueprints/api/books.py:452 blueprints/api/calibre.py:89
+#: blueprints/api/books.py:497
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
@@ -321,109 +344,114 @@ msgstr ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 
-#: blueprints/api/books.py:458 blueprints/api/calibre.py:98
+#: blueprints/api/books.py:503 blueprints/api/calibre.py:74
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 
-#: blueprints/api/books.py:464 blueprints/api/calibre.py:106
+#: blueprints/api/books.py:509 blueprints/api/calibre.py:76
 msgid "Upload failed, book may already exist."
 msgstr "Upload failed, book may already exist."
 
-#: blueprints/api/books.py:470 blueprints/api/calibre.py:112
+#: blueprints/api/books.py:515 blueprints/api/calibre.py:81
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre server returned an error: %(code)s - %(text)s"
 
-#: blueprints/api/books.py:474 blueprints/api/calibre.py:122
-#: blueprints/api/calibre.py:194
+#: blueprints/api/books.py:519 blueprints/api/calibre.py:85
+#: blueprints/api/calibre.py:169
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Error connecting to Calibre server: %(error)s"
 
-#: blueprints/api/books.py:480 blueprints/api/calibre.py:21
+#: blueprints/api/books.py:528 blueprints/api/calibre.py:22
 msgid "You do not have permission to upload books."
 msgstr "You do not have permission to upload books."
 
-#: blueprints/api/calibre.py:24
+#: blueprints/api/calibre.py:27
 msgid "No file part."
 msgstr "No file part."
 
-#: blueprints/api/calibre.py:28
+#: blueprints/api/calibre.py:31
 msgid "No selected file."
 msgstr "No selected file."
 
-#: blueprints/api/calibre.py:133
+#: blueprints/api/calibre.py:98
 msgid "Book not found"
 msgstr "Book not found"
 
-#: blueprints/api/calibre.py:139
+#: blueprints/api/calibre.py:106
 msgid "You do not have permission to edit this book."
 msgstr "You do not have permission to edit this book."
 
-#: blueprints/api/calibre.py:170
+#: blueprints/api/calibre.py:139
 msgid "No fields provided to update."
 msgstr "No fields provided to update."
 
-#: blueprints/api/calibre.py:185
+#: blueprints/api/calibre.py:154
 msgid "Metadata updated successfully."
 msgstr "Metadata updated successfully."
 
-#: blueprints/api/calibre.py:187
+#: blueprints/api/calibre.py:156
 msgid "Calibre returned an unknown response."
 msgstr "Calibre returned an unknown response."
 
-#: blueprints/api/calibre.py:189
+#: blueprints/api/calibre.py:160
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre returned an invalid JSON response: %(text)s"
 
-#: blueprints/api/calibre.py:192
+#: blueprints/api/calibre.py:165
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "Error connecting to Calibre server: %(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:220
+#: blueprints/api/calibre.py:197
 msgid "Field parameter is required."
 msgstr "Field parameter is required."
 
-#: blueprints/api/calibre.py:224
+#: blueprints/api/calibre.py:201
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "Completions not supported for field: %(field)s"
 
-#: blueprints/api/email_service.py:20
+#: blueprints/api/email_service.py:21
 msgid "SMTP is not fully configured."
 msgstr "SMTP is not fully configured."
 
-#: blueprints/api/email_service.py:67
+#: blueprints/api/email_service.py:68
 msgid "Email sent successfully."
 msgstr "Email sent successfully."
 
-#: blueprints/api/email_service.py:70
+#: blueprints/api/email_service.py:71
 #, python-format
 msgid "Failed to send email: %(error)s"
 msgstr "Failed to send email: %(error)s"
 
-#: blueprints/api/email_service.py:78
+#: blueprints/api/email_service.py:79
 msgid "Test recipient email address is required."
 msgstr "Test recipient email address is required."
 
-#: blueprints/api/email_service.py:94
+#: blueprints/api/email_service.py:95
+#, python-format
+msgid "Test email sent to %(email)s"
+msgstr "Test email sent to %(email)s."
+
+#: blueprints/api/email_service.py:96
 #, python-format
 msgid "Test email successfully sent to %(email)s."
 msgstr "Test email successfully sent to %(email)s."
 
-#: blueprints/api/email_service.py:96
+#: blueprints/api/email_service.py:98 blueprints/api/email_service.py:99
 #, python-format
 msgid "Failed to send test email: %(message)s"
 msgstr "Failed to send test email: %(message)s"
 
-#: blueprints/api/invite.py:20
+#: blueprints/api/invite.py:21
 msgid "Insufficient permissions"
 msgstr "Insufficient permissions"
 
-#: blueprints/api/invite.py:39
+#: blueprints/api/invite.py:40
 msgid ""
 "Custom invite code can only contain uppercase letters and numbers, 4-20 "
 "characters long"
@@ -431,41 +459,56 @@ msgstr ""
 "Custom invite code can only contain uppercase letters and numbers, 4-20 "
 "characters long"
 
-#: blueprints/api/invite.py:43
+#: blueprints/api/invite.py:44
 msgid "Invite code already exists"
 msgstr "Invite code already exists"
 
-#: blueprints/api/invite.py:77 static/js/settings.js:41
+#: blueprints/api/invite.py:60
+#, python-format
+msgid "Code: %(code)s, Max uses: %(max_uses)s"
+msgstr "Code: %(code)s, Max uses: %(max_uses)s"
+
+#: blueprints/api/invite.py:68 blueprints/api/invite.py:76
+#, python-format
+msgid "Code ID: %(code_id)s"
+msgstr "Code ID: %(code_id)s"
+
+#: blueprints/api/invite.py:82
+#, python-format
+msgid "Operation failed: %(error)s"
+msgstr "Operation failed: %(error)s"
+
+#: blueprints/api/invite.py:83 static/js/settings.js:41
 msgid "Operation failed"
 msgstr "Operation failed"
 
-#: blueprints/api/llm.py:26
+#: blueprints/api/llm.py:27
 msgid "Authentication required."
 msgstr "Authentication required."
 
-#: blueprints/api/llm.py:149
+#: blueprints/api/llm.py:150
 msgid "Book ID and type are required."
 msgstr "Book ID and type are required."
 
-#: blueprints/api/llm.py:158
+#: blueprints/api/llm.py:159
 msgid "No history found for this book."
 msgstr "No history found for this book."
 
-#: blueprints/api/llm.py:174
+#: blueprints/api/llm.py:175
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP module is not available, cannot process book content."
 
-#: blueprints/api/llm.py:184 blueprints/api/service_configs.py:31
-#: blueprints/api/service_configs.py:57
+#: blueprints/api/llm.py:185 blueprints/api/service_configs.py:32
+#: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "Missing required fields."
 
-#: blueprints/api/llm.py:213 blueprints/api/llm.py:281
+#: blueprints/api/llm.py:219 blueprints/api/llm.py:290
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "Current time is %(current_time)s."
 
-#: blueprints/api/llm.py:214 blueprints/api/llm.py:282
+#: blueprints/api/llm.py:220 blueprints/api/llm.py:291
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -474,7 +517,7 @@ msgstr ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 
-#: blueprints/api/llm.py:215 blueprints/api/llm.py:283
+#: blueprints/api/llm.py:221 blueprints/api/llm.py:292
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
@@ -482,7 +525,7 @@ msgstr ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 
-#: blueprints/api/llm.py:218
+#: blueprints/api/llm.py:224
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -506,24 +549,24 @@ msgstr ""
 "5. Do not use `style` or `linkStyle` definitions; the theme is handled "
 "automatically."
 
-#: blueprints/api/llm.py:228 blueprints/api/llm.py:295
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
 msgid "Invalid book type."
 msgstr "Invalid book type."
 
-#: blueprints/api/llm.py:229 blueprints/api/llm.py:296
+#: blueprints/api/llm.py:235 blueprints/api/llm.py:305
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Failed to get book content: %(error)s"
 
-#: blueprints/api/llm.py:230 blueprints/api/llm.py:297
+#: blueprints/api/llm.py:236 blueprints/api/llm.py:306
 msgid "Could not extract text from the book."
 msgstr "Could not extract text from the book."
 
-#: blueprints/api/llm.py:231 blueprints/api/llm.py:298
+#: blueprints/api/llm.py:237 blueprints/api/llm.py:307
 msgid "LLM settings are not configured in user settings."
 msgstr "LLM settings are not configured in user settings."
 
-#: blueprints/api/llm.py:232 blueprints/api/llm.py:299
+#: blueprints/api/llm.py:238 blueprints/api/llm.py:308
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -538,39 +581,43 @@ msgstr ""
 "%(book_content)s\n"
 "---END BOOK CONTENT---"
 
-#: blueprints/api/llm.py:233 blueprints/api/llm.py:300
+#: blueprints/api/llm.py:239 blueprints/api/llm.py:309
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "Please provide a comprehensive summary and a profound review of this book."
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:301
+#: blueprints/api/llm.py:240 blueprints/api/llm.py:310
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Failed to communicate with LLM provider: %(error)s"
 
-#: blueprints/api/llm.py:235 blueprints/api/llm.py:302
+#: blueprints/api/llm.py:241 blueprints/api/llm.py:311
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "Extracting entire book content..."
 
-#: blueprints/api/llm.py:236 blueprints/api/llm.py:303
+#: blueprints/api/llm.py:242 blueprints/api/llm.py:312
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "Thinking..."
 
-#: blueprints/api/llm.py:249
+#: blueprints/api/llm.py:255
 msgid "Message ID is required."
 msgstr "Message ID is required."
 
-#: blueprints/api/llm.py:260
+#: blueprints/api/llm.py:266
 msgid "Message not found."
 msgstr "Message not found."
 
-#: blueprints/api/llm.py:262
+#: blueprints/api/llm.py:268
 msgid "Permission denied."
 msgstr "Permission denied."
 
-#: blueprints/api/llm.py:285
+#: blueprints/api/llm.py:277
+msgid "Regenerate response"
+msgstr "Regenerate response"
+
+#: blueprints/api/llm.py:294
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -594,65 +641,100 @@ msgstr ""
 "5. Do not use `style` or `linkStyle` definitions; the theme is handled "
 "automatically."
 
-#: blueprints/api/llm.py:324
+#: blueprints/api/llm.py:333
 msgid "Base URL and API Key are required."
 msgstr "Base URL and API Key are required."
 
-#: blueprints/api/llm.py:340
+#: blueprints/api/llm.py:349
 msgid "Unexpected response format from model provider."
 msgstr "Unexpected response format from model provider."
 
-#: blueprints/api/llm.py:345
+#: blueprints/api/llm.py:354
 msgid "Authentication error. Please check your API Key."
 msgstr "Authentication error. Please check your API Key."
 
-#: blueprints/api/llm.py:347
+#: blueprints/api/llm.py:356
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "Invalid API endpoint. Please check your Base URL."
 
-#: blueprints/api/llm.py:349
+#: blueprints/api/llm.py:358
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Could not connect to the model provider: %(error)s"
 
-#: blueprints/api/llm.py:351
+#: blueprints/api/llm.py:360
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "An unexpected error occurred: %(error)s"
 
-#: blueprints/api/llm.py:363
+#: blueprints/api/llm.py:372
 msgid "Session not found or permission denied."
 msgstr "Session not found or permission denied."
 
-#: blueprints/api/llm.py:370
+#: blueprints/api/llm.py:379
+#, python-format
+msgid "Session ID: %(session_id)s"
+msgstr "Session ID: %(session_id)s"
+
+#: blueprints/api/llm.py:380
 msgid "Chat session deleted successfully."
 msgstr "Chat session deleted successfully."
 
-#: blueprints/api/service_configs.py:12 blueprints/api/service_configs.py:34
+#: blueprints/api/llm.py:403
+#, python-format
+msgid "Message ID: %(message_id)s"
+msgstr "Message ID: %(message_id)s"
+
+#: blueprints/api/service_configs.py:13 blueprints/api/service_configs.py:35
 msgid "Invalid config type specified."
 msgstr "Invalid config type specified."
 
-#: blueprints/api/service_configs.py:45
+#: blueprints/api/service_configs.py:46
+#, python-format
+msgid "Type: %(type)s, Profile: %(name)s"
+msgstr "Type: %(type)s, Profile: %(name)s"
+
+#: blueprints/api/service_configs.py:47
 msgid "Configuration profile saved successfully."
 msgstr "Configuration profile saved successfully."
 
-#: blueprints/api/service_configs.py:48 blueprints/api/service_configs.py:68
+#: blueprints/api/service_configs.py:49
+#, python-format
+msgid "Failed to create profile: %(error)s"
+msgstr "Failed to create profile: %(error)s"
+
+#: blueprints/api/service_configs.py:51 blueprints/api/service_configs.py:73
 msgid "A profile with this name already exists."
 msgstr "A profile with this name already exists."
 
-#: blueprints/api/service_configs.py:66
+#: blueprints/api/service_configs.py:69
+#, python-format
+msgid "Config ID: %(id)s, Profile: %(name)s"
+msgstr "Config ID: %(id)s, Profile: %(name)s"
+
+#: blueprints/api/service_configs.py:70
 msgid "Configuration profile updated successfully."
 msgstr "Configuration profile updated successfully."
 
-#: blueprints/api/service_configs.py:75
+#: blueprints/api/service_configs.py:72
+#, python-format
+msgid "Failed to update profile: %(error)s"
+msgstr "Failed to update profile: %(error)s"
+
+#: blueprints/api/service_configs.py:80
+#, python-format
+msgid "Config ID: %(id)s"
+msgstr "Config ID: %(id)s"
+
+#: blueprints/api/service_configs.py:81
 msgid "Configuration profile deleted successfully."
 msgstr "Configuration profile deleted successfully."
 
-#: blueprints/api/settings.py:79
+#: blueprints/api/settings.py:88
 msgid "User settings updated."
 msgstr "User settings updated."
 
-#: blueprints/api/settings.py:147
+#: blueprints/api/settings.py:156
 #, python-format
 msgid ""
 "There are currently %(count)s audiobook generation task(s) in progress. "
@@ -663,33 +745,52 @@ msgstr ""
 "Updating the configuration will restart the server workers and interrupt "
 "these tasks. Do you want to continue?"
 
-#: blueprints/api/settings.py:157
+#: blueprints/api/settings.py:176
+msgid "Global settings updated"
+msgstr "Global settings updated."
+
+#: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "Global settings updated."
 
-#: blueprints/api/settings.py:167
+#: blueprints/api/settings.py:187
+#, python-format
+msgid "Cleaned up %(count)s audiobook files"
+msgstr "Cleaned up %(count)s audiobook files."
+
+#: blueprints/api/settings.py:188
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "%(count)s audiobook files have been cleaned up."
 
-#: blueprints/api/settings.py:169
+#: blueprints/api/settings.py:190 blueprints/api/settings.py:191
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "An error occurred during cleanup: %(error)s"
 
-#: blueprints/api/tokens.py:22
+#: blueprints/api/tokens.py:24
 msgid "New token generated."
 msgstr "New token generated."
 
-#: blueprints/api/tokens.py:30
+#: blueprints/api/tokens.py:32
+#, python-format
+msgid "Token ID: %(token_id)s"
+msgstr "Token ID: %(token_id)s"
+
+#: blueprints/api/tokens.py:33
 msgid "Token deleted."
 msgstr "Token deleted."
 
-#: blueprints/api/users.py:30
+#: blueprints/api/users.py:31
 msgid "Username and password are required."
 msgstr "Username and password are required."
 
-#: blueprints/api/users.py:47
+#: blueprints/api/users.py:48
+#, python-format
+msgid "User created but Anx init failed: %(message)s"
+msgstr "User created but Anx init failed: %(message)s"
+
+#: blueprints/api/users.py:49
 #, python-format
 msgid ""
 "User added successfully, but failed to initialize Anx directory: "
@@ -698,32 +799,42 @@ msgstr ""
 "User added successfully, but failed to initialize Anx directory: "
 "%(message)s"
 
-#: blueprints/api/users.py:49
+#: blueprints/api/users.py:51
+#, python-format
+msgid "Role: %(role)s"
+msgstr "Role: %(role)s"
+
+#: blueprints/api/users.py:52
 msgid "User added and initialized successfully."
 msgstr "User added and initialized successfully."
 
-#: blueprints/api/users.py:51
+#: blueprints/api/users.py:55
 msgid "Username already exists."
 msgstr "Username already exists."
 
-#: blueprints/api/users.py:64
+#: blueprints/api/users.py:68
 msgid "User ID and username are required."
 msgstr "User ID and username are required."
 
-#: blueprints/api/users.py:80
+#: blueprints/api/users.py:84
+#, python-format
+msgid "Updated user ID: %(user_id)s, Role: %(role)s"
+msgstr "Updated user ID: %(user_id)s, Role: %(role)s"
+
+#: blueprints/api/users.py:85
 msgid "User updated successfully."
 msgstr "User updated successfully."
 
-#: blueprints/api/users.py:88
+#: blueprints/api/users.py:93
 msgid "User ID is required."
 msgstr "User ID is required."
 
-#: blueprints/api/users.py:104
+#: blueprints/api/users.py:109 blueprints/api/users.py:110
 #, python-format
 msgid "Error deleting user data directory: %(error)s"
 msgstr "Error deleting user data directory: %(error)s"
 
-#: blueprints/api/users.py:109
+#: blueprints/api/users.py:116
 msgid "User and their data have been successfully deleted."
 msgstr "User and their data have been successfully deleted."
 
@@ -871,7 +982,7 @@ msgstr "Please enter a test recipient email address."
 msgid "Edit"
 msgstr "Edit"
 
-#: static/js/settings.js:30 templates/settings.html:465
+#: static/js/settings.js:30 templates/settings.html:470
 msgid "Add"
 msgstr "Add"
 
@@ -904,10 +1015,6 @@ msgstr "Invite code generated successfully: {code}"
 #, python-brace-format
 msgid "Failed to generate: {error}"
 msgstr "Failed to generate: {error}"
-
-#: static/js/settings.js:38
-msgid "Unknown error"
-msgstr "Unknown error"
 
 #: static/js/settings.js:39
 msgid "An error occurred while generating the invite code."
@@ -1571,6 +1678,14 @@ msgstr "Find This Helpful?"
 msgid "Buy me a Coffee ☕"
 msgstr "Buy me a Coffee ☕"
 
+#: templates/base.html:225
+msgid ""
+"The administrator has enabled auditing. Your web activities may be "
+"recorded."
+msgstr ""
+"The administrator has enabled auditing. Your web activities may be "
+"recorded."
+
 #: templates/chat_player.html:6
 msgid "AI Chat"
 msgstr "AI Chat"
@@ -1747,7 +1862,7 @@ msgid "Select files:"
 msgstr "Select files:"
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:485
+#: templates/settings.html:198 templates/settings.html:490
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1755,7 +1870,7 @@ msgstr "Cancel"
 msgid "Edit Book Information"
 msgstr "Edit Book Information"
 
-#: templates/index.html:244 templates/settings.html:484
+#: templates/index.html:244 templates/settings.html:489
 msgid "Save"
 msgstr "Save"
 
@@ -1769,12 +1884,12 @@ msgstr "Login to Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:467 templates/settings.html:494
+#: templates/settings.html:472 templates/settings.html:499
 msgid "Username"
 msgstr "Username"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:471
+#: templates/settings.html:318 templates/settings.html:476
 msgid "Password"
 msgstr "Password"
 
@@ -2727,70 +2842,84 @@ msgstr ""
 "can generate invite codes in the Invite Code Management tab."
 
 #: templates/settings.html:451
+msgid "Enable User Activity Logging"
+msgstr "Enable User Activity Logging"
+
+#: templates/settings.html:452
+msgid ""
+"If enabled, the system will record user activities such as login, "
+"download, upload, and other operations in the database for audit "
+"purposes."
+msgstr ""
+"If enabled, the system will record user activities such as login, "
+"download, upload, and other operations in the database for audit "
+"purposes."
+
+#: templates/settings.html:456
 msgid "Test Inbox"
 msgstr "Test Inbox"
 
-#: templates/settings.html:452
+#: templates/settings.html:457
 msgid "Enter an email address to receive a test email"
 msgstr "Enter an email address to receive a test email"
 
-#: templates/settings.html:455
+#: templates/settings.html:460
 msgid "Send Test Email"
 msgstr "Send Test Email"
 
-#: templates/settings.html:456
+#: templates/settings.html:461
 msgid "Save Global Settings"
 msgstr "Save Global Settings"
 
-#: templates/settings.html:465
+#: templates/settings.html:470
 msgid "New User"
 msgstr "New User"
 
-#: templates/settings.html:473
+#: templates/settings.html:478
 msgid "Leave blank to not change the existing user's password."
 msgstr "Leave blank to not change the existing user's password."
 
-#: templates/settings.html:476 templates/settings.html:495
+#: templates/settings.html:481 templates/settings.html:500
 msgid "Role"
 msgstr "Role"
 
-#: templates/settings.html:478
+#: templates/settings.html:483
 msgid "Normal User"
 msgstr "Normal User"
 
-#: templates/settings.html:479
+#: templates/settings.html:484
 msgid "Calibre Library Maintainer"
 msgstr "Calibre Library Maintainer"
 
-#: templates/settings.html:480
+#: templates/settings.html:485
 msgid "Administrator"
 msgstr "Administrator"
 
-#: templates/settings.html:489
+#: templates/settings.html:494
 msgid "Existing Users"
 msgstr "Existing Users"
 
-#: templates/settings.html:493
+#: templates/settings.html:498
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:496 templates/settings.html:540
+#: templates/settings.html:501 templates/settings.html:545
 msgid "Actions"
 msgstr "Actions"
 
-#: templates/settings.html:508
+#: templates/settings.html:513
 msgid "Generate New Invite Code"
 msgstr "Generate New Invite Code"
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Custom Invite Code"
 msgstr "Custom Invite Code"
 
-#: templates/settings.html:511
+#: templates/settings.html:516
 msgid "Leave blank to auto-generate"
 msgstr "Leave blank to auto-generate"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
@@ -2798,59 +2927,59 @@ msgstr ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Maximum Uses"
 msgstr "Maximum Uses"
 
-#: templates/settings.html:517
+#: templates/settings.html:522
 msgid "How many times this invite code can be used"
 msgstr "How many times this invite code can be used"
 
-#: templates/settings.html:520
+#: templates/settings.html:525
 msgid "Expires After (Hours)"
 msgstr "Expires After (Hours)"
 
-#: templates/settings.html:521
+#: templates/settings.html:526
 msgid "Leave blank for no expiration"
 msgstr "Leave blank for no expiration"
 
-#: templates/settings.html:522
+#: templates/settings.html:527
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "Number of hours after which this invite code will expire (optional)"
 
-#: templates/settings.html:525
+#: templates/settings.html:530
 msgid "Generate Invite Code"
 msgstr "Generate Invite Code"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Existing Invite Codes"
 msgstr "Existing Invite Codes"
 
-#: templates/settings.html:533
+#: templates/settings.html:538
 msgid "Code"
 msgstr "Code"
 
-#: templates/settings.html:534
+#: templates/settings.html:539
 msgid "Max Uses"
 msgstr "Max Uses"
 
-#: templates/settings.html:535
+#: templates/settings.html:540
 msgid "Current Uses"
 msgstr "Current Uses"
 
-#: templates/settings.html:536
+#: templates/settings.html:541
 msgid "Created By"
 msgstr "Created By"
 
-#: templates/settings.html:537
+#: templates/settings.html:542
 msgid "Created At"
 msgstr "Created At"
 
-#: templates/settings.html:538
+#: templates/settings.html:543
 msgid "Expires At"
 msgstr "Expires At"
 
-#: templates/settings.html:539
+#: templates/settings.html:544
 msgid "Status"
 msgstr "Status"
 

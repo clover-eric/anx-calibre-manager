@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify, g
 from flask_babel import gettext as _
 from contextlib import closing
 import database
+from utils.activity_logger import log_activity, ActivityType
 
 tokens_bp = Blueprint('tokens', __name__, url_prefix='/api')
 
@@ -19,6 +20,7 @@ def create_mcp_token():
     with closing(database.get_db()) as db:
         db.execute('INSERT INTO mcp_tokens (user_id, token) VALUES (?, ?)', (g.user.id, new_token))
         db.commit()
+    log_activity(ActivityType.MCP_TOKEN_GENERATE, success=True)
     return jsonify({'message': _('New token generated.'), 'token': new_token})
 
 @tokens_bp.route('/mcp_tokens/<int:token_id>', methods=['DELETE'])
@@ -27,4 +29,5 @@ def delete_mcp_token(token_id):
         # Ensure the token belongs to the current user before deleting
         db.execute('DELETE FROM mcp_tokens WHERE id = ? AND user_id = ?', (token_id, g.user.id))
         db.commit()
+    log_activity(ActivityType.MCP_TOKEN_DELETE, success=True, detail=_('Token ID: %(token_id)s', token_id=token_id))
     return jsonify({'message': _('Token deleted.')})

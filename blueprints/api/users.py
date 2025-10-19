@@ -9,6 +9,7 @@ from contextlib import closing
 import database
 from anx_library import initialize_anx_user_data, get_anx_user_dirs
 from utils.decorators import admin_required_api
+from utils.activity_logger import log_activity, ActivityType
 
 users_bp = Blueprint('users', __name__, url_prefix='/api')
 
@@ -44,10 +45,13 @@ def add_user():
             if not success:
                 # Log the error, but don't fail the whole request since the user was created.
                 logging.error(f"Failed to initialize Anx data for new user {username}: {message}")
+                log_activity(ActivityType.CREATE_USER, username=username, success=True, detail=_('User created but Anx init failed: %(message)s', message=message))
                 return jsonify({'message': _('User added successfully, but failed to initialize Anx directory: %(message)s', message=message)}), 201
 
+            log_activity(ActivityType.CREATE_USER, username=username, success=True, detail=_('Role: %(role)s', role=role))
             return jsonify({'message': _('User added and initialized successfully.')}), 201
         except database.sqlite3.IntegrityError:
+            log_activity(ActivityType.CREATE_USER, username=username, success=False, failure_reason=_('Username already exists'))
             return jsonify({'error': _('Username already exists.')}), 409
 
 
@@ -77,6 +81,7 @@ def update_user():
                 (username, role, user_id)
             )
         db.commit()
+        log_activity(ActivityType.UPDATE_USER, username=username, success=True, detail=_('Updated user ID: %(user_id)s, Role: %(role)s', user_id=user_id, role=role))
         return jsonify({'message': _('User updated successfully.')})
 
 @users_bp.route('/users', methods=['DELETE'])
@@ -101,9 +106,11 @@ def delete_user():
                 except Exception as e:
                     logging.error(f"Failed to delete WebDAV directory for user {username}: {e}")
                     # Don't block DB deletion, but return an error message
+                    log_activity(ActivityType.DELETE_USER, username=username, success=False, failure_reason=_('Error deleting user data directory: %(error)s', error=str(e)))
                     return jsonify({'error': _('Error deleting user data directory: %(error)s', error=e)}), 500
         
         # Now, delete the user from the database
         db.execute('DELETE FROM users WHERE id = ?', (user_id,))
         db.commit()
+        log_activity(ActivityType.DELETE_USER, username=username, success=True)
         return jsonify({'message': _('User and their data have been successfully deleted.')})

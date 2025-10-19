@@ -102,13 +102,45 @@ def get_anx_books(username):
     
     return books
 
-def get_anx_book_details(username, book_id):
-    """Fetches the details for a single Anx book by its ID."""
+def get_anx_book_path(username, book_id):
+    """根据 book_id 获取 Anx 书籍的完整文件路径"""
+    dirs = get_anx_user_dirs(username)
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        raise FileNotFoundError("Anx database not found.")
+    
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        db.row_factory = sqlite3.Row
+        book_row = db.execute("SELECT file_path FROM tb_books WHERE id = ?", (book_id,)).fetchone()
+        if not book_row or not book_row['file_path']:
+            raise FileNotFoundError(f"Anx book file with ID {book_id} not found.")
+        
+        return os.path.join(dirs["workspace"], book_row['file_path'])
+
+def get_anx_book_details(username, book_id, as_dict=False):
+    """
+    Fetches the details for a single Anx book by its ID.
+    
+    Args:
+        username: 用户名
+        book_id: 书籍ID
+        as_dict: 如果为True，返回完整的字典；如果为False，返回(title, author)元组
+    
+    Returns:
+        如果 as_dict=True: 返回完整的书籍字典，未找到返回 None
+        如果 as_dict=False: 返回 (title, author) 元组，未找到返回 (None, None)
+    """
     all_books = get_anx_books(username)
     for book in all_books:
         if book['id'] == book_id:
-            return book
-    return None
+            if as_dict:
+                return book
+            else:
+                return book.get('title'), book.get('author')
+    
+    if as_dict:
+        return None
+    else:
+        return None, None
 
 def _calculate_md5(file_path):
     hash_md5 = hashlib.md5()

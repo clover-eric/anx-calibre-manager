@@ -5,6 +5,7 @@ import os
 from anx_library import get_anx_user_dirs
 from datetime import datetime
 import logging
+from utils.activity_logger import log_activity, ActivityType
 
 logger = logging.getLogger(__name__)
 reader_bp = Blueprint('reader', __name__, url_prefix='/api/reader')
@@ -63,6 +64,9 @@ def save_anx_progress(book_id):
         if cursor.rowcount == 0:
             logger.warning(f"Attempted to save progress for non-existent book_id {book_id} for user {g.user.username}")
             return jsonify({'error': 'Book not found or no update was made.'}), 404
+        
+        # 记录阅读进度更新
+        log_activity(ActivityType.ONLINE_READING_UPDATE_READING_PROGRESS, book_id=book_id, library_type='anx', success=True)
 
         # Update reading time
         if reading_time_seconds and int(reading_time_seconds) > 0:
@@ -80,5 +84,8 @@ def save_anx_progress(book_id):
             
 
         db.commit()
+        
+        # 记录阅读时间更新
+        log_activity(ActivityType.ONLINE_READING_UPDATE_READING_TIME, book_id=book_id, library_type='anx', success=True, detail=f'{int(reading_time_seconds)}s')
 
     return jsonify({'message': 'Progress and reading time saved successfully.'})

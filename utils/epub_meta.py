@@ -86,7 +86,7 @@ def get_metadata(library_type: str, book_id: int, user_dict: Dict[str, Any]) -> 
     elif library_type == 'anx':
         from anx_library import get_anx_book_details
         from .epub_chapter_parser import extract_text_from_html
-        db_meta = get_anx_book_details(user_dict.get('username'), book_id) or {}
+        db_meta = get_anx_book_details(user_dict.get('username'), book_id, as_dict=True) or {}
 
         # 清理 description 字段的 HTML
         if 'description' in db_meta:

@@ -113,6 +113,19 @@ def update_schema_if_needed(db):
             print(f"Migrating database: adding '{col}' column to users table.")
             cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
             db.commit()
+    
+    # Add login lockout columns
+    lockout_columns = {
+        'failed_login_attempts': "INTEGER DEFAULT 0",
+        'account_locked_until': "TIMESTAMP NULL",
+        'last_login_at': "TIMESTAMP NULL",
+        'last_login_ip': "TEXT"
+    }
+    for col, col_type in lockout_columns.items():
+        if col not in columns:
+            print(f"Migrating database: adding '{col}' column to users table.")
+            cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type}")
+            db.commit()
 
     # 检查 audiobook_tasks 表是否存在
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audiobook_tasks'")
@@ -169,6 +182,13 @@ def update_schema_if_needed(db):
         if cursor.fetchone() is None:
             print("Migrating database: creating 'user_service_configs' table.")
             create_user_service_configs_table(cursor)
+            db.commit()
+        
+        # 检查用户活动日志表是否存在
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='user_activity_log'")
+        if cursor.fetchone() is None:
+            print("Migrating database: creating 'user_activity_log' table.")
+            create_user_activity_log_table(cursor)
             db.commit()
 
 
@@ -318,6 +338,33 @@ def create_invite_codes_table(cursor):
         );
     ''')
 
+def create_user_activity_log_table(cursor):
+    """创建用户活动日志表 - 统一记录所有用户活动"""
+    cursor.execute('''
+        CREATE TABLE user_activity_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            username TEXT NOT NULL,
+            activity_type TEXT NOT NULL,
+            success INTEGER NOT NULL DEFAULT 1,
+            failure_reason TEXT,
+            book_id INTEGER,
+            book_title TEXT,
+            library_type TEXT,
+            task_id TEXT,
+            detail TEXT,
+            ip_address TEXT,
+            user_agent TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
+        );
+    ''')
+    # 创建索引以提高查询效率
+    cursor.execute('CREATE INDEX idx_activity_user_id ON user_activity_log(user_id);')
+    cursor.execute('CREATE INDEX idx_activity_type ON user_activity_log(activity_type);')
+    cursor.execute('CREATE INDEX idx_activity_created_at ON user_activity_log(created_at);')
+    cursor.execute('CREATE INDEX idx_activity_username ON user_activity_log(username);')
+
 def create_schema():
     """
     创建数据库和表结构，并执行必要的迁移。
@@ -364,7 +411,11 @@ def create_schema():
                             llm_provider TEXT DEFAULT 'openai',
                             llm_api_key TEXT,
                             llm_base_url TEXT,
-                            llm_model TEXT
+                            llm_model TEXT,
+                            failed_login_attempts INTEGER DEFAULT 0,
+                            account_locked_until TIMESTAMP NULL,
+                            last_login_at TIMESTAMP NULL,
+                            last_login_ip TEXT
                         );
                     ''')
                     # MCP Tokens Table
@@ -375,6 +426,7 @@ def create_schema():
                     create_llm_chat_sessions_table(cursor)
                     create_llm_chat_messages_table(cursor)
                     create_user_service_configs_table(cursor)
+                    create_user_activity_log_table(cursor)
                     db.commit()
                     print("Database tables created.")
                 else:

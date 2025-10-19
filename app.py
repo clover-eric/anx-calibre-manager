@@ -194,7 +194,8 @@ def create_app():
             get_locale=get_locale,
             cache_buster=int(time.time()),  # Cache buster
             app_version=APP_VERSION,
-            disable_normal_user_upload=config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD', False)
+            disable_normal_user_upload=config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD', False),
+            enable_activity_log=config_manager.config.get('ENABLE_ACTIVITY_LOG', False)
         )
 
     @app.before_request

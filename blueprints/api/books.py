@@ -26,6 +26,7 @@ from epub_fixer import fix_epub_for_kindle
 from utils.auth import get_calibre_auth
 from utils.covers import get_calibre_cover_data
 from utils.text import random_english_text, safe_title, safe_author
+from utils.activity_logger import log_activity, ActivityType
 
 books_bp = Blueprint('books', __name__, url_prefix='/api')
 
@@ -33,23 +34,31 @@ books_bp = Blueprint('books', __name__, url_prefix='/api')
 def download_anx_book_api(book_id):
     dirs = get_anx_user_dirs(g.user.username)
     if not dirs or not os.path.exists(dirs["db_path"]):
-        return jsonify({'error': _('Anx database not found.')}), 404
+        error_msg = _('Anx database not found.')
+        log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, library_type='anx', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 404
         
     try:
         with closing(sqlite3.connect(dirs["db_path"])) as db:
             db.row_factory = sqlite3.Row
             cursor = db.cursor()
-            cursor.execute("SELECT file_path FROM tb_books WHERE id = ?", (book_id,))
+            cursor.execute("SELECT file_path, title FROM tb_books WHERE id = ?", (book_id,))
             book_row = cursor.fetchone()
             if not book_row or not book_row['file_path']:
-                return jsonify({'error': _('Book file with ID %(book_id)s not found.', book_id=book_id)}), 404
+                error_msg = _('Book file with ID %(book_id)s not found.', book_id=book_id)
+                log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, library_type='anx', success=False, failure_reason=error_msg)
+                return jsonify({'error': error_msg}), 404
+            
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_row['title'], library_type='anx', success=True)
             
             data_dir = dirs["workspace"]
             return send_from_directory(data_dir, book_row['file_path'], as_attachment=True)
             
     except Exception as e:
         print(f"Error downloading anx book {book_id} for user {g.user.username}: {e}")
-        return jsonify({'error': _('Error downloading book: %(error)s', error=e)}), 500
+        error_msg = _('Error downloading book: %(error)s', error=e)
+        log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, library_type='anx', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 500
 
 def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - author', language='zh'):
     """
@@ -104,7 +113,7 @@ def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - au
             with open(source_path, 'wb') as f:
                 f.write(original_content)
 
-            base_name, _ = os.path.splitext(original_filename)
+            base_name, _unused = os.path.splitext(original_filename)
             epub_filename = f"{base_name}.epub"
             dest_path = os.path.join(temp_dir, epub_filename)
 
@@ -146,6 +155,9 @@ def _get_processed_epub_for_book(book_id, user_dict, filename_format='title - au
 
 @books_bp.route('/download_book/<int:book_id>', methods=['GET'])
 def download_book_api(book_id):
+    details = get_calibre_book_details(book_id)
+    book_title = details.get('title') if details else None
+    
     if g.user.force_epub_conversion:
         logging.info(f"Force EPUB conversion is ON for user {g.user.username} for book {book_id}")
         user_dict = {
@@ -160,16 +172,22 @@ def download_book_api(book_id):
         content, filename, needs_conversion = _get_processed_epub_for_book(book_id, user_dict, language=language)
         
         if filename == 'CONVERTER_NOT_FOUND':
-            return jsonify({'error': _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing in the current environment.')}), 412
+            error_msg = _('This book needs to be converted to EPUB, but the `ebook-converter` tool is missing in the current environment.')
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 412
         if content and filename:
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=True)
             return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
         else:
-            return jsonify({'error': _('Unable to process or convert the book.')}), 500
+            error_msg = _('Unable to process or convert the book.')
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 500
     else:
         # Original logic
-        details = get_calibre_book_details(book_id)
         if not details:
-            return jsonify({'error': _('Book details not found.')}), 404
+            error_msg = _('Book details not found.')
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 404
 
         available_formats = [f.lower() for f in details.get('formats', [])]
         priority = json.loads(g.user.send_format_priority or '[]')
@@ -180,13 +198,18 @@ def download_book_api(book_id):
             if available_formats:
                 format_to_download = available_formats[0]
             else:
-                return jsonify({'error': _('This book has no available formats.')}), 400
+                error_msg = _('This book has no available formats.')
+                log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+                return jsonify({'error': error_msg}), 400
 
         content, filename = download_calibre_book(book_id, format_to_download)
         if content:
+            log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=True)
             return send_file(io.BytesIO(content), as_attachment=True, download_name=filename)
         
-        return jsonify({'error': _('Unable to download the book.')}), 404
+        error_msg = _('Unable to download the book.')
+        log_activity(ActivityType.DOWNLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 404
 
 def _send_to_kindle_logic(user_dict, book_id):
     """Core logic to send a Calibre book to a user's Kindle. Expects user as a dict."""
@@ -222,6 +245,9 @@ def _send_to_kindle_logic(user_dict, book_id):
 
 @books_bp.route('/send_to_kindle/<int:book_id>', methods=['POST'])
 def send_to_kindle_api(book_id):
+    details = get_calibre_book_details(book_id)
+    book_title = details.get('title') if details else None
+    
     user_dict = {
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
@@ -231,8 +257,11 @@ def send_to_kindle_api(book_id):
     }
     result = _send_to_kindle_logic(user_dict, book_id)
     if result['success']:
+        log_activity(ActivityType.PUSH_TO_KINDLE, book_id=book_id, book_title=book_title, library_type='calibre', success=True)
         return jsonify({'message': result['message'], 'needs_conversion': result.get('needs_conversion', False)})
     else:
+        error_msg = result.get('error', _('Unknown error'))[:200]
+        log_activity(ActivityType.PUSH_TO_KINDLE, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
         if result.get('code') == 'CONVERTER_NOT_FOUND':
             return jsonify({'error': result['error']}), 412 # Precondition Failed
         if 'Kindle 邮箱' in result.get('error', ''):
@@ -300,6 +329,9 @@ def _push_calibre_to_anx_logic(user_dict, book_id):
 
 @books_bp.route('/push_to_anx/<int:book_id>', methods=['POST'])
 def push_to_anx_api(book_id):
+    details = get_calibre_book_details(book_id)
+    book_title = details.get('title') if details else None
+    
     user_dict = {
         'username': g.user.username,
         'kindle_email': g.user.kindle_email,
@@ -309,9 +341,12 @@ def push_to_anx_api(book_id):
     }
     result = _push_calibre_to_anx_logic(user_dict, book_id)
     if result['success']:
+        log_activity(ActivityType.PUSH_TO_ANX, book_id=book_id, book_title=book_title, library_type='calibre', success=True)
         return jsonify({'message': result['message']})
     else:
-        return jsonify({'error': result['error']}), 500
+        error_msg = result.get('error', _('Unknown error'))
+        log_activity(ActivityType.PUSH_TO_ANX, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 500
 
 @books_bp.route('/edit_anx_metadata', methods=['POST'])
 def edit_anx_metadata_api():
@@ -320,15 +355,19 @@ def edit_anx_metadata_api():
     if not book_id:
         return jsonify({'error': _('Missing book ID.')}), 400
 
+    book_title, _unused = get_anx_book_details(g.user.username, book_id)
+
     success, message = update_anx_book_metadata(g.user.username, book_id, data)
 
     if success:
+        log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='anx', success=True, detail=json.dumps(data))
         return jsonify({'message': message})
     else:
+        log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='anx', success=False, failure_reason=message, detail=json.dumps(data))
         return jsonify({'error': message}), 500
 
 def _get_processed_epub_for_anx_book(id: int, username: str):
-    book_details = get_anx_book_details(username, id)
+    book_details = get_anx_book_details(username, id, as_dict=True)
     if not book_details:
         return None, "BOOK_NOT_FOUND", False
 
@@ -383,10 +422,14 @@ def _get_processed_epub_for_anx_book(id: int, username: str):
 
 @books_bp.route('/delete_anx_book/<int:book_id>', methods=['DELETE'])
 def delete_anx_book_api(book_id):
+    book_title, _unused = get_anx_book_details(g.user.username, book_id)
+    
     success, message = delete_anx_book(g.user.username, book_id)
     if success:
+        log_activity(ActivityType.DELETE_BOOK, book_id=book_id, book_title=book_title, library_type='anx', success=True)
         return jsonify({'message': message})
     else:
+        log_activity(ActivityType.DELETE_BOOK, book_id=book_id, book_title=book_title, library_type='anx', success=False, failure_reason=message)
         return jsonify({'error': message}), 500
 
 
@@ -396,9 +439,11 @@ def _push_anx_to_calibre_logic(user_dict, book_id):
     if not username:
         return {'success': False, 'error': 'Username not found in user_dict.'}
 
-    book_details = get_anx_book_details(username, book_id)
-    if not book_details:
+    book_title, _unused = get_anx_book_details(username, book_id)
+    if not book_title:
         return {'success': False, 'error': _('Anx book with ID %(book_id)s not found.', book_id=book_id)}
+    
+    book_details = get_anx_book_details(username, book_id, as_dict=True)
 
     file_path = book_details.get('file_path')
     if not file_path:
@@ -475,18 +520,26 @@ def _push_anx_to_calibre_logic(user_dict, book_id):
 
 @books_bp.route('/push_anx_to_calibre/<int:book_id>', methods=['POST'])
 def push_anx_to_calibre_api(book_id):
+    book_details = get_anx_book_details(g.user.username, book_id, as_dict=True)
+    book_title = book_details.get('title') if book_details else None
+
     # Permission check for normal users
     if config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD') and g.user.role == 'user':
-        return jsonify({'error': _('You do not have permission to upload books.')}), 403
+        error_msg = _('You do not have permission to upload books.')
+        log_activity(ActivityType.PUSH_ANX_TO_CALIBRE, book_id=book_id, book_title=book_title, library_type='anx', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 403
 
     user_dict = {'username': g.user.username}
     result = _push_anx_to_calibre_logic(user_dict, book_id)
     
     if result['success']:
+        log_activity(ActivityType.PUSH_ANX_TO_CALIBRE, book_id=book_id, book_title=book_title, library_type='anx', success=True, detail=result.get('message'))
         return jsonify({'message': result['message']})
     else:
+        error_msg = result.get('error', _('Unknown error'))
+        log_activity(ActivityType.PUSH_ANX_TO_CALIBRE, book_id=book_id, book_title=book_title, library_type='anx', success=False, failure_reason=error_msg, detail=json.dumps(result.get('details')))
         status_code = result.get('code', 500)
-        error_payload = {'error': result['error']}
+        error_payload = {'error': error_msg}
         if 'details' in result:
             error_payload['details'] = result['details']
         return jsonify(error_payload), status_code

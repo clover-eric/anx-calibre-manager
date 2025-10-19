@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify, g, session
 from flask_babel import gettext as _
 from contextlib import closing
 import database
+from utils.activity_logger import log_activity, ActivityType
 
 auth_2fa_bp = Blueprint('auth_2fa', __name__, url_prefix='/api')
 
@@ -33,8 +34,10 @@ def verify_2fa():
             db.execute('UPDATE users SET otp_secret = ? WHERE id = ?', (secret, g.user.id))
             db.commit()
         session.pop('2fa_secret_pending', None)
+        log_activity(ActivityType.ENABLE_2FA, success=True)
         return jsonify({'message': _('2FA has been successfully enabled!')})
     else:
+        log_activity(ActivityType.ENABLE_2FA, success=False, failure_reason=_('Incorrect verification code'))
         return jsonify({'error': _('Incorrect verification code.')}), 400
 
 @auth_2fa_bp.route('/2fa/disable', methods=['POST'])
@@ -42,4 +45,5 @@ def disable_2fa():
     with closing(database.get_db()) as db:
         db.execute('UPDATE users SET otp_secret = NULL WHERE id = ?', (g.user.id,))
         db.commit()
+    log_activity(ActivityType.DISABLE_2FA, success=True)
     return jsonify({'message': _('2FA has been disabled.')})

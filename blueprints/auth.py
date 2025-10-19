@@ -1,11 +1,12 @@
 import bcrypt
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, g, jsonify, current_app
 from flask_babel import gettext as _
 from contextlib import closing
 import database
 import config_manager
+from utils.activity_logger import log_activity, ActivityType
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -16,10 +17,41 @@ def login():
         username = request.form['username']
         password = request.form['password']
         otp_code = request.form.get('otp_code')
+        
         with closing(database.get_db()) as db:
             user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password_hash']):
+        # 检查用户是否存在
+        if not user:
+            error_msg = _('Username or password is incorrect.')
+            log_activity(
+                ActivityType.LOGIN_FAILED,
+                username=username,
+                user_id=None,
+                success=False,
+                failure_reason=error_msg
+            )
+            return jsonify({'error': error_msg}), 401
+        
+        # 检查账户是否被锁定
+        max_attempts = config_manager.config.get('LOGIN_MAX_ATTEMPTS', 5)
+        if max_attempts > 0 and user['account_locked_until']:
+            locked_until = datetime.fromisoformat(user['account_locked_until'])
+            if datetime.now() < locked_until:
+                remaining = int((locked_until - datetime.now()).total_seconds() / 60)
+                error_msg = _('Account is locked. Please try again in %(minutes)s minutes.', minutes=remaining)
+                log_activity(
+                    ActivityType.LOGIN_FAILED,
+                    username=username,
+                    user_id=user['id'],
+                    success=False,
+                    failure_reason=error_msg
+                )
+                return jsonify({'error': error_msg}), 403
+        
+        # 验证密码
+        if bcrypt.checkpw(password.encode('utf-8'), user['password_hash']):
+            # 验证2FA（如果启用）
             if user['otp_secret']:
                 if not otp_code:
                     session['user_id_pending_2fa'] = user['id']
@@ -32,19 +64,104 @@ def login():
                     return redirect(url_for('auth.login'))
 
                 if not pyotp.TOTP(user['otp_secret']).verify(otp_code):
-                    return jsonify({'error': _('Two-factor authentication code is incorrect.')}), 401
+                    error_msg = _('Two-factor authentication code is incorrect.')
+                    log_activity(
+                        ActivityType.LOGIN_FAILED,
+                        username=username,
+                        user_id=user['id'],
+                        success=False,
+                        failure_reason=error_msg
+                    )
+                    return jsonify({'error': error_msg}), 401
+            
+            # 登录成功 - 重置失败计数并更新登录信息
+            with closing(database.get_db()) as db:
+                db.execute('''
+                    UPDATE users 
+                    SET failed_login_attempts = 0, 
+                        account_locked_until = NULL,
+                        last_login_at = CURRENT_TIMESTAMP,
+                        last_login_ip = ?
+                    WHERE id = ?
+                ''', (request.remote_addr, user['id']))
+                db.commit()
             
             session.clear()
             session['user_id'] = user['id']
             session.permanent = True
             session.pop('user_id_pending_2fa', None)
+            
+            log_activity(
+                ActivityType.LOGIN_SUCCESS,
+                username=username,
+                user_id=user['id'],
+                success=True
+            )
+            
             return jsonify({'success': True, 'redirect_url': url_for('main.index')})
         else:
-            return jsonify({'error': _('Username or password is incorrect.')}), 401
+            # 密码错误 - 增加失败计数
+            with closing(database.get_db()) as db:
+                new_attempts = user['failed_login_attempts'] + 1
+                locked_until = None
+                
+                # 检查是否达到锁定阈值
+                if max_attempts > 0 and new_attempts >= max_attempts:
+                    # 锁定账户 30 分钟
+                    locked_until = (datetime.now() + timedelta(minutes=30)).isoformat()
+                    db.execute('''
+                        UPDATE users 
+                        SET failed_login_attempts = ?, account_locked_until = ?
+                        WHERE id = ?
+                    ''', (new_attempts, locked_until, user['id']))
+                    db.commit()
+                    
+                    error_msg = _('Too many failed login attempts. Account locked for 30 minutes.')
+                    log_activity(
+                        ActivityType.LOGIN_FAILED,
+                        username=username,
+                        user_id=user['id'],
+                        success=False,
+                        failure_reason=error_msg
+                    )
+                    
+                    return jsonify({'error': error_msg}), 403
+                else:
+                    db.execute('''
+                        UPDATE users 
+                        SET failed_login_attempts = ?
+                        WHERE id = ?
+                    ''', (new_attempts, user['id']))
+                    db.commit()
+                    
+                    remaining_attempts = max_attempts - new_attempts if max_attempts > 0 else None
+                    if remaining_attempts is not None and remaining_attempts > 0:
+                        error_msg = _('Username or password is incorrect. %(remaining)s attempt(s) remaining.', remaining=remaining_attempts)
+                    else:
+                        error_msg = _('Username or password is incorrect.')
+                    
+                    log_activity(
+                        ActivityType.LOGIN_FAILED,
+                        username=username,
+                        user_id=user['id'],
+                        success=False,
+                        failure_reason=error_msg
+                    )
+            
+            return jsonify({'error': error_msg}), 401
     return render_template('login.html')
 
 @auth_bp.route('/logout')
 def logout():
+    # 记录登出活动
+    if hasattr(g, 'user') and g.user:
+        log_activity(
+            ActivityType.LOGOUT,
+            username=g.user.username,
+            user_id=g.user.id,
+            success=True
+        )
+    
     lang = session.get('language', 'zh_Hans')
     g.language = lang  # Set language in g for the current request
     
@@ -168,6 +285,14 @@ def register():
                     ''', (new_uses, user_id, invite_record['id']))
                 
                 db.commit()
+                
+                # 记录注册活动
+                log_activity(
+                    ActivityType.REGISTER,
+                    username=username,
+                    user_id=user_id,
+                    success=True
+                )
                 
                 return jsonify({
                     'success': True,

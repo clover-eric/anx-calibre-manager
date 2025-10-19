@@ -10,6 +10,7 @@ import os
 import json
 from datetime import datetime
 import logging
+from utils.activity_logger import log_activity, ActivityType
 
 koreader_bp = Blueprint('koreader', __name__, url_prefix='/koreader')
 
@@ -172,6 +173,9 @@ def update_progress():
             WHERE id = ?
         """, (cfi, percentage, current_time, book['id']))
         db.commit()
+        
+        # 记录KOReader同步进度活动
+        log_activity(ActivityType.KOREADER_SYNC_PROGRESS, book_id=book['id'], library_type='anx', success=True)
 
         return jsonify({'message': 'Progress updated successfully.'})
 
@@ -214,6 +218,9 @@ def update_reading_time():
             # If not, insert a new record
             cursor.execute("INSERT INTO tb_reading_time (book_id, date, reading_time) VALUES (?, ?, ?)", (book['id'], date, reading_time))
         db.commit()
+        
+        # 记录KOReader同步阅读时间活动
+        log_activity(ActivityType.KOREADER_SYNC_READING_TIME, book_id=book['id'], library_type='anx', success=True, detail=f'{reading_time}s')
 
         return jsonify({'message': 'Reading time updated successfully.'})
 
@@ -252,6 +259,9 @@ def update_summary():
             cursor.execute("UPDATE tb_books SET description = ? WHERE id = ?", (summary, book['id']))
 
         db.commit()
+        
+        # 记录KOReader更新摘要活动
+        log_activity(ActivityType.KOREADER_UPDATE_SUMMARY, book_id=book['id'], library_type='anx', success=True)
 
         return jsonify({'message': 'Summary updated successfully.'})
 

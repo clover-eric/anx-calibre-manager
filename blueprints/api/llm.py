@@ -8,6 +8,7 @@ from flask_babel import gettext as _
 from contextlib import closing
 import database
 from threading import Lock
+from utils.activity_logger import log_activity, ActivityType
 
 # Use a try-except block for cleaner optional import
 try:
@@ -198,6 +199,11 @@ def chat_with_book():
         )
         user_message_id = cursor.lastrowid
         db.commit()
+        
+        # 记录LLM对话活动
+        if not session_id or session_id == str(uuid.uuid4()):
+            log_activity(ActivityType.LLM_CHAT_START, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
+        log_activity(ActivityType.LLM_CHAT_MESSAGE, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
 
     app = current_app._get_current_object()
     user_info_dict = {key: getattr(g.user, key, None) for key in
@@ -266,6 +272,9 @@ def regenerate_chat_response():
             (msg_info['session_id'], msg_info['created_at'])
         )
         db.commit()
+        
+        # 记录重新生成活动
+        log_activity(ActivityType.LLM_CHAT_MESSAGE, book_id=msg_info['book_id'], book_title=msg_info['book_title'], library_type=msg_info['book_type'], success=True, detail=_('Regenerate response'))
     
     app = current_app._get_current_object()
     user_obj = database.get_db().execute('SELECT * FROM users WHERE id = ?', (msg_info['user_id'],)).fetchone()
@@ -366,7 +375,8 @@ def delete_chat_session(session_id):
         db.execute('DELETE FROM llm_chat_messages WHERE session_id = ?', (session_id,))
         db.execute('DELETE FROM llm_chat_sessions WHERE id = ?', (session_id,))
         db.commit()
-
+    
+    log_activity(ActivityType.LLM_DELETE_SESSION, success=True, detail=_('Session ID: %(session_id)s', session_id=session_id))
     return jsonify({'success': True, 'message': _('Chat session deleted successfully.')})
 
 
@@ -389,5 +399,6 @@ def delete_message(message_id):
 
     db.execute('DELETE FROM llm_chat_messages WHERE id = ?', (message_id,))
     db.commit()
-
+    
+    log_activity(ActivityType.LLM_DELETE_MESSAGE, success=True, detail=_('Message ID: %(message_id)s', message_id=message_id))
     return jsonify({'status': 'success', 'message': 'Message deleted successfully'})

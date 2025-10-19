@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify, g
 from flask_babel import gettext as _
 from contextlib import closing
 import database
+from utils.activity_logger import log_activity, ActivityType
 
 invite_bp = Blueprint('invite', __name__, url_prefix='/api')
 
@@ -56,6 +57,7 @@ def manage_invite_codes():
                     ''', (code, g.user.id, max_uses, expires_at.isoformat() if expires_at else None))
                     db.commit()
                 
+                log_activity(ActivityType.CREATE_INVITE_CODE, success=True, detail=_('Code: %(code)s, Max uses: %(max_uses)s', code=code, max_uses=max_uses))
                 return jsonify({'success': True, 'code': code})
             
             elif action == 'toggle':
@@ -63,6 +65,7 @@ def manage_invite_codes():
                 with closing(database.get_db()) as db:
                     db.execute('UPDATE invite_codes SET is_active = 1 - is_active WHERE id = ?', (code_id,))
                     db.commit()
+                log_activity(ActivityType.TOGGLE_INVITE_CODE, success=True, detail=_('Code ID: %(code_id)s', code_id=code_id))
                 return jsonify({'success': True})
             
             elif action == 'delete':
@@ -70,10 +73,13 @@ def manage_invite_codes():
                 with closing(database.get_db()) as db:
                     db.execute('DELETE FROM invite_codes WHERE id = ?', (code_id,))
                     db.commit()
+                log_activity(ActivityType.DELETE_INVITE_CODE, success=True, detail=_('Code ID: %(code_id)s', code_id=code_id))
                 return jsonify({'success': True})
                 
         except Exception as e:
             print(f"Invite code management error: {e}")
+            log_activity(ActivityType.CREATE_INVITE_CODE if action == 'create' else (ActivityType.TOGGLE_INVITE_CODE if action == 'toggle' else ActivityType.DELETE_INVITE_CODE),
+                        success=False, failure_reason=_('Operation failed: %(error)s', error=str(e)))
             return jsonify({'error': _('Operation failed')}), 500
     
     # GET request for invite codes

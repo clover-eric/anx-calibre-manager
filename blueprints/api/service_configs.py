@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify, g
 from flask_babel import gettext as _
 from contextlib import closing
 import database
+from utils.activity_logger import log_activity, ActivityType
 
 service_configs_bp = Blueprint('service_configs', __name__, url_prefix='/api/service_configs')
 
@@ -42,8 +43,10 @@ def create_config():
             )
             new_id = cursor.lastrowid
             db.commit()
+        log_activity(ActivityType.CREATE_SERVICE_CONFIG, success=True, detail=_('Type: %(type)s, Profile: %(name)s', type=config_type, name=profile_name))
         return jsonify({'id': new_id, 'message': _('Configuration profile saved successfully.')}), 201
     except Exception as e:
+        log_activity(ActivityType.CREATE_SERVICE_CONFIG, success=False, failure_reason=_('Failed to create profile: %(error)s', error=str(e)))
         # Assuming UNIQUE constraint violation is the most common error
         return jsonify({'error': _('A profile with this name already exists.')}), 409
 
@@ -63,8 +66,10 @@ def update_config(config_id):
                 (profile_name, json.dumps(config_data), config_id, g.user.id)
             )
             db.commit()
+        log_activity(ActivityType.UPDATE_SERVICE_CONFIG, success=True, detail=_('Config ID: %(id)s, Profile: %(name)s', id=config_id, name=profile_name))
         return jsonify({'message': _('Configuration profile updated successfully.')})
     except Exception as e:
+        log_activity(ActivityType.UPDATE_SERVICE_CONFIG, success=False, failure_reason=_('Failed to update profile: %(error)s', error=str(e)))
         return jsonify({'error': _('A profile with this name already exists.')}), 409
 
 @service_configs_bp.route('/<int:config_id>', methods=['DELETE'])
@@ -72,4 +77,5 @@ def delete_config(config_id):
     with closing(database.get_db()) as db:
         db.execute("DELETE FROM user_service_configs WHERE id = ? AND user_id = ?", (config_id, g.user.id))
         db.commit()
+    log_activity(ActivityType.DELETE_SERVICE_CONFIG, success=True, detail=_('Config ID: %(id)s', id=config_id))
     return jsonify({'message': _('Configuration profile deleted successfully.')})

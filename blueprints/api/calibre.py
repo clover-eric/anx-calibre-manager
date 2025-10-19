@@ -11,6 +11,7 @@ import config_manager
 from utils.auth import get_calibre_auth
 from utils.text import safe_title, safe_author
 from utils.decorators import maintainer_required_api
+from utils.activity_logger import log_activity, ActivityType
 
 calibre_bp = Blueprint('calibre', __name__, url_prefix='/api')
 
@@ -18,7 +19,9 @@ calibre_bp = Blueprint('calibre', __name__, url_prefix='/api')
 def upload_to_calibre_api():
     # Permission check for normal users
     if config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD') and g.user.role == 'user':
-        return jsonify({'error': _('You do not have permission to upload books.')}), 403
+        error_msg = _('You do not have permission to upload books.')
+        log_activity(ActivityType.UPLOAD_BOOK, library_type='calibre', success=False, failure_reason=error_msg)
+        return jsonify({'error': error_msg}), 403
 
     if 'books' not in request.files:
         return jsonify({'error': _('No file part.')}), 400
@@ -33,14 +36,10 @@ def upload_to_calibre_api():
             filename = file.filename
             
             job_id = str(uuid.uuid4())
-            
             library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
-            
             add_duplicates = config_manager.config.get('CALIBRE_ADD_DUPLICATES', False)
             add_duplicates_flag = 'y' if add_duplicates else 'n'
-
             encoded_filename = requests.utils.quote(filename)
-
             url = f"{config_manager.config['CALIBRE_URL']}/cdb/add-book/{job_id}/{add_duplicates_flag}/{encoded_filename}/{library_id}"
             
             try:
@@ -57,86 +56,56 @@ def upload_to_calibre_api():
                 res_json = response.json()
                 if res_json.get("book_id"):
                     book_id = res_json["book_id"]
+                    book_title = res_json.get('title', filename)
+                    log_activity(ActivityType.UPLOAD_BOOK, book_id=book_id, book_title=book_title, library_type='calibre', success=True)
 
+                    # Try to update #library tag, but don't fail the entire request if this part fails
                     try:
                         book_details = get_calibre_book_details(book_id)
-                        if (
-                            book_details
-                            and "user_metadata" in book_details
-                            and "#library" in book_details["user_metadata"]
-                        ):
-                            update_payload = {
-                                "changes": {"#library": g.user.username}
-                            }
+                        if (book_details and "user_metadata" in book_details and "#library" in book_details["user_metadata"]):
+                            update_payload = {"changes": {"#library": g.user.username}}
                             update_url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{book_id}/{library_id}"
-                            update_response = requests.post(
-                                update_url,
-                                json=update_payload,
-                                auth=get_calibre_auth(),
-                            )
+                            update_response = requests.post(update_url, json=update_payload, auth=get_calibre_auth())
                             update_response.raise_for_status()
-                            logging.info(
-                                f"Successfully updated #library for book {book_id}"
-                            )
+                            logging.info(f"Successfully updated #library for book {book_id}")
                     except Exception as e:
-                        logging.error(
-                            f"Failed to update #library for book {book_id}: {e}"
-                        )
-                        results.append(
-                            {
-                                "success": True,
-                                "filename": filename,
-                                "message": _("Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to update source).", title=res_json.get('title'), book_id=book_id),
-                            }
-                        )
-                        continue
-
-                    results.append(
-                        {
-                            "success": True,
-                            "filename": filename,
-                            "message": _("Book '%(title)s' uploaded successfully, ID: %(book_id)s.", title=res_json.get('title'), book_id=book_id),
-                        }
-                    )
+                        logging.error(f"Failed to update #library for book {book_id}: {e}")
+                    
+                    results.append({"success": True, "filename": filename, "message": _("Book '%(title)s' uploaded successfully, ID: %(book_id)s.", title=book_title, book_id=book_id)})
                 else:
-                    results.append(
-                        {
-                            "success": False,
-                            "filename": filename,
-                            "error": _("Upload failed, book may already exist."),
-                            "details": res_json.get("duplicates"),
-                        }
-                    )
+                    error_msg = _("Upload failed, book may already exist.")
+                    log_activity(ActivityType.UPLOAD_BOOK, book_title=filename, library_type='calibre', success=False, failure_reason=error_msg, detail=json.dumps(res_json.get("duplicates")))
+                    results.append({"success": False, "filename": filename, "error": error_msg, "details": res_json.get("duplicates")})
+            
             except requests.exceptions.HTTPError as e:
-                error_message = (
-                    _("Calibre server returned an error: %(code)s - %(text)s", code=e.response.status_code, text=e.response.text)
-                )
-                results.append(
-                    {"success": False, "filename": filename, "error": error_message}
-                )
+                error_message = _("Calibre server returned an error: %(code)s - %(text)s", code=e.response.status_code, text=e.response.text)
+                log_activity(ActivityType.UPLOAD_BOOK, book_title=filename, library_type='calibre', success=False, failure_reason=error_message)
+                results.append({"success": False, "filename": filename, "error": error_message})
             except requests.exceptions.RequestException as e:
-                results.append(
-                    {
-                        "success": False,
-                        "filename": filename,
-                        "error": _("Error connecting to Calibre server: %(error)s", error=e),
-                    }
-                )
+                error_message = _("Error connecting to Calibre server: %(error)s", error=e)
+                log_activity(ActivityType.UPLOAD_BOOK, book_title=filename, library_type='calibre', success=False, failure_reason=error_message)
+                results.append({"success": False, "filename": filename, "error": error_message})
 
     return jsonify(results)
 
 @calibre_bp.route('/update_calibre_book/<int:book_id>', methods=['POST'])
 def update_calibre_book_api(book_id):
+    book_details = get_calibre_book_details(book_id)
+    book_title = book_details.get('title') if book_details else None
+
     if not g.user.is_maintainer:
-        book_details = get_calibre_book_details(book_id)
         if not book_details:
-            return jsonify({'error': _('Book not found')}), 404
+            error_msg = _('Book not found')
+            log_activity(ActivityType.EDIT_METADATA, book_id=book_id, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 404
         
         library_field = book_details.get('user_metadata', {}).get('#library', {})
         uploader = library_field.get('#value#', '') if library_field else ''
 
         if uploader != g.user.username:
-            return jsonify({'error': _('You do not have permission to edit this book.')}), 403
+            error_msg = _('You do not have permission to edit this book.')
+            log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 403
 
     data = request.get_json()
     
@@ -170,7 +139,6 @@ def update_calibre_book_api(book_id):
         return jsonify({'error': _('No fields provided to update.')}), 400
 
     payload = {'changes': changes}
-    
     library_id = config_manager.config.get('CALIBRE_DEFAULT_LIBRARY_ID', 'Calibre_Library')
     url = f"{config_manager.config['CALIBRE_URL']}/cdb/set-fields/{book_id}/{library_id}"
     
@@ -182,16 +150,25 @@ def update_calibre_book_api(book_id):
             result = response.json()
             # The cdb endpoint returns the updated metadata for the book
             if str(book_id) in result:
+                log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=True, detail=json.dumps(changes))
                 return jsonify({'message': _('Metadata updated successfully.'), 'updated_metadata': result[str(book_id)]})
             else:
-                 return jsonify({'error': _('Calibre returned an unknown response.'), 'details': result}), 500
+                error_msg = _('Calibre returned an unknown response.')
+                log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg, detail=json.dumps(result))
+                return jsonify({'error': error_msg, 'details': result}), 500
         except json.JSONDecodeError:
-            return jsonify({'error': _('Calibre returned an invalid JSON response: %(text)s', text=response.text)}), 500
+            error_msg = _('Calibre returned an invalid JSON response: %(text)s', text=response.text)
+            log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_msg)
+            return jsonify({'error': error_msg}), 500
                 
     except requests.exceptions.HTTPError as e:
-        return jsonify({'error': _('Error connecting to Calibre server: %(code)s %(reason)s', code=e.response.status_code, reason=e.response.reason), 'details': e.response.text}), 500
+        error_message = _('Error connecting to Calibre server: %(code)s %(reason)s', code=e.response.status_code, reason=e.response.reason)
+        log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_message)
+        return jsonify({'error': error_message, 'details': e.response.text}), 500
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': _('Error connecting to Calibre server: %(error)s', error=e)}), 500
+        error_message = _('Error connecting to Calibre server: %(error)s', error=e)
+        log_activity(ActivityType.EDIT_METADATA, book_id=book_id, book_title=book_title, library_type='calibre', success=False, failure_reason=error_message)
+        return jsonify({'error': error_message}), 500
 
 # --- Completions API ---
 @lru_cache(maxsize=16)

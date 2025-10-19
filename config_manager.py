@@ -25,6 +25,7 @@ DEFAULT_CONFIG = {
     'SECRET_KEY': {'env': 'SECRET_KEY', 'default': ''}, # Will be generated on first load
     'LOGIN_MAX_ATTEMPTS': {'env': 'LOGIN_MAX_ATTEMPTS', 'default': 5},
     'SESSION_LIFETIME_DAYS': {'env': 'SESSION_LIFETIME_DAYS', 'default': 7},
+    'ENABLE_ACTIVITY_LOG': {'env': 'ENABLE_ACTIVITY_LOG', 'default': False},
 
     # WebDAV root directory
     'WEBDAV_ROOT': {'env': 'WEBDAV_ROOT', 'default': WEBDAV_DIR},
@@ -100,7 +101,7 @@ class ConfigManager:
                         loaded_config[key] = int(val)
                     except (ValueError, TypeError):
                         loaded_config[key] = values['default']
-                elif key in ['REQUIRE_INVITE_CODE', 'DISABLE_NORMAL_USER_UPLOAD']:
+                elif key in ['REQUIRE_INVITE_CODE', 'DISABLE_NORMAL_USER_UPLOAD', 'CALIBRE_ADD_DUPLICATES', 'ENABLE_ACTIVITY_LOG']:
                     # Handle boolean values from environment variables
                     loaded_config[key] = val.lower() in ('true', '1', 'yes', 'on')
                 else:

@@ -8,6 +8,7 @@ import database
 from utils.audio_metadata import extract_m4b_metadata
 from anx_library import get_anx_user_dirs
 from datetime import datetime
+from utils.activity_logger import log_activity, ActivityType
 
 logger = logging.getLogger(__name__)
 audio_player_bp = Blueprint('audio_player', __name__, url_prefix='/api/audioplayer')
@@ -140,6 +141,8 @@ def handle_progress(task_id):
             """, (user_id, task_id, progress_ms, duration_ms, playback_rate))
             
             db.commit()
+            # 记录有声书播放进度更新
+            log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=True)
             return jsonify({'message': 'Progress and playback rate updated'})
         else:  # GET
             progress = db.execute("SELECT progress_ms, playback_rate FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
@@ -211,6 +214,9 @@ def log_listen_time():
             cursor.execute("INSERT INTO tb_reading_time (book_id, date, reading_time) VALUES (?, ?, ?)", (book_id, date_str, listen_duration))
         
         db.commit()
+        
+        # 记录有声书阅读时间更新活动
+        log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_TIME, book_id=book_id, library_type='anx', success=True, detail=f'{listen_duration}s')
 
     return jsonify({'message': 'Listen time logged successfully.'})
 

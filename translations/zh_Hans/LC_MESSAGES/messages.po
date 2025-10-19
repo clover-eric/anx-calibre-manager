@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-18 20:43+0800\n"
+"POT-Creation-Date: 2025-10-19 11:19+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -18,76 +18,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/auth.py:31
-msgid "Session invalid, please login again."
-msgstr "会话无效，请重新登录。"
-
-#: blueprints/auth.py:35
-msgid "Two-factor authentication code is incorrect."
-msgstr "双因素身份验证代码不正确。"
-
-#: blueprints/auth.py:43
+#: blueprints/auth.py:26 blueprints/auth.py:141
 msgid "Username or password is incorrect."
 msgstr "用户名或密码不正确。"
 
-#: blueprints/auth.py:52
+#: blueprints/auth.py:42
+#, python-format
+msgid "Account is locked. Please try again in %(minutes)s minutes."
+msgstr "账户已锁定。请在 %(minutes)s 分钟后重试。"
+
+#: blueprints/auth.py:63
+msgid "Session invalid, please login again."
+msgstr "会话无效，请重新登录。"
+
+#: blueprints/auth.py:67
+msgid "Two-factor authentication code is incorrect."
+msgstr "双因素身份验证代码不正确。"
+
+#: blueprints/auth.py:119
+msgid "Too many failed login attempts. Account locked for 30 minutes."
+msgstr "登录失败次数过多。账户已锁定30分钟。"
+
+#: blueprints/auth.py:139
+#, python-format
+msgid "Username or password is incorrect. %(remaining)s attempt(s) remaining."
+msgstr "用户名或密码不正确。剩余 %(remaining)s 次尝试。"
+
+#: blueprints/auth.py:169
 msgid "You have been logged out successfully."
 msgstr "您已成功注销。"
 
-#: blueprints/auth.py:75
+#: blueprints/auth.py:192
 msgid "Username and password cannot be empty."
 msgstr "用户名和密码不能为空。"
 
-#: blueprints/auth.py:87
+#: blueprints/auth.py:204
 #, python-format
 msgid ""
 "Administrator account created, but failed to initialize Anx library: "
 "%(message)s"
 msgstr "管理员帐户已创建，但初始化 Anx 书库失败：%(message)s"
 
-#: blueprints/auth.py:89
+#: blueprints/auth.py:206
 msgid "Administrator account has been created, please login."
 msgstr "管理员帐户已创建，请登录。"
 
-#: blueprints/auth.py:111
+#: blueprints/auth.py:228
 msgid "Username and password cannot be empty"
 msgstr "用户名和密码不能为空"
 
-#: blueprints/auth.py:114 static/js/register.js:6
+#: blueprints/auth.py:231 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
 msgstr "用户名只能包含字母、数字和下划线，长度为 3-50 个字符"
 
-#: blueprints/auth.py:117 static/js/register.js:5
+#: blueprints/auth.py:234 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "密码必须至少为 6 个字符"
 
-#: blueprints/auth.py:122
+#: blueprints/api/users.py:54 blueprints/auth.py:239
 msgid "Username already exists"
 msgstr "用户名已存在"
 
-#: blueprints/auth.py:126
+#: blueprints/auth.py:243
 msgid "Please enter invite code"
 msgstr "请输入邀请码"
 
-#: blueprints/auth.py:135
+#: blueprints/auth.py:252
 msgid "Invite code is invalid"
 msgstr "邀请码无效"
 
-#: blueprints/auth.py:138
+#: blueprints/auth.py:255
 msgid "Invite code has reached usage limit"
 msgstr "邀请码已达到使用上限"
 
-#: blueprints/auth.py:143
+#: blueprints/auth.py:260
 msgid "Invite code has expired"
 msgstr "邀请码已过期"
 
-#: blueprints/auth.py:174 static/js/register.js:7
+#: blueprints/auth.py:299 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "注册成功！请登录。"
 
-#: blueprints/auth.py:180
+#: blueprints/auth.py:305
 msgid "An error occurred during registration"
 msgstr "注册过程中发生错误"
 
@@ -117,352 +131,381 @@ msgstr "该用户的统计页面是私密的。"
 msgid "Anx library not found for this user."
 msgstr "未找到该用户的 Anx 书库。"
 
-#: blueprints/api/audiobook.py:111 blueprints/api/audiobook.py:257
+#: blueprints/api/audiobook.py:79 blueprints/api/audiobook.py:201
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' 或 'library' 参数缺失"
 
-#: blueprints/api/audiobook.py:120
+#: blueprints/api/audiobook.py:94
 msgid "A task for this book is already in progress."
 msgstr "本书的有声书生成任务已在进行中。"
 
-#: blueprints/api/audiobook.py:181
+#: blueprints/api/audiobook.py:139
 msgid "Invalid 'library' type"
 msgstr "无效的 'library' 类型"
 
-#: blueprints/api/audiobook.py:230 static/js/page/translations.js:73
+#: blueprints/api/audiobook.py:175 static/js/page/translations.js:73
 #, python-format
 msgid "File error: %(error)s"
 msgstr "文件错误：%(error)s"
 
-#: blueprints/api/audiobook.py:234
+#: blueprints/api/audiobook.py:180
 #, python-format
 msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "启动任务时发生未知错误：%(error)s"
 
-#: blueprints/api/audiobook.py:244 blueprints/api/audiobook.py:274
-#: blueprints/api/audiobook.py:327
+#: blueprints/api/audiobook.py:190 blueprints/api/audiobook.py:219
+#: blueprints/api/audiobook.py:277
 msgid "Task not found"
 msgstr "未找到任务"
 
-#: blueprints/api/audiobook.py:278
+#: blueprints/api/audiobook.py:225
 msgid "Forbidden"
 msgstr "禁止访问"
 
-#: blueprints/api/audiobook.py:282
+#: blueprints/api/audiobook.py:230
 msgid "Audiobook is not ready for download"
 msgstr "有声书尚未准备好下载"
 
-#: blueprints/api/audiobook.py:287
+#: blueprints/api/audiobook.py:237
 msgid "File not found on server"
 msgstr "服务器上未找到文件"
 
-#: blueprints/api/audiobook.py:314
+#: blueprints/api/audiobook.py:257
 #, python-format
 msgid "Could not send file: %(error)s"
 msgstr "无法发送文件：%(error)s"
 
-#: blueprints/api/audiobook.py:319
+#: blueprints/api/audiobook.py:264
 msgid "Authentication required"
 msgstr "需要身份验证"
 
-#: blueprints/api/audiobook.py:334
+#: blueprints/api/audiobook.py:286
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "无权删除此 Anx 有声书"
 
-#: blueprints/api/audiobook.py:337 utils/decorators.py:19
+#: blueprints/api/audiobook.py:291 utils/decorators.py:19
 msgid "Maintainer or administrator permission required."
 msgstr "需要维护者或管理员权限。"
 
-#: blueprints/api/audiobook.py:353
+#: blueprints/api/audiobook.py:309
 msgid "Audiobook deleted successfully"
 msgstr "有声书删除成功"
 
-#: blueprints/api/audiobook.py:358
+#: blueprints/api/audiobook.py:313
 msgid "An error occurred during deletion"
 msgstr "删除过程中发生错误"
 
-#: blueprints/api/auth_2fa.py:15
+#: blueprints/api/auth_2fa.py:16
 msgid "2FA is already enabled."
 msgstr "两步验证已启用。"
 
-#: blueprints/api/auth_2fa.py:30
+#: blueprints/api/auth_2fa.py:31
 msgid "No pending 2FA setup request found."
 msgstr "未找到待处理的两步验证设置请求。"
 
-#: blueprints/api/auth_2fa.py:36
+#: blueprints/api/auth_2fa.py:38
 msgid "2FA has been successfully enabled!"
 msgstr "两步验证已成功启用！"
 
-#: blueprints/api/auth_2fa.py:38
+#: blueprints/api/auth_2fa.py:40
+msgid "Incorrect verification code"
+msgstr "验证码不正确。"
+
+#: blueprints/api/auth_2fa.py:41
 msgid "Incorrect verification code."
 msgstr "验证码不正确。"
 
-#: blueprints/api/auth_2fa.py:45
+#: blueprints/api/auth_2fa.py:49
 msgid "2FA has been disabled."
 msgstr "两步验证已禁用。"
 
-#: blueprints/api/books.py:36
+#: blueprints/api/books.py:37
 msgid "Anx database not found."
 msgstr "未找到 Anx 数据库。"
 
-#: blueprints/api/books.py:45
+#: blueprints/api/books.py:48
 #, python-format
 msgid "Book file with ID %(book_id)s not found."
 msgstr "未找到 ID 为 %(book_id)s 的图书文件。"
 
-#: blueprints/api/books.py:52
+#: blueprints/api/books.py:59
 #, python-format
 msgid "Error downloading book: %(error)s"
 msgstr "下载图书时出错：%(error)s"
 
-#: blueprints/api/books.py:163
+#: blueprints/api/books.py:175
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing in the current environment."
 msgstr "这本书需要转换为 EPUB，但当前环境中缺少 `ebook-converter` 工具。"
 
-#: blueprints/api/books.py:167
+#: blueprints/api/books.py:182
 msgid "Unable to process or convert the book."
 msgstr "无法处理或转换该图书。"
 
-#: blueprints/api/books.py:172 blueprints/api/books.py:257
+#: blueprints/api/books.py:188 blueprints/api/books.py:286
 msgid "Book details not found."
 msgstr "未找到图书详情。"
 
-#: blueprints/api/books.py:183
+#: blueprints/api/books.py:201
 msgid "This book has no available formats."
 msgstr "该图书没有可用的格式。"
 
-#: blueprints/api/books.py:189
+#: blueprints/api/books.py:210
 msgid "Unable to download the book."
 msgstr "无法下载该图书。"
 
-#: blueprints/api/books.py:194
+#: blueprints/api/books.py:217
 msgid "Please configure your Kindle email in user settings first."
 msgstr "请先在用户设置中配置您的 Kindle 邮箱。"
 
-#: blueprints/api/books.py:201
+#: blueprints/api/books.py:224
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing. Please install it in the system PATH."
 msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。请在系统 PATH 中安装它。"
 
-#: blueprints/api/books.py:204
+#: blueprints/api/books.py:227
 msgid "Unable to get or process the EPUB file for the book."
 msgstr "无法获取或处理该图书的 EPUB 文件。"
 
-#: blueprints/api/books.py:251
+#: blueprints/api/books.py:263 blueprints/api/books.py:347
+#: blueprints/api/books.py:539 static/js/settings.js:38
+msgid "Unknown error"
+msgstr "未知错误"
+
+#: blueprints/api/books.py:280
 msgid ""
 "This book needs to be converted to EPUB, but the `ebook-converter` tool "
 "is missing."
 msgstr "这本书需要转换为 EPUB，但缺少 `ebook-converter` 工具。"
 
-#: blueprints/api/books.py:264
+#: blueprints/api/books.py:293
 msgid "No pushable format found."
 msgstr "未找到可推送的格式。"
 
-#: blueprints/api/books.py:269
+#: blueprints/api/books.py:298
 msgid "Error downloading or processing the book."
 msgstr "下载或处理图书时出错。"
 
-#: blueprints/api/books.py:275 blueprints/api/books.py:409
+#: blueprints/api/books.py:304 blueprints/api/books.py:454
 msgid "User directory not configured."
 msgstr "用户目录未配置。"
 
-#: blueprints/api/books.py:295
+#: blueprints/api/books.py:324
 #, python-format
 msgid ""
 "Book '%(filename)s' pushed. Processed: %(processed)s, Skipped: "
 "%(skipped)s."
 msgstr "图书 '%(filename)s' 已推送。已处理：%(processed)s，已跳过：%(skipped)s。"
 
-#: blueprints/api/books.py:321
+#: blueprints/api/books.py:356
 msgid "Missing book ID."
 msgstr "缺少图书 ID。"
 
-#: blueprints/api/books.py:401
+#: blueprints/api/books.py:444
 #, python-format
 msgid "Anx book with ID %(book_id)s not found."
 msgstr "未找到 ID 为 %(book_id)s 的 Anx 图书。"
 
-#: blueprints/api/books.py:405
+#: blueprints/api/books.py:450
 #, python-format
 msgid "File path for book with ID %(book_id)s is missing."
 msgstr "缺少 ID 为 %(book_id)s 的图书文件路径。"
 
-#: blueprints/api/books.py:413
+#: blueprints/api/books.py:458
 #, python-format
 msgid "Book file not found at path: %(path)s"
 msgstr "在路径 %(path)s 未找到图书文件"
 
-#: blueprints/api/books.py:419
+#: blueprints/api/books.py:464
 #, python-format
 msgid "Failed to read book file: %(error)s"
 msgstr "读取图书文件失败：%(error)s"
 
-#: blueprints/api/books.py:452 blueprints/api/calibre.py:89
+#: blueprints/api/books.py:497
 #, python-format
 msgid ""
 "Book '%(title)s' uploaded successfully, ID: %(book_id)s (but failed to "
 "update source)."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s（但更新来源失败）。"
 
-#: blueprints/api/books.py:458 blueprints/api/calibre.py:98
+#: blueprints/api/books.py:503 blueprints/api/calibre.py:74
 #, python-format
 msgid "Book '%(title)s' uploaded successfully, ID: %(book_id)s."
 msgstr "图书 '%(title)s' 上传成功，ID：%(book_id)s。"
 
-#: blueprints/api/books.py:464 blueprints/api/calibre.py:106
+#: blueprints/api/books.py:509 blueprints/api/calibre.py:76
 msgid "Upload failed, book may already exist."
 msgstr "上传失败，图书可能已存在。"
 
-#: blueprints/api/books.py:470 blueprints/api/calibre.py:112
+#: blueprints/api/books.py:515 blueprints/api/calibre.py:81
 #, python-format
 msgid "Calibre server returned an error: %(code)s - %(text)s"
 msgstr "Calibre 服务器返回错误：%(code)s - %(text)s"
 
-#: blueprints/api/books.py:474 blueprints/api/calibre.py:122
-#: blueprints/api/calibre.py:194
+#: blueprints/api/books.py:519 blueprints/api/calibre.py:85
+#: blueprints/api/calibre.py:169
 #, python-format
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "连接 Calibre 服务器时出错：%(error)s"
 
-#: blueprints/api/books.py:480 blueprints/api/calibre.py:21
+#: blueprints/api/books.py:528 blueprints/api/calibre.py:22
 msgid "You do not have permission to upload books."
 msgstr "您无权上传图书。"
 
-#: blueprints/api/calibre.py:24
+#: blueprints/api/calibre.py:27
 msgid "No file part."
 msgstr "无文件部分。"
 
-#: blueprints/api/calibre.py:28
+#: blueprints/api/calibre.py:31
 msgid "No selected file."
 msgstr "未选择文件。"
 
-#: blueprints/api/calibre.py:133
+#: blueprints/api/calibre.py:98
 msgid "Book not found"
 msgstr "未找到书籍"
 
-#: blueprints/api/calibre.py:139
+#: blueprints/api/calibre.py:106
 msgid "You do not have permission to edit this book."
 msgstr "您无权编辑此书籍。"
 
-#: blueprints/api/calibre.py:170
+#: blueprints/api/calibre.py:139
 msgid "No fields provided to update."
 msgstr "未提供要更新的字段。"
 
-#: blueprints/api/calibre.py:185
+#: blueprints/api/calibre.py:154
 msgid "Metadata updated successfully."
 msgstr "元数据更新成功。"
 
-#: blueprints/api/calibre.py:187
+#: blueprints/api/calibre.py:156
 msgid "Calibre returned an unknown response."
 msgstr "Calibre 返回未知响应。"
 
-#: blueprints/api/calibre.py:189
+#: blueprints/api/calibre.py:160
 #, python-format
 msgid "Calibre returned an invalid JSON response: %(text)s"
 msgstr "Calibre 返回了无效的 JSON 响应：%(text)s"
 
-#: blueprints/api/calibre.py:192
+#: blueprints/api/calibre.py:165
 #, python-format
 msgid "Error connecting to Calibre server: %(code)s %(reason)s"
 msgstr "连接 Calibre 服务器时出错：%(code)s %(reason)s"
 
-#: blueprints/api/calibre.py:220
+#: blueprints/api/calibre.py:197
 msgid "Field parameter is required."
 msgstr "字段参数是必需的。"
 
-#: blueprints/api/calibre.py:224
+#: blueprints/api/calibre.py:201
 #, python-format
 msgid "Completions not supported for field: %(field)s"
 msgstr "不支持字段 %(field)s 的补全。"
 
-#: blueprints/api/email_service.py:20
+#: blueprints/api/email_service.py:21
 msgid "SMTP is not fully configured."
 msgstr "SMTP 未完全配置。"
 
-#: blueprints/api/email_service.py:67
+#: blueprints/api/email_service.py:68
 msgid "Email sent successfully."
 msgstr "邮件发送成功。"
 
-#: blueprints/api/email_service.py:70
+#: blueprints/api/email_service.py:71
 #, python-format
 msgid "Failed to send email: %(error)s"
 msgstr "发送邮件失败：%(error)s"
 
-#: blueprints/api/email_service.py:78
+#: blueprints/api/email_service.py:79
 msgid "Test recipient email address is required."
 msgstr "测试收件人电子邮件地址是必需的。"
 
-#: blueprints/api/email_service.py:94
+#: blueprints/api/email_service.py:95
+#, python-format
+msgid "Test email sent to %(email)s"
+msgstr "测试邮件已发送至 %(email)s。"
+
+#: blueprints/api/email_service.py:96
 #, python-format
 msgid "Test email successfully sent to %(email)s."
 msgstr "测试邮件已成功发送至 %(email)s。"
 
-#: blueprints/api/email_service.py:96
+#: blueprints/api/email_service.py:98 blueprints/api/email_service.py:99
 #, python-format
 msgid "Failed to send test email: %(message)s"
 msgstr "发送测试邮件失败：%(message)s"
 
-#: blueprints/api/invite.py:20
+#: blueprints/api/invite.py:21
 msgid "Insufficient permissions"
 msgstr "权限不足"
 
-#: blueprints/api/invite.py:39
+#: blueprints/api/invite.py:40
 msgid ""
 "Custom invite code can only contain uppercase letters and numbers, 4-20 "
 "characters long"
 msgstr "自定义邀请码只能包含大写字母和数字，长度为 4-20 个字符"
 
-#: blueprints/api/invite.py:43
+#: blueprints/api/invite.py:44
 msgid "Invite code already exists"
 msgstr "邀请码已存在"
 
-#: blueprints/api/invite.py:77 static/js/settings.js:41
+#: blueprints/api/invite.py:60
+#, python-format
+msgid "Code: %(code)s, Max uses: %(max_uses)s"
+msgstr "代码：%(code)s，最大使用次数：%(max_uses)s"
+
+#: blueprints/api/invite.py:68 blueprints/api/invite.py:76
+#, python-format
+msgid "Code ID: %(code_id)s"
+msgstr "代码 ID：%(code_id)s"
+
+#: blueprints/api/invite.py:82
+#, python-format
+msgid "Operation failed: %(error)s"
+msgstr "操作失败：%(error)s"
+
+#: blueprints/api/invite.py:83 static/js/settings.js:41
 msgid "Operation failed"
 msgstr "操作失败"
 
-#: blueprints/api/llm.py:26
+#: blueprints/api/llm.py:27
 msgid "Authentication required."
 msgstr "需要身份验证。"
 
-#: blueprints/api/llm.py:149
+#: blueprints/api/llm.py:150
 msgid "Book ID and type are required."
 msgstr "书籍 ID 和类型是必需的。"
 
-#: blueprints/api/llm.py:158
+#: blueprints/api/llm.py:159
 msgid "No history found for this book."
 msgstr "未找到该书籍的历史记录。"
 
-#: blueprints/api/llm.py:174
+#: blueprints/api/llm.py:175
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP 模块不可用，无法处理书籍内容。"
 
-#: blueprints/api/llm.py:184 blueprints/api/service_configs.py:31
-#: blueprints/api/service_configs.py:57
+#: blueprints/api/llm.py:185 blueprints/api/service_configs.py:32
+#: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:213 blueprints/api/llm.py:281
+#: blueprints/api/llm.py:219 blueprints/api/llm.py:290
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "当前时间是 %(current_time)s。"
 
-#: blueprints/api/llm.py:214 blueprints/api/llm.py:282
+#: blueprints/api/llm.py:220 blueprints/api/llm.py:291
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:215 blueprints/api/llm.py:283
+#: blueprints/api/llm.py:221 blueprints/api/llm.py:292
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 语法来绘制图表。"
 
-#: blueprints/api/llm.py:218
+#: blueprints/api/llm.py:224
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -483,24 +526,24 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:228 blueprints/api/llm.py:295
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:229 blueprints/api/llm.py:296
+#: blueprints/api/llm.py:235 blueprints/api/llm.py:305
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:230 blueprints/api/llm.py:297
+#: blueprints/api/llm.py:236 blueprints/api/llm.py:306
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:231 blueprints/api/llm.py:298
+#: blueprints/api/llm.py:237 blueprints/api/llm.py:307
 msgid "LLM settings are not configured in user settings."
 msgstr "用户设置中未配置 LLM。"
 
-#: blueprints/api/llm.py:232 blueprints/api/llm.py:299
+#: blueprints/api/llm.py:238 blueprints/api/llm.py:308
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -515,39 +558,43 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:233 blueprints/api/llm.py:300
+#: blueprints/api/llm.py:239 blueprints/api/llm.py:309
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:301
+#: blueprints/api/llm.py:240 blueprints/api/llm.py:310
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:235 blueprints/api/llm.py:302
+#: blueprints/api/llm.py:241 blueprints/api/llm.py:311
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
-#: blueprints/api/llm.py:236 blueprints/api/llm.py:303
+#: blueprints/api/llm.py:242 blueprints/api/llm.py:312
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:249
+#: blueprints/api/llm.py:255
 msgid "Message ID is required."
 msgstr "消息 ID 是必需的。"
 
-#: blueprints/api/llm.py:260
+#: blueprints/api/llm.py:266
 msgid "Message not found."
 msgstr "消息未找到。"
 
-#: blueprints/api/llm.py:262
+#: blueprints/api/llm.py:268
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: blueprints/api/llm.py:285
+#: blueprints/api/llm.py:277
+msgid "Regenerate response"
+msgstr "重新生成回应"
+
+#: blueprints/api/llm.py:294
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -568,65 +615,100 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:324
+#: blueprints/api/llm.py:333
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:340
+#: blueprints/api/llm.py:349
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:345
+#: blueprints/api/llm.py:354
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:347
+#: blueprints/api/llm.py:356
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:349
+#: blueprints/api/llm.py:358
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:351
+#: blueprints/api/llm.py:360
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:363
+#: blueprints/api/llm.py:372
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:370
+#: blueprints/api/llm.py:379
+#, python-format
+msgid "Session ID: %(session_id)s"
+msgstr "会话 ID：%(session_id)s"
+
+#: blueprints/api/llm.py:380
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
-#: blueprints/api/service_configs.py:12 blueprints/api/service_configs.py:34
+#: blueprints/api/llm.py:403
+#, python-format
+msgid "Message ID: %(message_id)s"
+msgstr "消息 ID：%(message_id)s"
+
+#: blueprints/api/service_configs.py:13 blueprints/api/service_configs.py:35
 msgid "Invalid config type specified."
 msgstr "指定的配置类型无效。"
 
-#: blueprints/api/service_configs.py:45
+#: blueprints/api/service_configs.py:46
+#, python-format
+msgid "Type: %(type)s, Profile: %(name)s"
+msgstr "类型：%(type)s，配置方案：%(name)s"
+
+#: blueprints/api/service_configs.py:47
 msgid "Configuration profile saved successfully."
 msgstr "配置方案已成功保存。"
 
-#: blueprints/api/service_configs.py:48 blueprints/api/service_configs.py:68
+#: blueprints/api/service_configs.py:49
+#, python-format
+msgid "Failed to create profile: %(error)s"
+msgstr "创建配置方案失败：%(error)s"
+
+#: blueprints/api/service_configs.py:51 blueprints/api/service_configs.py:73
 msgid "A profile with this name already exists."
 msgstr "具有此名称的配置方案已存在。"
 
-#: blueprints/api/service_configs.py:66
+#: blueprints/api/service_configs.py:69
+#, python-format
+msgid "Config ID: %(id)s, Profile: %(name)s"
+msgstr "配置 ID：%(id)s，配置方案：%(name)s"
+
+#: blueprints/api/service_configs.py:70
 msgid "Configuration profile updated successfully."
 msgstr "配置方案已成功更新。"
 
-#: blueprints/api/service_configs.py:75
+#: blueprints/api/service_configs.py:72
+#, python-format
+msgid "Failed to update profile: %(error)s"
+msgstr "更新配置方案失败：%(error)s"
+
+#: blueprints/api/service_configs.py:80
+#, python-format
+msgid "Config ID: %(id)s"
+msgstr "配置 ID：%(id)s"
+
+#: blueprints/api/service_configs.py:81
 msgid "Configuration profile deleted successfully."
 msgstr "配置方案已成功删除。"
 
-#: blueprints/api/settings.py:79
+#: blueprints/api/settings.py:88
 msgid "User settings updated."
 msgstr "用户设置已更新。"
 
-#: blueprints/api/settings.py:147
+#: blueprints/api/settings.py:156
 #, python-format
 msgid ""
 "There are currently %(count)s audiobook generation task(s) in progress. "
@@ -634,65 +716,94 @@ msgid ""
 "these tasks. Do you want to continue?"
 msgstr "当前有 %(count)s 个有声书生成任务正在进行中。更新配置将重启服务器工作进程并中断这些任务。您确定要继续吗？"
 
-#: blueprints/api/settings.py:157
+#: blueprints/api/settings.py:176
+msgid "Global settings updated"
+msgstr "全局设置已更新。"
+
+#: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "全局设置已更新。"
 
-#: blueprints/api/settings.py:167
+#: blueprints/api/settings.py:187
+#, python-format
+msgid "Cleaned up %(count)s audiobook files"
+msgstr "已清理 %(count)s 个有声书文件。"
+
+#: blueprints/api/settings.py:188
 #, python-format
 msgid "%(count)s audiobook files have been cleaned up."
 msgstr "已清理 %(count)s 个有声书文件。"
 
-#: blueprints/api/settings.py:169
+#: blueprints/api/settings.py:190 blueprints/api/settings.py:191
 #, python-format
 msgid "An error occurred during cleanup: %(error)s"
 msgstr "清理过程中发生错误：%(error)s"
 
-#: blueprints/api/tokens.py:22
+#: blueprints/api/tokens.py:24
 msgid "New token generated."
 msgstr "已生成新令牌。"
 
-#: blueprints/api/tokens.py:30
+#: blueprints/api/tokens.py:32
+#, python-format
+msgid "Token ID: %(token_id)s"
+msgstr "令牌 ID：%(token_id)s"
+
+#: blueprints/api/tokens.py:33
 msgid "Token deleted."
 msgstr "令牌已删除。"
 
-#: blueprints/api/users.py:30
+#: blueprints/api/users.py:31
 msgid "Username and password are required."
 msgstr "用户名和密码是必需的。"
 
-#: blueprints/api/users.py:47
+#: blueprints/api/users.py:48
+#, python-format
+msgid "User created but Anx init failed: %(message)s"
+msgstr "用户已创建但 Anx 初始化失败：%(message)s"
+
+#: blueprints/api/users.py:49
 #, python-format
 msgid ""
 "User added successfully, but failed to initialize Anx directory: "
 "%(message)s"
 msgstr "用户添加成功，但初始化 Anx 目录失败：%(message)s"
 
-#: blueprints/api/users.py:49
+#: blueprints/api/users.py:51
+#, python-format
+msgid "Role: %(role)s"
+msgstr "角色：%(role)s"
+
+#: blueprints/api/users.py:52
 msgid "User added and initialized successfully."
 msgstr "用户添加并初始化成功。"
 
-#: blueprints/api/users.py:51
+#: blueprints/api/users.py:55
 msgid "Username already exists."
 msgstr "用户名已存在。"
 
-#: blueprints/api/users.py:64
+#: blueprints/api/users.py:68
 msgid "User ID and username are required."
 msgstr "用户 ID 和用户名是必需的。"
 
-#: blueprints/api/users.py:80
+#: blueprints/api/users.py:84
+#, python-format
+msgid "Updated user ID: %(user_id)s, Role: %(role)s"
+msgstr "已更新用户 ID：%(user_id)s，角色：%(role)s"
+
+#: blueprints/api/users.py:85
 msgid "User updated successfully."
 msgstr "用户更新成功。"
 
-#: blueprints/api/users.py:88
+#: blueprints/api/users.py:93
 msgid "User ID is required."
 msgstr "用户 ID 是必需的。"
 
-#: blueprints/api/users.py:104
+#: blueprints/api/users.py:109 blueprints/api/users.py:110
 #, python-format
 msgid "Error deleting user data directory: %(error)s"
 msgstr "删除用户数据目录时出错：%(error)s"
 
-#: blueprints/api/users.py:109
+#: blueprints/api/users.py:116
 msgid "User and their data have been successfully deleted."
 msgstr "用户及其数据已成功删除。"
 
@@ -836,7 +947,7 @@ msgstr "请输入测试收件人电子邮件地址。"
 msgid "Edit"
 msgstr "编辑"
 
-#: static/js/settings.js:30 templates/settings.html:465
+#: static/js/settings.js:30 templates/settings.html:470
 msgid "Add"
 msgstr "添加"
 
@@ -869,10 +980,6 @@ msgstr "邀请码生成成功：{code}"
 #, python-brace-format
 msgid "Failed to generate: {error}"
 msgstr "生成失败：{error}"
-
-#: static/js/settings.js:38
-msgid "Unknown error"
-msgstr "未知错误"
 
 #: static/js/settings.js:39
 msgid "An error occurred while generating the invite code."
@@ -1519,6 +1626,12 @@ msgstr "觉得这个有帮助吗？"
 msgid "Buy me a Coffee ☕"
 msgstr "请我喝杯咖啡 ☕"
 
+#: templates/base.html:225
+msgid ""
+"The administrator has enabled auditing. Your web activities may be "
+"recorded."
+msgstr "管理员已启用审计功能。您的网页活动可能会被记录。"
+
 #: templates/chat_player.html:6
 msgid "AI Chat"
 msgstr "AI 聊天"
@@ -1693,7 +1806,7 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:485
+#: templates/settings.html:198 templates/settings.html:490
 msgid "Cancel"
 msgstr "取消"
 
@@ -1701,7 +1814,7 @@ msgstr "取消"
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:244 templates/settings.html:484
+#: templates/index.html:244 templates/settings.html:489
 msgid "Save"
 msgstr "保存"
 
@@ -1715,12 +1828,12 @@ msgstr "登录 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
 #: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:467 templates/settings.html:494
+#: templates/settings.html:472 templates/settings.html:499
 msgid "Username"
 msgstr "用户名"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:471
+#: templates/settings.html:318 templates/settings.html:476
 msgid "Password"
 msgstr "密码"
 
@@ -2601,128 +2714,139 @@ msgid ""
 msgstr "如果启用，用户必须提供有效的邀请码才能注册。管理员可以在邀请码管理标签页中生成邀请码。"
 
 #: templates/settings.html:451
+msgid "Enable User Activity Logging"
+msgstr "启用用户活动日志"
+
+#: templates/settings.html:452
+msgid ""
+"If enabled, the system will record user activities such as login, "
+"download, upload, and other operations in the database for audit "
+"purposes."
+msgstr "如果启用，系统将在数据库中记录用户登录、下载、上传等活动，以供审计。"
+
+#: templates/settings.html:456
 msgid "Test Inbox"
 msgstr "测试收件箱"
 
-#: templates/settings.html:452
+#: templates/settings.html:457
 msgid "Enter an email address to receive a test email"
 msgstr "输入一个电子邮件地址以接收测试邮件"
 
-#: templates/settings.html:455
+#: templates/settings.html:460
 msgid "Send Test Email"
 msgstr "发送测试邮件"
 
-#: templates/settings.html:456
+#: templates/settings.html:461
 msgid "Save Global Settings"
 msgstr "保存全局设置"
 
-#: templates/settings.html:465
+#: templates/settings.html:470
 msgid "New User"
 msgstr "新用户"
 
-#: templates/settings.html:473
+#: templates/settings.html:478
 msgid "Leave blank to not change the existing user's password."
 msgstr "留空则不更改现有用户的密码。"
 
-#: templates/settings.html:476 templates/settings.html:495
+#: templates/settings.html:481 templates/settings.html:500
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings.html:478
+#: templates/settings.html:483
 msgid "Normal User"
 msgstr "普通用户"
 
-#: templates/settings.html:479
+#: templates/settings.html:484
 msgid "Calibre Library Maintainer"
 msgstr "Calibre 书库维护员"
 
-#: templates/settings.html:480
+#: templates/settings.html:485
 msgid "Administrator"
 msgstr "管理员"
 
-#: templates/settings.html:489
+#: templates/settings.html:494
 msgid "Existing Users"
 msgstr "现有用户"
 
-#: templates/settings.html:493
+#: templates/settings.html:498
 msgid "ID"
 msgstr "ID"
 
-#: templates/settings.html:496 templates/settings.html:540
+#: templates/settings.html:501 templates/settings.html:545
 msgid "Actions"
 msgstr "操作"
 
-#: templates/settings.html:508
+#: templates/settings.html:513
 msgid "Generate New Invite Code"
 msgstr "生成新的邀请码"
 
-#: templates/settings.html:510
+#: templates/settings.html:515
 msgid "Custom Invite Code"
 msgstr "自定义邀请码"
 
-#: templates/settings.html:511
+#: templates/settings.html:516
 msgid "Leave blank to auto-generate"
 msgstr "留空则自动生成"
 
-#: templates/settings.html:512
+#: templates/settings.html:517
 msgid ""
 "Custom invite code (optional). If left blank, a random code will be "
 "generated."
 msgstr "自定义邀请码（可选）。如果留空，将生成一个随机码。"
 
-#: templates/settings.html:515
+#: templates/settings.html:520
 msgid "Maximum Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:517
+#: templates/settings.html:522
 msgid "How many times this invite code can be used"
 msgstr "此邀请码可以使用的次数"
 
-#: templates/settings.html:520
+#: templates/settings.html:525
 msgid "Expires After (Hours)"
 msgstr "过期时间（小时）"
 
-#: templates/settings.html:521
+#: templates/settings.html:526
 msgid "Leave blank for no expiration"
 msgstr "留空则永不过期"
 
-#: templates/settings.html:522
+#: templates/settings.html:527
 msgid "Number of hours after which this invite code will expire (optional)"
 msgstr "此邀请码将在此小时数后过期（可选）"
 
-#: templates/settings.html:525
+#: templates/settings.html:530
 msgid "Generate Invite Code"
 msgstr "生成邀请码"
 
-#: templates/settings.html:529
+#: templates/settings.html:534
 msgid "Existing Invite Codes"
 msgstr "现有邀请码"
 
-#: templates/settings.html:533
+#: templates/settings.html:538
 msgid "Code"
 msgstr "代码"
 
-#: templates/settings.html:534
+#: templates/settings.html:539
 msgid "Max Uses"
 msgstr "最大使用次数"
 
-#: templates/settings.html:535
+#: templates/settings.html:540
 msgid "Current Uses"
 msgstr "当前使用次数"
 
-#: templates/settings.html:536
+#: templates/settings.html:541
 msgid "Created By"
 msgstr "创建者"
 
-#: templates/settings.html:537
+#: templates/settings.html:542
 msgid "Created At"
 msgstr "创建于"
 
-#: templates/settings.html:538
+#: templates/settings.html:543
 msgid "Expires At"
 msgstr "过期于"
 
-#: templates/settings.html:539
+#: templates/settings.html:544
 msgid "Status"
 msgstr "状态"
 

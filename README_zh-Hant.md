@@ -172,6 +172,7 @@
 | `SECRET_KEY` | **必需。** 用於會話安全的、長的、隨機的字串。 | `""` |
 | `LOGIN_MAX_ATTEMPTS` | 登入失敗鎖定閾值。設為 `0` 停用此功能。 | `5` |
 | `SESSION_LIFETIME_DAYS` | 使用者登入後會話保持有效的天數。 | `7` |
+| `ENABLE_ACTIVITY_LOG` | 啟用使用者活動日誌記錄（登入、下載、上傳等操作）到資料庫用於稽核目的。 | `false` |
 | `CALIBRE_URL` | 您的 Calibre 內容伺服器的 URL。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_USERNAME` | 您的 Calibre 伺服器的使用者名稱。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |

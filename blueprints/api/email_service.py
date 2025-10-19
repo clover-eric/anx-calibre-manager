@@ -6,6 +6,7 @@ from flask_babel import gettext as _
 import config_manager
 from utils.email import create_calibre_mail
 from utils.decorators import admin_required_api
+from utils.activity_logger import log_activity, ActivityType
 
 email_bp = Blueprint('email', __name__, url_prefix='/api')
 
@@ -91,6 +92,8 @@ def test_smtp_api():
     success, message = send_email_with_config(to_address, subject, body, test_config)
     
     if success:
+        log_activity(ActivityType.TEST_SMTP, success=True, detail=_('Test email sent to %(email)s', email=to_address))
         return jsonify({'message': _("Test email successfully sent to %(email)s.", email=to_address)})
     else:
+        log_activity(ActivityType.TEST_SMTP, success=False, failure_reason=_("Failed to send test email: %(message)s", message=message))
         return jsonify({'error': _("Failed to send test email: %(message)s", message=message)}), 500

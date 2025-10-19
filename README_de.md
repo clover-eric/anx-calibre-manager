@@ -172,6 +172,7 @@ Die Anwendung wird über Umgebungsvariablen konfiguriert.
 | `SECRET_KEY` | **Erforderlich.** Eine lange, zufällige Zeichenfolge für die Sitzungssicherheit. | `""` |
 | `LOGIN_MAX_ATTEMPTS` | Maximale Anzahl von Anmeldeversuchen vor Kontosperrung. Auf `0` setzen, um zu deaktivieren. | `5` |
 | `SESSION_LIFETIME_DAYS` | Anzahl der Tage, die eine Benutzersitzung nach der Anmeldung gültig bleibt. | `7` |
+| `ENABLE_ACTIVITY_LOG` | Aktiviert die Protokollierung von Benutzeraktivitäten (Anmeldung, Download, Upload usw.) in der Datenbank zu Prüfzwecken. | `false` |
 | `CALIBRE_URL` | Die URL Ihres Calibre-Content-Servers. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
 | `CALIBRE_USERNAME` | Benutzername für Ihren Calibre-Server. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
 | `CALIBRE_PASSWORD` | Passwort für Ihren Calibre-Server. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
