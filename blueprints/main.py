@@ -7,7 +7,6 @@ from urllib.parse import urlencode
 from flask import Blueprint, render_template, request, g, redirect, url_for, send_from_directory, send_file, make_response
 from flask_babel import gettext as _
 from requests.auth import HTTPDigestAuth
-from functools import wraps
 import json
 
 import config_manager
@@ -16,16 +15,9 @@ from anx_library import get_anx_books
 from utils.text import safe_title, safe_author
 from utils.auth import get_calibre_auth
 from utils.covers import get_calibre_cover_data
+from utils.decorators import login_required
 
 main_bp = Blueprint('main', __name__)
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or g.user.id is None:
-            return redirect(url_for('auth.login', next=request.url))
-        return f(*args, **kwargs)
-    return decorated_function
 
 def get_calibre_books(search_query="", page=1, page_size=20):
     config = config_manager.config

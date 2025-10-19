@@ -6,7 +6,7 @@ from flask_babel import gettext as _
 from contextlib import closing
 import database
 from utils.activity_logger import ActivityType
-from ..main import login_required
+from utils.decorators import login_required
 
 user_activities_user_bp = Blueprint('user_activities_user', __name__, url_prefix='/api/user')
 

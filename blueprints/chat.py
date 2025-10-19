@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, g
 from flask_babel import gettext as _
 from contextlib import closing
 import database
-from .main import login_required
+from utils.decorators import login_required
 
 chat_bp = Blueprint('chat', __name__)
 

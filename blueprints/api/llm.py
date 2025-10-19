@@ -9,6 +9,7 @@ from contextlib import closing
 import database
 from threading import Lock
 from utils.activity_logger import log_activity, ActivityType
+from utils.decorators import login_required_api
 
 # Use a try-except block for cleaner optional import
 try:
@@ -18,15 +19,6 @@ except ImportError:
     MCP_AVAILABLE = False
 
 llm_bp = Blueprint('llm', __name__, url_prefix='/api/llm')
-
-def login_required_api(f):
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None or g.user.id is None:
-            return jsonify({'error': _('Authentication required.')}), 401
-        return f(*args, **kwargs)
-    return decorated_function
 
 def _generate_llm_response(session_id, book_id, book_type, user_info_dict, translated_strings, app, user_message_id=None):
     """
