@@ -71,9 +71,9 @@ function getActivityTypeName(activityType) {
 /**
  * Load user activities data and display statistics
  */
-async function loadUserActivities() {
+window.loadUserActivities = async function() {
     if (!isAdmin) return;
-    
+
     try {
         const response = await fetch('/api/admin/user-activities');
         if (response.ok) {

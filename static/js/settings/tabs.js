@@ -24,4 +24,8 @@ window.openTab = function(evt, tabName) {
     setTimeout(() => {
         activeTab.classList.add('visible');
     }, 10);
+
+    if (tabName === 'userActivities' && typeof window.loadUserActivities === 'function') {
+        window.loadUserActivities();
+    }
 }
