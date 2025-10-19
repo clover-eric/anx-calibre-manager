@@ -3,6 +3,7 @@ import os
 import sys
 import bcrypt
 from flask import Flask, g, redirect, url_for, request, session
+from logging.handlers import RotatingFileHandler
 
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +18,25 @@ from wsgidav.fs_dav_provider import FilesystemProvider
 from wsgidav.dc.base_dc import BaseDomainController
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# Configure logging
+# Create logs directory if it doesn't exist
+LOG_DIR = os.environ.get('LOG_DIR', '/config/logs')
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Configure root logger
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Console output
+        RotatingFileHandler(
+            os.path.join(LOG_DIR, 'app.log'),
+            maxBytes=10*1024*1024,  # 10MB per file
+            backupCount=5,  # Keep 5 backup files
+            encoding='utf-8'
+        )
+    ]
+)
 
 class User:
     def __init__(self, row):
@@ -172,6 +191,7 @@ def create_app():
     from blueprints.api.service_configs import service_configs_bp
     from blueprints.api.user_activities import user_activities_bp
     from blueprints.api.user_activities_user import user_activities_user_bp
+    from blueprints.api.system_info import system_info_bp
     
     # Register all blueprints
     app.register_blueprint(main_bp)
@@ -197,6 +217,7 @@ def create_app():
     app.register_blueprint(service_configs_bp)
     app.register_blueprint(user_activities_bp)
     app.register_blueprint(user_activities_user_bp)
+    app.register_blueprint(system_info_bp)
 
     @app.context_processor
     def inject_conf_var():

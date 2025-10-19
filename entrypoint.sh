@@ -24,6 +24,9 @@ User UID : $(id -u appuser)
 User GID : $(id -g appuser)
 "
 
+# Create logs directory if it doesn't exist
+mkdir -p /config/logs
+
 # Take ownership of the config and data directories
 chown -R appuser:appuser /config /webdav
 

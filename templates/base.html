@@ -218,9 +218,45 @@
                 {% endfor %}
             </select>
         </div>
-        <p>{{ _('Having issues or suggestions?') }} <a href="https://github.com/ptbsare/anx-calibre-manager/issues" target="_blank" rel="noopener noreferrer">{{ _('Submit an issue on GitHub') }}</a>.</p>
+        <p>{{ _('Having issues or suggestions?') }} <a href="#" id="quick-bug-report-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-bug"></i> {{ _('Quick Bug Report') }}</a> | <a href="https://github.com/ptbsare/anx-calibre-manager/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer"><i class="fas fa-lightbulb"></i> {{ _('Submit Suggestion') }}</a></p>
         <p>{{ _('Find This Helpful?') }} <a href="https://ptbsare.org/about/" target="_blank" rel="noopener noreferrer">{{ _('Buy me a Coffee ☕') }}</a></p>
         <p>Anx Calibre Manager {{ app_version }} by <a href="https://github.com/ptbsare" target="_blank" rel="noopener noreferrer">ptbsare</a></p>
+        <script>
+        // Generate Quick Bug Report Link with Server System Information
+        (function() {
+            const version = '{{ app_version }}';
+            const bugReportLink = document.getElementById('quick-bug-report-link');
+            
+            if (!bugReportLink) return;
+            
+            // Show loading state
+            bugReportLink.textContent = '⏳ ' + _('Loading...') || 'Loading...';
+            
+            // Fetch system information from server
+            fetch('/api/system/info')
+                .then(response => response.json())
+                .then(data => {
+                    const baseUrl = 'https://github.com/ptbsare/anx-calibre-manager/issues/new';
+                    const params = new URLSearchParams({
+                        template: 'bug_report.yml',
+                        title: '[Bug]: ',
+                        version: version,
+                        os: data.os || 'Unknown',
+                        architecture: data.architecture || 'Unknown',
+                        logs: data.container_logs || ''
+                    });
+                    
+                    bugReportLink.href = baseUrl + '?' + params.toString();
+                    bugReportLink.textContent = '🐛 ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                })
+                .catch(error => {
+                    console.error('Failed to fetch system info:', error);
+                    // Fallback: use basic template without pre-filled data
+                    bugReportLink.href = 'https://github.com/ptbsare/anx-calibre-manager/issues/new?template=bug_report.yml&version=' + version;
+                    bugReportLink.textContent = '🐛 ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                });
+        })();
+        </script>
         {% if enable_activity_log %}
         <p class="footer-audit-note">{{ _('The administrator has enabled auditing. Your web activities may be recorded.') }}</p>
         {% endif %}
