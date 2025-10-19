@@ -39,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAnxWebDavUrl(domElements.anxWebDavUrlElement, username);
     setupEventHandlers(domElements, data, currentEditing);
     window.addEventListener('resize', () => setupMobileView(domElements.calibreLibrary, domElements.anxLibrary, domElements.navHome, domElements.navAnx));
+    
+    // 获取并显示已推送到 Anx 的书籍标记（仅在启用活动日志时）
+    const enableActivityLog = domElements.mainContainer.dataset.enableActivityLog === 'true';
+    if (enableActivityLog) {
+        loadPushedToAnxIndicators();
+    }
 
     // --- Handle Calibre Error Display ---
     if (calibreErrorData) {
@@ -63,6 +69,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
             }
             solutionElement.textContent = solutionText;
+        }
+    }
+    
+    // 获取并显示已推送到 Anx 的书籍标记
+    async function loadPushedToAnxIndicators() {
+        try {
+            const response = await fetch('/api/user/pushed-books');
+            if (!response.ok) {
+                console.error('Failed to fetch pushed books:', response.statusText);
+                return;
+            }
+            
+            const pushedBookIds = await response.json();
+            
+            // 遍历 Calibre 书籍列表，为已推送的书籍显示标记
+            pushedBookIds.forEach(bookId => {
+                const bookRow = document.querySelector(`.book-row[data-book-id="${bookId}"]`);
+                if (bookRow) {
+                    const indicator = bookRow.querySelector('.pushed-to-anx-indicator');
+                    if (indicator) {
+                        indicator.style.display = 'block';
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error loading pushed to anx indicators:', error);
         }
     }
 });

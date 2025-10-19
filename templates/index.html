@@ -8,7 +8,7 @@
 <script id="calibre-books-data" type="application/json">{{ calibre_books | tojson | safe }}</script>
 <script id="calibre-error-data" type="application/json">{{ calibre_error | tojson | safe }}</script>
 
-<div class="main-content" data-username="{{ g.user.username }}">
+<div class="main-content" data-username="{{ g.user.username }}" data-enable-activity-log="{{ 'true' if enable_activity_log else 'false' }}">
     <div class="library-container">
         <!-- Calibre Library Section -->
         <div class="library" id="calibre-library">
@@ -107,6 +107,11 @@
                             {% endif %}
                              {% if book.comments %}<p class="description" style="margin-top: 5px;"><strong>{{ _('Description') }}:</strong> {{ book.comments | striptags | truncate(150, True) }}</p>{% endif %}
                         </div>
+                        {% if enable_activity_log %}
+                        <div class="pushed-to-anx-indicator" style="display: none; margin-top: 8px;" title="{{ _('Pushed to Anx') }}">
+                            <i class="fas fa-check-circle" style="color: #28a745; font-size: 1.2em;"></i>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="actions">
                         <div class="actions-main">
