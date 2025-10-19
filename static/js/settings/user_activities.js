@@ -342,8 +342,8 @@ window.viewUserActivityDetails = async function(userId, username) {
             // 获取用户数据
             const userData = currentUserActivitiesData.users.find(u => u.id === userId);
             
-            // 保存数据供筛选使用
-            window.currentUserActivities = activities;
+            // 保存原始数据供筛选使用
+            window.currentUserActivitiesBackup = activities;
             window.currentUsername = username;
             window.currentUserData = userData;
             
@@ -354,13 +354,6 @@ window.viewUserActivityDetails = async function(userId, username) {
     } catch (error) {
         console.error('Error loading user activity details:', error);
         alert(_('Failed to load activity details'));
-    }
-    
-    // 保存数据供筛选使用（移到这里确保总是保存）
-    if (window.currentUserActivities) {
-        window.currentUserActivitiesBackup = window.currentUserActivities;
-        window.currentUsernameBackup = window.currentUsername;
-        window.currentUserDataBackup = window.currentUserData;
     }
 }
 
@@ -572,9 +565,9 @@ window.filterUserActivities = function() {
     }
     
     // 筛选活动
-    let filteredActivities = window.currentUserActivities;
+    let filteredActivities = window.currentUserActivitiesBackup;
     if (activityType) {
-        filteredActivities = window.currentUserActivities.filter(act =>
+        filteredActivities = window.currentUserActivitiesBackup.filter(act =>
             act.activity_type === activityType
         );
     }
