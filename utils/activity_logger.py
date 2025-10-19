@@ -9,8 +9,32 @@ import database
 import config_manager
 
 
+import json
+
+SENSITIVE_KEYWORDS = [
+   'password', 'api_key', 'secret', 'token',
+   'smtp_password', 'calibre_password', 'tts_api_key', 'llm_api_key'
+]
+
+def filter_sensitive_data(data):
+   """
+   递归地过滤字典中的敏感数据
+   """
+   if not isinstance(data, dict):
+       return data
+   
+   clean_data = {}
+   for key, value in data.items():
+       if isinstance(value, dict):
+           clean_data[key] = filter_sensitive_data(value)
+       elif any(keyword in key.lower() for keyword in SENSITIVE_KEYWORDS):
+           clean_data[key] = "[REDACTED]"
+       else:
+           clean_data[key] = value
+   return clean_data
+
 class ActivityType:
-    """活动类型常量"""
+   """活动类型常量"""
     # 认证相关
     LOGIN_SUCCESS = 'login_success'
     LOGIN_FAILED = 'login_failed'
@@ -131,6 +155,12 @@ def log_activity(
             ip_address = request.remote_addr
             user_agent = request.headers.get('User-Agent', '')[:500]  # 限制长度
         
+        # 过滤和处理 detail 字段
+        detail_to_log = detail
+        if isinstance(detail, dict):
+            clean_detail = filter_sensitive_data(detail)
+            detail_to_log = json.dumps(clean_detail, ensure_ascii=False)
+
         # 插入日志记录
         with closing(database.get_db()) as db:
             db.execute('''
@@ -141,7 +171,7 @@ def log_activity(
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 user_id, username, activity_type, int(success), failure_reason,
-                book_id, book_title, library_type, task_id, detail,
+                book_id, book_title, library_type, task_id, detail_to_log,
                 ip_address, user_agent
             ))
             db.commit()
