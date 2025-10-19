@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 17:21+0800\n"
+"POT-Creation-Date: 2025-10-19 20:20+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -23,11 +23,13 @@ msgid "Username or password is incorrect."
 msgstr "Benutzername oder Passwort ist falsch."
 
 #: blueprints/auth.py:59
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Account is locked. Reason: %(reason)s. Please try again in %(minutes)s "
 "minutes."
-msgstr "Konto ist gesperrt. Bitte versuchen Sie es in %(minutes)s Minuten erneut."
+msgstr ""
+"Konto ist gesperrt. Grund: %(reason)s. Bitte versuchen Sie es in "
+"%(minutes)s Minuten erneut."
 
 #: blueprints/auth.py:61
 #, python-format
@@ -289,7 +291,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "EPUB-Datei für das Buch kann nicht abgerufen oder verarbeitet werden."
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:539 static/js/settings/common.js:41
+#: blueprints/api/books.py:689 static/js/settings/common.js:41
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
@@ -310,6 +312,7 @@ msgid "Error downloading or processing the book."
 msgstr "Fehler beim Herunterladen oder Verarbeiten des Buches."
 
 #: blueprints/api/books.py:304 blueprints/api/books.py:454
+#: blueprints/api/books.py:539
 msgid "User directory not configured."
 msgstr "Benutzerverzeichnis nicht konfiguriert."
 
@@ -375,9 +378,55 @@ msgstr "Calibre-Server hat einen Fehler zurückgegeben: %(code)s - %(text)s"
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Fehler beim Verbinden mit dem Calibre-Server: %(error)s"
 
-#: blueprints/api/books.py:528 blueprints/api/calibre.py:22
+#: blueprints/api/books.py:532
+msgid "Username not found in user_dict."
+msgstr "Benutzername nicht im user_dict gefunden."
+
+#: blueprints/api/books.py:535
+msgid "No files were uploaded."
+msgstr "Es wurden keine Dateien hochgeladen."
+
+#: blueprints/api/books.py:544 blueprints/api/books.py:646
+msgid "No files selected for uploading."
+msgstr "Keine Dateien zum Hochladen ausgewählt."
+
+#: blueprints/api/books.py:558
+msgid "`ebook-converter` tool is missing, cannot convert file."
+msgstr "`ebook-converter`-Tool fehlt, Datei kann nicht konvertiert werden."
+
+#: blueprints/api/books.py:568
+#, python-format
+msgid "Conversion failed: %(details)s"
+msgstr "Konvertierung fehlgeschlagen: %(details)s"
+
+#: blueprints/api/books.py:613
+#, python-format
+msgid "Book '%(title)s' already exists in the library."
+msgstr "Buch '%(title)s' existiert bereits in der Bibliothek."
+
+#: blueprints/api/books.py:622
+#, python-format
+msgid "Reactivated previously deleted book '%(title)s'."
+msgstr "Zuvor gelöschtes Buch '%(title)s' reaktiviert."
+
+#: blueprints/api/books.py:624
+#, python-format
+msgid "Book '%(title)s' uploaded successfully."
+msgstr "Buch '%(title)s' erfolgreich hochgeladen."
+
+#: blueprints/api/books.py:630
+#, python-format
+msgid "Failed to process '%(filename)s': %(error)s"
+msgstr "Verarbeitung von '%(filename)s' fehlgeschlagen: %(error)s"
+
+#: blueprints/api/books.py:637 blueprints/api/books.py:678
+#: blueprints/api/calibre.py:22
 msgid "You do not have permission to upload books."
 msgstr "Sie haben keine Berechtigung, Bücher hochzuladen."
+
+#: blueprints/api/books.py:642
+msgid "No file part in the request."
+msgstr "Kein Dateiteil in der Anfrage."
 
 #: blueprints/api/calibre.py:27
 msgid "No file part."
@@ -1211,7 +1260,7 @@ msgid "Reading Progress (%)"
 msgstr "Lesefortschritt (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:108 templates/index.html:184
+#: templates/index.html:108 templates/index.html:189
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1228,7 +1277,7 @@ msgstr ""
 "Moment dauern, bis sie angewendet werden."
 
 #: static/js/page/translations.js:55 templates/index.html:98
-#: templates/index.html:177
+#: templates/index.html:182
 msgid "Publisher"
 msgstr "Herausgeber"
 
@@ -1625,7 +1674,7 @@ msgstr "Alle Aktivitäten löschen"
 msgid "Are you sure you want to delete all activities for user"
 msgstr ""
 "Sind Sie sicher, dass Sie alle Aktivitäten für den Benutzer löschen "
-"möchten"
+"möchten?"
 
 #: static/js/page/translations.js:162
 msgid "This action cannot be undone."
@@ -1713,7 +1762,7 @@ msgstr "Keine verfügbaren Token."
 msgid "Created at"
 msgstr "Erstellt um"
 
-#: static/js/settings/common.js:24 templates/index.html:194
+#: static/js/settings/common.js:24 templates/index.html:199
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
@@ -1752,7 +1801,7 @@ msgid "Please enter a test recipient email address."
 msgstr "Bitte geben Sie eine Test-Empfänger-E-Mail-Adresse ein."
 
 #: static/js/settings/common.js:32 templates/index.html:119
-#: templates/index.html:193
+#: templates/index.html:198
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1960,7 +2009,7 @@ msgstr "Anx zu Calibre senden"
 
 #: static/js/settings/user_activities.js:31
 #: static/js/settings/user_activities.js:447 templates/index.html:123
-#: templates/index.html:197
+#: templates/index.html:202
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "Hörbuch generieren"
@@ -2107,7 +2156,7 @@ msgstr "Alle Aktivitätsprotokolle löschen"
 msgid "Activity Details for"
 msgstr "Aktivitätsdetails für"
 
-#: static/js/settings/user_activities.js:445 templates/index.html:178
+#: static/js/settings/user_activities.js:445 templates/index.html:183
 msgid "Reading Progress"
 msgstr "Lesefortschritt"
 
@@ -2123,7 +2172,7 @@ msgstr "Benutzerkonto sperren"
 
 #: static/js/settings/user_activities.js:642
 msgid "Please enter a valid duration"
-msgstr "Bitte geben Sie eine gültige Dauer ein"
+msgstr "Bitte geben Sie eine gültige Dauer ein."
 
 #: static/js/settings/user_activities.js:678
 msgid "Are you sure you want to unlock this user account?"
@@ -2217,7 +2266,7 @@ msgstr ""
 msgid "AI Chat"
 msgstr "KI-Chat"
 
-#: templates/chat_player.html:53 templates/index.html:191
+#: templates/chat_player.html:53 templates/index.html:196
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -2253,7 +2302,8 @@ msgstr "Startseite"
 msgid "Search Calibre books..."
 msgstr "Calibre-Bücher suchen..."
 
-#: templates/index.html:26 templates/index.html:227
+#: templates/index.html:26 templates/index.html:154 templates/index.html:232
+#: templates/index.html:269
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -2307,11 +2357,11 @@ msgstr "Der Server hat einen HTTP %(status_code)s Fehler zurückgegeben."
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "Beim Verbinden mit Calibre ist ein unbekannter Fehler aufgetreten."
 
-#: templates/index.html:90 templates/index.html:170
+#: templates/index.html:90 templates/index.html:175
 msgid "Ask AI"
 msgstr "KI fragen"
 
-#: templates/index.html:96 templates/index.html:176 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:181 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Bewertung"
@@ -2324,7 +2374,7 @@ msgstr "Formate"
 msgid "Read Date"
 msgstr "Lesedatum"
 
-#: templates/index.html:113 templates/index.html:189
+#: templates/index.html:113 templates/index.html:194
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -2336,7 +2386,7 @@ msgstr "Kindle"
 msgid "No books in Calibre library."
 msgstr "Keine Bücher in der Calibre-Bibliothek."
 
-#: templates/index.html:154
+#: templates/index.html:159
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -2345,60 +2395,64 @@ msgstr ""
 "ein, um zu synchronisieren (Benutzername und Passwort sind Ihre "
 "Anmeldeinformationen):"
 
-#: templates/index.html:154 templates/settings/settings_koreader.html:10
+#: templates/index.html:159 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "Zum Kopieren klicken"
 
-#: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:184 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Gesamte Lesezeit"
 
-#: templates/index.html:180
+#: templates/index.html:185
 msgid "Note Count"
 msgstr "Anzahl der Notizen"
 
-#: templates/index.html:181
+#: templates/index.html:186
 msgid "Creation Time"
 msgstr "Erstellungszeit"
 
-#: templates/index.html:182
+#: templates/index.html:187
 msgid "Update Time"
 msgstr "Aktualisierungszeit"
 
-#: templates/index.html:183
+#: templates/index.html:188
 msgid "Producer"
 msgstr "Hersteller"
 
-#: templates/index.html:203
+#: templates/index.html:208
 msgid "No books in Anx library."
 msgstr "Keine Bücher in der Anx-Bibliothek."
 
-#: templates/index.html:215
+#: templates/index.html:220
 msgid "Upload Books"
 msgstr "Bücher hochladen"
 
-#: templates/index.html:221
+#: templates/index.html:226 templates/index.html:263
 msgid "Select files:"
 msgstr "Dateien auswählen:"
 
-#: templates/index.html:226 templates/index.html:244
+#: templates/index.html:231 templates/index.html:249 templates/index.html:268
 #: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: templates/index.html:228
+#: templates/index.html:233 templates/index.html:270
 msgid "Done"
 msgstr "Fertig"
 
-#: templates/index.html:237
+#: templates/index.html:242
 msgid "Edit Book Information"
 msgstr "Buchinformationen bearbeiten"
 
-#: templates/index.html:245 templates/settings/settings_user_management.html:24
+#: templates/index.html:250 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "Speichern"
+
+#: templates/index.html:257
+msgid "Upload Books to Anx Library"
+msgstr "Bücher in die Anx-Bibliothek hochladen"
 
 #: templates/login.html:3 templates/login.html:35
 msgid "Login"
@@ -2428,7 +2482,7 @@ msgstr "2FA-Code"
 
 #: templates/login.html:33
 msgid "Please enter a 6-digit code"
-msgstr "Bitte geben Sie einen 6-stelligen Code ein"
+msgstr "Bitte geben Sie einen 6-stelligen Code ein."
 
 #: templates/login.html:39
 msgid "Don't have an account?"
@@ -2472,11 +2526,11 @@ msgstr "Bitte geben Sie den vom Administrator bereitgestellten Einladungscode ei
 
 #: templates/register.html:35
 msgid "3-50 characters, letters, numbers, and underscores allowed"
-msgstr "3-50 Zeichen, Buchstaben, Zahlen und Unterstriche erlaubt"
+msgstr "3-50 Zeichen, Buchstaben, Zahlen und Unterstriche erlaubt."
 
 #: templates/register.html:41
 msgid "At least 6 characters"
-msgstr "Mindestens 6 Zeichen"
+msgstr "Mindestens 6 Zeichen."
 
 #: templates/register.html:45
 msgid "Confirm Password"
@@ -3064,7 +3118,7 @@ msgstr ""
 
 #: templates/settings/settings_koreader.html:39
 msgid "Note: Only supports epub book synchronization"
-msgstr "Hinweis: Unterstützt nur die Synchronisierung von epub-Büchern"
+msgstr "Hinweis: Unterstützt nur die Synchronisierung von EPUB-Büchern."
 
 #: templates/settings/settings_mcp.html:3
 msgid "MCP API Tokens"

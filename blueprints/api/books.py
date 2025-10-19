@@ -529,7 +529,7 @@ def _upload_to_anx_logic(user_dict, uploaded_files):
     """Core logic to upload books to a user's Anx library."""
     username = user_dict.get('username')
     if not username:
-        return {'success': False, 'error': 'Username not found in user_dict.'}
+        return {'success': False, 'error': _('Username not found in user_dict.')}
 
     if not uploaded_files:
         return {'success': False, 'error': _('No files were uploaded.')}
@@ -555,13 +555,18 @@ def _upload_to_anx_logic(user_dict, uploaded_files):
         # Force EPUB conversion if the user setting is enabled
         if user_dict.get('force_epub_conversion') and ext.lower() != '.epub':
             if not shutil.which('ebook-converter'):
-                raise Exception(_('`ebook-converter` tool is missing, cannot convert file.'))
-            
+                return {'success': False, 'error': _('`ebook-converter` tool is missing, cannot convert file.'), 'code': 412}
+
             converted_epub_path = os.path.join(tempfile.gettempdir(), f"{uuid.uuid4()}.epub")
-            subprocess.run(
-                ['ebook-converter', temp_filepath, converted_epub_path],
-                capture_output=True, text=True, check=True, timeout=300
-            )
+            try:
+                result = subprocess.run(
+                    ['ebook-converter', temp_filepath, converted_epub_path],
+                    capture_output=True, text=True, check=True, timeout=300
+                )
+            except subprocess.CalledProcessError as e:
+                error_details = e.stderr or e.stdout or str(e)
+                return {'success': False, 'error': _('Conversion failed: %(details)s', details=error_details), 'code': 500}
+            
             os.unlink(temp_filepath)
             temp_filepath = converted_epub_path
             ext = '.epub'
@@ -622,7 +627,7 @@ def _upload_to_anx_logic(user_dict, uploaded_files):
         logging.error(f"Failed to process uploaded file {original_filename} for user {username}: {e}")
         if temp_filepath and os.path.exists(temp_filepath):
             os.unlink(temp_filepath)
-        return {'success': False, 'error': _("Failed to process '%(filename)s': %(error)s", filename=original_filename, error=str(e))}
+        return {'success': False, 'error': _("Failed to process '%(filename)s': %(error)s", filename=original_filename, error=str(e)), 'code': 500}
 
 
 @books_bp.route('/upload_to_anx', methods=['POST'])
@@ -641,7 +646,10 @@ def upload_to_anx_api():
         return jsonify([{'success': False, 'error': _('No files selected for uploading.')}]), 400
 
     # We process one file at a time as per the frontend logic, but the logic can handle multiple
-    user_dict = {'username': g.user.username}
+    user_dict = {
+        'username': g.user.username,
+        'force_epub_conversion': g.user.force_epub_conversion
+    }
     result = _upload_to_anx_logic(user_dict, uploaded_files)
 
     # The frontend expects a list of results, even for a single file.

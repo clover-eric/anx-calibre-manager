@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 17:21+0800\n"
+"POT-Creation-Date: 2025-10-19 20:20+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -277,7 +277,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "無法取得或處理本書的 EPUB 檔案。"
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:539 static/js/settings/common.js:41
+#: blueprints/api/books.py:689 static/js/settings/common.js:41
 msgid "Unknown error"
 msgstr "未知錯誤"
 
@@ -296,6 +296,7 @@ msgid "Error downloading or processing the book."
 msgstr "下載或處理書籍時發生錯誤。"
 
 #: blueprints/api/books.py:304 blueprints/api/books.py:454
+#: blueprints/api/books.py:539
 msgid "User directory not configured."
 msgstr "使用者目錄未設定。"
 
@@ -357,9 +358,55 @@ msgstr "Calibre 伺服器傳回錯誤：%(code)s - %(text)s"
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "連線至 Calibre 伺服器時發生錯誤：%(error)s"
 
-#: blueprints/api/books.py:528 blueprints/api/calibre.py:22
+#: blueprints/api/books.py:532
+msgid "Username not found in user_dict."
+msgstr "在 user_dict 中找不到使用者名稱。"
+
+#: blueprints/api/books.py:535
+msgid "No files were uploaded."
+msgstr "沒有上傳任何檔案。"
+
+#: blueprints/api/books.py:544 blueprints/api/books.py:646
+msgid "No files selected for uploading."
+msgstr "未選取要上傳的檔案。"
+
+#: blueprints/api/books.py:558
+msgid "`ebook-converter` tool is missing, cannot convert file."
+msgstr "缺少 `ebook-converter` 工具，無法轉換檔案。"
+
+#: blueprints/api/books.py:568
+# python-format
+msgid "Conversion failed: %(details)s"
+msgstr "轉換失敗：%(details)s"
+
+#: blueprints/api/books.py:613
+#, python-format
+msgid "Book '%(title)s' already exists in the library."
+msgstr "書籍 '%(title)s' 已存在於書庫中。"
+
+#: blueprints/api/books.py:622
+#, python-format
+msgid "Reactivated previously deleted book '%(title)s'."
+msgstr "已重新啟用先前刪除的書籍 '%(title)s'。"
+
+#: blueprints/api/books.py:624
+# python-format
+msgid "Book '%(title)s' uploaded successfully."
+msgstr "書籍 '%(title)s' 上傳成功。"
+
+#: blueprints/api/books.py:630
+# python-format
+msgid "Failed to process '%(filename)s': %(error)s"
+msgstr "處理 '%(filename)s' 失敗：%(error)s"
+
+#: blueprints/api/books.py:637 blueprints/api/books.py:678
+#: blueprints/api/calibre.py:22
 msgid "You do not have permission to upload books."
 msgstr "您沒有權限上傳書籍。"
+
+#: blueprints/api/books.py:642
+msgid "No file part in the request."
+msgstr "請求中沒有檔案部分。"
 
 #: blueprints/api/calibre.py:27
 msgid "No file part."
@@ -1155,7 +1202,7 @@ msgid "Reading Progress (%)"
 msgstr "閱讀進度 (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:108 templates/index.html:184
+#: templates/index.html:108 templates/index.html:189
 msgid "Description"
 msgstr "描述"
 
@@ -1170,7 +1217,7 @@ msgid ""
 msgstr "Calibre 圖書的中繼資料更新是非同步的，可能需要一些時間才能生效。"
 
 #: static/js/page/translations.js:55 templates/index.html:98
-#: templates/index.html:177
+#: templates/index.html:182
 msgid "Publisher"
 msgstr "出版社"
 
@@ -1644,7 +1691,7 @@ msgstr "沒有可用的權杖。"
 msgid "Created at"
 msgstr "建立時間"
 
-#: static/js/settings/common.js:24 templates/index.html:194
+#: static/js/settings/common.js:24 templates/index.html:199
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
@@ -1681,7 +1728,7 @@ msgid "Please enter a test recipient email address."
 msgstr "請輸入測試收件人的電子郵件地址。"
 
 #: static/js/settings/common.js:32 templates/index.html:119
-#: templates/index.html:193
+#: templates/index.html:198
 msgid "Edit"
 msgstr "編輯"
 
@@ -1889,7 +1936,7 @@ msgstr "推送 Anx 到 Calibre"
 
 #: static/js/settings/user_activities.js:31
 #: static/js/settings/user_activities.js:447 templates/index.html:123
-#: templates/index.html:197
+#: templates/index.html:202
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "產生有聲書"
@@ -2036,7 +2083,7 @@ msgstr "刪除所有活動日誌"
 msgid "Activity Details for"
 msgstr "活動詳情"
 
-#: static/js/settings/user_activities.js:445 templates/index.html:178
+#: static/js/settings/user_activities.js:445 templates/index.html:183
 msgid "Reading Progress"
 msgstr "閱讀進度"
 
@@ -2142,7 +2189,7 @@ msgstr "管理員已啟用稽核功能。您的網頁活動可能會被記錄。
 msgid "AI Chat"
 msgstr "AI 聊天"
 
-#: templates/chat_player.html:53 templates/index.html:191
+#: templates/chat_player.html:53 templates/index.html:196
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -2178,7 +2225,8 @@ msgstr "首頁"
 msgid "Search Calibre books..."
 msgstr "搜尋 Calibre 圖書..."
 
-#: templates/index.html:26 templates/index.html:227
+#: templates/index.html:26 templates/index.html:154 templates/index.html:232
+#: templates/index.html:269
 msgid "Upload"
 msgstr "上傳"
 
@@ -2232,11 +2280,11 @@ msgstr "伺服器傳回 HTTP %(status_code)s 錯誤。"
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "連線至 Calibre 時發生未知錯誤。"
 
-#: templates/index.html:90 templates/index.html:170
+#: templates/index.html:90 templates/index.html:175
 msgid "Ask AI"
 msgstr "詢問 AI"
 
-#: templates/index.html:96 templates/index.html:176 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:181 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "評分"
@@ -2249,7 +2297,7 @@ msgstr "格式"
 msgid "Read Date"
 msgstr "閱讀日期"
 
-#: templates/index.html:113 templates/index.html:189
+#: templates/index.html:113 templates/index.html:194
 msgid "Download"
 msgstr "下載"
 
@@ -2261,66 +2309,70 @@ msgstr "Kindle"
 msgid "No books in Calibre library."
 msgstr "Calibre 書庫中沒有圖書。"
 
-#: templates/index.html:154
+#: templates/index.html:159
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "請在 Anx 閱讀器設定頁面輸入 WebDAV 位址以進行同步（使用者名稱和密碼是您的登入憑證）："
 
-#: templates/index.html:154 templates/settings/settings_koreader.html:10
+#: templates/index.html:159 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "點擊複製"
 
-#: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:184 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "總閱讀時間"
 
-#: templates/index.html:180
+#: templates/index.html:185
 msgid "Note Count"
 msgstr "筆記數量"
 
-#: templates/index.html:181
+#: templates/index.html:186
 msgid "Creation Time"
 msgstr "建立時間"
 
-#: templates/index.html:182
+#: templates/index.html:187
 msgid "Update Time"
 msgstr "更新時間"
 
-#: templates/index.html:183
+#: templates/index.html:188
 msgid "Producer"
 msgstr "製作者"
 
-#: templates/index.html:203
+#: templates/index.html:208
 msgid "No books in Anx library."
 msgstr "Anx 書庫中沒有圖書。"
 
-#: templates/index.html:215
+#: templates/index.html:220
 msgid "Upload Books"
 msgstr "上傳圖書"
 
-#: templates/index.html:221
+#: templates/index.html:226 templates/index.html:263
 msgid "Select files:"
 msgstr "選取檔案："
 
-#: templates/index.html:226 templates/index.html:244
+#: templates/index.html:231 templates/index.html:249 templates/index.html:268
 #: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:228
+#: templates/index.html:233 templates/index.html:270
 msgid "Done"
 msgstr "完成"
 
-#: templates/index.html:237
+#: templates/index.html:242
 msgid "Edit Book Information"
 msgstr "編輯圖書資訊"
 
-#: templates/index.html:245 templates/settings/settings_user_management.html:24
+#: templates/index.html:250 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "儲存"
+
+#: templates/index.html:257
+msgid "Upload Books to Anx Library"
+msgstr "上傳圖書至 Anx 書庫"
 
 #: templates/login.html:3 templates/login.html:35
 msgid "Login"

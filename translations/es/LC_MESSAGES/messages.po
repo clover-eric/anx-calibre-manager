@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 17:21+0800\n"
+"POT-Creation-Date: 2025-10-19 20:20+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -28,8 +28,8 @@ msgid ""
 "Account is locked. Reason: %(reason)s. Please try again in %(minutes)s "
 "minutes."
 msgstr ""
-"La cuenta está bloqueada. Razón: %(reason)s. Por favor, inténtalo de nuevo "
-"en %(minutes)s minutos."
+"La cuenta está bloqueada. Razón: %(reason)s. Por favor, inténtalo de "
+"nuevo en %(minutes)s minutos."
 
 #: blueprints/auth.py:61
 #, python-format
@@ -295,7 +295,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "No se puede obtener o procesar el archivo EPUB para el libro."
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:539 static/js/settings/common.js:41
+#: blueprints/api/books.py:689 static/js/settings/common.js:41
 msgid "Unknown error"
 msgstr "Error desconocido"
 
@@ -316,6 +316,7 @@ msgid "Error downloading or processing the book."
 msgstr "Error al descargar o procesar el libro."
 
 #: blueprints/api/books.py:304 blueprints/api/books.py:454
+#: blueprints/api/books.py:539
 msgid "User directory not configured."
 msgstr "Directorio de usuario no configurado."
 
@@ -381,9 +382,55 @@ msgstr "El servidor de Calibre devolvió un error: %(code)s - %(text)s"
 msgid "Error connecting to Calibre server: %(error)s"
 msgstr "Error al conectar con el servidor de Calibre: %(error)s"
 
-#: blueprints/api/books.py:528 blueprints/api/calibre.py:22
+#: blueprints/api/books.py:532
+msgid "Username not found in user_dict."
+msgstr "Nombre de usuario no encontrado en user_dict."
+
+#: blueprints/api/books.py:535
+msgid "No files were uploaded."
+msgstr "No se subió ningún archivo."
+
+#: blueprints/api/books.py:544 blueprints/api/books.py:646
+msgid "No files selected for uploading."
+msgstr "No se seleccionaron archivos para subir."
+
+#: blueprints/api/books.py:558
+msgid "`ebook-converter` tool is missing, cannot convert file."
+msgstr "Falta la herramienta `ebook-converter`, no se puede convertir el archivo."
+
+#: blueprints/api/books.py:568
+#, python-format
+msgid "Conversion failed: %(details)s"
+msgstr "La conversión falló: %(details)s"
+
+#: blueprints/api/books.py:613
+#, python-format
+msgid "Book '%(title)s' already exists in the library."
+msgstr "El libro '%(title)s' ya existe en la biblioteca."
+
+#: blueprints/api/books.py:622
+#, python-format
+msgid "Reactivated previously deleted book '%(title)s'."
+msgstr "Se reactivó el libro eliminado previamente '%(title)s'."
+
+#: blueprints/api/books.py:624
+#, python-format
+msgid "Book '%(title)s' uploaded successfully."
+msgstr "Libro '%(title)s' subido correctamente."
+
+#: blueprints/api/books.py:630
+#, python-format
+msgid "Failed to process '%(filename)s': %(error)s"
+msgstr "Error al procesar '%(filename)s': %(error)s"
+
+#: blueprints/api/books.py:637 blueprints/api/books.py:678
+#: blueprints/api/calibre.py:22
 msgid "You do not have permission to upload books."
 msgstr "No tienes permiso para subir libros."
+
+#: blueprints/api/books.py:642
+msgid "No file part in the request."
+msgstr "No hay parte de archivo en la solicitud."
 
 #: blueprints/api/calibre.py:27
 msgid "No file part."
@@ -802,8 +849,7 @@ msgstr "Razón no especificada"
 
 #: blueprints/api/user_activities.py:112
 msgid "Account locked due to multiple failed login attempts."
-msgstr ""
-"Cuenta bloqueada debido a múltiples intentos de inicio de sesión fallidos."
+msgstr "Cuenta bloqueada debido a múltiples intentos de inicio de sesión fallidos."
 
 #: blueprints/api/user_activities.py:171
 msgid "Failed to load user activities"
@@ -1222,7 +1268,7 @@ msgid "Reading Progress (%)"
 msgstr "Progreso de lectura (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:108 templates/index.html:184
+#: templates/index.html:108 templates/index.html:189
 msgid "Description"
 msgstr "Descripción"
 
@@ -1239,7 +1285,7 @@ msgstr ""
 "pueden tardar un momento en aplicarse."
 
 #: static/js/page/translations.js:55 templates/index.html:98
-#: templates/index.html:177
+#: templates/index.html:182
 msgid "Publisher"
 msgstr "Editorial"
 
@@ -1722,7 +1768,7 @@ msgstr "No hay tokens disponibles."
 msgid "Created at"
 msgstr "Creado en"
 
-#: static/js/settings/common.js:24 templates/index.html:194
+#: static/js/settings/common.js:24 templates/index.html:199
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
@@ -1763,7 +1809,7 @@ msgstr ""
 "de prueba."
 
 #: static/js/settings/common.js:32 templates/index.html:119
-#: templates/index.html:193
+#: templates/index.html:198
 msgid "Edit"
 msgstr "Editar"
 
@@ -1971,7 +2017,7 @@ msgstr "Enviar Anx a Calibre"
 
 #: static/js/settings/user_activities.js:31
 #: static/js/settings/user_activities.js:447 templates/index.html:123
-#: templates/index.html:197
+#: templates/index.html:202
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "Generar audiolibro"
@@ -2118,7 +2164,7 @@ msgstr "Eliminar Todos los Registros de Actividad"
 msgid "Activity Details for"
 msgstr "Detalles de actividad para"
 
-#: static/js/settings/user_activities.js:445 templates/index.html:178
+#: static/js/settings/user_activities.js:445 templates/index.html:183
 msgid "Reading Progress"
 msgstr "Progreso de lectura"
 
@@ -2228,7 +2274,7 @@ msgstr ""
 msgid "AI Chat"
 msgstr "Chat de IA"
 
-#: templates/chat_player.html:53 templates/index.html:191
+#: templates/chat_player.html:53 templates/index.html:196
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -2264,7 +2310,8 @@ msgstr "Inicio"
 msgid "Search Calibre books..."
 msgstr "Buscar libros en Calibre..."
 
-#: templates/index.html:26 templates/index.html:227
+#: templates/index.html:26 templates/index.html:154 templates/index.html:232
+#: templates/index.html:269
 msgid "Upload"
 msgstr "Subir"
 
@@ -2318,11 +2365,11 @@ msgstr "El servidor devolvió un error HTTP %(status_code)s."
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "Ocurrió un error desconocido al conectar con Calibre."
 
-#: templates/index.html:90 templates/index.html:170
+#: templates/index.html:90 templates/index.html:175
 msgid "Ask AI"
 msgstr "Preguntar a la IA"
 
-#: templates/index.html:96 templates/index.html:176 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:181 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Calificación"
@@ -2335,7 +2382,7 @@ msgstr "Formatos"
 msgid "Read Date"
 msgstr "Fecha de lectura"
 
-#: templates/index.html:113 templates/index.html:189
+#: templates/index.html:113 templates/index.html:194
 msgid "Download"
 msgstr "Descargar"
 
@@ -2347,7 +2394,7 @@ msgstr "Kindle"
 msgid "No books in Calibre library."
 msgstr "No hay libros en la biblioteca de Calibre."
 
-#: templates/index.html:154
+#: templates/index.html:159
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -2356,60 +2403,64 @@ msgstr ""
 "sincronizar (el nombre de usuario y la contraseña son tus credenciales de"
 " acceso):"
 
-#: templates/index.html:154 templates/settings/settings_koreader.html:10
+#: templates/index.html:159 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "Haz clic para copiar"
 
-#: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:184 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Tiempo total de lectura"
 
-#: templates/index.html:180
+#: templates/index.html:185
 msgid "Note Count"
 msgstr "Número de notas"
 
-#: templates/index.html:181
+#: templates/index.html:186
 msgid "Creation Time"
 msgstr "Fecha de creación"
 
-#: templates/index.html:182
+#: templates/index.html:187
 msgid "Update Time"
 msgstr "Fecha de actualización"
 
-#: templates/index.html:183
+#: templates/index.html:188
 msgid "Producer"
 msgstr "Productor"
 
-#: templates/index.html:203
+#: templates/index.html:208
 msgid "No books in Anx library."
 msgstr "No hay libros en la biblioteca de Anx."
 
-#: templates/index.html:215
+#: templates/index.html:220
 msgid "Upload Books"
 msgstr "Subir libros"
 
-#: templates/index.html:221
+#: templates/index.html:226 templates/index.html:263
 msgid "Select files:"
 msgstr "Seleccionar archivos:"
 
-#: templates/index.html:226 templates/index.html:244
+#: templates/index.html:231 templates/index.html:249 templates/index.html:268
 #: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: templates/index.html:228
+#: templates/index.html:233 templates/index.html:270
 msgid "Done"
 msgstr "Hecho"
 
-#: templates/index.html:237
+#: templates/index.html:242
 msgid "Edit Book Information"
 msgstr "Editar información del libro"
 
-#: templates/index.html:245 templates/settings/settings_user_management.html:24
+#: templates/index.html:250 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "Guardar"
+
+#: templates/index.html:257
+msgid "Upload Books to Anx Library"
+msgstr "Subir libros a la biblioteca Anx"
 
 #: templates/login.html:3 templates/login.html:35
 msgid "Login"
