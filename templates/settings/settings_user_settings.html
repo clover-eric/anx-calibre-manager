@@ -1,0 +1,180 @@
+<!-- 用户设置 -->
+<div id="userSettings" class="tab-content page-transition active">
+    <form id="userSettingsForm" onsubmit="saveUserSettings(event)">
+        <h3>{{ _('Profile') }}</h3>
+        <div class="form-group">
+            <label>{{ _('Username') }}</label>
+            <input type="text" id="username_display" value="{{ g.user.username }}" disabled>
+        </div>
+        <div class="form-group">
+            <label for="new_password">{{ _('Change Password') }}</label>
+            <input type="password" id="new_password" name="new_password" placeholder="{{ _('Leave blank to keep unchanged') }}">
+        </div>
+
+        <h3>{{ _('Appearance') }}</h3>
+        <div class="form-group">
+            <label for="theme">{{ _('Theme') }}</label>
+            <select id="theme" name="theme">
+                <option value="auto">{{ _('Auto (Follow system)') }}</option>
+                <option value="light">{{ _('Light Mode') }}</option>
+                <option value="dark">{{ _('Dark Mode') }}</option>
+            </select>
+        </div>
+
+        <h3>{{ _('Push Settings') }}</h3>
+         <div class="form-group">
+            <label for="kindle_email">{{ _('Kindle Email Address') }}</label>
+            <input type="email" id="kindle_email" name="kindle_email">
+            <small id="smtp_from_address_tip"></small>
+        </div>
+        <div class="form-group">
+            <label for="send_format_priority">{{ _('Format Priority') }}</label>
+            <input type="text" id="send_format_priority" name="send_format_priority">
+            <small>{{ _('When downloading or pushing to Kindle / ANX library, available formats will be searched in this priority order. Use commas to separate, e.g., epub, mobi, pdf, azw3') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="force_epub_conversion" name="force_epub_conversion" value="true" style="width: auto; margin-right: 5px;">
+            <label for="force_epub_conversion" style="display: inline;">{{ _('Force EPUB Conversion') }}</label></br>
+            <small>{{ _('If enabled, will always try to convert the book to an optimized EPUB format when downloading or pushing to the ANX library, instead of sending the original format.') }}</small>
+        </div>
+
+        <h3>{{ _('Audiobook Generation Settings') }}</h3>
+        <div class="form-group">
+            <label for="tts_profile_select">{{ _('TTS Profile') }}</label>
+            <div class="profile-controls">
+                <select id="tts_profile_select" class="form-control"></select>
+                <button type="button" id="update_tts_profile" class="button-small">{{ _('Save Preset') }}</button>
+                <button type="button" id="save_tts_profile_as_new" class="button-small">{{ _('Save As Preset') }}</button>
+                <button type="button" id="delete_tts_profile" class="button-small button-danger">{{ _('Delete') }}</button>
+            </div>
+            <small>{{ _('Load, save or delete TTS configuration profiles.') }}</small>
+        </div>
+        <div class="form-group">
+            <label for="tts_provider">{{ _('TTS Provider') }}</label>
+            <select id="tts_provider" name="tts_provider">
+                <option value="edge">Edge TTS</option>
+                <option value="openai">OpenAI Compatible TTS</option>
+            </select>
+            <small>{{ _('The text-to-speech service provider to use.') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting openai-setting">
+            <label for="tts_voice">{{ _('Voice') }}</label>
+            <input type="text" id="tts_voice" name="tts_voice" list="tts_voice_list" placeholder="{{ _('Select or type a voice') }}">
+            <datalist id="tts_voice_list">
+                <!-- Options will be dynamically populated by JavaScript -->
+            </datalist>
+            <small>{{ _('The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS.') }}</small>
+        </div>
+        <div class="form-group tts-setting openai-setting" style="display: none;">
+            <label for="tts_api_key">{{ _('API Key') }}</label>
+            <input type="password" id="tts_api_key" name="tts_api_key" autocomplete="new-password">
+            <small>{{ _('API key for the selected provider (if required).') }}</small>
+        </div>
+        <div class="form-group tts-setting openai-setting" style="display: none;">
+            <label for="tts_base_url">{{ _('Base URL') }}</label>
+            <input type="url" id="tts_base_url" name="tts_base_url">
+            <small>{{ _('Custom base URL for the API (for proxies or self-hosted models).') }}</small>
+        </div>
+        <div class="form-group tts-setting openai-setting" style="display: none;">
+            <label for="tts_model">{{ _('Model') }}</label>
+            <input type="text" id="tts_model" name="tts_model">
+            <small>{{ _('The specific model to use, e.g., tts-1-hd (if supported by the provider).') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting openai-setting">
+            <label for="tts_rate">{{ _('Rate') }}</label>
+            <input type="text" id="tts_rate" name="tts_rate">
+            <small>{{ _('Speaking rate. e.g., +10%% or -10%%.') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting">
+            <label for="tts_volume">{{ _('Volume') }}</label>
+            <input type="text" id="tts_volume" name="tts_volume">
+            <small>{{ _('Volume level. e.g., +10%% or -10%%.') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting">
+            <label for="tts_pitch">{{ _('Pitch') }}</label>
+            <input type="text" id="tts_pitch" name="tts_pitch">
+            <small>{{ _('Speaking pitch. e.g., +10Hz or -10Hz.') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting openai-setting">
+            <label for="tts_sentence_pause_ms">{{ _('Sentence Pause (ms)') }}</label>
+            <input type="number" id="tts_sentence_pause_ms" name="tts_sentence_pause_ms" min="0">
+            <small>{{ _('Pause duration between sentences in milliseconds.') }}</small>
+        </div>
+        <div class="form-group tts-setting edge-setting openai-setting">
+            <label for="tts_paragraph_pause_ms">{{ _('Paragraph Pause (ms)') }}</label>
+            <input type="number" id="tts_paragraph_pause_ms" name="tts_paragraph_pause_ms" min="0">
+            <small>{{ _('Pause duration between paragraphs in milliseconds.') }}</small>
+        </div>
+ 
+         <h3>{{ _('LLM Provider Settings') }}</h3>
+        <div class="form-group">
+            <label for="llm_profile_select">{{ _('LLM Profile') }}</label>
+            <div class="profile-controls">
+                <select id="llm_profile_select" class="form-control"></select>
+                <button type="button" id="update_llm_profile" class="button-small">{{ _('Save Preset') }}</button>
+                <button type="button" id="save_llm_profile_as_new" class="button-small">{{ _('Save As Preset') }}</button>
+                <button type="button" id="delete_llm_profile" class="button-small button-danger">{{ _('Delete') }}</button>
+            </div>
+            <small>{{ _('Load, save or delete LLM configuration profiles.') }}</small>
+        </div>
+         <div class="form-group">
+            <label for="llm_provider">{{ _('LLM Provider') }}</label>
+            <select id="llm_provider" name="llm_provider">
+                <option value="openai">OpenAI Compatible</option>
+            </select>
+            <small>{{ _('The Large Language Model provider to use for MCP.') }}</small>
+        </div>
+        <div class="form-group llm-setting openai-llm-setting">
+            <label for="llm_base_url">{{ _('Base URL') }}</label>
+            <input type="url" id="llm_base_url" name="llm_base_url">
+            <small>{{ _('Custom base URL for the API (e.g., for proxies or self-hosted models).') }}</small>
+        </div>
+        <div class="form-group llm-setting openai-llm-setting">
+            <label for="llm_api_key">{{ _('API Key') }}</label>
+            <input type="password" id="llm_api_key" name="llm_api_key" autocomplete="new-password">
+            <small>{{ _('API key for the selected provider.') }}</small>
+        </div>
+        <div class="form-group llm-setting openai-llm-setting">
+            <label for="llm_model">{{ _('Model') }}</label>
+            <input type="text" id="llm_model" name="llm_model" list="llm_model_list" placeholder="{{ _('Select or type a model') }}">
+            <datalist id="llm_model_list">
+                <!-- Options will be dynamically populated by JavaScript -->
+            </datalist>
+            <small>{{ _('The specific model to use, e.g., gpt-4o.') }}</small>
+        </div>
+
+        <h3>{{ _('Statistics Settings') }}</h3>
+        <div class="form-group">
+            <input type="checkbox" id="stats_enabled" name="stats_enabled" value="true" style="width: auto; margin-right: 5px;">
+            <label for="stats_enabled" style="display: inline;">{{ _('Enable Reading Statistics Page') }}</label></br>
+            <small>{{ _('Allows you to view your reading statistics after logging in.') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="stats_public" name="stats_public" value="true" style="width: auto; margin-right: 5px;">
+            <label for="stats_public" style="display: inline;">{{ _('Make Statistics Page Public') }}</label></br>
+            <small>{{ _('If enabled, your statistics page will be publicly accessible without needing to log in.') }}</small>
+        </div>
+        <div id="stats_url_container" style="display: none;" class="mcp-docs">
+            <h4>{{ _('Your Statistics Page URL') }}</h4>
+            <p><a id="stats_url" href="#" target="_blank"></a></p>
+        </div>
+        
+        <h3>{{ _('Two-Factor Authentication (2FA)') }}</h3>
+        <div id="2fa_status_container"></div>
+        <div id="2fa_setup_container" style="display:none;">
+            <p>{{ _('Please use your authenticator app to scan this QR code:') }}</p>
+            <div id="qr_code_container"></div>
+            <p>{{ _('Or manually enter the key:') }} <code id="otp_secret_key"></code></p>
+            <div class="form-group">
+                <label for="otp_code">{{ _('Verification Code') }}</label>
+                <input type="text" id="otp_code" name="otp_code" placeholder="{{ _('Enter the 6-digit code to complete setup') }}" autocomplete="off">
+            </div>
+            <button type="button" class="button-primary" onclick="verify2FA()">{{ _('Verify and Enable') }}</button>
+            <button type="button" class="button" onclick="cancel2FASetup()">{{ _('Cancel') }}</button>
+        </div>
+
+        <div style="text-align: right; margin-top: 2rem;">
+            <button type="submit" class="button-primary">{{ _('Save User Settings') }}</button>
+        </div>
+    </form>
+</div>

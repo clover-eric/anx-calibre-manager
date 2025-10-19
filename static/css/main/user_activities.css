@@ -1,0 +1,384 @@
+/* ==================== User Activities Page Specific Styles ==================== */
+/* 只包含用户活动页面特有的样式，复用已有的按钮、表单、模态框样式 */
+
+/* 统计卡片 - 页面特有 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card:nth-child(4) {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stat-card h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* 图表容器 - 页面特有 */
+.charts-section {
+    margin: 2rem 0;
+}
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.chart-box {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-box h5 {
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.chart-box canvas {
+    max-height: 300px;
+}
+
+/* 全局事件统计 - 页面特有 */
+.global-events-section {
+    margin: 2rem 0;
+}
+
+.events-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.event-stat-card {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.event-stat-card:hover {
+    transform: translateX(2px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.event-stat-card h6 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.event-stat-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.event-stat-numbers span {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-stat-numbers .label {
+    color: #666;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.dark-mode .event-stat-numbers .label {
+    color: #aaa;
+}
+
+.event-stat-numbers .value {
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.event-stat-numbers .success .value {
+    color: var(--success-color);
+}
+
+.event-stat-numbers .failure .value {
+    color: var(--danger-color);
+}
+
+/* 用户详细统计 - 页面特有 */
+.user-detail-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+}
+
+.user-detail-stats .stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-detail-stats .stat-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.dark-mode .user-detail-stats .stat-label {
+    color: #aaa;
+}
+
+.user-detail-stats .stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* 最后活动时间 - 页面特有 */
+.last-activities-section {
+    margin: 1.5rem 0;
+}
+
+.last-activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.last-activity-item {
+    padding: 0.75rem;
+    background: var(--secondary-bg);
+    border-radius: 4px;
+    border-left: 3px solid var(--primary-color);
+    transition: all 0.2s;
+}
+
+.last-activity-item:hover {
+    background: var(--border-color);
+    border-left-color: var(--primary-color-dark);
+}
+
+.last-activity-item .activity-type {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.dark-mode .last-activity-item .activity-type {
+    color: #aaa;
+}
+
+.last-activity-item .activity-time {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* 失败登录历史 - 页面特有 */
+.failed-logins-section {
+    margin: 1.5rem 0;
+}
+
+.failed-login-item {
+    padding: 0.75rem;
+    background: #fff3cd;
+    border-left: 3px solid var(--warning-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.dark-mode .failed-login-item {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.failed-login-item .time {
+    font-weight: 500;
+    color: #856404;
+}
+
+.dark-mode .failed-login-item .time {
+    color: #ffc107;
+}
+
+.failed-login-item .details {
+    font-size: 0.85rem;
+    color: #856404;
+    margin-top: 0.25rem;
+}
+
+.dark-mode .failed-login-item .details {
+    color: #f0ad4e;
+}
+
+.no-failed-logins {
+    padding: 1rem;
+    background: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.dark-mode .no-failed-logins {
+    background: rgba(40, 167, 69, 0.2);
+    color: #9fdf9f;
+}
+
+/* 活动筛选 - 页面特有 */
+.activity-filters {
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.activity-filters h4 {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* 活动详情表格 - 页面特有 */
+.activity-details-table {
+    margin-top: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-details-table .data-table {
+    font-size: 0.9rem;
+}
+
+.activity-details-table .data-table td {
+    padding: 0.5rem 0.75rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .events-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .last-activities-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .user-detail-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 修复模态框在移动端超出屏幕的问题 */
+    .modal-large {
+        width: 95%;
+        max-width: 95%;
+        margin: 2.5vh auto;
+        max-height: 95vh;
+    }
+    
+    .modal-small {
+        width: 90%;
+        max-width: 90%;
+        margin: 5vh auto;
+    }
+    
+    .modal-content {
+        width: 100%;
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+    
+    /* 表格容器在移动端的处理 */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+    
+    .data-table {
+        min-width: 100%;
+        font-size: 0.8rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem 0.25rem;
+        white-space: nowrap;
+    }
+    
+    /* 表格控制在移动端的调整 */
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .search-input {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card h5 {
+        font-size: 0.85rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}

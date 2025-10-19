@@ -1,0 +1,116 @@
+<!-- 全局设置 (仅限管理员) -->
+<div id="globalSettings" class="tab-content page-transition">
+    <form id="globalSettingsForm" onsubmit="saveGlobalSettings(event)">
+        <h3>{{ _('Calibre Connection') }}</h3>
+        <div class="form-group">
+            <label for="CALIBRE_URL">{{ _('Calibre Server URL') }}</label>
+            <input type="url" id="CALIBRE_URL" name="CALIBRE_URL">
+        </div>
+        <div class="form-group">
+            <label for="CALIBRE_USERNAME">{{ _('Calibre Username') }}</label>
+            <input type="text" id="CALIBRE_USERNAME" name="CALIBRE_USERNAME">
+        </div>
+        <div class="form-group">
+            <label for="CALIBRE_PASSWORD">{{ _('Calibre Password') }}</label>
+            <input type="password" id="CALIBRE_PASSWORD" name="CALIBRE_PASSWORD" placeholder="{{ _('Leave blank to keep unchanged') }}">
+        </div>
+        <div class="setting-item">
+            <label for="CALIBRE_DEFAULT_LIBRARY_ID">{{ _('Default Calibre Library ID') }}</label>
+            <input type="text" id="CALIBRE_DEFAULT_LIBRARY_ID" name="CALIBRE_DEFAULT_LIBRARY_ID" placeholder="Calibre_Library">
+            <small>{{ _('The default Calibre library ID for browsing, searching, and uploading books. Usually \'Calibre_Library\'.') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="CALIBRE_ADD_DUPLICATES" name="CALIBRE_ADD_DUPLICATES" value="true" style="width: auto; margin-right: 5px;">
+            <label for="CALIBRE_ADD_DUPLICATES" style="display: inline;">{{ _('Allow uploading duplicate books') }}</label></br>
+            <small>{{ _('If enabled, Calibre will add the book as a new copy even if it detects a duplicate.') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="DISABLE_NORMAL_USER_UPLOAD" name="DISABLE_NORMAL_USER_UPLOAD" value="true" style="width: auto; margin-right: 5px;">
+            <label for="DISABLE_NORMAL_USER_UPLOAD" style="display: inline;">{{ _('Disable Uploads for Normal Users') }}</label></br>
+            <small>{{ _('If enabled, users with the "user" role will not be able to upload books to Calibre.') }}</small>
+        </div>
+        <h3>{{ _('Path Settings') }}</h3>
+        <div class="form-group">
+            <label for="WEBDAV_ROOT">{{ _('WebDAV Root Path') }}</label>
+            <input type="text" id="WEBDAV_ROOT" name="WEBDAV_ROOT">
+            <small>{{ _('This is the base path for storing all user Anx libraries. User folders will be automatically created under this path (e.g., /webdav/username).') }}</small>
+        </div>
+
+        <h3>{{ _('Default Settings') }}</h3>
+        <div class="form-group">
+            <label for="DEFAULT_FORMAT_PRIORITY">{{ _('Default Format Priority for New Users') }}</label>
+            <input type="text" id="DEFAULT_FORMAT_PRIORITY" name="DEFAULT_FORMAT_PRIORITY">
+            <small>{{ _('Default format priority for new users, separated by commas, e.g., azw3,mobi,epub') }}</small>
+        </div>
+
+        <h3>{{ _('Audiobook Settings') }}</h3>
+        <div class="form-group">
+            <label for="AUDIOBOOK_CLEANUP_DAYS">{{ _('Audiobook File Retention Period (days)') }}</label>
+            <input type="number" id="AUDIOBOOK_CLEANUP_DAYS" name="AUDIOBOOK_CLEANUP_DAYS" min="0">
+            <small>{{ _('Automatically delete generated audiobook files older than this number of days. Set to 0 to disable cleanup.') }}</small>
+        </div>
+        <div class="form-group">
+            <label>{{ _('Manual Cleanup') }}</label>
+            <button type="button" class="button button-danger" onclick="cleanupAllAudiobooks()">{{ _('Clean Up All Audiobooks Now') }}</button><br>
+            <small>{{ _('Immediately delete all generated audiobook files and update their database records.') }}</small>
+        </div>
+
+        <h3>{{ _('SMTP Settings (for Send to Kindle)') }}</h3>
+        <div class="form-group">
+            <label for="SMTP_SERVER">{{ _('SMTP Server') }}</label>
+            <input type="text" id="SMTP_SERVER" name="SMTP_SERVER">
+        </div>
+        <div class="form-group">
+            <label for="SMTP_PORT">{{ _('SMTP Port') }}</label>
+            <input type="number" id="SMTP_PORT" name="SMTP_PORT">
+        </div>
+        <div class="form-group">
+            <label for="SMTP_USERNAME">{{ _('SMTP Username (usually your email)') }}</label>
+            <input type="text" id="SMTP_USERNAME" name="SMTP_USERNAME">
+        </div>
+        <div class="form-group">
+            <label for="SMTP_PASSWORD">{{ _('SMTP Password') }}</label>
+            <input type="password" id="SMTP_PASSWORD" name="SMTP_PASSWORD" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+            <label for="SMTP_ENCRYPTION">{{ _('Encryption Method') }}</label>
+            <select id="SMTP_ENCRYPTION" name="SMTP_ENCRYPTION">
+                <option value="none">{{ _('None') }}</option>
+                <option value="starttls">{{ _('STARTTLS') }}</option>
+                <option value="ssl">{{ _('SSL/TLS') }}</option>
+            </select>
+            <small>{{ _('SSL/TLS is usually used for port 465, STARTTLS is usually used for port 587.') }}</small>
+        </div>
+
+        <h3>{{ _('Security') }}</h3>
+        <div class="form-group">
+            <label for="LOGIN_MAX_ATTEMPTS">{{ _('Login Failure Lock Threshold') }}</label>
+            <input type="number" id="LOGIN_MAX_ATTEMPTS" name="LOGIN_MAX_ATTEMPTS" min="0">
+            <small>{{ _('Set to 0 to disable this feature.') }}</small>
+        </div>
+        <div class="form-group">
+            <label for="SESSION_LIFETIME_DAYS">{{ _('Session Lifetime (days)') }}</label>
+            <input type="number" id="SESSION_LIFETIME_DAYS" name="SESSION_LIFETIME_DAYS" min="1">
+            <small>{{ _('The number of days a user\'s session remains valid after logging in.') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="REQUIRE_INVITE_CODE" name="REQUIRE_INVITE_CODE" value="true" style="width: auto; margin-right: 5px;">
+            <label for="REQUIRE_INVITE_CODE" style="display: inline;">{{ _('Require Invite Code for Registration') }}</label></br>
+            <small>{{ _('If enabled, users must provide a valid invite code to register. Admins can generate invite codes in the Invite Code Management tab.') }}</small>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="ENABLE_ACTIVITY_LOG" name="ENABLE_ACTIVITY_LOG" value="true" style="width: auto; margin-right: 5px;">
+            <label for="ENABLE_ACTIVITY_LOG" style="display: inline;">{{ _('Enable User Activity Logging') }}</label></br>
+            <small>{{ _('If enabled, the system will record user activities such as login, download, upload, and other operations in the database for audit purposes.') }}</small>
+        </div>
+
+        <div class="form-group">
+            <label for="test_email_address">{{ _('Test Inbox') }}</label>
+            <input type="email" id="test_email_address" name="test_email_address" placeholder="{{ _('Enter an email address to receive a test email') }}">
+        </div>
+        <div style="text-align: right; margin-top: 2rem;">
+            <button type="button" class="button" onclick="testSmtpSettings()">{{ _('Send Test Email') }}</button>
+            <button type="submit" class="button-primary">{{ _('Save Global Settings') }}</button>
+        </div>
+    </form>
+</div>

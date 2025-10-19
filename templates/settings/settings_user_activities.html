@@ -1,0 +1,194 @@
+<!-- 用户活动管理 (仅限管理员) -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main/user_activities.css') }}?v={{ cache_buster }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<div id="userActivities" class="tab-content page-transition">
+    {% if not enable_activity_log %}
+    <!-- 活动日志未启用提示 -->
+    <div style="text-align: center; padding: 3rem; background: var(--card-bg); border-radius: 8px; margin: 2rem 0;">
+        <i class="fas fa-info-circle" style="font-size: 3rem; color: var(--warning-color); margin-bottom: 1rem;"></i>
+        <h3>{{ _('Activity Logging is Disabled') }}</h3>
+        <p style="margin: 1rem 0; color: var(--text-color); opacity: 0.8;">
+            {{ _('The administrator has disabled activity logging. No activity data is being recorded.') }}
+        </p>
+        <p style="margin: 1rem 0;">
+            {{ _('To enable activity logging, go to') }} <strong>{{ _('Global Settings') }}</strong> {{ _('and enable') }} <strong>{{ _('Enable Activity Log') }}</strong>
+        </p>
+        <a href="#globalSettings" onclick="openTab(event, 'globalSettings')" class="button button-primary" style="margin-top: 1rem;">
+            {{ _('Go to Global Settings') }}
+        </a>
+    </div>
+    {% else %}
+    <!-- 活动日志已启用，显示正常内容 -->
+    
+    <!-- 全局统计概览 -->
+    <div class="activity-summary">
+        <h4>{{ _('Global Statistics') }}</h4>
+        <div id="activity-stats" class="stats-grid">
+            <!-- 统计数据将由 JavaScript 动态填充 -->
+        </div>
+    </div>
+
+    <!-- 活动趋势图表 -->
+    <div class="charts-section">
+        <h4>{{ _('Activity Trends') }}</h4>
+        <div class="charts-container">
+            <div class="chart-box">
+                <h5>{{ _('Daily Activity Trend') }}</h5>
+                <canvas id="dailyActivityChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h5>{{ _('Event Type Distribution') }}</h5>
+                <canvas id="eventTypeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局事件统计 -->
+    <div class="global-events-section">
+        <h4>{{ _('Global Event Statistics') }}</h4>
+        <div id="global-events-stats" class="events-stats-grid">
+            <!-- 全局事件统计将由 JavaScript 动态填充 -->
+        </div>
+    </div>
+
+    <!-- 用户活动列表 -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <h4 style="margin: 0;">{{ _('User Activity List') }}</h4>
+        <button onclick="refreshUserActivities()" class="button button-primary">{{ _('Refresh') }}</button>
+    </div>
+    <div class="table-controls">
+        <input type="text" id="userSearchInput" placeholder="{{ _('Search username...') }}" class="search-input">
+    </div>
+    
+    <div class="table-wrapper">
+        <table id="userActivityTable" class="data-table">
+            <thead>
+                <tr>
+                    <th>{{ _('User') }}</th>
+                    <th>{{ _('Role') }}</th>
+                    <th>{{ _('Last Login') }}</th>
+                    <th>{{ _('Last Login IP') }}</th>
+                    <th>{{ _('Login Count') }}</th>
+                    <th>{{ _('Total Activities') }}</th>
+                    <th>{{ _('Failed Attempts') }}</th>
+                    <th>{{ _('Account Status') }}</th>
+                    <th>{{ _('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 用户活动数据将由 JavaScript 动态填充 -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 活动详情弹窗 -->
+    <div id="activityDetailsModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalUserName"></h2>
+                <button class="close-button" onclick="closeActivityModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+            
+            <!-- 用户详细统计 -->
+            <div class="user-detail-stats">
+                <div class="stat-item">
+                    <span class="stat-label">{{ _('Total Activities') }}:</span>
+                    <span class="stat-value" id="userTotalActivities">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">{{ _('Login Count') }}:</span>
+                    <span class="stat-value" id="userLoginCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">{{ _('Last Login') }}:</span>
+                    <span class="stat-value" id="userLastLogin">-</span>
+                </div>
+            </div>
+
+            <!-- 最后一次操作时间 -->
+            <div class="last-activities-section">
+                <h4>{{ _('Last Activity Times by Type') }}</h4>
+                <div id="lastActivitiesGrid" class="last-activities-grid">
+                    <!-- 各类活动最后操作时间将由 JavaScript 动态填充 -->
+                </div>
+            </div>
+
+            <!-- 登录失败历史 -->
+            <div class="failed-logins-section">
+                <h4>{{ _('Recent Failed Login Attempts') }}</h4>
+                <div id="failedLoginsContainer">
+                    <!-- 失败登录历史将由 JavaScript 动态填充 -->
+                </div>
+            </div>
+
+            <!-- 活动记录筛选 -->
+            <div class="activity-filters">
+                <h4>{{ _('Activity History') }}</h4>
+                <select id="activityTypeFilter" class="filter-select" onchange="filterUserActivities()">
+                    <option value="">{{ _('All Types') }}</option>
+                    <option value="login_success">{{ _('Login Success') }}</option>
+                    <option value="login_failed">{{ _('Login Failed') }}</option>
+                    <option value="download_book">{{ _('Download Book') }}</option>
+                    <option value="upload_book">{{ _('Upload Book') }}</option>
+                    <option value="search_books">{{ _('Search Books') }}</option>
+                    <option value="push_to_kindle">{{ _('Push to Kindle') }}</option>
+                    <option value="generate_audiobook">{{ _('Generate Audiobook') }}</option>
+                    <option value="update_reading_progress">{{ _('Update Reading Progress') }}</option>
+                </select>
+            </div>
+
+                <!-- 活动详情表格 -->
+                <div id="activityDetailsContent" class="activity-details-table">
+                    <!-- 详细活动记录将由 JavaScript 动态填充 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 事件类型详情弹窗 -->
+    <div id="eventTypeDetailsModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="eventTypeModalTitle"></h2>
+                <button class="close-button" onclick="closeEventTypeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="eventTypeDetailsContent" class="activity-details-table">
+                    <!-- 事件类型详细记录将由 JavaScript 动态填充 -->
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 用户封锁/解封弹窗 -->
+    <div id="lockUserModal" class="modal" style="display: none;">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="lockModalTitle">{{ _('Lock User Account') }}</h2>
+                <button class="close-button" onclick="closeLockModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="lockUserId">
+                <input type="hidden" id="lockUserName">
+                
+                <div class="form-group">
+                    <label for="lockDuration">{{ _('Lock Duration (minutes)') }}:</label>
+                    <input type="number" id="lockDuration" value="30" min="1" max="10080" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lockReason">{{ _('Reason') }}:</label>
+                    <textarea id="lockReason" rows="3" class="form-textarea" placeholder="{{ _('Optional: Reason for locking account') }}"></textarea>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button onclick="confirmLockUser()" class="button button-primary">{{ _('Confirm Lock') }}</button>
+                <button onclick="closeLockModal()" class="button">{{ _('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

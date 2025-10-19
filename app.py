@@ -162,6 +162,7 @@ def create_app():
     from blueprints.api.llm import llm_bp
     from blueprints.api.reader import reader_bp
     from blueprints.api.service_configs import service_configs_bp
+    from blueprints.api.user_activities import user_activities_bp
     
     # Register all blueprints
     app.register_blueprint(main_bp)
@@ -185,6 +186,7 @@ def create_app():
     app.register_blueprint(llm_bp)
     app.register_blueprint(reader_bp)
     app.register_blueprint(service_configs_bp)
+    app.register_blueprint(user_activities_bp)
 
     @app.context_processor
     def inject_conf_var():

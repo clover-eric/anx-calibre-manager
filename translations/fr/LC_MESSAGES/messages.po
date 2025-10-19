@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 11:19+0800\n"
+"POT-Creation-Date: 2025-10-19 13:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -283,7 +283,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "Impossible d'obtenir ou de traiter le fichier EPUB du livre."
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:539 static/js/settings.js:38
+#: blueprints/api/books.py:539 static/js/settings/common.js:41
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
@@ -483,7 +483,7 @@ msgstr "ID du code : %(code_id)s"
 msgid "Operation failed: %(error)s"
 msgstr "L'opération a échoué : %(error)s"
 
-#: blueprints/api/invite.py:83 static/js/settings.js:41
+#: blueprints/api/invite.py:83 static/js/settings/common.js:44
 msgid "Operation failed"
 msgstr "L'opération a échoué"
 
@@ -791,6 +791,81 @@ msgstr "ID du jeton : %(token_id)s"
 msgid "Token deleted."
 msgstr "Jeton supprimé."
 
+#: blueprints/api/user_activities.py:147
+msgid "Failed to load user activities"
+msgstr "Échec du chargement des activités utilisateur"
+
+#: blueprints/api/user_activities.py:184
+msgid "Failed to load activities"
+msgstr "Échec du chargement des activités"
+
+#: blueprints/api/user_activities.py:219
+#: static/js/settings/user_activities.js:349
+#: static/js/settings/user_activities.js:353
+msgid "Failed to load activity details"
+msgstr "Échec du chargement des détails de l'activité"
+
+#: blueprints/api/user_activities.py:266
+msgid "Failed to load event statistics"
+msgstr "Échec du chargement des statistiques d'événements"
+
+#: blueprints/api/user_activities.py:278
+#: static/js/settings/user_activities.js:640
+msgid "Locked by administrator"
+msgstr "Verrouillé par l'administrateur"
+
+#: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
+#: blueprints/api/user_activities.py:358
+msgid "User not found"
+msgstr "Utilisateur introuvable"
+
+#: blueprints/api/user_activities.py:299
+#, python-format
+msgid "Account locked until %(time)s. Reason: %(reason)s"
+msgstr "Compte verrouillé jusqu'à %(time)s. Raison : %(reason)s"
+
+#: blueprints/api/user_activities.py:304
+#: static/js/settings/user_activities.js:645
+msgid "User account locked successfully"
+msgstr "Compte utilisateur verrouillé avec succès"
+
+#: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:650
+#: static/js/settings/user_activities.js:654
+msgid "Failed to lock user account"
+msgstr "Échec du verrouillage du compte utilisateur"
+
+#: blueprints/api/user_activities.py:338
+msgid "Account unlocked by administrator"
+msgstr "Compte déverrouillé par l'administrateur"
+
+#: blueprints/api/user_activities.py:341
+#: static/js/settings/user_activities.js:677
+msgid "User account unlocked successfully"
+msgstr "Compte utilisateur déverrouillé avec succès"
+
+#: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:681
+#: static/js/settings/user_activities.js:685
+msgid "Failed to unlock user account"
+msgstr "Échec du déverrouillage du compte utilisateur"
+
+#: blueprints/api/user_activities.py:372
+msgid "Failed login attempts reset by administrator"
+msgstr "Tentatives de connexion échouées réinitialisées par l'administrateur"
+
+#: blueprints/api/user_activities.py:375
+#: static/js/settings/user_activities.js:708
+msgid "Failed login attempts reset successfully"
+msgstr "Tentatives de connexion échouées réinitialisées avec succès"
+
+#: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:712
+#: static/js/settings/user_activities.js:716
+#, python-brace-format
+msgid "Failed to reset login attempts"
+msgstr "Échec de la réinitialisation des tentatives de connexion"
+
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
 msgstr "Le nom d'utilisateur et le mot de passe sont requis."
@@ -903,242 +978,6 @@ msgstr "Échec de l'inscription"
 #: static/js/register.js:9
 msgid "Network error, please try again later"
 msgstr "Erreur réseau, veuillez réessayer plus tard"
-
-#: static/js/settings.js:10
-#, python-brace-format
-msgid ""
-"Please make sure to add the sender email address ({email}) to your Amazon"
-" Kindle trusted email list."
-msgstr ""
-"Veuillez vous assurer d'ajouter l'adresse e-mail de l'expéditeur "
-"({email}) à votre liste d'e-mails de confiance Amazon Kindle."
-
-#: static/js/settings.js:11
-msgid "WebDAV address copied to clipboard"
-msgstr "Adresse WebDAV copiée dans le presse-papiers"
-
-#: static/js/settings.js:12
-msgid "Copy failed"
-msgstr "La copie a échoué"
-
-#: static/js/settings.js:13
-msgid "2FA has been enabled."
-msgstr "L'authentification à deux facteurs a été activée."
-
-#: static/js/settings.js:14
-msgid "Disable"
-msgstr "Désactiver"
-
-#: static/js/settings.js:15
-msgid "2FA is not enabled."
-msgstr "L'authentification à deux facteurs n'est pas activée."
-
-#: static/js/settings.js:16
-msgid "Enable"
-msgstr "Activer"
-
-#: static/js/settings.js:17
-msgid "Failed to start 2FA setup."
-msgstr "Échec du démarrage de la configuration 2FA."
-
-#: static/js/settings.js:18
-msgid "Are you sure you want to disable 2FA?"
-msgstr "Êtes-vous sûr de vouloir désactiver l'A2F ?"
-
-#: static/js/settings.js:19
-msgid "No available tokens."
-msgstr "Aucun jeton disponible."
-
-#: static/js/settings.js:20
-msgid "Created at"
-msgstr "Créé à"
-
-#: static/js/settings.js:21 templates/index.html:194 templates/settings.html:73
-#: templates/settings.html:141
-msgid "Delete"
-msgstr "Supprimer"
-
-#: static/js/settings.js:22
-msgid "New token has been generated."
-msgstr "Un nouveau jeton a été généré."
-
-#: static/js/settings.js:23
-msgid "Failed to generate token."
-msgstr "Échec de la génération du jeton."
-
-#: static/js/settings.js:24
-msgid "Are you sure you want to delete this token?"
-msgstr "Êtes-vous sûr de vouloir supprimer ce jeton ?"
-
-#: static/js/settings.js:25
-msgid ""
-"Are you sure you want to delete ALL generated audiobook files? This "
-"action cannot be undone."
-msgstr ""
-"Êtes-vous sûr de vouloir supprimer TOUS les fichiers de livres audio "
-"générés ? Cette action est irréversible."
-
-#: static/js/settings.js:26
-msgid "Cleanup failed"
-msgstr "Le nettoyage a échoué"
-
-#: static/js/settings.js:27
-msgid "An error occurred"
-msgstr "Une erreur est survenue"
-
-#: static/js/settings.js:28
-msgid "Please enter a test recipient email address."
-msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
-
-#: static/js/settings.js:29 templates/index.html:119 templates/index.html:193
-msgid "Edit"
-msgstr "Modifier"
-
-#: static/js/settings.js:30 templates/settings.html:470
-msgid "Add"
-msgstr "Ajouter"
-
-#: static/js/settings.js:31
-msgid "Are you sure you want to delete this user?"
-msgstr "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
-
-#: static/js/settings.js:32
-msgid "Active"
-msgstr "Actif"
-
-#: static/js/settings.js:33
-msgid "Disabled"
-msgstr "Désactivé"
-
-#: static/js/settings.js:34
-msgid "Never expires"
-msgstr "N'expire jamais"
-
-#: static/js/settings.js:35
-msgid "Unknown"
-msgstr "Inconnu"
-
-#: static/js/settings.js:36
-#, python-brace-format
-msgid "Invite code generated successfully: {code}"
-msgstr "Code d'invitation généré avec succès : {code}"
-
-#: static/js/settings.js:37
-#, python-brace-format
-msgid "Failed to generate: {error}"
-msgstr "Échec de la génération : {error}"
-
-#: static/js/settings.js:39
-msgid "An error occurred while generating the invite code."
-msgstr "Une erreur s'est produite lors de la génération du code d'invitation."
-
-#: static/js/settings.js:40
-#, python-brace-format
-msgid "Operation failed: {error}"
-msgstr "L'opération a échoué : {error}"
-
-#: static/js/settings.js:42
-msgid "Are you sure you want to delete this invite code?"
-msgstr "Êtes-vous sûr de vouloir supprimer ce code d'invitation ?"
-
-#: static/js/settings.js:43
-#, python-brace-format
-msgid "Delete failed: {error}"
-msgstr "Échec de la suppression : {error}"
-
-#: static/js/settings.js:44
-msgid "Delete failed"
-msgstr "Échec de la suppression"
-
-#: static/js/settings.js:46
-msgid "Current Settings"
-msgstr "Paramètres actuels"
-
-#: static/js/settings.js:47
-msgid "Please enter a name for this TTS profile:"
-msgstr "Veuillez saisir un nom pour ce profil TTS :"
-
-#: static/js/settings.js:48
-msgid "TTS profile saved successfully!"
-msgstr "Profil TTS enregistré avec succès !"
-
-#: static/js/settings.js:49
-msgid "Failed to save TTS profile"
-msgstr "Échec de l'enregistrement du profil TTS"
-
-#: static/js/settings.js:50 static/js/settings.js:1024
-msgid "An error occurred while saving the profile"
-msgstr "Une erreur s'est produite lors de l'enregistrement du profil"
-
-#: static/js/settings.js:51 static/js/settings.js:1034
-msgid "Please select a profile to update"
-msgstr "Veuillez sélectionner un profil à mettre à jour"
-
-#: static/js/settings.js:52 static/js/settings.js:1041
-#, python-brace-format
-msgid "Update profile \"{name}\"?"
-msgstr "Mettre à jour le profil \"{name}\" ?"
-
-#: static/js/settings.js:53
-msgid "TTS profile updated successfully!"
-msgstr "Profil TTS mis à jour avec succès !"
-
-#: static/js/settings.js:54
-msgid "Failed to update TTS profile"
-msgstr "Échec de la mise à jour du profil TTS"
-
-#: static/js/settings.js:55 static/js/settings.js:1063
-msgid "An error occurred while updating the profile"
-msgstr "Une erreur s'est produite lors de la mise à jour du profil"
-
-#: static/js/settings.js:56 static/js/settings.js:1073
-msgid "Please select a profile to delete"
-msgstr "Veuillez sélectionner un profil à supprimer"
-
-#: static/js/settings.js:57 static/js/settings.js:1080
-#, python-brace-format
-msgid "Delete profile \"{name}\"? This cannot be undone."
-msgstr "Supprimer le profil \"{name}\" ? Cette action est irréversible."
-
-#: static/js/settings.js:58
-msgid "TTS profile deleted successfully!"
-msgstr "Profil TTS supprimé avec succès !"
-
-#: static/js/settings.js:59
-msgid "Failed to delete TTS profile"
-msgstr "Échec de la suppression du profil TTS"
-
-#: static/js/settings.js:60 static/js/settings.js:1096
-msgid "An error occurred while deleting the profile"
-msgstr "Une erreur s'est produite lors de la suppression du profil"
-
-#: static/js/settings.js:61 static/js/settings.js:1000
-msgid "Please enter a name for this LLM profile:"
-msgstr "Veuillez saisir un nom pour ce profil LLM :"
-
-#: static/js/settings.js:62 static/js/settings.js:1018
-msgid "LLM profile saved successfully!"
-msgstr "Profil LLM enregistré avec succès !"
-
-#: static/js/settings.js:63 static/js/settings.js:1021
-msgid "Failed to save LLM profile"
-msgstr "Échec de l'enregistrement du profil LLM"
-
-#: static/js/settings.js:64 static/js/settings.js:1057
-msgid "LLM profile updated successfully!"
-msgstr "Profil LLM mis à jour avec succès !"
-
-#: static/js/settings.js:65 static/js/settings.js:1060
-msgid "Failed to update LLM profile"
-msgstr "Échec de la mise à jour du profil LLM"
-
-#: static/js/settings.js:66 static/js/settings.js:1089
-msgid "LLM profile deleted successfully!"
-msgstr "Profil LLM supprimé avec succès !"
-
-#: static/js/settings.js:67 static/js/settings.js:1093
-msgid "Failed to delete LLM profile"
-msgstr "Échec de la suppression du profil LLM"
 
 #: static/js/page/translations.js:10
 msgid "Network response was not ok."
@@ -1293,7 +1132,7 @@ msgstr ""
 msgid "Generating..."
 msgstr "Génération en cours..."
 
-#: static/js/page/translations.js:40
+#: static/js/page/translations.js:40 static/js/settings/user_activities.js:29
 msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
@@ -1532,7 +1371,7 @@ msgstr "Toutes les tentatives de re-essai ont échoué en raison de réponses vi
 msgid "Failed to fetch audiobook list."
 msgstr "Échec de la récupération de la liste des livres audio."
 
-#: static/js/page/translations.js:108
+#: static/js/page/translations.js:108 static/js/settings/user_activities.js:30
 msgid "Delete Audiobook"
 msgstr "Supprimer le livre audio"
 
@@ -1622,6 +1461,485 @@ msgstr "Lecture/Pause"
 msgid "Playback Speed"
 msgstr "Vitesse de lecture"
 
+#: static/js/settings/common.js:13
+#, python-brace-format
+msgid ""
+"Please make sure to add the sender email address ({email}) to your Amazon"
+" Kindle trusted email list."
+msgstr ""
+"Veuillez vous assurer d'ajouter l'adresse e-mail de l'expéditeur "
+"({email}) à votre liste d'e-mails de confiance Amazon Kindle."
+
+#: static/js/settings/common.js:14
+msgid "WebDAV address copied to clipboard"
+msgstr "Adresse WebDAV copiée dans le presse-papiers"
+
+#: static/js/settings/common.js:15
+msgid "Copy failed"
+msgstr "La copie a échoué"
+
+#: static/js/settings/common.js:16
+msgid "2FA has been enabled."
+msgstr "L'authentification à deux facteurs a été activée."
+
+#: static/js/settings/common.js:17
+msgid "Disable"
+msgstr "Désactiver"
+
+#: static/js/settings/common.js:18
+msgid "2FA is not enabled."
+msgstr "L'authentification à deux facteurs n'est pas activée."
+
+#: static/js/settings/common.js:19
+msgid "Enable"
+msgstr "Activer"
+
+#: static/js/settings/common.js:20
+msgid "Failed to start 2FA setup."
+msgstr "Échec du démarrage de la configuration 2FA."
+
+#: static/js/settings/common.js:21
+msgid "Are you sure you want to disable 2FA?"
+msgstr "Êtes-vous sûr de vouloir désactiver l'A2F ?"
+
+#: static/js/settings/common.js:22
+msgid "No available tokens."
+msgstr "Aucun jeton disponible."
+
+#: static/js/settings/common.js:23
+msgid "Created at"
+msgstr "Créé à"
+
+#: static/js/settings/common.js:24 templates/index.html:194
+#: templates/settings/settings_user_settings.html:48
+#: templates/settings/settings_user_settings.html:116
+msgid "Delete"
+msgstr "Supprimer"
+
+#: static/js/settings/common.js:25
+msgid "New token has been generated."
+msgstr "Un nouveau jeton a été généré."
+
+#: static/js/settings/common.js:26
+msgid "Failed to generate token."
+msgstr "Échec de la génération du jeton."
+
+#: static/js/settings/common.js:27
+msgid "Are you sure you want to delete this token?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce jeton ?"
+
+#: static/js/settings/common.js:28
+msgid ""
+"Are you sure you want to delete ALL generated audiobook files? This "
+"action cannot be undone."
+msgstr ""
+"Êtes-vous sûr de vouloir supprimer TOUS les fichiers de livres audio "
+"générés ? Cette action est irréversible."
+
+#: static/js/settings/common.js:29
+msgid "Cleanup failed"
+msgstr "Le nettoyage a échoué"
+
+#: static/js/settings/common.js:30
+msgid "An error occurred"
+msgstr "Une erreur est survenue"
+
+#: static/js/settings/common.js:31
+msgid "Please enter a test recipient email address."
+msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
+
+#: static/js/settings/common.js:32 templates/index.html:119
+#: templates/index.html:193
+msgid "Edit"
+msgstr "Modifier"
+
+#: static/js/settings/common.js:33
+#: templates/settings/settings_user_management.html:5
+msgid "Add"
+msgstr "Ajouter"
+
+#: static/js/settings/common.js:34
+msgid "Are you sure you want to delete this user?"
+msgstr "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
+
+#: static/js/settings/common.js:35
+msgid "Active"
+msgstr "Actif"
+
+#: static/js/settings/common.js:36
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: static/js/settings/common.js:37
+msgid "Never expires"
+msgstr "N'expire jamais"
+
+#: static/js/settings/common.js:38
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: static/js/settings/common.js:39
+#, python-brace-format
+msgid "Invite code generated successfully: {code}"
+msgstr "Code d'invitation généré avec succès : {code}"
+
+#: static/js/settings/common.js:40
+#, python-brace-format
+msgid "Failed to generate: {error}"
+msgstr "Échec de la génération : {error}"
+
+#: static/js/settings/common.js:42
+msgid "An error occurred while generating the invite code."
+msgstr "Une erreur s'est produite lors de la génération du code d'invitation."
+
+#: static/js/settings/common.js:43
+#, python-brace-format
+msgid "Operation failed: {error}"
+msgstr "L'opération a échoué : {error}"
+
+#: static/js/settings/common.js:45
+msgid "Are you sure you want to delete this invite code?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce code d'invitation ?"
+
+#: static/js/settings/common.js:46
+#, python-brace-format
+msgid "Delete failed: {error}"
+msgstr "Échec de la suppression : {error}"
+
+#: static/js/settings/common.js:47
+msgid "Delete failed"
+msgstr "Échec de la suppression"
+
+#: static/js/settings/common.js:49
+msgid "Current Settings"
+msgstr "Paramètres actuels"
+
+#: static/js/settings/common.js:50
+msgid "Please enter a name for this TTS profile:"
+msgstr "Veuillez saisir un nom pour ce profil TTS :"
+
+#: static/js/settings/common.js:51
+msgid "TTS profile saved successfully!"
+msgstr "Profil TTS enregistré avec succès !"
+
+#: static/js/settings/common.js:52
+msgid "Failed to save TTS profile"
+msgstr "Échec de l'enregistrement du profil TTS"
+
+#: static/js/settings/common.js:53 static/js/settings/service_profiles.js:306
+msgid "An error occurred while saving the profile"
+msgstr "Une erreur s'est produite lors de l'enregistrement du profil"
+
+#: static/js/settings/common.js:54 static/js/settings/service_profiles.js:319
+msgid "Please select a profile to update"
+msgstr "Veuillez sélectionner un profil à mettre à jour"
+
+#: static/js/settings/common.js:55 static/js/settings/service_profiles.js:326
+#, python-brace-format
+msgid "Update profile \"{name}\"?"
+msgstr "Mettre à jour le profil \"{name}\" ?"
+
+#: static/js/settings/common.js:56
+msgid "TTS profile updated successfully!"
+msgstr "Profil TTS mis à jour avec succès !"
+
+#: static/js/settings/common.js:57
+msgid "Failed to update TTS profile"
+msgstr "Échec de la mise à jour du profil TTS"
+
+#: static/js/settings/common.js:58 static/js/settings/service_profiles.js:348
+msgid "An error occurred while updating the profile"
+msgstr "Une erreur s'est produite lors de la mise à jour du profil"
+
+#: static/js/settings/common.js:59 static/js/settings/service_profiles.js:361
+msgid "Please select a profile to delete"
+msgstr "Veuillez sélectionner un profil à supprimer"
+
+#: static/js/settings/common.js:60 static/js/settings/service_profiles.js:368
+#, python-brace-format
+msgid "Delete profile \"{name}\"? This cannot be undone."
+msgstr "Supprimer le profil \"{name}\" ? Cette action est irréversible."
+
+#: static/js/settings/common.js:61
+msgid "TTS profile deleted successfully!"
+msgstr "Profil TTS supprimé avec succès !"
+
+#: static/js/settings/common.js:62
+msgid "Failed to delete TTS profile"
+msgstr "Échec de la suppression du profil TTS"
+
+#: static/js/settings/common.js:63 static/js/settings/service_profiles.js:384
+msgid "An error occurred while deleting the profile"
+msgstr "Une erreur s'est produite lors de la suppression du profil"
+
+#: static/js/settings/common.js:64 static/js/settings/service_profiles.js:282
+msgid "Please enter a name for this LLM profile:"
+msgstr "Veuillez saisir un nom pour ce profil LLM :"
+
+#: static/js/settings/common.js:65 static/js/settings/service_profiles.js:300
+msgid "LLM profile saved successfully!"
+msgstr "Profil LLM enregistré avec succès !"
+
+#: static/js/settings/common.js:66 static/js/settings/service_profiles.js:303
+msgid "Failed to save LLM profile"
+msgstr "Échec de l'enregistrement du profil LLM"
+
+#: static/js/settings/common.js:67 static/js/settings/service_profiles.js:342
+msgid "LLM profile updated successfully!"
+msgstr "Profil LLM mis à jour avec succès !"
+
+#: static/js/settings/common.js:68 static/js/settings/service_profiles.js:345
+msgid "Failed to update LLM profile"
+msgstr "Échec de la mise à jour du profil LLM"
+
+#: static/js/settings/common.js:69 static/js/settings/service_profiles.js:377
+msgid "LLM profile deleted successfully!"
+msgstr "Profil LLM supprimé avec succès !"
+
+#: static/js/settings/common.js:70 static/js/settings/service_profiles.js:381
+msgid "Failed to delete LLM profile"
+msgstr "Échec de la suppression du profil LLM"
+
+#: static/js/settings/user_activities.js:16
+#: templates/settings/settings_user_activities.html:131
+msgid "Login Success"
+msgstr "Connexion réussie"
+
+#: static/js/settings/user_activities.js:17
+#: templates/settings/settings_user_activities.html:132
+msgid "Login Failed"
+msgstr "Échec de connexion"
+
+#: static/js/settings/user_activities.js:18 templates/base.html:90
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: static/js/settings/user_activities.js:19 templates/register.html:3
+#: templates/register.html:58
+msgid "Register"
+msgstr "S'inscrire"
+
+#: static/js/settings/user_activities.js:20
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:133
+msgid "Download Book"
+msgstr "Télécharger le livre"
+
+#: static/js/settings/user_activities.js:21
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:134
+msgid "Upload Book"
+msgstr "Téléverser le livre"
+
+#: static/js/settings/user_activities.js:22
+msgid "Delete Book"
+msgstr "Supprimer le livre"
+
+#: static/js/settings/user_activities.js:23
+#: static/js/settings/user_activities.js:439
+#: templates/settings/settings_user_activities.html:135
+msgid "Search Books"
+msgstr "Rechercher des livres"
+
+#: static/js/settings/user_activities.js:24
+msgid "Edit Metadata"
+msgstr "Modifier les métadonnées"
+
+#: static/js/settings/user_activities.js:25
+#: static/js/settings/user_activities.js:441
+#: templates/settings/settings_user_activities.html:136
+msgid "Push to Kindle"
+msgstr "Envoyer vers Kindle"
+
+#: static/js/settings/user_activities.js:26
+msgid "Push to Anx"
+msgstr "Envoyer vers Anx"
+
+#: static/js/settings/user_activities.js:27
+msgid "Push Anx to Calibre"
+msgstr "Envoyer Anx vers Calibre"
+
+#: static/js/settings/user_activities.js:28
+#: static/js/settings/user_activities.js:442 templates/index.html:123
+#: templates/index.html:197
+#: templates/settings/settings_user_activities.html:137
+msgid "Generate Audiobook"
+msgstr "Générer un livre audio"
+
+#: static/js/settings/user_activities.js:31
+msgid "Update Audiobook Progress"
+msgstr "Mettre à jour la progression du livre audio"
+
+#: static/js/settings/user_activities.js:32
+msgid "Update Audiobook Reading Time"
+msgstr "Mettre à jour le temps de lecture du livre audio"
+
+#: static/js/settings/user_activities.js:33
+#: templates/settings/settings_user_activities.html:138
+msgid "Update Reading Progress"
+msgstr "Mettre à jour la progression de lecture"
+
+#: static/js/settings/user_activities.js:34
+msgid "Update Reading Time"
+msgstr "Mettre à jour le temps de lecture"
+
+#: static/js/settings/user_activities.js:35
+msgid "Start LLM Chat"
+msgstr "Démarrer une discussion LLM"
+
+#: static/js/settings/user_activities.js:36
+msgid "LLM Chat Message"
+msgstr "Message de discussion LLM"
+
+#: static/js/settings/user_activities.js:37
+msgid "Delete LLM Session"
+msgstr "Supprimer la session LLM"
+
+#: static/js/settings/user_activities.js:38
+msgid "Delete LLM Message"
+msgstr "Supprimer le message LLM"
+
+#: static/js/settings/user_activities.js:39
+msgid "Generate MCP Token"
+msgstr "Générer un jeton MCP"
+
+#: static/js/settings/user_activities.js:40
+msgid "Delete MCP Token"
+msgstr "Supprimer le jeton MCP"
+
+#: static/js/settings/user_activities.js:41
+msgid "MCP API Call"
+msgstr "Appel API MCP"
+
+#: static/js/settings/user_activities.js:42
+msgid "Update User Settings"
+msgstr "Mettre à jour les paramètres utilisateur"
+
+#: static/js/settings/user_activities.js:43
+msgid "Update Global Settings"
+msgstr "Mettre à jour les paramètres globaux"
+
+#: static/js/settings/user_activities.js:44
+msgid "Update Password"
+msgstr "Mettre à jour le mot de passe"
+
+#: static/js/settings/user_activities.js:45
+msgid "Enable 2FA"
+msgstr "Activer l'A2F"
+
+#: static/js/settings/user_activities.js:46
+msgid "Disable 2FA"
+msgstr "Désactiver l'A2F"
+
+#: static/js/settings/user_activities.js:47
+msgid "Create User"
+msgstr "Créer un utilisateur"
+
+#: static/js/settings/user_activities.js:48
+msgid "Update User"
+msgstr "Mettre à jour l'utilisateur"
+
+#: static/js/settings/user_activities.js:49
+msgid "Delete User"
+msgstr "Supprimer l'utilisateur"
+
+#: static/js/settings/user_activities.js:50
+msgid "Create Invite Code"
+msgstr "Créer un code d'invitation"
+
+#: static/js/settings/user_activities.js:51
+msgid "Delete Invite Code"
+msgstr "Supprimer le code d'invitation"
+
+#: static/js/settings/user_activities.js:52
+msgid "Use Invite Code"
+msgstr "Utiliser le code d'invitation"
+
+#: static/js/settings/user_activities.js:53
+msgid "Toggle Invite Code"
+msgstr "Basculer le code d'invitation"
+
+#: static/js/settings/user_activities.js:54
+msgid "Create Service Config"
+msgstr "Créer une configuration de service"
+
+#: static/js/settings/user_activities.js:55
+msgid "Update Service Config"
+msgstr "Mettre à jour la configuration de service"
+
+#: static/js/settings/user_activities.js:56
+msgid "Delete Service Config"
+msgstr "Supprimer la configuration de service"
+
+#: static/js/settings/user_activities.js:57
+msgid "Test SMTP"
+msgstr "Tester SMTP"
+
+#: static/js/settings/user_activities.js:58
+msgid "KOReader Sync Progress"
+msgstr "Synchronisation de progression KOReader"
+
+#: static/js/settings/user_activities.js:59
+msgid "KOReader Sync Reading Time"
+msgstr "Synchronisation du temps de lecture KOReader"
+
+#: static/js/settings/user_activities.js:60
+msgid "KOReader Update Summary"
+msgstr "Mettre à jour le résumé KOReader"
+
+#: static/js/settings/user_activities.js:191
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:97
+msgid "Total Activities"
+msgstr "Total des activités"
+
+#: static/js/settings/user_activities.js:198
+msgid "Unique Users"
+msgstr "Utilisateurs uniques"
+
+#: static/js/settings/user_activities.js:304
+msgid "Unlock"
+msgstr "Déverrouiller"
+
+#: static/js/settings/user_activities.js:305
+msgid "Lock"
+msgstr "Verrouiller"
+
+#: static/js/settings/user_activities.js:308
+msgid "Reset Failed"
+msgstr "Réinitialiser les échecs"
+
+#: static/js/settings/user_activities.js:377
+#: static/js/settings/user_activities.js:523
+msgid "Activity Details for: "
+msgstr "Détails de l'activité pour : "
+
+#: static/js/settings/user_activities.js:440 templates/index.html:178
+msgid "Reading Progress"
+msgstr "Progression de la lecture"
+
+#: static/js/settings/user_activities.js:503
+#: static/js/settings/user_activities.js:507
+msgid "Failed to load event type details"
+msgstr "Échec du chargement des détails du type d'événement"
+
+#: static/js/settings/user_activities.js:603
+#: templates/settings/settings_user_activities.html:170
+msgid "Lock User Account"
+msgstr "Verrouiller le compte utilisateur"
+
+#: static/js/settings/user_activities.js:628
+msgid "Please enter a valid duration"
+msgstr "Veuillez saisir une durée valide"
+
+#: static/js/settings/user_activities.js:664
+msgid "Are you sure you want to unlock this user account?"
+msgstr "Êtes-vous sûr de vouloir déverrouiller ce compte utilisateur ?"
+
+#: static/js/settings/user_activities.js:695
+msgid "Are you sure you want to reset failed login attempts for this user?"
+msgstr "Êtes-vous sûr de vouloir réinitialiser les tentatives de connexion échouées pour cet utilisateur ?"
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "Lecteur de livres audio"
@@ -1667,10 +1985,6 @@ msgstr "Anx Calibre Manager"
 msgid "Settings"
 msgstr "Paramètres"
 
-#: templates/base.html:90
-msgid "Logout"
-msgstr "Déconnexion"
-
 #: templates/base.html:106 templates/index.html:3 templates/index.html:102
 msgid "Library"
 msgstr "Bibliothèque"
@@ -1700,7 +2014,9 @@ msgstr "Offrez-moi un café ☕"
 msgid ""
 "The administrator has enabled auditing. Your web activities may be "
 "recorded."
-msgstr "L'administrateur a activé l'audit. Vos activités web peuvent être enregistrées."
+msgstr ""
+"L'administrateur a activé l'audit. Vos activités web peuvent être "
+"enregistrées."
 
 #: templates/chat_player.html:6
 msgid "AI Chat"
@@ -1821,10 +2137,6 @@ msgstr "Télécharger"
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:123 templates/index.html:197
-msgid "Generate Audiobook"
-msgstr "Générer un livre audio"
-
 #: templates/index.html:128
 msgid "No books in Calibre library."
 msgstr "Aucun livre dans la bibliothèque Calibre."
@@ -1838,13 +2150,9 @@ msgstr ""
 "synchroniser (le nom d'utilisateur et le mot de passe sont vos "
 "identifiants de connexion) :"
 
-#: templates/index.html:154 templates/settings.html:315
+#: templates/index.html:154 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "Cliquez pour copier"
-
-#: templates/index.html:178
-msgid "Reading Progress"
-msgstr "Progression de la lecture"
 
 #: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
@@ -1879,7 +2187,9 @@ msgid "Select files:"
 msgstr "Sélectionner des fichiers :"
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:490
+#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_management.html:25
+#: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -1887,7 +2197,7 @@ msgstr "Annuler"
 msgid "Edit Book Information"
 msgstr "Modifier les informations du livre"
 
-#: templates/index.html:244 templates/settings.html:489
+#: templates/index.html:244 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1900,13 +2210,16 @@ msgid "Login to Anx Calibre Manager"
 msgstr "Connexion à Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:472 templates/settings.html:499
+#: templates/settings/settings_koreader.html:12
+#: templates/settings/settings_user_management.html:7
+#: templates/settings/settings_user_management.html:34
+#: templates/settings/settings_user_settings.html:6
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:476
+#: templates/settings/settings_koreader.html:13
+#: templates/settings/settings_user_management.html:11
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1934,21 +2247,17 @@ msgstr "Lecteur de livres"
 msgid "TTS Settings"
 msgstr "Paramètres TTS"
 
-#: templates/reader.html:90 templates/settings.html:109
+#: templates/reader.html:90 templates/settings/settings_user_settings.html:84
 msgid "Rate"
 msgstr "Vitesse"
 
-#: templates/reader.html:95 templates/settings.html:119
+#: templates/reader.html:95 templates/settings/settings_user_settings.html:94
 msgid "Pitch"
 msgstr "Hauteur"
 
-#: templates/reader.html:100 templates/settings.html:86
+#: templates/reader.html:100 templates/settings/settings_user_settings.html:61
 msgid "Voice"
 msgstr "Voix"
-
-#: templates/register.html:3 templates/register.html:58
-msgid "Register"
-msgstr "S'inscrire"
 
 #: templates/register.html:9
 msgid "Register for Anx Calibre Manager"
@@ -1999,6 +2308,7 @@ msgid "Koreader Sync Settings"
 msgstr "Paramètres de synchronisation de Koreader"
 
 #: templates/settings.html:20
+#: templates/settings/settings_user_activities.html:15
 msgid "Global Settings"
 msgstr "Paramètres globaux"
 
@@ -2010,1032 +2320,9 @@ msgstr "Gestion des utilisateurs"
 msgid "Invite Code Management"
 msgstr "Gestion des codes d'invitation"
 
-#: templates/settings.html:29
-msgid "Profile"
-msgstr "Profil"
-
-#: templates/settings.html:35
-msgid "Change Password"
-msgstr "Changer le mot de passe"
-
-#: templates/settings.html:36 templates/settings.html:363
-msgid "Leave blank to keep unchanged"
-msgstr "Laisser vide pour ne pas modifier"
-
-#: templates/settings.html:39
-msgid "Appearance"
-msgstr "Apparence"
-
-#: templates/settings.html:41
-msgid "Theme"
-msgstr "Thème"
-
-#: templates/settings.html:43
-msgid "Auto (Follow system)"
-msgstr "Auto (suivre le système)"
-
-#: templates/settings.html:44
-msgid "Light Mode"
-msgstr "Mode clair"
-
-#: templates/settings.html:45
-msgid "Dark Mode"
-msgstr "Mode sombre"
-
-#: templates/settings.html:49
-msgid "Push Settings"
-msgstr "Paramètres d'envoi"
-
-#: templates/settings.html:51
-msgid "Kindle Email Address"
-msgstr "Adresse e-mail Kindle"
-
-#: templates/settings.html:56
-msgid "Format Priority"
-msgstr "Priorité des formats"
-
-#: templates/settings.html:58
-msgid ""
-"When downloading or pushing to Kindle / ANX library, available formats "
-"will be searched in this priority order. Use commas to separate, e.g., "
-"epub, mobi, pdf, azw3"
-msgstr ""
-"Lors du téléchargement ou de l'envoi vers la bibliothèque Kindle / ANX, "
-"les formats disponibles seront recherchés dans cet ordre de priorité. "
-"Utilisez des virgules pour séparer, par exemple, epub, mobi, pdf, azw3"
-
-#: templates/settings.html:62
-msgid "Force EPUB Conversion"
-msgstr "Forcer la conversion EPUB"
-
-#: templates/settings.html:63
-msgid ""
-"If enabled, will always try to convert the book to an optimized EPUB "
-"format when downloading or pushing to the ANX library, instead of sending"
-" the original format."
-msgstr ""
-"Si activé, tentera toujours de convertir le livre en un format EPUB "
-"optimisé lors du téléchargement ou de l'envoi vers la bibliothèque ANX, "
-"au lieu d'envoyer le format original."
-
-#: templates/settings.html:66
-msgid "Audiobook Generation Settings"
-msgstr "Paramètres de génération de livres audio"
-
-#: templates/settings.html:68
-msgid "TTS Profile"
-msgstr "Profil TTS"
-
-#: templates/settings.html:71 templates/settings.html:139
-msgid "Save Preset"
-msgstr "Enregistrer le préréglage"
-
-#: templates/settings.html:72 templates/settings.html:140
-msgid "Save As Preset"
-msgstr "Enregistrer sous"
-
-#: templates/settings.html:75
-msgid "Load, save or delete TTS configuration profiles."
-msgstr "Charger, enregistrer ou supprimer des profils de configuration TTS."
-
-#: templates/settings.html:78
-msgid "TTS Provider"
-msgstr "Fournisseur TTS"
-
-#: templates/settings.html:83
-msgid "The text-to-speech service provider to use."
-msgstr "Le fournisseur de services de synthèse vocale à utiliser."
-
-#: templates/settings.html:87
-msgid "Select or type a voice"
-msgstr "Sélectionnez ou tapez une voix"
-
-#: templates/settings.html:91
-msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
-msgstr ""
-"La voix à utiliser pour la génération. Par exemple, zh-CN-YunjianNeural "
-"pour Edge TTS."
-
-#: templates/settings.html:94 templates/settings.html:158
-msgid "API Key"
-msgstr "Clé API"
-
-#: templates/settings.html:96
-msgid "API key for the selected provider (if required)."
-msgstr "Clé API pour le fournisseur sélectionné (si nécessaire)."
-
-#: templates/settings.html:99 templates/settings.html:153
-msgid "Base URL"
-msgstr "URL de base"
-
-#: templates/settings.html:101
-msgid "Custom base URL for the API (for proxies or self-hosted models)."
-msgstr ""
-"URL de base personnalisée pour l'API (pour les proxys ou les modèles "
-"auto-hébergés)."
-
-#: templates/settings.html:104 templates/settings.html:163
-msgid "Model"
-msgstr "Modèle"
-
-#: templates/settings.html:106
-msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
-msgstr ""
-"Le modèle spécifique à utiliser, par exemple, tts-1-hd (si pris en charge"
-" par le fournisseur)."
-
-#: templates/settings.html:111
-#, python-format
-msgid "Speaking rate. e.g., +10%% or -10%%."
-msgstr "Vitesse de parole. Par exemple, +10%% ou -10%%."
-
-#: templates/settings.html:114
-msgid "Volume"
-msgstr "Volume"
-
-#: templates/settings.html:116
-#, python-format
-msgid "Volume level. e.g., +10%% or -10%%."
-msgstr "Niveau de volume. Par exemple, +10%% ou -10%%."
-
-#: templates/settings.html:121
-msgid "Speaking pitch. e.g., +10Hz or -10Hz."
-msgstr "Hauteur de la voix. Par exemple, +10Hz ou -10Hz."
-
-#: templates/settings.html:124
-msgid "Sentence Pause (ms)"
-msgstr "Pause de la phrase (ms)"
-
-#: templates/settings.html:126
-msgid "Pause duration between sentences in milliseconds."
-msgstr "Durée de la pause entre les phrases en millisecondes."
-
-#: templates/settings.html:129
-msgid "Paragraph Pause (ms)"
-msgstr "Pause de paragraphe (ms)"
-
-#: templates/settings.html:131
-msgid "Pause duration between paragraphs in milliseconds."
-msgstr "Durée de la pause entre les paragraphes en millisecondes."
-
-#: templates/settings.html:134
-msgid "LLM Provider Settings"
-msgstr "Paramètres du fournisseur LLM"
-
-#: templates/settings.html:136
-msgid "LLM Profile"
-msgstr "Profil LLM"
-
-#: templates/settings.html:143
-msgid "Load, save or delete LLM configuration profiles."
-msgstr "Charger, enregistrer ou supprimer des profils de configuration LLM."
-
-#: templates/settings.html:146
-msgid "LLM Provider"
-msgstr "Fournisseur LLM"
-
-#: templates/settings.html:150
-msgid "The Large Language Model provider to use for MCP."
-msgstr "Le fournisseur de grand modèle de langage à utiliser pour MCP."
-
-#: templates/settings.html:155
-msgid "Custom base URL for the API (e.g., for proxies or self-hosted models)."
-msgstr ""
-"URL de base personnalisée pour l'API (par ex. pour les proxys ou les "
-"modèles auto-hébergés)."
-
-#: templates/settings.html:160
-msgid "API key for the selected provider."
-msgstr "Clé API pour le fournisseur sélectionné."
-
-#: templates/settings.html:164
-msgid "Select or type a model"
-msgstr "Sélectionnez ou tapez un modèle"
-
-#: templates/settings.html:168
-msgid "The specific model to use, e.g., gpt-4o."
-msgstr "Le modèle spécifique à utiliser, par ex. gpt-4o."
-
-#: templates/settings.html:171
-msgid "Statistics Settings"
-msgstr "Paramètres des statistiques"
-
-#: templates/settings.html:174
-msgid "Enable Reading Statistics Page"
-msgstr "Activer la page des statistiques de lecture"
-
-#: templates/settings.html:175
-msgid "Allows you to view your reading statistics after logging in."
-msgstr ""
-"Vous permet de consulter vos statistiques de lecture après vous être "
-"connecté."
-
-#: templates/settings.html:179
-msgid "Make Statistics Page Public"
-msgstr "Rendre la page des statistiques publique"
-
-#: templates/settings.html:180
-msgid ""
-"If enabled, your statistics page will be publicly accessible without "
-"needing to log in."
-msgstr ""
-"Si activé, votre page de statistiques sera accessible au public sans "
-"qu'il soit nécessaire de se connecter."
-
-#: templates/settings.html:183
-msgid "Your Statistics Page URL"
-msgstr "URL de votre page de statistiques"
-
-#: templates/settings.html:187
-msgid "Two-Factor Authentication (2FA)"
-msgstr "Authentification à deux facteurs (A2F)"
-
-#: templates/settings.html:190
-msgid "Please use your authenticator app to scan this QR code:"
-msgstr ""
-"Veuillez utiliser votre application d'authentification pour scanner ce "
-"code QR :"
-
-#: templates/settings.html:192
-msgid "Or manually enter the key:"
-msgstr "Ou saisissez manuellement la clé :"
-
-#: templates/settings.html:194
-msgid "Verification Code"
-msgstr "Code de vérification"
-
-#: templates/settings.html:195
-msgid "Enter the 6-digit code to complete setup"
-msgstr "Saisissez le code à 6 chiffres pour terminer la configuration"
-
-#: templates/settings.html:197
-msgid "Verify and Enable"
-msgstr "Vérifier et activer"
-
-#: templates/settings.html:202
-msgid "Save User Settings"
-msgstr "Enregistrer les paramètres utilisateur"
-
-#: templates/settings.html:209
-msgid "MCP API Tokens"
-msgstr "Jetons de l'API MCP"
-
-#: templates/settings.html:210
-msgid ""
-"You can use these tokens to interact with your library via the MCP "
-"protocol."
-msgstr ""
-"Vous pouvez utiliser ces jetons pour interagir avec votre bibliothèque "
-"via le protocole MCP."
-
-#: templates/settings.html:215
-msgid "Generate New Token"
-msgstr "Générer un nouveau jeton"
-
-#: templates/settings.html:219
-msgid "MCP Endpoint"
-msgstr "Point de terminaison MCP"
-
-#: templates/settings.html:221
-msgid "Authentication"
-msgstr "Authentification"
-
-#: templates/settings.html:222
-msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
-msgstr "Authentifiez-vous en ajoutant le paramètre `?token=VOTRE_JETON` à l'URL."
-
-#: templates/settings.html:223
-msgid "Prompt Examples"
-msgstr "Exemples de Prompts"
-
-#: templates/settings.html:224
-msgid ""
-"Here are some examples of natural language prompts you can use with an AI"
-" agent. The agent will intelligently call one or more tools to fulfill "
-"your request."
-msgstr ""
-"Voici quelques exemples de prompts en langage naturel que vous pourriez "
-"utiliser avec un agent IA. L'agent appellera intelligemment un ou "
-"plusieurs outils pour répondre à votre demande."
-
-#: templates/settings.html:227
-msgid "Simple & Advanced Search"
-msgstr "Recherche Simple et Avancée"
-
-#: templates/settings.html:229
-msgid "Find books about Python programming."
-msgstr "Trouver des livres sur la programmation en Python."
-
-#: templates/settings.html:232
-msgid "Search for science fiction books by Isaac Asimov published after 1950."
-msgstr ""
-"Rechercher des livres de science-fiction d'Isaac Asimov publiés après "
-"1950."
-
-#: templates/settings.html:236
-msgid "Book Management"
-msgstr "Gestion de Livres"
-
-#: templates/settings.html:238
-msgid "What are the 5 most recently added books? Send the first one to my Kindle."
-msgstr ""
-"Quels sont les 5 derniers livres ajoutés ? Envoyez le premier à mon "
-"Kindle."
-
-#: templates/settings.html:241
-msgid "Push the book 'Dune' to my Anx reader."
-msgstr "Pousser le livre 'Dune' sur mon lecteur Anx."
-
-#: templates/settings.html:244
-msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
-msgstr ""
-"Téléverser le livre 'Le Problème à trois corps' de ma bibliothèque Anx "
-"vers Calibre."
-
-#: templates/settings.html:247
-msgid "Generate an audiobook for the book 'The Three-Body Problem'."
-msgstr "Générer un livre audio pour le livre 'Le Problème à trois corps'."
-
-#: templates/settings.html:250
-msgid ""
-"What is the status of the audiobook generation for 'The Three-Body "
-"Problem'?"
-msgstr ""
-"Quel est le statut de la génération du livre audio pour 'Le Problème à "
-"trois corps' ?"
-
-#: templates/settings.html:254
-msgid "Content Interaction & Summarization"
-msgstr "Interaction et Résumé de Contenu"
-
-#: templates/settings.html:256
-msgid "Show me the table of contents for the book 'Foundation'."
-msgstr "Montre-moi la table des matières du livre 'Fondation'."
-
-#: templates/settings.html:259
-msgid "Fetch the first chapter of 'Foundation' and give me a summary."
-msgstr "Récupère le premier chapitre de 'Fondation' et fais-moi un résumé."
-
-#: templates/settings.html:262
-msgid ""
-"Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
-"what are the main ideas of psychohistory?"
-msgstr ""
-"D'après le chapitre 'Les Psychohistoriens' du livre 'Fondation', quelles "
-"sont les idées principales de la psychohistoire ?"
-
-#: templates/settings.html:265
-msgid ""
-"Read the entire book 'The Little Prince' and tell me what the fox's "
-"secret is."
-msgstr ""
-"Lis tout le livre 'Le Petit Prince' et dis-moi quel est le secret du "
-"renard."
-
-#: templates/settings.html:269
-msgid "Reading Statistics & Progress"
-msgstr "Statistiques et Progression de Lecture"
-
-#: templates/settings.html:271
-msgid ""
-"How many words is the book 'Dune' in total, and list the word count for "
-"each chapter."
-msgstr ""
-"Combien de mots compte le livre 'Dune' au total, et dresse la liste du "
-"nombre de mots pour chaque chapitre."
-
-#: templates/settings.html:274
-msgid "How many books have I read this year?"
-msgstr "Combien de livres ai-je lus cette année ?"
-
-#: templates/settings.html:277
-msgid "What's my reading progress on 'Dune'?"
-msgstr "Quelle est ma progression de lecture sur 'Dune' ?"
-
-#: templates/settings.html:280
-msgid ""
-"Who is the author of 'Project Hail Mary' and how long have I been reading"
-" it?"
-msgstr ""
-"Qui est l'auteur de 'Project Hail Mary' et depuis combien de temps le "
-"lis-je ?"
-
-#: templates/settings.html:285
-msgid "Available Tools"
-msgstr "Outils disponibles"
-
-#: templates/settings.html:286
-msgid ""
-"You can get a list of all available tools by calling the `tools/list` "
-"method. The currently supported tools are:"
-msgstr ""
-"Vous pouvez obtenir une liste de tous les outils disponibles en appelant "
-"la méthode `tools/list`. Les outils actuellement pris en charge sont :"
-
-#: templates/settings.html:288
-msgid ""
-"Search Calibre books using Calibre's search syntax. Parameters: "
-"`search_expression` (str), `limit` (int, optional)"
-msgstr ""
-"Rechercher des livres Calibre en utilisant la syntaxe de recherche de "
-"Calibre. Paramètres : `search_expression` (str), `limit` (int, optionnel)"
-
-#: templates/settings.html:289
-msgid ""
-"Get recent books from a library. Parameters: `library_type` (str, \"anx\""
-" or \"calibre\"), `limit` (int, optional)"
-msgstr ""
-"Obtenir les livres récents d'une bibliothèque. Paramètres : "
-"`library_type` (str, \"anx\" ou \"calibre\"), `limit` (int, optionnel)"
-
-#: templates/settings.html:290
-msgid ""
-"Get details for a book. Parameters: `library_type` (str, \"anx\" or "
-"\"calibre\"), `book_id` (int)"
-msgstr ""
-"Obtenir les détails d'un livre. Paramètres : `library_type` (str, \"anx\""
-" ou \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:291
-msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
-msgstr ""
-"Pousser un livre Calibre vers la bibliothèque Anx de l'utilisateur. "
-"Paramètres : `book_id` (int)"
-
-#: templates/settings.html:292
-msgid ""
-"Upload a book from the user's Anx library to the public Calibre library. "
-"Parameters: `book_id` (int)"
-msgstr ""
-"Téléverser un livre de la bibliothèque Anx de l'utilisateur vers la "
-"bibliothèque publique Calibre. Paramètres : `book_id` (int)"
-
-#: templates/settings.html:293
-msgid ""
-"Send a Calibre book to the user's configured Kindle email. Parameters: "
-"`book_id` (int)"
-msgstr ""
-"Envoyer un livre Calibre à l'e-mail Kindle configuré par l'utilisateur. "
-"Paramètres : `book_id` (int)"
-
-#: templates/settings.html:294
-msgid ""
-"Get the table of contents for a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr ""
-"Obtenir la table des matières d'un livre. Paramètres : `library_type` "
-"(str, \"anx\" ou \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:295
-msgid ""
-"Get the content of a specific chapter. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
-msgstr ""
-"Obtenir le contenu d'un chapitre spécifique. Paramètres : `library_type` "
-"(str, \"anx\" ou \"calibre\"), `book_id` (int), `chapter_number` (int)"
-
-#: templates/settings.html:296
-msgid ""
-"Get the entire text content of a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr ""
-"Obtenir l'intégralité du contenu textuel d'un livre. Paramètres : "
-"`library_type` (str, \"anx\" ou \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:297
-msgid ""
-"Get word count statistics for a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr ""
-"Obtenir les statistiques de nombre de mots pour un livre. Paramètres : "
-"`library_type` (str, \"anx\" ou \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:298
-msgid ""
-"Generate an audiobook for a book. Parameters: `book_id` (int), "
-"`library_type` (str, \"anx\" or \"calibre\")"
-msgstr ""
-"Générer un livre audio pour un livre. Paramètres : `book_id` (int), "
-"`library_type` (str, \"anx\" ou \"calibre\")"
-
-#: templates/settings.html:299
-msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
-msgstr ""
-"Obtenir le statut de la génération d'un livre audio par ID de tâche. "
-"Paramètres : `task_id` (str)"
-
-#: templates/settings.html:300
-msgid ""
-"Get the latest audiobook task status for a book. Parameters: `book_id` "
-"(int), `library_type` (str, \"anx\" or \"calibre\")"
-msgstr ""
-"Obtenir le dernier statut de la tâche de livre audio pour un livre. "
-"Paramètres : `book_id` (int), `library_type` (str, \"anx\" ou "
-"\"calibre\")"
-
-#: templates/settings.html:301
-msgid ""
-"Get reading statistics for the current user. `time_range` is a required "
-"parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
-"\"this_year\", a number of recent days (e.g., \"7\", \"30\"), or a date "
-"range \"YYYY-MM-DD:YYYY-MM-DD\"."
-msgstr ""
-"Obtenir les statistiques de lecture de l'utilisateur actuel. `time_range`"
-" est un paramètre obligatoire et peut être \"all\", \"today\", "
-"\"this_week\", \"this_month\", \"this_year\", un certain nombre de jours "
-"récents (par exemple, \"7\", \"30\"), ou une plage de dates \"AAAA-MM-JJ"
-":AAAA-MM-JJ\"."
-
-#: templates/settings.html:308
-msgid "KOReader Sync Settings"
-msgstr "Paramètres de synchronisation de KOReader"
-
-#: templates/settings.html:310
-msgid "Step 1: Configure WebDAV Cloud Storage"
-msgstr "Étape 1 : Configurer le stockage cloud WebDAV"
-
-#: templates/settings.html:312
-msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
-msgstr ""
-"Dans KOReader, allez dans `Stockage cloud` -> `Ajouter un nouveau "
-"stockage cloud`."
-
-#: templates/settings.html:313
-msgid "Select `WebDAV`."
-msgstr "Sélectionnez `WebDAV`."
-
-#: templates/settings.html:314
-msgid "Server address"
-msgstr "Adresse du serveur"
-
-#: templates/settings.html:314
-msgid ""
-"Fill in the address below, and <strong>ensure the path ends with a "
-"`/`</strong>."
-msgstr ""
-"Remplissez l'adresse ci-dessous et <strong>assurez-vous que le chemin se "
-"termine par un `/`</strong>."
-
-#: templates/settings.html:318
-msgid "Your Anx Calibre Manager login password."
-msgstr "Votre mot de passe de connexion à Anx Calibre Manager."
-
-#: templates/settings.html:319
-msgid "Folder"
-msgstr "Dossier"
-
-#: templates/settings.html:320
-msgid ""
-"Click `Connect` and save. You should now be able to see your Anx library "
-"in KOReader's file browser."
-msgstr ""
-"Cliquez sur `Connecter` et enregistrez. Vous devriez maintenant pouvoir "
-"voir votre bibliothèque Anx dans l'explorateur de fichiers de KOReader."
-
-#: templates/settings.html:323
-msgid "Step 2: Install and Configure the Sync Plugin"
-msgstr "Étape 2 : Installer et configurer le plugin de synchronisation"
-
-#: templates/settings.html:326
-msgid "Download Plugin"
-msgstr "Télécharger le plugin"
-
-#: templates/settings.html:326
-msgid "Click the button below to download the plugin zip file."
-msgstr ""
-"Cliquez sur le bouton ci-dessous pour télécharger le fichier zip du "
-"plugin."
-
-#: templates/settings.html:328
-msgid "Download KOReader Plugin (.zip)"
-msgstr "Télécharger le plugin KOReader (.zip)"
-
-#: templates/settings.html:331
-msgid "Install Plugin"
-msgstr "Installer le plugin"
-
-#: templates/settings.html:331
-msgid ""
-"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
-"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
-"folder</strong> to the `koreader/plugins/` directory on your KOReader "
-"device."
-msgstr ""
-"Décompressez le fichier `.zip` téléchargé, et vous obtiendrez un dossier "
-"nommé `anx-calibre-manager-koreader-plugin.koplugin`. Copiez ce "
-"<strong>dossier entier</strong> dans le répertoire `koreader/plugins/` de"
-" votre appareil KOReader."
-
-#: templates/settings.html:332
-msgid "Restart KOReader"
-msgstr "Redémarrer KOReader"
-
-#: templates/settings.html:332
-msgid ""
-"Completely close and reopen the KOReader application to load the new "
-"plugin."
-msgstr ""
-"Fermez complètement et rouvrez l'application KOReader pour charger le "
-"nouveau plugin."
-
-#: templates/settings.html:333
-msgid "Configure Sync Server"
-msgstr "Configurer le serveur de synchronisation"
-
-#: templates/settings.html:335
-msgid "Important"
-msgstr "Important"
-
-#: templates/settings.html:335
-msgid ""
-"First, please open and start reading a book via the WebDAV set up in the "
-"previous step. The plugin menu will <strong>only appear in the reading "
-"interface</strong>."
-msgstr ""
-"Tout d'abord, veuillez ouvrir et commencer à lire un livre via le WebDAV "
-"configuré à l'étape précédente. Le menu du plugin <strong>n'apparaîtra "
-"que dans l'interface de lecture</strong>."
-
-#: templates/settings.html:336
-msgid ""
-"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
-"`More tools` -> `ANX Calibre Manager`."
-msgstr ""
-"Dans l'interface de lecture, allez dans `Outils (icône de clé à molette)`"
-" -> `Page suivante` -> `Plus d'outils` -> `ANX Calibre Manager`."
-
-#: templates/settings.html:337
-msgid "Select `Custom sync server`."
-msgstr "Sélectionnez `Serveur de synchronisation personnalisé`."
-
-#: templates/settings.html:338
-msgid "Custom sync server address"
-msgstr "Adresse du serveur de synchronisation personnalisé"
-
-#: templates/settings.html:339
-msgid ""
-"Return to the previous menu, select `Login`, and enter your Anx Calibre "
-"Manager username and password."
-msgstr ""
-"Revenez au menu précédent, sélectionnez `Connexion`, et saisissez votre "
-"nom d'utilisateur et votre mot de passe Anx Calibre Manager."
-
-#: templates/settings.html:343
-msgid ""
-"Once configured, the plugin will automatically or manually sync your "
-"reading progress and time. You can adjust settings like sync frequency in"
-" the plugin menu."
-msgstr ""
-"Une fois configuré, le plugin synchronisera automatiquement ou "
-"manuellement votre progression et votre temps de lecture. Vous pouvez "
-"ajuster des paramètres comme la fréquence de synchronisation dans le menu"
-" du plugin."
-
-#: templates/settings.html:344
-msgid "Note: Only supports epub book synchronization"
-msgstr "Remarque : Ne prend en charge que la synchronisation des livres epub"
-
-#: templates/settings.html:352
-msgid "Calibre Connection"
-msgstr "Connexion Calibre"
-
-#: templates/settings.html:354
-msgid "Calibre Server URL"
-msgstr "URL du serveur Calibre"
-
-#: templates/settings.html:358
-msgid "Calibre Username"
-msgstr "Nom d'utilisateur Calibre"
-
-#: templates/settings.html:362
-msgid "Calibre Password"
-msgstr "Mot de passe Calibre"
-
-#: templates/settings.html:366
-msgid "Default Calibre Library ID"
-msgstr "ID de bibliothèque Calibre par défaut"
-
-#: templates/settings.html:368
-msgid ""
-"The default Calibre library ID for browsing, searching, and uploading "
-"books. Usually 'Calibre_Library'."
-msgstr ""
-"L'ID de bibliothèque Calibre par défaut pour la navigation, la recherche "
-"et le téléversement de livres. Habituellement 'Calibre_Library'."
-
-#: templates/settings.html:372
-msgid "Allow uploading duplicate books"
-msgstr "Autoriser le téléversement de livres en double"
-
-#: templates/settings.html:373
-msgid ""
-"If enabled, Calibre will add the book as a new copy even if it detects a "
-"duplicate."
-msgstr ""
-"Si activé, Calibre ajoutera le livre comme une nouvelle copie même s'il "
-"détecte un doublon."
-
-#: templates/settings.html:377
-msgid "Disable Uploads for Normal Users"
-msgstr "Désactiver les téléversements pour les utilisateurs normaux"
-
-#: templates/settings.html:378
-msgid ""
-"If enabled, users with the \"user\" role will not be able to upload books"
-" to Calibre."
-msgstr ""
-"Si activé, les utilisateurs avec le rôle \"utilisateur\" ne pourront pas "
-"téléverser de livres sur Calibre."
-
-#: templates/settings.html:380
-msgid "Path Settings"
-msgstr "Paramètres de chemin"
-
-#: templates/settings.html:382
-msgid "WebDAV Root Path"
-msgstr "Chemin racine WebDAV"
-
-#: templates/settings.html:384
-msgid ""
-"This is the base path for storing all user Anx libraries. User folders "
-"will be automatically created under this path (e.g., /webdav/username)."
-msgstr ""
-"Ceci est le chemin de base pour stocker toutes les bibliothèques Anx des "
-"utilisateurs. Les dossiers des utilisateurs seront automatiquement créés "
-"sous ce chemin (par exemple, /webdav/nomdutilisateur)."
-
-#: templates/settings.html:387
-msgid "Default Settings"
-msgstr "Paramètres par défaut"
-
-#: templates/settings.html:389
-msgid "Default Format Priority for New Users"
-msgstr "Priorité de format par défaut pour les nouveaux utilisateurs"
-
-#: templates/settings.html:391
-msgid ""
-"Default format priority for new users, separated by commas, e.g., "
-"azw3,mobi,epub"
-msgstr ""
-"Priorité de format par défaut pour les nouveaux utilisateurs, séparée par"
-" des virgules, par exemple, azw3,mobi,epub"
-
-#: templates/settings.html:394
-msgid "Audiobook Settings"
-msgstr "Paramètres du livre audio"
-
-#: templates/settings.html:396
-msgid "Audiobook File Retention Period (days)"
-msgstr "Période de conservation des fichiers de livres audio (jours)"
-
-#: templates/settings.html:398
-msgid ""
-"Automatically delete generated audiobook files older than this number of "
-"days. Set to 0 to disable cleanup."
-msgstr ""
-"Supprimer automatiquement les fichiers de livres audio générés plus "
-"anciens que ce nombre de jours. Mettre à 0 pour désactiver le nettoyage."
-
-#: templates/settings.html:401
-msgid "Manual Cleanup"
-msgstr "Nettoyage manuel"
-
-#: templates/settings.html:402
-msgid "Clean Up All Audiobooks Now"
-msgstr "Nettoyer tous les livres audio maintenant"
-
-#: templates/settings.html:403
-msgid ""
-"Immediately delete all generated audiobook files and update their "
-"database records."
-msgstr ""
-"Supprimez immédiatement tous les fichiers de livres audio générés et "
-"mettez à jour leurs enregistrements dans la base de données."
-
-#: templates/settings.html:406
-msgid "SMTP Settings (for Send to Kindle)"
-msgstr "Paramètres SMTP (pour Envoyer vers Kindle)"
-
-#: templates/settings.html:408
-msgid "SMTP Server"
-msgstr "Serveur SMTP"
-
-#: templates/settings.html:412
-msgid "SMTP Port"
-msgstr "Port SMTP"
-
-#: templates/settings.html:416
-msgid "SMTP Username (usually your email)"
-msgstr "Nom d'utilisateur SMTP (généralement votre e-mail)"
-
-#: templates/settings.html:420
-msgid "SMTP Password"
-msgstr "Mot de passe SMTP"
-
-#: templates/settings.html:424
-msgid "Encryption Method"
-msgstr "Méthode de chiffrement"
-
-#: templates/settings.html:426
-msgid "None"
-msgstr "Aucun"
-
-#: templates/settings.html:427
-msgid "STARTTLS"
-msgstr "STARTTLS"
-
-#: templates/settings.html:428
-msgid "SSL/TLS"
-msgstr "SSL/TLS"
-
-#: templates/settings.html:430
-msgid ""
-"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
-"587."
-msgstr ""
-"SSL/TLS est généralement utilisé pour le port 465, STARTTLS est "
-"généralement utilisé pour le port 587."
-
-#: templates/settings.html:433
-msgid "Security"
-msgstr "Sécurité"
-
-#: templates/settings.html:435
-msgid "Login Failure Lock Threshold"
-msgstr "Seuil de verrouillage en cas d'échec de connexion"
-
-#: templates/settings.html:437
-msgid "Set to 0 to disable this feature."
-msgstr "Mettre à 0 pour désactiver cette fonctionnalité."
-
-#: templates/settings.html:440
-msgid "Session Lifetime (days)"
-msgstr "Durée de vie de la session (jours)"
-
-#: templates/settings.html:442
-msgid "The number of days a user's session remains valid after logging in."
-msgstr ""
-"Le nombre de jours pendant lesquels la session d'un utilisateur reste "
-"valide après la connexion."
-
-#: templates/settings.html:446
-msgid "Require Invite Code for Registration"
-msgstr "Exiger un code d'invitation pour l'inscription"
-
-#: templates/settings.html:447
-msgid ""
-"If enabled, users must provide a valid invite code to register. Admins "
-"can generate invite codes in the Invite Code Management tab."
-msgstr ""
-"Si activé, les utilisateurs doivent fournir un code d'invitation valide "
-"pour s'inscrire. Les administrateurs peuvent générer des codes "
-"d'invitation dans l'onglet Gestion des codes d'invitation."
-
-#: templates/settings.html:451
-msgid "Enable User Activity Logging"
-msgstr "Activer la journalisation des activités des utilisateurs"
-
-#: templates/settings.html:452
-msgid ""
-"If enabled, the system will record user activities such as login, "
-"download, upload, and other operations in the database for audit "
-"purposes."
-msgstr ""
-"Si cette option est activée, le système enregistrera les activités des "
-"utilisateurs telles que la connexion, le téléchargement, l'envoi et "
-"d'autres opérations dans la base de données à des fins d'audit."
-
-#: templates/settings.html:456
-msgid "Test Inbox"
-msgstr "Boîte de réception de test"
-
-#: templates/settings.html:457
-msgid "Enter an email address to receive a test email"
-msgstr "Saisissez une adresse e-mail pour recevoir un e-mail de test"
-
-#: templates/settings.html:460
-msgid "Send Test Email"
-msgstr "Envoyer un e-mail de test"
-
-#: templates/settings.html:461
-msgid "Save Global Settings"
-msgstr "Enregistrer les paramètres globaux"
-
-#: templates/settings.html:470
-msgid "New User"
-msgstr "Nouvel utilisateur"
-
-#: templates/settings.html:478
-msgid "Leave blank to not change the existing user's password."
-msgstr ""
-"Laisser vide pour ne pas modifier le mot de passe de l'utilisateur "
-"existant."
-
-#: templates/settings.html:481 templates/settings.html:500
-msgid "Role"
-msgstr "Rôle"
-
-#: templates/settings.html:483
-msgid "Normal User"
-msgstr "Utilisateur normal"
-
-#: templates/settings.html:484
-msgid "Calibre Library Maintainer"
-msgstr "Mainteneur de la bibliothèque Calibre"
-
-#: templates/settings.html:485
-msgid "Administrator"
-msgstr "Administrateur"
-
-#: templates/settings.html:494
-msgid "Existing Users"
-msgstr "Utilisateurs existants"
-
-#: templates/settings.html:498
-msgid "ID"
-msgstr "ID"
-
-#: templates/settings.html:501 templates/settings.html:545
-msgid "Actions"
-msgstr "Actions"
-
-#: templates/settings.html:513
-msgid "Generate New Invite Code"
-msgstr "Générer un nouveau code d'invitation"
-
-#: templates/settings.html:515
-msgid "Custom Invite Code"
-msgstr "Code d'invitation personnalisé"
-
-#: templates/settings.html:516
-msgid "Leave blank to auto-generate"
-msgstr "Laisser vide pour générer automatiquement"
-
-#: templates/settings.html:517
-msgid ""
-"Custom invite code (optional). If left blank, a random code will be "
-"generated."
-msgstr ""
-"Code d'invitation personnalisé (facultatif). Si laissé vide, un code "
-"aléatoire sera généré."
-
-#: templates/settings.html:520
-msgid "Maximum Uses"
-msgstr "Utilisations maximales"
-
-#: templates/settings.html:522
-msgid "How many times this invite code can be used"
-msgstr "Combien de fois ce code d'invitation peut être utilisé"
-
-#: templates/settings.html:525
-msgid "Expires After (Hours)"
-msgstr "Expire après (heures)"
-
-#: templates/settings.html:526
-msgid "Leave blank for no expiration"
-msgstr "Laisser vide pour aucune expiration"
-
-#: templates/settings.html:527
-msgid "Number of hours after which this invite code will expire (optional)"
-msgstr ""
-"Nombre d'heures après lesquelles ce code d'invitation expirera "
-"(facultatif)"
-
-#: templates/settings.html:530
-msgid "Generate Invite Code"
-msgstr "Générer le code d'invitation"
-
-#: templates/settings.html:534
-msgid "Existing Invite Codes"
-msgstr "Codes d'invitation existants"
-
-#: templates/settings.html:538
-msgid "Code"
-msgstr "Code"
-
-#: templates/settings.html:539
-msgid "Max Uses"
-msgstr "Utilisations max"
-
-#: templates/settings.html:540
-msgid "Current Uses"
-msgstr "Utilisations actuelles"
-
-#: templates/settings.html:541
-msgid "Created By"
-msgstr "Créé par"
-
-#: templates/settings.html:542
-msgid "Created At"
-msgstr "Créé le"
-
-#: templates/settings.html:543
-msgid "Expires At"
-msgstr "Expire le"
-
-#: templates/settings.html:544
-msgid "Status"
-msgstr "Statut"
+#: templates/settings.html:23
+msgid "User Activities"
+msgstr "Activités des utilisateurs"
 
 #: templates/setup.html:3
 msgid "Initial Setup"
@@ -3125,6 +2412,1161 @@ msgstr "Terminé !"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "Aucun livre terminé pour le moment."
+
+#: templates/settings/settings_global.html:4
+msgid "Calibre Connection"
+msgstr "Connexion Calibre"
+
+#: templates/settings/settings_global.html:6
+msgid "Calibre Server URL"
+msgstr "URL du serveur Calibre"
+
+#: templates/settings/settings_global.html:10
+msgid "Calibre Username"
+msgstr "Nom d'utilisateur Calibre"
+
+#: templates/settings/settings_global.html:14
+msgid "Calibre Password"
+msgstr "Mot de passe Calibre"
+
+#: templates/settings/settings_global.html:15
+#: templates/settings/settings_user_settings.html:11
+msgid "Leave blank to keep unchanged"
+msgstr "Laisser vide pour ne pas modifier"
+
+#: templates/settings/settings_global.html:18
+msgid "Default Calibre Library ID"
+msgstr "ID de bibliothèque Calibre par défaut"
+
+#: templates/settings/settings_global.html:20
+msgid ""
+"The default Calibre library ID for browsing, searching, and uploading "
+"books. Usually 'Calibre_Library'."
+msgstr ""
+"L'ID de bibliothèque Calibre par défaut pour la navigation, la recherche "
+"et le téléversement de livres. Habituellement 'Calibre_Library'."
+
+#: templates/settings/settings_global.html:24
+msgid "Allow uploading duplicate books"
+msgstr "Autoriser le téléversement de livres en double"
+
+#: templates/settings/settings_global.html:25
+msgid ""
+"If enabled, Calibre will add the book as a new copy even if it detects a "
+"duplicate."
+msgstr ""
+"Si activé, Calibre ajoutera le livre comme une nouvelle copie même s'il "
+"détecte un doublon."
+
+#: templates/settings/settings_global.html:29
+msgid "Disable Uploads for Normal Users"
+msgstr "Désactiver les téléversements pour les utilisateurs normaux"
+
+#: templates/settings/settings_global.html:30
+msgid ""
+"If enabled, users with the \"user\" role will not be able to upload books"
+" to Calibre."
+msgstr ""
+"Si activé, les utilisateurs avec le rôle \"utilisateur\" ne pourront pas "
+"téléverser de livres sur Calibre."
+
+#: templates/settings/settings_global.html:32
+msgid "Path Settings"
+msgstr "Paramètres de chemin"
+
+#: templates/settings/settings_global.html:34
+msgid "WebDAV Root Path"
+msgstr "Chemin racine WebDAV"
+
+#: templates/settings/settings_global.html:36
+msgid ""
+"This is the base path for storing all user Anx libraries. User folders "
+"will be automatically created under this path (e.g., /webdav/username)."
+msgstr ""
+"Ceci est le chemin de base pour stocker toutes les bibliothèques Anx des "
+"utilisateurs. Les dossiers des utilisateurs seront automatiquement créés "
+"sous ce chemin (par exemple, /webdav/nomdutilisateur)."
+
+#: templates/settings/settings_global.html:39
+msgid "Default Settings"
+msgstr "Paramètres par défaut"
+
+#: templates/settings/settings_global.html:41
+msgid "Default Format Priority for New Users"
+msgstr "Priorité de format par défaut pour les nouveaux utilisateurs"
+
+#: templates/settings/settings_global.html:43
+msgid ""
+"Default format priority for new users, separated by commas, e.g., "
+"azw3,mobi,epub"
+msgstr ""
+"Priorité de format par défaut pour les nouveaux utilisateurs, séparée par"
+" des virgules, par exemple, azw3,mobi,epub"
+
+#: templates/settings/settings_global.html:46
+msgid "Audiobook Settings"
+msgstr "Paramètres du livre audio"
+
+#: templates/settings/settings_global.html:48
+msgid "Audiobook File Retention Period (days)"
+msgstr "Période de conservation des fichiers de livres audio (jours)"
+
+#: templates/settings/settings_global.html:50
+msgid ""
+"Automatically delete generated audiobook files older than this number of "
+"days. Set to 0 to disable cleanup."
+msgstr ""
+"Supprimer automatiquement les fichiers de livres audio générés plus "
+"anciens que ce nombre de jours. Mettre à 0 pour désactiver le nettoyage."
+
+#: templates/settings/settings_global.html:53
+msgid "Manual Cleanup"
+msgstr "Nettoyage manuel"
+
+#: templates/settings/settings_global.html:54
+msgid "Clean Up All Audiobooks Now"
+msgstr "Nettoyer tous les livres audio maintenant"
+
+#: templates/settings/settings_global.html:55
+msgid ""
+"Immediately delete all generated audiobook files and update their "
+"database records."
+msgstr ""
+"Supprimez immédiatement tous les fichiers de livres audio générés et "
+"mettez à jour leurs enregistrements dans la base de données."
+
+#: templates/settings/settings_global.html:58
+msgid "SMTP Settings (for Send to Kindle)"
+msgstr "Paramètres SMTP (pour Envoyer vers Kindle)"
+
+#: templates/settings/settings_global.html:60
+msgid "SMTP Server"
+msgstr "Serveur SMTP"
+
+#: templates/settings/settings_global.html:64
+msgid "SMTP Port"
+msgstr "Port SMTP"
+
+#: templates/settings/settings_global.html:68
+msgid "SMTP Username (usually your email)"
+msgstr "Nom d'utilisateur SMTP (généralement votre e-mail)"
+
+#: templates/settings/settings_global.html:72
+msgid "SMTP Password"
+msgstr "Mot de passe SMTP"
+
+#: templates/settings/settings_global.html:76
+msgid "Encryption Method"
+msgstr "Méthode de chiffrement"
+
+#: templates/settings/settings_global.html:78
+msgid "None"
+msgstr "Aucun"
+
+#: templates/settings/settings_global.html:79
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: templates/settings/settings_global.html:80
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: templates/settings/settings_global.html:82
+msgid ""
+"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
+"587."
+msgstr ""
+"SSL/TLS est généralement utilisé pour le port 465, STARTTLS est "
+"généralement utilisé pour le port 587."
+
+#: templates/settings/settings_global.html:85
+msgid "Security"
+msgstr "Sécurité"
+
+#: templates/settings/settings_global.html:87
+msgid "Login Failure Lock Threshold"
+msgstr "Seuil de verrouillage en cas d'échec de connexion"
+
+#: templates/settings/settings_global.html:89
+msgid "Set to 0 to disable this feature."
+msgstr "Mettre à 0 pour désactiver cette fonctionnalité."
+
+#: templates/settings/settings_global.html:92
+msgid "Session Lifetime (days)"
+msgstr "Durée de vie de la session (jours)"
+
+#: templates/settings/settings_global.html:94
+msgid "The number of days a user's session remains valid after logging in."
+msgstr ""
+"Le nombre de jours pendant lesquels la session d'un utilisateur reste "
+"valide après la connexion."
+
+#: templates/settings/settings_global.html:98
+msgid "Require Invite Code for Registration"
+msgstr "Exiger un code d'invitation pour l'inscription"
+
+#: templates/settings/settings_global.html:99
+msgid ""
+"If enabled, users must provide a valid invite code to register. Admins "
+"can generate invite codes in the Invite Code Management tab."
+msgstr ""
+"Si activé, les utilisateurs doivent fournir un code d'invitation valide "
+"pour s'inscrire. Les administrateurs peuvent générer des codes "
+"d'invitation dans l'onglet Gestion des codes d'invitation."
+
+#: templates/settings/settings_global.html:103
+msgid "Enable User Activity Logging"
+msgstr "Activer la journalisation des activités des utilisateurs"
+
+#: templates/settings/settings_global.html:104
+msgid ""
+"If enabled, the system will record user activities such as login, "
+"download, upload, and other operations in the database for audit "
+"purposes."
+msgstr ""
+"Si cette option est activée, le système enregistrera les activités des "
+"utilisateurs telles que la connexion, le téléchargement, l'envoi et "
+"d'autres opérations dans la base de données à des fins d'audit."
+
+#: templates/settings/settings_global.html:108
+msgid "Test Inbox"
+msgstr "Boîte de réception de test"
+
+#: templates/settings/settings_global.html:109
+msgid "Enter an email address to receive a test email"
+msgstr "Saisissez une adresse e-mail pour recevoir un e-mail de test"
+
+#: templates/settings/settings_global.html:112
+msgid "Send Test Email"
+msgstr "Envoyer un e-mail de test"
+
+#: templates/settings/settings_global.html:113
+msgid "Save Global Settings"
+msgstr "Enregistrer les paramètres globaux"
+
+#: templates/settings/settings_invite_code.html:4
+msgid "Generate New Invite Code"
+msgstr "Générer un nouveau code d'invitation"
+
+#: templates/settings/settings_invite_code.html:6
+msgid "Custom Invite Code"
+msgstr "Code d'invitation personnalisé"
+
+#: templates/settings/settings_invite_code.html:7
+msgid "Leave blank to auto-generate"
+msgstr "Laisser vide pour générer automatiquement"
+
+#: templates/settings/settings_invite_code.html:8
+msgid ""
+"Custom invite code (optional). If left blank, a random code will be "
+"generated."
+msgstr ""
+"Code d'invitation personnalisé (facultatif). Si laissé vide, un code "
+"aléatoire sera généré."
+
+#: templates/settings/settings_invite_code.html:11
+msgid "Maximum Uses"
+msgstr "Utilisations maximales"
+
+#: templates/settings/settings_invite_code.html:13
+msgid "How many times this invite code can be used"
+msgstr "Combien de fois ce code d'invitation peut être utilisé"
+
+#: templates/settings/settings_invite_code.html:16
+msgid "Expires After (Hours)"
+msgstr "Expire après (heures)"
+
+#: templates/settings/settings_invite_code.html:17
+msgid "Leave blank for no expiration"
+msgstr "Laisser vide pour aucune expiration"
+
+#: templates/settings/settings_invite_code.html:18
+msgid "Number of hours after which this invite code will expire (optional)"
+msgstr ""
+"Nombre d'heures après lesquelles ce code d'invitation expirera "
+"(facultatif)"
+
+#: templates/settings/settings_invite_code.html:21
+msgid "Generate Invite Code"
+msgstr "Générer le code d'invitation"
+
+#: templates/settings/settings_invite_code.html:25
+msgid "Existing Invite Codes"
+msgstr "Codes d'invitation existants"
+
+#: templates/settings/settings_invite_code.html:29
+msgid "Code"
+msgstr "Code"
+
+#: templates/settings/settings_invite_code.html:30
+msgid "Max Uses"
+msgstr "Utilisations max"
+
+#: templates/settings/settings_invite_code.html:31
+msgid "Current Uses"
+msgstr "Utilisations actuelles"
+
+#: templates/settings/settings_invite_code.html:32
+msgid "Created By"
+msgstr "Créé par"
+
+#: templates/settings/settings_invite_code.html:33
+msgid "Created At"
+msgstr "Créé le"
+
+#: templates/settings/settings_invite_code.html:34
+msgid "Expires At"
+msgstr "Expire le"
+
+#: templates/settings/settings_invite_code.html:35
+msgid "Status"
+msgstr "Statut"
+
+#: templates/settings/settings_invite_code.html:36
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_management.html:36
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/settings/settings_koreader.html:3
+msgid "KOReader Sync Settings"
+msgstr "Paramètres de synchronisation de KOReader"
+
+#: templates/settings/settings_koreader.html:5
+msgid "Step 1: Configure WebDAV Cloud Storage"
+msgstr "Étape 1 : Configurer le stockage cloud WebDAV"
+
+#: templates/settings/settings_koreader.html:7
+msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
+msgstr ""
+"Dans KOReader, allez dans `Stockage cloud` -> `Ajouter un nouveau "
+"stockage cloud`."
+
+#: templates/settings/settings_koreader.html:8
+msgid "Select `WebDAV`."
+msgstr "Sélectionnez `WebDAV`."
+
+#: templates/settings/settings_koreader.html:9
+msgid "Server address"
+msgstr "Adresse du serveur"
+
+#: templates/settings/settings_koreader.html:9
+msgid ""
+"Fill in the address below, and <strong>ensure the path ends with a "
+"`/`</strong>."
+msgstr ""
+"Remplissez l'adresse ci-dessous et <strong>assurez-vous que le chemin se "
+"termine par un `/`</strong>."
+
+#: templates/settings/settings_koreader.html:13
+msgid "Your Anx Calibre Manager login password."
+msgstr "Votre mot de passe de connexion à Anx Calibre Manager."
+
+#: templates/settings/settings_koreader.html:14
+msgid "Folder"
+msgstr "Dossier"
+
+#: templates/settings/settings_koreader.html:15
+msgid ""
+"Click `Connect` and save. You should now be able to see your Anx library "
+"in KOReader's file browser."
+msgstr ""
+"Cliquez sur `Connecter` et enregistrez. Vous devriez maintenant pouvoir "
+"voir votre bibliothèque Anx dans l'explorateur de fichiers de KOReader."
+
+#: templates/settings/settings_koreader.html:18
+msgid "Step 2: Install and Configure the Sync Plugin"
+msgstr "Étape 2 : Installer et configurer le plugin de synchronisation"
+
+#: templates/settings/settings_koreader.html:21
+msgid "Download Plugin"
+msgstr "Télécharger le plugin"
+
+#: templates/settings/settings_koreader.html:21
+msgid "Click the button below to download the plugin zip file."
+msgstr ""
+"Cliquez sur le bouton ci-dessous pour télécharger le fichier zip du "
+"plugin."
+
+#: templates/settings/settings_koreader.html:23
+msgid "Download KOReader Plugin (.zip)"
+msgstr "Télécharger le plugin KOReader (.zip)"
+
+#: templates/settings/settings_koreader.html:26
+msgid "Install Plugin"
+msgstr "Installer le plugin"
+
+#: templates/settings/settings_koreader.html:26
+msgid ""
+"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
+"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
+"folder</strong> to the `koreader/plugins/` directory on your KOReader "
+"device."
+msgstr ""
+"Décompressez le fichier `.zip` téléchargé, et vous obtiendrez un dossier "
+"nommé `anx-calibre-manager-koreader-plugin.koplugin`. Copiez ce "
+"<strong>dossier entier</strong> dans le répertoire `koreader/plugins/` de"
+" votre appareil KOReader."
+
+#: templates/settings/settings_koreader.html:27
+msgid "Restart KOReader"
+msgstr "Redémarrer KOReader"
+
+#: templates/settings/settings_koreader.html:27
+msgid ""
+"Completely close and reopen the KOReader application to load the new "
+"plugin."
+msgstr ""
+"Fermez complètement et rouvrez l'application KOReader pour charger le "
+"nouveau plugin."
+
+#: templates/settings/settings_koreader.html:28
+msgid "Configure Sync Server"
+msgstr "Configurer le serveur de synchronisation"
+
+#: templates/settings/settings_koreader.html:30
+msgid "Important"
+msgstr "Important"
+
+#: templates/settings/settings_koreader.html:30
+msgid ""
+"First, please open and start reading a book via the WebDAV set up in the "
+"previous step. The plugin menu will <strong>only appear in the reading "
+"interface</strong>."
+msgstr ""
+"Tout d'abord, veuillez ouvrir et commencer à lire un livre via le WebDAV "
+"configuré à l'étape précédente. Le menu du plugin <strong>n'apparaîtra "
+"que dans l'interface de lecture</strong>."
+
+#: templates/settings/settings_koreader.html:31
+msgid ""
+"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
+"`More tools` -> `ANX Calibre Manager`."
+msgstr ""
+"Dans l'interface de lecture, allez dans `Outils (icône de clé à molette)`"
+" -> `Page suivante` -> `Plus d'outils` -> `ANX Calibre Manager`."
+
+#: templates/settings/settings_koreader.html:32
+msgid "Select `Custom sync server`."
+msgstr "Sélectionnez `Serveur de synchronisation personnalisé`."
+
+#: templates/settings/settings_koreader.html:33
+msgid "Custom sync server address"
+msgstr "Adresse du serveur de synchronisation personnalisé"
+
+#: templates/settings/settings_koreader.html:34
+msgid ""
+"Return to the previous menu, select `Login`, and enter your Anx Calibre "
+"Manager username and password."
+msgstr ""
+"Revenez au menu précédent, sélectionnez `Connexion`, et saisissez votre "
+"nom d'utilisateur et votre mot de passe Anx Calibre Manager."
+
+#: templates/settings/settings_koreader.html:38
+msgid ""
+"Once configured, the plugin will automatically or manually sync your "
+"reading progress and time. You can adjust settings like sync frequency in"
+" the plugin menu."
+msgstr ""
+"Une fois configuré, le plugin synchronisera automatiquement ou "
+"manuellement votre progression et votre temps de lecture. Vous pouvez "
+"ajuster des paramètres comme la fréquence de synchronisation dans le menu"
+" du plugin."
+
+#: templates/settings/settings_koreader.html:39
+msgid "Note: Only supports epub book synchronization"
+msgstr "Remarque : Ne prend en charge que la synchronisation des livres epub"
+
+#: templates/settings/settings_mcp.html:3
+msgid "MCP API Tokens"
+msgstr "Jetons de l'API MCP"
+
+#: templates/settings/settings_mcp.html:4
+msgid ""
+"You can use these tokens to interact with your library via the MCP "
+"protocol."
+msgstr ""
+"Vous pouvez utiliser ces jetons pour interagir avec votre bibliothèque "
+"via le protocole MCP."
+
+#: templates/settings/settings_mcp.html:9
+msgid "Generate New Token"
+msgstr "Générer un nouveau jeton"
+
+#: templates/settings/settings_mcp.html:13
+msgid "MCP Endpoint"
+msgstr "Point de terminaison MCP"
+
+#: templates/settings/settings_mcp.html:15
+msgid "Authentication"
+msgstr "Authentification"
+
+#: templates/settings/settings_mcp.html:16
+msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
+msgstr "Authentifiez-vous en ajoutant le paramètre `?token=VOTRE_JETON` à l'URL."
+
+#: templates/settings/settings_mcp.html:17
+msgid "Prompt Examples"
+msgstr "Exemples de Prompts"
+
+#: templates/settings/settings_mcp.html:18
+msgid ""
+"Here are some examples of natural language prompts you can use with an AI"
+" agent. The agent will intelligently call one or more tools to fulfill "
+"your request."
+msgstr ""
+"Voici quelques exemples de prompts en langage naturel que vous pourriez "
+"utiliser avec un agent IA. L'agent appellera intelligemment un ou "
+"plusieurs outils pour répondre à votre demande."
+
+#: templates/settings/settings_mcp.html:21
+msgid "Simple & Advanced Search"
+msgstr "Recherche Simple et Avancée"
+
+#: templates/settings/settings_mcp.html:23
+msgid "Find books about Python programming."
+msgstr "Trouver des livres sur la programmation en Python."
+
+#: templates/settings/settings_mcp.html:26
+msgid "Search for science fiction books by Isaac Asimov published after 1950."
+msgstr ""
+"Rechercher des livres de science-fiction d'Isaac Asimov publiés après "
+"1950."
+
+#: templates/settings/settings_mcp.html:30
+msgid "Book Management"
+msgstr "Gestion de Livres"
+
+#: templates/settings/settings_mcp.html:32
+msgid "What are the 5 most recently added books? Send the first one to my Kindle."
+msgstr ""
+"Quels sont les 5 derniers livres ajoutés ? Envoyez le premier à mon "
+"Kindle."
+
+#: templates/settings/settings_mcp.html:35
+msgid "Push the book 'Dune' to my Anx reader."
+msgstr "Pousser le livre 'Dune' sur mon lecteur Anx."
+
+#: templates/settings/settings_mcp.html:38
+msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
+msgstr ""
+"Téléverser le livre 'Le Problème à trois corps' de ma bibliothèque Anx "
+"vers Calibre."
+
+#: templates/settings/settings_mcp.html:41
+msgid "Generate an audiobook for the book 'The Three-Body Problem'."
+msgstr "Générer un livre audio pour le livre 'Le Problème à trois corps'."
+
+#: templates/settings/settings_mcp.html:44
+msgid ""
+"What is the status of the audiobook generation for 'The Three-Body "
+"Problem'?"
+msgstr ""
+"Quel est le statut de la génération du livre audio pour 'Le Problème à "
+"trois corps' ?"
+
+#: templates/settings/settings_mcp.html:48
+msgid "Content Interaction & Summarization"
+msgstr "Interaction et Résumé de Contenu"
+
+#: templates/settings/settings_mcp.html:50
+msgid "Show me the table of contents for the book 'Foundation'."
+msgstr "Montre-moi la table des matières du livre 'Fondation'."
+
+#: templates/settings/settings_mcp.html:53
+msgid "Fetch the first chapter of 'Foundation' and give me a summary."
+msgstr "Récupère le premier chapitre de 'Fondation' et fais-moi un résumé."
+
+#: templates/settings/settings_mcp.html:56
+msgid ""
+"Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
+"what are the main ideas of psychohistory?"
+msgstr ""
+"D'après le chapitre 'Les Psychohistoriens' du livre 'Fondation', quelles "
+"sont les idées principales de la psychohistoire ?"
+
+#: templates/settings/settings_mcp.html:59
+msgid ""
+"Read the entire book 'The Little Prince' and tell me what the fox's "
+"secret is."
+msgstr ""
+"Lis tout le livre 'Le Petit Prince' et dis-moi quel est le secret du "
+"renard."
+
+#: templates/settings/settings_mcp.html:63
+msgid "Reading Statistics & Progress"
+msgstr "Statistiques et Progression de Lecture"
+
+#: templates/settings/settings_mcp.html:65
+msgid ""
+"How many words is the book 'Dune' in total, and list the word count for "
+"each chapter."
+msgstr ""
+"Combien de mots compte le livre 'Dune' au total, et dresse la liste du "
+"nombre de mots pour chaque chapitre."
+
+#: templates/settings/settings_mcp.html:68
+msgid "How many books have I read this year?"
+msgstr "Combien de livres ai-je lus cette année ?"
+
+#: templates/settings/settings_mcp.html:71
+msgid "What's my reading progress on 'Dune'?"
+msgstr "Quelle est ma progression de lecture sur 'Dune' ?"
+
+#: templates/settings/settings_mcp.html:74
+msgid ""
+"Who is the author of 'Project Hail Mary' and how long have I been reading"
+" it?"
+msgstr ""
+"Qui est l'auteur de 'Project Hail Mary' et depuis combien de temps le "
+"lis-je ?"
+
+#: templates/settings/settings_mcp.html:79
+msgid "Available Tools"
+msgstr "Outils disponibles"
+
+#: templates/settings/settings_mcp.html:80
+msgid ""
+"You can get a list of all available tools by calling the `tools/list` "
+"method. The currently supported tools are:"
+msgstr ""
+"Vous pouvez obtenir une liste de tous les outils disponibles en appelant "
+"la méthode `tools/list`. Les outils actuellement pris en charge sont :"
+
+#: templates/settings/settings_mcp.html:82
+msgid ""
+"Search Calibre books using Calibre's search syntax. Parameters: "
+"`search_expression` (str), `limit` (int, optional)"
+msgstr ""
+"Rechercher des livres Calibre en utilisant la syntaxe de recherche de "
+"Calibre. Paramètres : `search_expression` (str), `limit` (int, optionnel)"
+
+#: templates/settings/settings_mcp.html:83
+msgid ""
+"Get recent books from a library. Parameters: `library_type` (str, \"anx\""
+" or \"calibre\"), `limit` (int, optional)"
+msgstr ""
+"Obtenir les livres récents d'une bibliothèque. Paramètres : "
+"`library_type` (str, \"anx\" ou \"calibre\"), `limit` (int, optionnel)"
+
+#: templates/settings/settings_mcp.html:84
+msgid ""
+"Get details for a book. Parameters: `library_type` (str, \"anx\" or "
+"\"calibre\"), `book_id` (int)"
+msgstr ""
+"Obtenir les détails d'un livre. Paramètres : `library_type` (str, \"anx\""
+" ou \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:85
+msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
+msgstr ""
+"Pousser un livre Calibre vers la bibliothèque Anx de l'utilisateur. "
+"Paramètres : `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:86
+msgid ""
+"Upload a book from the user's Anx library to the public Calibre library. "
+"Parameters: `book_id` (int)"
+msgstr ""
+"Téléverser un livre de la bibliothèque Anx de l'utilisateur vers la "
+"bibliothèque publique Calibre. Paramètres : `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:87
+msgid ""
+"Send a Calibre book to the user's configured Kindle email. Parameters: "
+"`book_id` (int)"
+msgstr ""
+"Envoyer un livre Calibre à l'e-mail Kindle configuré par l'utilisateur. "
+"Paramètres : `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:88
+msgid ""
+"Get the table of contents for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr ""
+"Obtenir la table des matières d'un livre. Paramètres : `library_type` "
+"(str, \"anx\" ou \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:89
+msgid ""
+"Get the content of a specific chapter. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
+msgstr ""
+"Obtenir le contenu d'un chapitre spécifique. Paramètres : `library_type` "
+"(str, \"anx\" ou \"calibre\"), `book_id` (int), `chapter_number` (int)"
+
+#: templates/settings/settings_mcp.html:90
+msgid ""
+"Get the entire text content of a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr ""
+"Obtenir l'intégralité du contenu textuel d'un livre. Paramètres : "
+"`library_type` (str, \"anx\" ou \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:91
+msgid ""
+"Get word count statistics for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr ""
+"Obtenir les statistiques de nombre de mots pour un livre. Paramètres : "
+"`library_type` (str, \"anx\" ou \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:92
+msgid ""
+"Generate an audiobook for a book. Parameters: `book_id` (int), "
+"`library_type` (str, \"anx\" or \"calibre\")"
+msgstr ""
+"Générer un livre audio pour un livre. Paramètres : `book_id` (int), "
+"`library_type` (str, \"anx\" ou \"calibre\")"
+
+#: templates/settings/settings_mcp.html:93
+msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
+msgstr ""
+"Obtenir le statut de la génération d'un livre audio par ID de tâche. "
+"Paramètres : `task_id` (str)"
+
+#: templates/settings/settings_mcp.html:94
+msgid ""
+"Get the latest audiobook task status for a book. Parameters: `book_id` "
+"(int), `library_type` (str, \"anx\" or \"calibre\")"
+msgstr ""
+"Obtenir le dernier statut de la tâche de livre audio pour un livre. "
+"Paramètres : `book_id` (int), `library_type` (str, \"anx\" ou "
+"\"calibre\")"
+
+#: templates/settings/settings_mcp.html:95
+msgid ""
+"Get reading statistics for the current user. `time_range` is a required "
+"parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
+"\"this_year\", a number of recent days (e.g., \"7\", \"30\"), or a date "
+"range \"YYYY-MM-DD:YYYY-MM-DD\"."
+msgstr ""
+"Obtenir les statistiques de lecture de l'utilisateur actuel. `time_range`"
+" est un paramètre obligatoire et peut être \"all\", \"today\", "
+"\"this_week\", \"this_month\", \"this_year\", un certain nombre de jours "
+"récents (par exemple, \"7\", \"30\"), ou une plage de dates \"AAAA-MM-JJ"
+":AAAA-MM-JJ\"."
+
+#: templates/settings/settings_user_activities.html:10
+msgid "Activity Logging is Disabled"
+msgstr "La journalisation des activités est désactivée"
+
+#: templates/settings/settings_user_activities.html:12
+msgid ""
+"The administrator has disabled activity logging. No activity data is "
+"being recorded."
+msgstr ""
+"L'administrateur a désactivé la journalisation des activités. Aucune "
+"donnée d'activité n'est enregistrée."
+
+#: templates/settings/settings_user_activities.html:15
+msgid "To enable activity logging, go to"
+msgstr "Pour activer la journalisation des activités, allez dans"
+
+#: templates/settings/settings_user_activities.html:15
+msgid "and enable"
+msgstr "et activez"
+
+#: templates/settings/settings_user_activities.html:15
+msgid "Enable Activity Log"
+msgstr "Activer le journal d'activités"
+
+#: templates/settings/settings_user_activities.html:18
+msgid "Go to Global Settings"
+msgstr "Aller aux paramètres globaux"
+
+#: templates/settings/settings_user_activities.html:26
+msgid "Global Statistics"
+msgstr "Statistiques globales"
+
+#: templates/settings/settings_user_activities.html:34
+msgid "Activity Trends"
+msgstr "Tendances des activités"
+
+#: templates/settings/settings_user_activities.html:37
+msgid "Daily Activity Trend"
+msgstr "Tendance des activités quotidiennes"
+
+#: templates/settings/settings_user_activities.html:41
+msgid "Event Type Distribution"
+msgstr "Distribution des types d'événements"
+
+#: templates/settings/settings_user_activities.html:49
+msgid "Global Event Statistics"
+msgstr "Statistiques globales des événements"
+
+#: templates/settings/settings_user_activities.html:57
+msgid "User Activity List"
+msgstr "Liste des activités utilisateur"
+
+#: templates/settings/settings_user_activities.html:58
+msgid "Refresh"
+msgstr "Actualiser"
+
+#: templates/settings/settings_user_activities.html:61
+msgid "Search username..."
+msgstr "Rechercher un nom d'utilisateur..."
+
+#: templates/settings/settings_user_activities.html:68
+msgid "User"
+msgstr "Utilisateur"
+
+#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_management.html:16
+#: templates/settings/settings_user_management.html:35
+msgid "Role"
+msgstr "Rôle"
+
+#: templates/settings/settings_user_activities.html:70
+#: templates/settings/settings_user_activities.html:105
+msgid "Last Login"
+msgstr "Dernière connexion"
+
+#: templates/settings/settings_user_activities.html:71
+msgid "Last Login IP"
+msgstr "IP de dernière connexion"
+
+#: templates/settings/settings_user_activities.html:72
+#: templates/settings/settings_user_activities.html:101
+msgid "Login Count"
+msgstr "Nombre de connexions"
+
+#: templates/settings/settings_user_activities.html:74
+msgid "Failed Attempts"
+msgstr "Tentatives échouées"
+
+#: templates/settings/settings_user_activities.html:75
+msgid "Account Status"
+msgstr "Statut du compte"
+
+#: templates/settings/settings_user_activities.html:112
+msgid "Last Activity Times by Type"
+msgstr "Dernières heures d'activité par type"
+
+#: templates/settings/settings_user_activities.html:120
+msgid "Recent Failed Login Attempts"
+msgstr "Tentatives de connexion échouées récentes"
+
+#: templates/settings/settings_user_activities.html:128
+msgid "Activity History"
+msgstr "Historique des activités"
+
+#: templates/settings/settings_user_activities.html:130
+msgid "All Types"
+msgstr "Tous les types"
+
+#: templates/settings/settings_user_activities.html:178
+msgid "Lock Duration (minutes)"
+msgstr "Durée du verrouillage (minutes)"
+
+#: templates/settings/settings_user_activities.html:183
+msgid "Reason"
+msgstr "Raison"
+
+#: templates/settings/settings_user_activities.html:184
+msgid "Optional: Reason for locking account"
+msgstr "Facultatif : Raison du verrouillage du compte"
+
+#: templates/settings/settings_user_activities.html:189
+msgid "Confirm Lock"
+msgstr "Confirmer le verrouillage"
+
+#: templates/settings/settings_user_management.html:5
+msgid "New User"
+msgstr "Nouvel utilisateur"
+
+#: templates/settings/settings_user_management.html:13
+msgid "Leave blank to not change the existing user's password."
+msgstr ""
+"Laisser vide pour ne pas modifier le mot de passe de l'utilisateur "
+"existant."
+
+#: templates/settings/settings_user_management.html:18
+msgid "Normal User"
+msgstr "Utilisateur normal"
+
+#: templates/settings/settings_user_management.html:19
+msgid "Calibre Library Maintainer"
+msgstr "Mainteneur de la bibliothèque Calibre"
+
+#: templates/settings/settings_user_management.html:20
+msgid "Administrator"
+msgstr "Administrateur"
+
+#: templates/settings/settings_user_management.html:29
+msgid "Existing Users"
+msgstr "Utilisateurs existants"
+
+#: templates/settings/settings_user_management.html:33
+msgid "ID"
+msgstr "ID"
+
+#: templates/settings/settings_user_settings.html:4
+msgid "Profile"
+msgstr "Profil"
+
+#: templates/settings/settings_user_settings.html:10
+msgid "Change Password"
+msgstr "Changer le mot de passe"
+
+#: templates/settings/settings_user_settings.html:14
+msgid "Appearance"
+msgstr "Apparence"
+
+#: templates/settings/settings_user_settings.html:16
+msgid "Theme"
+msgstr "Thème"
+
+#: templates/settings/settings_user_settings.html:18
+msgid "Auto (Follow system)"
+msgstr "Auto (suivre le système)"
+
+#: templates/settings/settings_user_settings.html:19
+msgid "Light Mode"
+msgstr "Mode clair"
+
+#: templates/settings/settings_user_settings.html:20
+msgid "Dark Mode"
+msgstr "Mode sombre"
+
+#: templates/settings/settings_user_settings.html:24
+msgid "Push Settings"
+msgstr "Paramètres d'envoi"
+
+#: templates/settings/settings_user_settings.html:26
+msgid "Kindle Email Address"
+msgstr "Adresse e-mail Kindle"
+
+#: templates/settings/settings_user_settings.html:31
+msgid "Format Priority"
+msgstr "Priorité des formats"
+
+#: templates/settings/settings_user_settings.html:33
+msgid ""
+"When downloading or pushing to Kindle / ANX library, available formats "
+"will be searched in this priority order. Use commas to separate, e.g., "
+"epub, mobi, pdf, azw3"
+msgstr ""
+"Lors du téléchargement ou de l'envoi vers la bibliothèque Kindle / ANX, "
+"les formats disponibles seront recherchés dans cet ordre de priorité. "
+"Utilisez des virgules pour séparer, par exemple, epub, mobi, pdf, azw3"
+
+#: templates/settings/settings_user_settings.html:37
+msgid "Force EPUB Conversion"
+msgstr "Forcer la conversion EPUB"
+
+#: templates/settings/settings_user_settings.html:38
+msgid ""
+"If enabled, will always try to convert the book to an optimized EPUB "
+"format when downloading or pushing to the ANX library, instead of sending"
+" the original format."
+msgstr ""
+"Si activé, tentera toujours de convertir le livre en un format EPUB "
+"optimisé lors du téléchargement ou de l'envoi vers la bibliothèque ANX, "
+"au lieu d'envoyer le format original."
+
+#: templates/settings/settings_user_settings.html:41
+msgid "Audiobook Generation Settings"
+msgstr "Paramètres de génération de livres audio"
+
+#: templates/settings/settings_user_settings.html:43
+msgid "TTS Profile"
+msgstr "Profil TTS"
+
+#: templates/settings/settings_user_settings.html:46
+#: templates/settings/settings_user_settings.html:114
+msgid "Save Preset"
+msgstr "Enregistrer le préréglage"
+
+#: templates/settings/settings_user_settings.html:47
+#: templates/settings/settings_user_settings.html:115
+msgid "Save As Preset"
+msgstr "Enregistrer sous"
+
+#: templates/settings/settings_user_settings.html:50
+msgid "Load, save or delete TTS configuration profiles."
+msgstr "Charger, enregistrer ou supprimer des profils de configuration TTS."
+
+#: templates/settings/settings_user_settings.html:53
+msgid "TTS Provider"
+msgstr "Fournisseur TTS"
+
+#: templates/settings/settings_user_settings.html:58
+msgid "The text-to-speech service provider to use."
+msgstr "Le fournisseur de services de synthèse vocale à utiliser."
+
+#: templates/settings/settings_user_settings.html:62
+msgid "Select or type a voice"
+msgstr "Sélectionnez ou tapez une voix"
+
+#: templates/settings/settings_user_settings.html:66
+msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
+msgstr ""
+"La voix à utiliser pour la génération. Par exemple, zh-CN-YunjianNeural "
+"pour Edge TTS."
+
+#: templates/settings/settings_user_settings.html:69
+#: templates/settings/settings_user_settings.html:133
+msgid "API Key"
+msgstr "Clé API"
+
+#: templates/settings/settings_user_settings.html:71
+msgid "API key for the selected provider (if required)."
+msgstr "Clé API pour le fournisseur sélectionné (si nécessaire)."
+
+#: templates/settings/settings_user_settings.html:74
+#: templates/settings/settings_user_settings.html:128
+msgid "Base URL"
+msgstr "URL de base"
+
+#: templates/settings/settings_user_settings.html:76
+msgid "Custom base URL for the API (for proxies or self-hosted models)."
+msgstr ""
+"URL de base personnalisée pour l'API (pour les proxys ou les modèles "
+"auto-hébergés)."
+
+#: templates/settings/settings_user_settings.html:79
+#: templates/settings/settings_user_settings.html:138
+msgid "Model"
+msgstr "Modèle"
+
+#: templates/settings/settings_user_settings.html:81
+msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
+msgstr ""
+"Le modèle spécifique à utiliser, par exemple, tts-1-hd (si pris en charge"
+" par le fournisseur)."
+
+#: templates/settings/settings_user_settings.html:86
+#, python-format
+msgid "Speaking rate. e.g., +10%% or -10%%."
+msgstr "Vitesse de parole. Par exemple, +10%% ou -10%%."
+
+#: templates/settings/settings_user_settings.html:89
+msgid "Volume"
+msgstr "Volume"
+
+#: templates/settings/settings_user_settings.html:91
+#, python-format
+msgid "Volume level. e.g., +10%% or -10%%."
+msgstr "Niveau de volume. Par exemple, +10%% ou -10%%."
+
+#: templates/settings/settings_user_settings.html:96
+msgid "Speaking pitch. e.g., +10Hz or -10Hz."
+msgstr "Hauteur de la voix. Par exemple, +10Hz ou -10Hz."
+
+#: templates/settings/settings_user_settings.html:99
+msgid "Sentence Pause (ms)"
+msgstr "Pause de la phrase (ms)"
+
+#: templates/settings/settings_user_settings.html:101
+msgid "Pause duration between sentences in milliseconds."
+msgstr "Durée de la pause entre les phrases en millisecondes."
+
+#: templates/settings/settings_user_settings.html:104
+msgid "Paragraph Pause (ms)"
+msgstr "Pause de paragraphe (ms)"
+
+#: templates/settings/settings_user_settings.html:106
+msgid "Pause duration between paragraphs in milliseconds."
+msgstr "Durée de la pause entre les paragraphes en millisecondes."
+
+#: templates/settings/settings_user_settings.html:109
+msgid "LLM Provider Settings"
+msgstr "Paramètres du fournisseur LLM"
+
+#: templates/settings/settings_user_settings.html:111
+msgid "LLM Profile"
+msgstr "Profil LLM"
+
+#: templates/settings/settings_user_settings.html:118
+msgid "Load, save or delete LLM configuration profiles."
+msgstr "Charger, enregistrer ou supprimer des profils de configuration LLM."
+
+#: templates/settings/settings_user_settings.html:121
+msgid "LLM Provider"
+msgstr "Fournisseur LLM"
+
+#: templates/settings/settings_user_settings.html:125
+msgid "The Large Language Model provider to use for MCP."
+msgstr "Le fournisseur de grand modèle de langage à utiliser pour MCP."
+
+#: templates/settings/settings_user_settings.html:130
+msgid "Custom base URL for the API (e.g., for proxies or self-hosted models)."
+msgstr ""
+"URL de base personnalisée pour l'API (par ex. pour les proxys ou les "
+"modèles auto-hébergés)."
+
+#: templates/settings/settings_user_settings.html:135
+msgid "API key for the selected provider."
+msgstr "Clé API pour le fournisseur sélectionné."
+
+#: templates/settings/settings_user_settings.html:139
+msgid "Select or type a model"
+msgstr "Sélectionnez ou tapez un modèle"
+
+#: templates/settings/settings_user_settings.html:143
+msgid "The specific model to use, e.g., gpt-4o."
+msgstr "Le modèle spécifique à utiliser, par ex. gpt-4o."
+
+#: templates/settings/settings_user_settings.html:146
+msgid "Statistics Settings"
+msgstr "Paramètres des statistiques"
+
+#: templates/settings/settings_user_settings.html:149
+msgid "Enable Reading Statistics Page"
+msgstr "Activer la page des statistiques de lecture"
+
+#: templates/settings/settings_user_settings.html:150
+msgid "Allows you to view your reading statistics after logging in."
+msgstr ""
+"Vous permet de consulter vos statistiques de lecture après vous être "
+"connecté."
+
+#: templates/settings/settings_user_settings.html:154
+msgid "Make Statistics Page Public"
+msgstr "Rendre la page des statistiques publique"
+
+#: templates/settings/settings_user_settings.html:155
+msgid ""
+"If enabled, your statistics page will be publicly accessible without "
+"needing to log in."
+msgstr ""
+"Si activé, votre page de statistiques sera accessible au public sans "
+"qu'il soit nécessaire de se connecter."
+
+#: templates/settings/settings_user_settings.html:158
+msgid "Your Statistics Page URL"
+msgstr "URL de votre page de statistiques"
+
+#: templates/settings/settings_user_settings.html:162
+msgid "Two-Factor Authentication (2FA)"
+msgstr "Authentification à deux facteurs (A2F)"
+
+#: templates/settings/settings_user_settings.html:165
+msgid "Please use your authenticator app to scan this QR code:"
+msgstr ""
+"Veuillez utiliser votre application d'authentification pour scanner ce "
+"code QR :"
+
+#: templates/settings/settings_user_settings.html:167
+msgid "Or manually enter the key:"
+msgstr "Ou saisissez manuellement la clé :"
+
+#: templates/settings/settings_user_settings.html:169
+msgid "Verification Code"
+msgstr "Code de vérification"
+
+#: templates/settings/settings_user_settings.html:170
+msgid "Enter the 6-digit code to complete setup"
+msgstr "Saisissez le code à 6 chiffres pour terminer la configuration"
+
+#: templates/settings/settings_user_settings.html:172
+msgid "Verify and Enable"
+msgstr "Vérifier et activer"
+
+#: templates/settings/settings_user_settings.html:177
+msgid "Save User Settings"
+msgstr "Enregistrer les paramètres utilisateur"
 
 #: utils/decorators.py:10
 msgid "Administrator permission required."

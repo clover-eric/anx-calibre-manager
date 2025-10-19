@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 11:19+0800\n"
+"POT-Creation-Date: 2025-10-19 13:54+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -270,7 +270,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "无法获取或处理该图书的 EPUB 文件。"
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:539 static/js/settings.js:38
+#: blueprints/api/books.py:539 static/js/settings/common.js:41
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -462,7 +462,7 @@ msgstr "代码 ID：%(code_id)s"
 msgid "Operation failed: %(error)s"
 msgstr "操作失败：%(error)s"
 
-#: blueprints/api/invite.py:83 static/js/settings.js:41
+#: blueprints/api/invite.py:83 static/js/settings/common.js:44
 msgid "Operation failed"
 msgstr "操作失败"
 
@@ -752,6 +752,81 @@ msgstr "令牌 ID：%(token_id)s"
 msgid "Token deleted."
 msgstr "令牌已删除。"
 
+#: blueprints/api/user_activities.py:147
+msgid "Failed to load user activities"
+msgstr "加载用户活动失败"
+
+#: blueprints/api/user_activities.py:184
+msgid "Failed to load activities"
+msgstr "加载活动失败"
+
+#: blueprints/api/user_activities.py:219
+#: static/js/settings/user_activities.js:349
+#: static/js/settings/user_activities.js:353
+msgid "Failed to load activity details"
+msgstr "加载活动详情失败"
+
+#: blueprints/api/user_activities.py:266
+msgid "Failed to load event statistics"
+msgstr "加载事件统计失败"
+
+#: blueprints/api/user_activities.py:278
+#: static/js/settings/user_activities.js:640
+msgid "Locked by administrator"
+msgstr "被管理员锁定"
+
+#: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
+#: blueprints/api/user_activities.py:358
+msgid "User not found"
+msgstr "未找到用户"
+
+#: blueprints/api/user_activities.py:299
+#, python-format
+msgid "Account locked until %(time)s. Reason: %(reason)s"
+msgstr "账户已锁定至 %(time)s。原因：%(reason)s"
+
+#: blueprints/api/user_activities.py:304
+#: static/js/settings/user_activities.js:645
+msgid "User account locked successfully"
+msgstr "用户账户锁定成功"
+
+#: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:650
+#: static/js/settings/user_activities.js:654
+msgid "Failed to lock user account"
+msgstr "锁定用户账户失败"
+
+#: blueprints/api/user_activities.py:338
+msgid "Account unlocked by administrator"
+msgstr "账户已被管理员解锁"
+
+#: blueprints/api/user_activities.py:341
+#: static/js/settings/user_activities.js:677
+msgid "User account unlocked successfully"
+msgstr "用户账户解锁成功"
+
+#: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:681
+#: static/js/settings/user_activities.js:685
+msgid "Failed to unlock user account"
+msgstr "解锁用户账户失败"
+
+#: blueprints/api/user_activities.py:372
+msgid "Failed login attempts reset by administrator"
+msgstr "登录失败次数已被管理员重置"
+
+#: blueprints/api/user_activities.py:375
+#: static/js/settings/user_activities.js:708
+msgid "Failed login attempts reset successfully"
+msgstr "登录失败次数重置成功"
+
+#: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:712
+#: static/js/settings/user_activities.js:716
+#, python-brace-format
+msgid "Failed to reset login attempts"
+msgstr "重置登录失败次数失败"
+
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
 msgstr "用户名和密码是必需的。"
@@ -860,238 +935,6 @@ msgstr "注册失败"
 #: static/js/register.js:9
 msgid "Network error, please try again later"
 msgstr "网络错误，请稍后重试"
-
-#: static/js/settings.js:10
-#, python-brace-format
-msgid ""
-"Please make sure to add the sender email address ({email}) to your Amazon"
-" Kindle trusted email list."
-msgstr "请确保将发件人电子邮件地址 ({email}) 添加到您的亚马逊 Kindle 受信任电子邮件列表中。"
-
-#: static/js/settings.js:11
-msgid "WebDAV address copied to clipboard"
-msgstr "WebDAV 地址已复制到剪贴板"
-
-#: static/js/settings.js:12
-msgid "Copy failed"
-msgstr "复制失败"
-
-#: static/js/settings.js:13
-msgid "2FA has been enabled."
-msgstr "两步验证已启用。"
-
-#: static/js/settings.js:14
-msgid "Disable"
-msgstr "禁用"
-
-#: static/js/settings.js:15
-msgid "2FA is not enabled."
-msgstr "两步验证未启用。"
-
-#: static/js/settings.js:16
-msgid "Enable"
-msgstr "启用"
-
-#: static/js/settings.js:17
-msgid "Failed to start 2FA setup."
-msgstr "启动两步验证设置失败。"
-
-#: static/js/settings.js:18
-msgid "Are you sure you want to disable 2FA?"
-msgstr "你确定要禁用两步验证吗？"
-
-#: static/js/settings.js:19
-msgid "No available tokens."
-msgstr "没有可用的令牌。"
-
-#: static/js/settings.js:20
-msgid "Created at"
-msgstr "创建时间"
-
-#: static/js/settings.js:21 templates/index.html:194 templates/settings.html:73
-#: templates/settings.html:141
-msgid "Delete"
-msgstr "删除"
-
-#: static/js/settings.js:22
-msgid "New token has been generated."
-msgstr "新令牌已生成。"
-
-#: static/js/settings.js:23
-msgid "Failed to generate token."
-msgstr "生成令牌失败。"
-
-#: static/js/settings.js:24
-msgid "Are you sure you want to delete this token?"
-msgstr "你确定要删除这个令牌吗？"
-
-#: static/js/settings.js:25
-msgid ""
-"Are you sure you want to delete ALL generated audiobook files? This "
-"action cannot be undone."
-msgstr "您确定要删除所有生成的有声书文件吗？此操作无法撤销。"
-
-#: static/js/settings.js:26
-msgid "Cleanup failed"
-msgstr "清理失败"
-
-#: static/js/settings.js:27
-msgid "An error occurred"
-msgstr "发生错误"
-
-#: static/js/settings.js:28
-msgid "Please enter a test recipient email address."
-msgstr "请输入测试收件人电子邮件地址。"
-
-#: static/js/settings.js:29 templates/index.html:119 templates/index.html:193
-msgid "Edit"
-msgstr "编辑"
-
-#: static/js/settings.js:30 templates/settings.html:470
-msgid "Add"
-msgstr "添加"
-
-#: static/js/settings.js:31
-msgid "Are you sure you want to delete this user?"
-msgstr "你确定要删除这个用户吗？"
-
-#: static/js/settings.js:32
-msgid "Active"
-msgstr "启用"
-
-#: static/js/settings.js:33
-msgid "Disabled"
-msgstr "禁用"
-
-#: static/js/settings.js:34
-msgid "Never expires"
-msgstr "永不过期"
-
-#: static/js/settings.js:35
-msgid "Unknown"
-msgstr "未知"
-
-#: static/js/settings.js:36
-#, python-brace-format
-msgid "Invite code generated successfully: {code}"
-msgstr "邀请码生成成功：{code}"
-
-#: static/js/settings.js:37
-#, python-brace-format
-msgid "Failed to generate: {error}"
-msgstr "生成失败：{error}"
-
-#: static/js/settings.js:39
-msgid "An error occurred while generating the invite code."
-msgstr "生成邀请码时发生错误。"
-
-#: static/js/settings.js:40
-#, python-brace-format
-msgid "Operation failed: {error}"
-msgstr "操作失败：{error}"
-
-#: static/js/settings.js:42
-msgid "Are you sure you want to delete this invite code?"
-msgstr "你确定要删除此邀请码吗？"
-
-#: static/js/settings.js:43
-#, python-brace-format
-msgid "Delete failed: {error}"
-msgstr "删除失败：{error}"
-
-#: static/js/settings.js:44
-msgid "Delete failed"
-msgstr "删除失败"
-
-#: static/js/settings.js:46
-msgid "Current Settings"
-msgstr "当前设置"
-
-#: static/js/settings.js:47
-msgid "Please enter a name for this TTS profile:"
-msgstr "请输入此 TTS 配置方案的名称："
-
-#: static/js/settings.js:48
-msgid "TTS profile saved successfully!"
-msgstr "TTS 配置方案保存成功！"
-
-#: static/js/settings.js:49
-msgid "Failed to save TTS profile"
-msgstr "保存 TTS 配置方案失败"
-
-#: static/js/settings.js:50 static/js/settings.js:1024
-msgid "An error occurred while saving the profile"
-msgstr "保存配置方案时发生错误"
-
-#: static/js/settings.js:51 static/js/settings.js:1034
-msgid "Please select a profile to update"
-msgstr "请选择要更新的配置方案"
-
-#: static/js/settings.js:52 static/js/settings.js:1041
-#, python-brace-format
-msgid "Update profile \"{name}\"?"
-msgstr "更新配置方案 “{name}” 吗？"
-
-#: static/js/settings.js:53
-msgid "TTS profile updated successfully!"
-msgstr "TTS 配置方案更新成功！"
-
-#: static/js/settings.js:54
-msgid "Failed to update TTS profile"
-msgstr "更新 TTS 配置方案失败"
-
-#: static/js/settings.js:55 static/js/settings.js:1063
-msgid "An error occurred while updating the profile"
-msgstr "更新配置方案时发生错误"
-
-#: static/js/settings.js:56 static/js/settings.js:1073
-msgid "Please select a profile to delete"
-msgstr "请选择要删除的配置方案"
-
-#: static/js/settings.js:57 static/js/settings.js:1080
-#, python-brace-format
-msgid "Delete profile \"{name}\"? This cannot be undone."
-msgstr "删除配置方案 “{name}” 吗？此操作无法撤销。"
-
-#: static/js/settings.js:58
-msgid "TTS profile deleted successfully!"
-msgstr "TTS 配置方案删除成功！"
-
-#: static/js/settings.js:59
-msgid "Failed to delete TTS profile"
-msgstr "删除 TTS 配置方案失败"
-
-#: static/js/settings.js:60 static/js/settings.js:1096
-msgid "An error occurred while deleting the profile"
-msgstr "删除配置方案时发生错误"
-
-#: static/js/settings.js:61 static/js/settings.js:1000
-msgid "Please enter a name for this LLM profile:"
-msgstr "请输入此 LLM 配置方案的名称："
-
-#: static/js/settings.js:62 static/js/settings.js:1018
-msgid "LLM profile saved successfully!"
-msgstr "LLM 配置方案保存成功！"
-
-#: static/js/settings.js:63 static/js/settings.js:1021
-msgid "Failed to save LLM profile"
-msgstr "保存 LLM 配置方案失败"
-
-#: static/js/settings.js:64 static/js/settings.js:1057
-msgid "LLM profile updated successfully!"
-msgstr "LLM 配置方案更新成功！"
-
-#: static/js/settings.js:65 static/js/settings.js:1060
-msgid "Failed to update LLM profile"
-msgstr "更新 LLM 配置方案失败"
-
-#: static/js/settings.js:66 static/js/settings.js:1089
-msgid "LLM profile deleted successfully!"
-msgstr "LLM 配置方案删除成功！"
-
-#: static/js/settings.js:67 static/js/settings.js:1093
-msgid "Failed to delete LLM profile"
-msgstr "删除 LLM 配置方案失败"
 
 #: static/js/page/translations.js:10
 msgid "Network response was not ok."
@@ -1229,7 +1072,7 @@ msgstr "部分文件上传失败。请查看进度详情。"
 msgid "Generating..."
 msgstr "生成中..."
 
-#: static/js/page/translations.js:40
+#: static/js/page/translations.js:40 static/js/settings/user_activities.js:29
 msgid "Download Audiobook"
 msgstr "下载有声书"
 
@@ -1464,7 +1307,7 @@ msgstr "所有重试尝试均因空响应而失败。"
 msgid "Failed to fetch audiobook list."
 msgstr "获取有声书列表失败。"
 
-#: static/js/page/translations.js:108
+#: static/js/page/translations.js:108 static/js/settings/user_activities.js:30
 msgid "Delete Audiobook"
 msgstr "删除有声书"
 
@@ -1552,6 +1395,481 @@ msgstr "播放/暂停"
 msgid "Playback Speed"
 msgstr "播放速度"
 
+#: static/js/settings/common.js:13
+#, python-brace-format
+msgid ""
+"Please make sure to add the sender email address ({email}) to your Amazon"
+" Kindle trusted email list."
+msgstr "请确保将发件人电子邮件地址 ({email}) 添加到您的亚马逊 Kindle 受信任电子邮件列表中。"
+
+#: static/js/settings/common.js:14
+msgid "WebDAV address copied to clipboard"
+msgstr "WebDAV 地址已复制到剪贴板"
+
+#: static/js/settings/common.js:15
+msgid "Copy failed"
+msgstr "复制失败"
+
+#: static/js/settings/common.js:16
+msgid "2FA has been enabled."
+msgstr "两步验证已启用。"
+
+#: static/js/settings/common.js:17
+msgid "Disable"
+msgstr "禁用"
+
+#: static/js/settings/common.js:18
+msgid "2FA is not enabled."
+msgstr "两步验证未启用。"
+
+#: static/js/settings/common.js:19
+msgid "Enable"
+msgstr "启用"
+
+#: static/js/settings/common.js:20
+msgid "Failed to start 2FA setup."
+msgstr "启动两步验证设置失败。"
+
+#: static/js/settings/common.js:21
+msgid "Are you sure you want to disable 2FA?"
+msgstr "你确定要禁用两步验证吗？"
+
+#: static/js/settings/common.js:22
+msgid "No available tokens."
+msgstr "没有可用的令牌。"
+
+#: static/js/settings/common.js:23
+msgid "Created at"
+msgstr "创建时间"
+
+#: static/js/settings/common.js:24 templates/index.html:194
+#: templates/settings/settings_user_settings.html:48
+#: templates/settings/settings_user_settings.html:116
+msgid "Delete"
+msgstr "删除"
+
+#: static/js/settings/common.js:25
+msgid "New token has been generated."
+msgstr "新令牌已生成。"
+
+#: static/js/settings/common.js:26
+msgid "Failed to generate token."
+msgstr "生成令牌失败。"
+
+#: static/js/settings/common.js:27
+msgid "Are you sure you want to delete this token?"
+msgstr "你确定要删除这个令牌吗？"
+
+#: static/js/settings/common.js:28
+msgid ""
+"Are you sure you want to delete ALL generated audiobook files? This "
+"action cannot be undone."
+msgstr "您确定要删除所有生成的有声书文件吗？此操作无法撤销。"
+
+#: static/js/settings/common.js:29
+msgid "Cleanup failed"
+msgstr "清理失败"
+
+#: static/js/settings/common.js:30
+msgid "An error occurred"
+msgstr "发生错误"
+
+#: static/js/settings/common.js:31
+msgid "Please enter a test recipient email address."
+msgstr "请输入测试收件人电子邮件地址。"
+
+#: static/js/settings/common.js:32 templates/index.html:119
+#: templates/index.html:193
+msgid "Edit"
+msgstr "编辑"
+
+#: static/js/settings/common.js:33
+#: templates/settings/settings_user_management.html:5
+msgid "Add"
+msgstr "添加"
+
+#: static/js/settings/common.js:34
+msgid "Are you sure you want to delete this user?"
+msgstr "你确定要删除这个用户吗？"
+
+#: static/js/settings/common.js:35
+msgid "Active"
+msgstr "启用"
+
+#: static/js/settings/common.js:36
+msgid "Disabled"
+msgstr "禁用"
+
+#: static/js/settings/common.js:37
+msgid "Never expires"
+msgstr "永不过期"
+
+#: static/js/settings/common.js:38
+msgid "Unknown"
+msgstr "未知"
+
+#: static/js/settings/common.js:39
+#, python-brace-format
+msgid "Invite code generated successfully: {code}"
+msgstr "邀请码生成成功：{code}"
+
+#: static/js/settings/common.js:40
+#, python-brace-format
+msgid "Failed to generate: {error}"
+msgstr "生成失败：{error}"
+
+#: static/js/settings/common.js:42
+msgid "An error occurred while generating the invite code."
+msgstr "生成邀请码时发生错误。"
+
+#: static/js/settings/common.js:43
+#, python-brace-format
+msgid "Operation failed: {error}"
+msgstr "操作失败：{error}"
+
+#: static/js/settings/common.js:45
+msgid "Are you sure you want to delete this invite code?"
+msgstr "你确定要删除此邀请码吗？"
+
+#: static/js/settings/common.js:46
+#, python-brace-format
+msgid "Delete failed: {error}"
+msgstr "删除失败：{error}"
+
+#: static/js/settings/common.js:47
+msgid "Delete failed"
+msgstr "删除失败"
+
+#: static/js/settings/common.js:49
+msgid "Current Settings"
+msgstr "当前设置"
+
+#: static/js/settings/common.js:50
+msgid "Please enter a name for this TTS profile:"
+msgstr "请输入此 TTS 配置方案的名称："
+
+#: static/js/settings/common.js:51
+msgid "TTS profile saved successfully!"
+msgstr "TTS 配置方案保存成功！"
+
+#: static/js/settings/common.js:52
+msgid "Failed to save TTS profile"
+msgstr "保存 TTS 配置方案失败"
+
+#: static/js/settings/common.js:53 static/js/settings/service_profiles.js:306
+msgid "An error occurred while saving the profile"
+msgstr "保存配置方案时发生错误"
+
+#: static/js/settings/common.js:54 static/js/settings/service_profiles.js:319
+msgid "Please select a profile to update"
+msgstr "请选择要更新的配置方案"
+
+#: static/js/settings/common.js:55 static/js/settings/service_profiles.js:326
+#, python-brace-format
+msgid "Update profile \"{name}\"?"
+msgstr "更新配置方案 “{name}” 吗？"
+
+#: static/js/settings/common.js:56
+msgid "TTS profile updated successfully!"
+msgstr "TTS 配置方案更新成功！"
+
+#: static/js/settings/common.js:57
+msgid "Failed to update TTS profile"
+msgstr "更新 TTS 配置方案失败"
+
+#: static/js/settings/common.js:58 static/js/settings/service_profiles.js:348
+msgid "An error occurred while updating the profile"
+msgstr "更新配置方案时发生错误"
+
+#: static/js/settings/common.js:59 static/js/settings/service_profiles.js:361
+msgid "Please select a profile to delete"
+msgstr "请选择要删除的配置方案"
+
+#: static/js/settings/common.js:60 static/js/settings/service_profiles.js:368
+#, python-brace-format
+msgid "Delete profile \"{name}\"? This cannot be undone."
+msgstr "删除配置方案 “{name}” 吗？此操作无法撤销。"
+
+#: static/js/settings/common.js:61
+msgid "TTS profile deleted successfully!"
+msgstr "TTS 配置方案删除成功！"
+
+#: static/js/settings/common.js:62
+msgid "Failed to delete TTS profile"
+msgstr "删除 TTS 配置方案失败"
+
+#: static/js/settings/common.js:63 static/js/settings/service_profiles.js:384
+msgid "An error occurred while deleting the profile"
+msgstr "删除配置方案时发生错误"
+
+#: static/js/settings/common.js:64 static/js/settings/service_profiles.js:282
+msgid "Please enter a name for this LLM profile:"
+msgstr "请输入此 LLM 配置方案的名称："
+
+#: static/js/settings/common.js:65 static/js/settings/service_profiles.js:300
+msgid "LLM profile saved successfully!"
+msgstr "LLM 配置方案保存成功！"
+
+#: static/js/settings/common.js:66 static/js/settings/service_profiles.js:303
+msgid "Failed to save LLM profile"
+msgstr "保存 LLM 配置方案失败"
+
+#: static/js/settings/common.js:67 static/js/settings/service_profiles.js:342
+msgid "LLM profile updated successfully!"
+msgstr "LLM 配置方案更新成功！"
+
+#: static/js/settings/common.js:68 static/js/settings/service_profiles.js:345
+msgid "Failed to update LLM profile"
+msgstr "更新 LLM 配置方案失败"
+
+#: static/js/settings/common.js:69 static/js/settings/service_profiles.js:377
+msgid "LLM profile deleted successfully!"
+msgstr "LLM 配置方案删除成功！"
+
+#: static/js/settings/common.js:70 static/js/settings/service_profiles.js:381
+msgid "Failed to delete LLM profile"
+msgstr "删除 LLM 配置方案失败"
+
+#: static/js/settings/user_activities.js:16
+#: templates/settings/settings_user_activities.html:131
+msgid "Login Success"
+msgstr "登录成功"
+
+#: static/js/settings/user_activities.js:17
+#: templates/settings/settings_user_activities.html:132
+msgid "Login Failed"
+msgstr "登录失败"
+
+#: static/js/settings/user_activities.js:18 templates/base.html:90
+msgid "Logout"
+msgstr "登出"
+
+#: static/js/settings/user_activities.js:19 templates/register.html:3
+#: templates/register.html:58
+msgid "Register"
+msgstr "注册"
+
+#: static/js/settings/user_activities.js:20
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:133
+msgid "Download Book"
+msgstr "下载图书"
+
+#: static/js/settings/user_activities.js:21
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:134
+msgid "Upload Book"
+msgstr "上传图书"
+
+#: static/js/settings/user_activities.js:22
+msgid "Delete Book"
+msgstr "删除图书"
+
+#: static/js/settings/user_activities.js:23
+#: static/js/settings/user_activities.js:439
+#: templates/settings/settings_user_activities.html:135
+msgid "Search Books"
+msgstr "搜索图书"
+
+#: static/js/settings/user_activities.js:24
+msgid "Edit Metadata"
+msgstr "编辑元数据"
+
+#: static/js/settings/user_activities.js:25
+#: static/js/settings/user_activities.js:441
+#: templates/settings/settings_user_activities.html:136
+msgid "Push to Kindle"
+msgstr "推送到 Kindle"
+
+#: static/js/settings/user_activities.js:26
+msgid "Push to Anx"
+msgstr "推送到 Anx"
+
+#: static/js/settings/user_activities.js:27
+msgid "Push Anx to Calibre"
+msgstr "推送 Anx 到 Calibre"
+
+#: static/js/settings/user_activities.js:28
+#: static/js/settings/user_activities.js:442 templates/index.html:123
+#: templates/index.html:197
+#: templates/settings/settings_user_activities.html:137
+msgid "Generate Audiobook"
+msgstr "生成有声书"
+
+#: static/js/settings/user_activities.js:31
+msgid "Update Audiobook Progress"
+msgstr "更新有声书进度"
+
+#: static/js/settings/user_activities.js:32
+msgid "Update Audiobook Reading Time"
+msgstr "更新有声书阅读时间"
+
+#: static/js/settings/user_activities.js:33
+#: templates/settings/settings_user_activities.html:138
+msgid "Update Reading Progress"
+msgstr "更新阅读进度"
+
+#: static/js/settings/user_activities.js:34
+msgid "Update Reading Time"
+msgstr "更新阅读时间"
+
+#: static/js/settings/user_activities.js:35
+msgid "Start LLM Chat"
+msgstr "开始 LLM 聊天"
+
+#: static/js/settings/user_activities.js:36
+msgid "LLM Chat Message"
+msgstr "LLM 聊天消息"
+
+#: static/js/settings/user_activities.js:37
+msgid "Delete LLM Session"
+msgstr "删除 LLM 会话"
+
+#: static/js/settings/user_activities.js:38
+msgid "Delete LLM Message"
+msgstr "删除 LLM 消息"
+
+#: static/js/settings/user_activities.js:39
+msgid "Generate MCP Token"
+msgstr "生成 MCP 令牌"
+
+#: static/js/settings/user_activities.js:40
+msgid "Delete MCP Token"
+msgstr "删除 MCP 令牌"
+
+#: static/js/settings/user_activities.js:41
+msgid "MCP API Call"
+msgstr "MCP API 调用"
+
+#: static/js/settings/user_activities.js:42
+msgid "Update User Settings"
+msgstr "更新用户设置"
+
+#: static/js/settings/user_activities.js:43
+msgid "Update Global Settings"
+msgstr "更新全局设置"
+
+#: static/js/settings/user_activities.js:44
+msgid "Update Password"
+msgstr "更新密码"
+
+#: static/js/settings/user_activities.js:45
+msgid "Enable 2FA"
+msgstr "启用双因素身份验证"
+
+#: static/js/settings/user_activities.js:46
+msgid "Disable 2FA"
+msgstr "禁用双因素身份验证"
+
+#: static/js/settings/user_activities.js:47
+msgid "Create User"
+msgstr "创建用户"
+
+#: static/js/settings/user_activities.js:48
+msgid "Update User"
+msgstr "更新用户"
+
+#: static/js/settings/user_activities.js:49
+msgid "Delete User"
+msgstr "删除用户"
+
+#: static/js/settings/user_activities.js:50
+msgid "Create Invite Code"
+msgstr "创建邀请码"
+
+#: static/js/settings/user_activities.js:51
+msgid "Delete Invite Code"
+msgstr "删除邀请码"
+
+#: static/js/settings/user_activities.js:52
+msgid "Use Invite Code"
+msgstr "使用邀请码"
+
+#: static/js/settings/user_activities.js:53
+msgid "Toggle Invite Code"
+msgstr "切换邀请码状态"
+
+#: static/js/settings/user_activities.js:54
+msgid "Create Service Config"
+msgstr "创建服务配置"
+
+#: static/js/settings/user_activities.js:55
+msgid "Update Service Config"
+msgstr "更新服务配置"
+
+#: static/js/settings/user_activities.js:56
+msgid "Delete Service Config"
+msgstr "删除服务配置"
+
+#: static/js/settings/user_activities.js:57
+msgid "Test SMTP"
+msgstr "测试 SMTP"
+
+#: static/js/settings/user_activities.js:58
+msgid "KOReader Sync Progress"
+msgstr "KOReader 同步进度"
+
+#: static/js/settings/user_activities.js:59
+msgid "KOReader Sync Reading Time"
+msgstr "KOReader 同步阅读时间"
+
+#: static/js/settings/user_activities.js:60
+msgid "KOReader Update Summary"
+msgstr "KOReader 更新摘要"
+
+#: static/js/settings/user_activities.js:191
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:97
+msgid "Total Activities"
+msgstr "总活动数"
+
+#: static/js/settings/user_activities.js:198
+msgid "Unique Users"
+msgstr "独立用户"
+
+#: static/js/settings/user_activities.js:304
+msgid "Unlock"
+msgstr "解锁"
+
+#: static/js/settings/user_activities.js:305
+msgid "Lock"
+msgstr "锁定"
+
+#: static/js/settings/user_activities.js:308
+msgid "Reset Failed"
+msgstr "重置失败"
+
+#: static/js/settings/user_activities.js:377
+#: static/js/settings/user_activities.js:523
+msgid "Activity Details for: "
+msgstr "活动详情："
+
+#: static/js/settings/user_activities.js:440 templates/index.html:178
+msgid "Reading Progress"
+msgstr "阅读进度"
+
+#: static/js/settings/user_activities.js:503
+#: static/js/settings/user_activities.js:507
+msgid "Failed to load event type details"
+msgstr "加载事件类型详情失败"
+
+#: static/js/settings/user_activities.js:603
+#: templates/settings/settings_user_activities.html:170
+msgid "Lock User Account"
+msgstr "锁定用户账户"
+
+#: static/js/settings/user_activities.js:628
+msgid "Please enter a valid duration"
+msgstr "请输入有效的时长"
+
+#: static/js/settings/user_activities.js:664
+msgid "Are you sure you want to unlock this user account?"
+msgstr "您确定要解锁此用户账户吗？"
+
+#: static/js/settings/user_activities.js:695
+msgid "Are you sure you want to reset failed login attempts for this user?"
+msgstr "您确定要重置此用户的登录失败次数吗？"
+
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
 msgstr "有声书播放器"
@@ -1596,10 +1914,6 @@ msgstr "Anx Calibre Manager"
 #: templates/settings.html:13
 msgid "Settings"
 msgstr "设置"
-
-#: templates/base.html:90
-msgid "Logout"
-msgstr "登出"
 
 #: templates/base.html:106 templates/index.html:3 templates/index.html:102
 msgid "Library"
@@ -1751,10 +2065,6 @@ msgstr "下载"
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:123 templates/index.html:197
-msgid "Generate Audiobook"
-msgstr "生成有声书"
-
 #: templates/index.html:128
 msgid "No books in Calibre library."
 msgstr "Calibre 书库中没有图书。"
@@ -1765,13 +2075,9 @@ msgid ""
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:154 templates/settings.html:315
+#: templates/index.html:154 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "点击复制"
-
-#: templates/index.html:178
-msgid "Reading Progress"
-msgstr "阅读进度"
 
 #: templates/index.html:179 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
@@ -1806,7 +2112,9 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings.html:198 templates/settings.html:490
+#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_management.html:25
+#: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "取消"
 
@@ -1814,7 +2122,7 @@ msgstr "取消"
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:244 templates/settings.html:489
+#: templates/index.html:244 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "保存"
 
@@ -1827,13 +2135,16 @@ msgid "Login to Anx Calibre Manager"
 msgstr "登录 Anx Calibre Manager"
 
 #: templates/login.html:24 templates/register.html:33
-#: templates/settings.html:31 templates/settings.html:317
-#: templates/settings.html:472 templates/settings.html:499
+#: templates/settings/settings_koreader.html:12
+#: templates/settings/settings_user_management.html:7
+#: templates/settings/settings_user_management.html:34
+#: templates/settings/settings_user_settings.html:6
 msgid "Username"
 msgstr "用户名"
 
 #: templates/login.html:28 templates/register.html:39
-#: templates/settings.html:318 templates/settings.html:476
+#: templates/settings/settings_koreader.html:13
+#: templates/settings/settings_user_management.html:11
 msgid "Password"
 msgstr "密码"
 
@@ -1861,21 +2172,17 @@ msgstr "图书阅读器"
 msgid "TTS Settings"
 msgstr "TTS 设置"
 
-#: templates/reader.html:90 templates/settings.html:109
+#: templates/reader.html:90 templates/settings/settings_user_settings.html:84
 msgid "Rate"
 msgstr "语速"
 
-#: templates/reader.html:95 templates/settings.html:119
+#: templates/reader.html:95 templates/settings/settings_user_settings.html:94
 msgid "Pitch"
 msgstr "音高"
 
-#: templates/reader.html:100 templates/settings.html:86
+#: templates/reader.html:100 templates/settings/settings_user_settings.html:61
 msgid "Voice"
 msgstr "声音"
-
-#: templates/register.html:3 templates/register.html:58
-msgid "Register"
-msgstr "注册"
 
 #: templates/register.html:9
 msgid "Register for Anx Calibre Manager"
@@ -1926,6 +2233,7 @@ msgid "Koreader Sync Settings"
 msgstr "Koreader 同步设置"
 
 #: templates/settings.html:20
+#: templates/settings/settings_user_activities.html:15
 msgid "Global Settings"
 msgstr "全局设置"
 
@@ -1937,918 +2245,9 @@ msgstr "用户管理"
 msgid "Invite Code Management"
 msgstr "邀请码管理"
 
-#: templates/settings.html:29
-msgid "Profile"
-msgstr "个人资料"
-
-#: templates/settings.html:35
-msgid "Change Password"
-msgstr "修改密码"
-
-#: templates/settings.html:36 templates/settings.html:363
-msgid "Leave blank to keep unchanged"
-msgstr "留空则保持不变"
-
-#: templates/settings.html:39
-msgid "Appearance"
-msgstr "外观"
-
-#: templates/settings.html:41
-msgid "Theme"
-msgstr "主题"
-
-#: templates/settings.html:43
-msgid "Auto (Follow system)"
-msgstr "自动（跟随系统）"
-
-#: templates/settings.html:44
-msgid "Light Mode"
-msgstr "浅色模式"
-
-#: templates/settings.html:45
-msgid "Dark Mode"
-msgstr "深色模式"
-
-#: templates/settings.html:49
-msgid "Push Settings"
-msgstr "推送设置"
-
-#: templates/settings.html:51
-msgid "Kindle Email Address"
-msgstr "Kindle 邮箱地址"
-
-#: templates/settings.html:56
-msgid "Format Priority"
-msgstr "格式优先级"
-
-#: templates/settings.html:58
-msgid ""
-"When downloading or pushing to Kindle / ANX library, available formats "
-"will be searched in this priority order. Use commas to separate, e.g., "
-"epub, mobi, pdf, azw3"
-msgstr "下载或推送到 Kindle / ANX 书库时，将按此优先顺序搜索可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3"
-
-#: templates/settings.html:62
-msgid "Force EPUB Conversion"
-msgstr "强制 EPUB 转换"
-
-#: templates/settings.html:63
-msgid ""
-"If enabled, will always try to convert the book to an optimized EPUB "
-"format when downloading or pushing to the ANX library, instead of sending"
-" the original format."
-msgstr "如果启用，在下载或推送到 ANX 书库时，将始终尝试将图书转换为优化的 EPUB 格式，而不是发送原始格式。"
-
-#: templates/settings.html:66
-msgid "Audiobook Generation Settings"
-msgstr "有声书生成设置"
-
-#: templates/settings.html:68
-msgid "TTS Profile"
-msgstr "TTS 配置方案"
-
-#: templates/settings.html:71 templates/settings.html:139
-msgid "Save Preset"
-msgstr "保存预设"
-
-#: templates/settings.html:72 templates/settings.html:140
-msgid "Save As Preset"
-msgstr "另存为预设"
-
-#: templates/settings.html:75
-msgid "Load, save or delete TTS configuration profiles."
-msgstr "加载、保存或删除 TTS 配置方案。"
-
-#: templates/settings.html:78
-msgid "TTS Provider"
-msgstr "TTS 提供商"
-
-#: templates/settings.html:83
-msgid "The text-to-speech service provider to use."
-msgstr "要使用的文本转语音服务提供商。"
-
-#: templates/settings.html:87
-msgid "Select or type a voice"
-msgstr "选择或自定义朗读音色"
-
-#: templates/settings.html:91
-msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
-msgstr "用于生成语音的声音。例如，Edge TTS 的 zh-CN-YunjianNeural。"
-
-#: templates/settings.html:94 templates/settings.html:158
-msgid "API Key"
-msgstr "API 密钥"
-
-#: templates/settings.html:96
-msgid "API key for the selected provider (if required)."
-msgstr "所选提供商的 API 密钥（如果需要）。"
-
-#: templates/settings.html:99 templates/settings.html:153
-msgid "Base URL"
-msgstr "基础 URL"
-
-#: templates/settings.html:101
-msgid "Custom base URL for the API (for proxies or self-hosted models)."
-msgstr "API 的自定义基础 URL（用于代理或自托管模型）。"
-
-#: templates/settings.html:104 templates/settings.html:163
-msgid "Model"
-msgstr "模型"
-
-#: templates/settings.html:106
-msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
-msgstr "要使用的特定模型，例如 tts-1-hd（如果提供商支持）。"
-
-#: templates/settings.html:111
-#, python-format
-msgid "Speaking rate. e.g., +10%% or -10%%."
-msgstr "语速。例如：+10%% 或 -10%%。"
-
-#: templates/settings.html:114
-msgid "Volume"
-msgstr "音量"
-
-#: templates/settings.html:116
-#, python-format
-msgid "Volume level. e.g., +10%% or -10%%."
-msgstr "音量大小。例如：+10%% 或 -10%%。"
-
-#: templates/settings.html:121
-msgid "Speaking pitch. e.g., +10Hz or -10Hz."
-msgstr "音高。例如：+10Hz 或 -10Hz。"
-
-#: templates/settings.html:124
-msgid "Sentence Pause (ms)"
-msgstr "句间停顿（毫秒）"
-
-#: templates/settings.html:126
-msgid "Pause duration between sentences in milliseconds."
-msgstr "句子之间的停顿时间（毫秒）。"
-
-#: templates/settings.html:129
-msgid "Paragraph Pause (ms)"
-msgstr "段间停顿（毫秒）"
-
-#: templates/settings.html:131
-msgid "Pause duration between paragraphs in milliseconds."
-msgstr "段落之间的停顿时间（毫秒）。"
-
-#: templates/settings.html:134
-msgid "LLM Provider Settings"
-msgstr "LLM 提供商设置"
-
-#: templates/settings.html:136
-msgid "LLM Profile"
-msgstr "LLM 配置方案"
-
-#: templates/settings.html:143
-msgid "Load, save or delete LLM configuration profiles."
-msgstr "加载、保存或删除 LLM 配置方案。"
-
-#: templates/settings.html:146
-msgid "LLM Provider"
-msgstr "LLM 提供商"
-
-#: templates/settings.html:150
-msgid "The Large Language Model provider to use for MCP."
-msgstr "用于 MCP 的大语言模型提供商。"
-
-#: templates/settings.html:155
-msgid "Custom base URL for the API (e.g., for proxies or self-hosted models)."
-msgstr "API 的自定义基础 URL（例如，用于代理或自托管模型）。"
-
-#: templates/settings.html:160
-msgid "API key for the selected provider."
-msgstr "所选提供商的 API 密钥。"
-
-#: templates/settings.html:164
-msgid "Select or type a model"
-msgstr "选择或输入一个模型"
-
-#: templates/settings.html:168
-msgid "The specific model to use, e.g., gpt-4o."
-msgstr "要使用的具体模型，例如 gpt-4o。"
-
-#: templates/settings.html:171
-msgid "Statistics Settings"
-msgstr "统计设置"
-
-#: templates/settings.html:174
-msgid "Enable Reading Statistics Page"
-msgstr "启用阅读统计页面"
-
-#: templates/settings.html:175
-msgid "Allows you to view your reading statistics after logging in."
-msgstr "允许您在登录后查看您的阅读统计信息。"
-
-#: templates/settings.html:179
-msgid "Make Statistics Page Public"
-msgstr "将统计页面设为公开"
-
-#: templates/settings.html:180
-msgid ""
-"If enabled, your statistics page will be publicly accessible without "
-"needing to log in."
-msgstr "如果启用，您的统计页面将在无需登录的情况下公开访问。"
-
-#: templates/settings.html:183
-msgid "Your Statistics Page URL"
-msgstr "您的统计页面 URL"
-
-#: templates/settings.html:187
-msgid "Two-Factor Authentication (2FA)"
-msgstr "双因素身份验证 (2FA)"
-
-#: templates/settings.html:190
-msgid "Please use your authenticator app to scan this QR code:"
-msgstr "请使用您的身份验证器应用扫描此二维码："
-
-#: templates/settings.html:192
-msgid "Or manually enter the key:"
-msgstr "或手动输入密钥："
-
-#: templates/settings.html:194
-msgid "Verification Code"
-msgstr "验证码"
-
-#: templates/settings.html:195
-msgid "Enter the 6-digit code to complete setup"
-msgstr "输入 6 位代码以完成设置"
-
-#: templates/settings.html:197
-msgid "Verify and Enable"
-msgstr "验证并启用"
-
-#: templates/settings.html:202
-msgid "Save User Settings"
-msgstr "保存用户设置"
-
-#: templates/settings.html:209
-msgid "MCP API Tokens"
-msgstr "MCP API 令牌"
-
-#: templates/settings.html:210
-msgid ""
-"You can use these tokens to interact with your library via the MCP "
-"protocol."
-msgstr "您可以使用这些令牌通过 MCP 协议与您的书库进行交互。"
-
-#: templates/settings.html:215
-msgid "Generate New Token"
-msgstr "生成新令牌"
-
-#: templates/settings.html:219
-msgid "MCP Endpoint"
-msgstr "MCP 端点"
-
-#: templates/settings.html:221
-msgid "Authentication"
-msgstr "认证"
-
-#: templates/settings.html:222
-msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
-msgstr "通过在 URL 后附加 `?token=YOUR_TOKEN` 参数进行身份验证。"
-
-#: templates/settings.html:223
-msgid "Prompt Examples"
-msgstr "提示词示例"
-
-#: templates/settings.html:224
-msgid ""
-"Here are some examples of natural language prompts you can use with an AI"
-" agent. The agent will intelligently call one or more tools to fulfill "
-"your request."
-msgstr "这里有一些自然语言提示词的示例，您可以将其用于 AI 代理。代理将智能地调用一个或多个工具来满足您的请求。"
-
-#: templates/settings.html:227
-msgid "Simple & Advanced Search"
-msgstr "简单和高级搜索"
-
-#: templates/settings.html:229
-msgid "Find books about Python programming."
-msgstr "查找关于 Python 编程的书籍。"
-
-#: templates/settings.html:232
-msgid "Search for science fiction books by Isaac Asimov published after 1950."
-msgstr "搜索艾萨克·阿西莫夫在 1950 年后出版的科幻小说。"
-
-#: templates/settings.html:236
-msgid "Book Management"
-msgstr "书籍管理"
-
-#: templates/settings.html:238
-msgid "What are the 5 most recently added books? Send the first one to my Kindle."
-msgstr "最近添加的 5 本书是哪些？把第一本发送到我的 Kindle。"
-
-#: templates/settings.html:241
-msgid "Push the book 'Dune' to my Anx reader."
-msgstr "将书籍《沙丘》推送到我的 Anx 阅读器。"
-
-#: templates/settings.html:244
-msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
-msgstr "将我的 Anx 书库中的《三体》上传到 Calibre。"
-
-#: templates/settings.html:247
-msgid "Generate an audiobook for the book 'The Three-Body Problem'."
-msgstr "为书籍《三体》生成有声书。"
-
-#: templates/settings.html:250
-msgid ""
-"What is the status of the audiobook generation for 'The Three-Body "
-"Problem'?"
-msgstr "书籍《三体》的有声书生成状态如何？"
-
-#: templates/settings.html:254
-msgid "Content Interaction & Summarization"
-msgstr "内容交互与摘要"
-
-#: templates/settings.html:256
-msgid "Show me the table of contents for the book 'Foundation'."
-msgstr "显示书籍《基地》的目录。"
-
-#: templates/settings.html:259
-msgid "Fetch the first chapter of 'Foundation' and give me a summary."
-msgstr "获取《基地》的第一章并给我一个摘要。"
-
-#: templates/settings.html:262
-msgid ""
-"Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
-"what are the main ideas of psychohistory?"
-msgstr "根据书籍《基地》中的章节“心理史学家”，心理史学的主要思想是什么？"
-
-#: templates/settings.html:265
-msgid ""
-"Read the entire book 'The Little Prince' and tell me what the fox's "
-"secret is."
-msgstr "阅读整本《小王子》，并告诉我狐狸的秘密是什么。"
-
-#: templates/settings.html:269
-msgid "Reading Statistics & Progress"
-msgstr "阅读统计与进度"
-
-#: templates/settings.html:271
-msgid ""
-"How many words is the book 'Dune' in total, and list the word count for "
-"each chapter."
-msgstr "《沙丘》这本书总共有多少字，并列出每个章节的字数。"
-
-#: templates/settings.html:274
-msgid "How many books have I read this year?"
-msgstr "我今年读了多少本书？"
-
-#: templates/settings.html:277
-msgid "What's my reading progress on 'Dune'?"
-msgstr "我的《沙丘》阅读进度如何？"
-
-#: templates/settings.html:280
-msgid ""
-"Who is the author of 'Project Hail Mary' and how long have I been reading"
-" it?"
-msgstr "《Project Hail Mary》的作者是谁？这本书我读了多久了？"
-
-#: templates/settings.html:285
-msgid "Available Tools"
-msgstr "可用工具"
-
-#: templates/settings.html:286
-msgid ""
-"You can get a list of all available tools by calling the `tools/list` "
-"method. The currently supported tools are:"
-msgstr "你可以通过调用 `tools/list` 方法获取所有可用工具的列表。当前支持的工具包括："
-
-#: templates/settings.html:288
-msgid ""
-"Search Calibre books using Calibre's search syntax. Parameters: "
-"`search_expression` (str), `limit` (int, optional)"
-msgstr ""
-"使用 Calibre 的搜索语法搜索 Calibre 书籍。参数: `search_expression` (str), `limit` "
-"(int, 可选)"
-
-#: templates/settings.html:289
-msgid ""
-"Get recent books from a library. Parameters: `library_type` (str, \"anx\""
-" or \"calibre\"), `limit` (int, optional)"
-msgstr ""
-"从书库获取最近的书籍。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `limit` (int,"
-" 可选)"
-
-#: templates/settings.html:290
-msgid ""
-"Get details for a book. Parameters: `library_type` (str, \"anx\" or "
-"\"calibre\"), `book_id` (int)"
-msgstr "获取书籍的详细信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:291
-msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
-msgstr "将 Calibre 书籍推送到用户的 Anx 书库。参数: `book_id` (int)"
-
-#: templates/settings.html:292
-msgid ""
-"Upload a book from the user's Anx library to the public Calibre library. "
-"Parameters: `book_id` (int)"
-msgstr "将用户的 Anx 书库中的书籍上传到公共 Calibre 书库。参数: `book_id` (int)"
-
-#: templates/settings.html:293
-msgid ""
-"Send a Calibre book to the user's configured Kindle email. Parameters: "
-"`book_id` (int)"
-msgstr "将 Calibre 书籍发送到用户配置的 Kindle 邮箱。参数: `book_id` (int)"
-
-#: templates/settings.html:294
-msgid ""
-"Get the table of contents for a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr "获取书籍的目录。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
-
-#: templates/settings.html:295
-msgid ""
-"Get the content of a specific chapter. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
-msgstr ""
-"获取特定章节的内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
-"(int), `chapter_number` (int)"
-
-#: templates/settings.html:296
-msgid ""
-"Get the entire text content of a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr ""
-"获取书籍的全部文本内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
-"(int)"
-
-#: templates/settings.html:297
-msgid ""
-"Get word count statistics for a book. Parameters: `library_type` (str, "
-"\"anx\" or \"calibre\"), `book_id` (int)"
-msgstr ""
-"获取书籍的字数统计信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
-"(int)"
-
-#: templates/settings.html:298
-msgid ""
-"Generate an audiobook for a book. Parameters: `book_id` (int), "
-"`library_type` (str, \"anx\" or \"calibre\")"
-msgstr "为书籍生成有声书。参数: `book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
-
-#: templates/settings.html:299
-msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
-msgstr "通过任务 ID 获取有声书生成状态。参数: `task_id` (str)"
-
-#: templates/settings.html:300
-msgid ""
-"Get the latest audiobook task status for a book. Parameters: `book_id` "
-"(int), `library_type` (str, \"anx\" or \"calibre\")"
-msgstr ""
-"获取书籍的最新有声书任务状态。参数: `book_id` (int), `library_type` (str, \"anx\" 或 "
-"\"calibre\")"
-
-#: templates/settings.html:301
-msgid ""
-"Get reading statistics for the current user. `time_range` is a required "
-"parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
-"\"this_year\", a number of recent days (e.g., \"7\", \"30\"), or a date "
-"range \"YYYY-MM-DD:YYYY-MM-DD\"."
-msgstr ""
-"获取当前用户的阅读统计信息。`time_range` "
-"是一个必需参数，可以是“all”、“today”、“this_week”、“this_month”、“this_year”、最近几天的天数（例如“7”、“30”）或日期范围"
-"“YYYY-MM-DD:YYYY-MM-DD”。"
-
-#: templates/settings.html:308
-msgid "KOReader Sync Settings"
-msgstr "KOReader 同步设置"
-
-#: templates/settings.html:310
-msgid "Step 1: Configure WebDAV Cloud Storage"
-msgstr "步骤 1：配置 WebDAV 云存储"
-
-#: templates/settings.html:312
-msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
-msgstr "在 KOReader 中，转到 `云存储` -> `添加新的云存储`。"
-
-#: templates/settings.html:313
-msgid "Select `WebDAV`."
-msgstr "选择 `WebDAV`。"
-
-#: templates/settings.html:314
-msgid "Server address"
-msgstr "服务器地址"
-
-#: templates/settings.html:314
-msgid ""
-"Fill in the address below, and <strong>ensure the path ends with a "
-"`/`</strong>."
-msgstr "填写以下地址，并<strong>确保路径以 `/` 结尾</strong>。"
-
-#: templates/settings.html:318
-msgid "Your Anx Calibre Manager login password."
-msgstr "您的 Anx Calibre Manager 登录密码。"
-
-#: templates/settings.html:319
-msgid "Folder"
-msgstr "文件夹"
-
-#: templates/settings.html:320
-msgid ""
-"Click `Connect` and save. You should now be able to see your Anx library "
-"in KOReader's file browser."
-msgstr "点击 `连接` 并保存。您现在应该可以在 KOReader 的文件浏览器中看到您的 Anx 书库。"
-
-#: templates/settings.html:323
-msgid "Step 2: Install and Configure the Sync Plugin"
-msgstr "步骤 2：安装和配置同步插件"
-
-#: templates/settings.html:326
-msgid "Download Plugin"
-msgstr "下载插件"
-
-#: templates/settings.html:326
-msgid "Click the button below to download the plugin zip file."
-msgstr "点击下面的按钮下载插件 zip 文件。"
-
-#: templates/settings.html:328
-msgid "Download KOReader Plugin (.zip)"
-msgstr "下载 KOReader 插件 (.zip)"
-
-#: templates/settings.html:331
-msgid "Install Plugin"
-msgstr "安装插件"
-
-#: templates/settings.html:331
-msgid ""
-"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
-"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
-"folder</strong> to the `koreader/plugins/` directory on your KOReader "
-"device."
-msgstr ""
-"解压下载的 `.zip` 文件，您将得到一个名为 `anx-calibre-manager-koreader-plugin.koplugin` "
-"的文件夹。将此<strong>整个文件夹</strong>复制到您的 KOReader 设备上的 `koreader/plugins/` 目录中。"
-
-#: templates/settings.html:332
-msgid "Restart KOReader"
-msgstr "重启 KOReader"
-
-#: templates/settings.html:332
-msgid ""
-"Completely close and reopen the KOReader application to load the new "
-"plugin."
-msgstr "完全关闭并重新打开 KOReader 应用程序以加载新插件。"
-
-#: templates/settings.html:333
-msgid "Configure Sync Server"
-msgstr "配置同步服务器"
-
-#: templates/settings.html:335
-msgid "Important"
-msgstr "重要提示"
-
-#: templates/settings.html:335
-msgid ""
-"First, please open and start reading a book via the WebDAV set up in the "
-"previous step. The plugin menu will <strong>only appear in the reading "
-"interface</strong>."
-msgstr "首先，请通过上一步设置的 WebDAV 打开并开始阅读一本书。插件菜单将<strong>仅出现在阅读界面中</strong>。"
-
-#: templates/settings.html:336
-msgid ""
-"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
-"`More tools` -> `ANX Calibre Manager`."
-msgstr "在阅读界面中，转到 `工具（扳手图标）` -> `下一页` -> `更多工具` -> `ANX Calibre Manager`。"
-
-#: templates/settings.html:337
-msgid "Select `Custom sync server`."
-msgstr "选择 `自定义同步服务器`。"
-
-#: templates/settings.html:338
-msgid "Custom sync server address"
-msgstr "自定义同步服务器地址"
-
-#: templates/settings.html:339
-msgid ""
-"Return to the previous menu, select `Login`, and enter your Anx Calibre "
-"Manager username and password."
-msgstr "返回上一级菜单，选择 `登录`，然后输入您的 Anx Calibre Manager 用户名和密码。"
-
-#: templates/settings.html:343
-msgid ""
-"Once configured, the plugin will automatically or manually sync your "
-"reading progress and time. You can adjust settings like sync frequency in"
-" the plugin menu."
-msgstr "配置完成后，插件将自动或手动同步您的阅读进度和时间。您可以在插件菜单中调整同步频率等设置。"
-
-#: templates/settings.html:344
-msgid "Note: Only supports epub book synchronization"
-msgstr "注意：仅支持 epub 图书同步"
-
-#: templates/settings.html:352
-msgid "Calibre Connection"
-msgstr "Calibre 连接"
-
-#: templates/settings.html:354
-msgid "Calibre Server URL"
-msgstr "Calibre 服务器 URL"
-
-#: templates/settings.html:358
-msgid "Calibre Username"
-msgstr "Calibre 用户名"
-
-#: templates/settings.html:362
-msgid "Calibre Password"
-msgstr "Calibre 密码"
-
-#: templates/settings.html:366
-msgid "Default Calibre Library ID"
-msgstr "默认 Calibre 书库 ID"
-
-#: templates/settings.html:368
-msgid ""
-"The default Calibre library ID for browsing, searching, and uploading "
-"books. Usually 'Calibre_Library'."
-msgstr "用于浏览、搜索和上传图书的默认 Calibre 书库 ID。通常是 'Calibre_Library'。"
-
-#: templates/settings.html:372
-msgid "Allow uploading duplicate books"
-msgstr "允许上传重复的图书"
-
-#: templates/settings.html:373
-msgid ""
-"If enabled, Calibre will add the book as a new copy even if it detects a "
-"duplicate."
-msgstr "如果启用，即使检测到重复，Calibre 也会将图书添加为新副本。"
-
-#: templates/settings.html:377
-msgid "Disable Uploads for Normal Users"
-msgstr "禁止普通用户上传"
-
-#: templates/settings.html:378
-msgid ""
-"If enabled, users with the \"user\" role will not be able to upload books"
-" to Calibre."
-msgstr "如果启用，具有\"普通用户\"角色的用户将无法上传图书到 Calibre。"
-
-#: templates/settings.html:380
-msgid "Path Settings"
-msgstr "路径设置"
-
-#: templates/settings.html:382
-msgid "WebDAV Root Path"
-msgstr "WebDAV 根路径"
-
-#: templates/settings.html:384
-msgid ""
-"This is the base path for storing all user Anx libraries. User folders "
-"will be automatically created under this path (e.g., /webdav/username)."
-msgstr "这是存储所有用户 Anx 书库的基本路径。用户文件夹将在此路径下自动创建（例如，/webdav/username）。"
-
-#: templates/settings.html:387
-msgid "Default Settings"
-msgstr "默认设置"
-
-#: templates/settings.html:389
-msgid "Default Format Priority for New Users"
-msgstr "新用户的默认格式优先级"
-
-#: templates/settings.html:391
-msgid ""
-"Default format priority for new users, separated by commas, e.g., "
-"azw3,mobi,epub"
-msgstr "新用户的默认格式优先级，以逗号分隔，例如：azw3,mobi,epub"
-
-#: templates/settings.html:394
-msgid "Audiobook Settings"
-msgstr "有声书设置"
-
-#: templates/settings.html:396
-msgid "Audiobook File Retention Period (days)"
-msgstr "有声书文件保留期限（天）"
-
-#: templates/settings.html:398
-msgid ""
-"Automatically delete generated audiobook files older than this number of "
-"days. Set to 0 to disable cleanup."
-msgstr "自动删除超过此天数的已生成有声书文件。设置为 0 可禁用清理。"
-
-#: templates/settings.html:401
-msgid "Manual Cleanup"
-msgstr "手动清理"
-
-#: templates/settings.html:402
-msgid "Clean Up All Audiobooks Now"
-msgstr "立即清理所有有声书"
-
-#: templates/settings.html:403
-msgid ""
-"Immediately delete all generated audiobook files and update their "
-"database records."
-msgstr "立即删除所有生成的有声书文件并更新其数据库记录。"
-
-#: templates/settings.html:406
-msgid "SMTP Settings (for Send to Kindle)"
-msgstr "SMTP 设置（用于发送到 Kindle）"
-
-#: templates/settings.html:408
-msgid "SMTP Server"
-msgstr "SMTP 服务器"
-
-#: templates/settings.html:412
-msgid "SMTP Port"
-msgstr "SMTP 端口"
-
-#: templates/settings.html:416
-msgid "SMTP Username (usually your email)"
-msgstr "SMTP 用户名（通常是您的电子邮件）"
-
-#: templates/settings.html:420
-msgid "SMTP Password"
-msgstr "SMTP 密码"
-
-#: templates/settings.html:424
-msgid "Encryption Method"
-msgstr "加密方法"
-
-#: templates/settings.html:426
-msgid "None"
-msgstr "无"
-
-#: templates/settings.html:427
-msgid "STARTTLS"
-msgstr "STARTTLS"
-
-#: templates/settings.html:428
-msgid "SSL/TLS"
-msgstr "SSL/TLS"
-
-#: templates/settings.html:430
-msgid ""
-"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
-"587."
-msgstr "SSL/TLS 通常用于端口 465，STARTTLS 通常用于端口 587。"
-
-#: templates/settings.html:433
-msgid "Security"
-msgstr "安全"
-
-#: templates/settings.html:435
-msgid "Login Failure Lock Threshold"
-msgstr "登录失败锁定阈值"
-
-#: templates/settings.html:437
-msgid "Set to 0 to disable this feature."
-msgstr "设置为 0 以禁用此功能。"
-
-#: templates/settings.html:440
-msgid "Session Lifetime (days)"
-msgstr "会话生命周期（天）"
-
-#: templates/settings.html:442
-msgid "The number of days a user's session remains valid after logging in."
-msgstr "用户登录后会话保持有效的天数。"
-
-#: templates/settings.html:446
-msgid "Require Invite Code for Registration"
-msgstr "注册时需要邀请码"
-
-#: templates/settings.html:447
-msgid ""
-"If enabled, users must provide a valid invite code to register. Admins "
-"can generate invite codes in the Invite Code Management tab."
-msgstr "如果启用，用户必须提供有效的邀请码才能注册。管理员可以在邀请码管理标签页中生成邀请码。"
-
-#: templates/settings.html:451
-msgid "Enable User Activity Logging"
-msgstr "启用用户活动日志"
-
-#: templates/settings.html:452
-msgid ""
-"If enabled, the system will record user activities such as login, "
-"download, upload, and other operations in the database for audit "
-"purposes."
-msgstr "如果启用，系统将在数据库中记录用户登录、下载、上传等活动，以供审计。"
-
-#: templates/settings.html:456
-msgid "Test Inbox"
-msgstr "测试收件箱"
-
-#: templates/settings.html:457
-msgid "Enter an email address to receive a test email"
-msgstr "输入一个电子邮件地址以接收测试邮件"
-
-#: templates/settings.html:460
-msgid "Send Test Email"
-msgstr "发送测试邮件"
-
-#: templates/settings.html:461
-msgid "Save Global Settings"
-msgstr "保存全局设置"
-
-#: templates/settings.html:470
-msgid "New User"
-msgstr "新用户"
-
-#: templates/settings.html:478
-msgid "Leave blank to not change the existing user's password."
-msgstr "留空则不更改现有用户的密码。"
-
-#: templates/settings.html:481 templates/settings.html:500
-msgid "Role"
-msgstr "角色"
-
-#: templates/settings.html:483
-msgid "Normal User"
-msgstr "普通用户"
-
-#: templates/settings.html:484
-msgid "Calibre Library Maintainer"
-msgstr "Calibre 书库维护员"
-
-#: templates/settings.html:485
-msgid "Administrator"
-msgstr "管理员"
-
-#: templates/settings.html:494
-msgid "Existing Users"
-msgstr "现有用户"
-
-#: templates/settings.html:498
-msgid "ID"
-msgstr "ID"
-
-#: templates/settings.html:501 templates/settings.html:545
-msgid "Actions"
-msgstr "操作"
-
-#: templates/settings.html:513
-msgid "Generate New Invite Code"
-msgstr "生成新的邀请码"
-
-#: templates/settings.html:515
-msgid "Custom Invite Code"
-msgstr "自定义邀请码"
-
-#: templates/settings.html:516
-msgid "Leave blank to auto-generate"
-msgstr "留空则自动生成"
-
-#: templates/settings.html:517
-msgid ""
-"Custom invite code (optional). If left blank, a random code will be "
-"generated."
-msgstr "自定义邀请码（可选）。如果留空，将生成一个随机码。"
-
-#: templates/settings.html:520
-msgid "Maximum Uses"
-msgstr "最大使用次数"
-
-#: templates/settings.html:522
-msgid "How many times this invite code can be used"
-msgstr "此邀请码可以使用的次数"
-
-#: templates/settings.html:525
-msgid "Expires After (Hours)"
-msgstr "过期时间（小时）"
-
-#: templates/settings.html:526
-msgid "Leave blank for no expiration"
-msgstr "留空则永不过期"
-
-#: templates/settings.html:527
-msgid "Number of hours after which this invite code will expire (optional)"
-msgstr "此邀请码将在此小时数后过期（可选）"
-
-#: templates/settings.html:530
-msgid "Generate Invite Code"
-msgstr "生成邀请码"
-
-#: templates/settings.html:534
-msgid "Existing Invite Codes"
-msgstr "现有邀请码"
-
-#: templates/settings.html:538
-msgid "Code"
-msgstr "代码"
-
-#: templates/settings.html:539
-msgid "Max Uses"
-msgstr "最大使用次数"
-
-#: templates/settings.html:540
-msgid "Current Uses"
-msgstr "当前使用次数"
-
-#: templates/settings.html:541
-msgid "Created By"
-msgstr "创建者"
-
-#: templates/settings.html:542
-msgid "Created At"
-msgstr "创建于"
-
-#: templates/settings.html:543
-msgid "Expires At"
-msgstr "过期于"
-
-#: templates/settings.html:544
-msgid "Status"
-msgstr "状态"
+#: templates/settings.html:23
+msgid "User Activities"
+msgstr "用户活动"
 
 #: templates/setup.html:3
 msgid "Initial Setup"
@@ -2936,6 +2335,1047 @@ msgstr "已读完！"
 #: templates/stats.html:170
 msgid "No finished books yet."
 msgstr "还没有读完的图书。"
+
+#: templates/settings/settings_global.html:4
+msgid "Calibre Connection"
+msgstr "Calibre 连接"
+
+#: templates/settings/settings_global.html:6
+msgid "Calibre Server URL"
+msgstr "Calibre 服务器 URL"
+
+#: templates/settings/settings_global.html:10
+msgid "Calibre Username"
+msgstr "Calibre 用户名"
+
+#: templates/settings/settings_global.html:14
+msgid "Calibre Password"
+msgstr "Calibre 密码"
+
+#: templates/settings/settings_global.html:15
+#: templates/settings/settings_user_settings.html:11
+msgid "Leave blank to keep unchanged"
+msgstr "留空则保持不变"
+
+#: templates/settings/settings_global.html:18
+msgid "Default Calibre Library ID"
+msgstr "默认 Calibre 书库 ID"
+
+#: templates/settings/settings_global.html:20
+msgid ""
+"The default Calibre library ID for browsing, searching, and uploading "
+"books. Usually 'Calibre_Library'."
+msgstr "用于浏览、搜索和上传图书的默认 Calibre 书库 ID。通常是 'Calibre_Library'。"
+
+#: templates/settings/settings_global.html:24
+msgid "Allow uploading duplicate books"
+msgstr "允许上传重复的图书"
+
+#: templates/settings/settings_global.html:25
+msgid ""
+"If enabled, Calibre will add the book as a new copy even if it detects a "
+"duplicate."
+msgstr "如果启用，即使检测到重复，Calibre 也会将图书添加为新副本。"
+
+#: templates/settings/settings_global.html:29
+msgid "Disable Uploads for Normal Users"
+msgstr "禁止普通用户上传"
+
+#: templates/settings/settings_global.html:30
+msgid ""
+"If enabled, users with the \"user\" role will not be able to upload books"
+" to Calibre."
+msgstr "如果启用，具有\"普通用户\"角色的用户将无法上传图书到 Calibre。"
+
+#: templates/settings/settings_global.html:32
+msgid "Path Settings"
+msgstr "路径设置"
+
+#: templates/settings/settings_global.html:34
+msgid "WebDAV Root Path"
+msgstr "WebDAV 根路径"
+
+#: templates/settings/settings_global.html:36
+msgid ""
+"This is the base path for storing all user Anx libraries. User folders "
+"will be automatically created under this path (e.g., /webdav/username)."
+msgstr "这是存储所有用户 Anx 书库的基本路径。用户文件夹将在此路径下自动创建（例如，/webdav/username）。"
+
+#: templates/settings/settings_global.html:39
+msgid "Default Settings"
+msgstr "默认设置"
+
+#: templates/settings/settings_global.html:41
+msgid "Default Format Priority for New Users"
+msgstr "新用户的默认格式优先级"
+
+#: templates/settings/settings_global.html:43
+msgid ""
+"Default format priority for new users, separated by commas, e.g., "
+"azw3,mobi,epub"
+msgstr "新用户的默认格式优先级，以逗号分隔，例如：azw3,mobi,epub"
+
+#: templates/settings/settings_global.html:46
+msgid "Audiobook Settings"
+msgstr "有声书设置"
+
+#: templates/settings/settings_global.html:48
+msgid "Audiobook File Retention Period (days)"
+msgstr "有声书文件保留期限（天）"
+
+#: templates/settings/settings_global.html:50
+msgid ""
+"Automatically delete generated audiobook files older than this number of "
+"days. Set to 0 to disable cleanup."
+msgstr "自动删除超过此天数的已生成有声书文件。设置为 0 可禁用清理。"
+
+#: templates/settings/settings_global.html:53
+msgid "Manual Cleanup"
+msgstr "手动清理"
+
+#: templates/settings/settings_global.html:54
+msgid "Clean Up All Audiobooks Now"
+msgstr "立即清理所有有声书"
+
+#: templates/settings/settings_global.html:55
+msgid ""
+"Immediately delete all generated audiobook files and update their "
+"database records."
+msgstr "立即删除所有生成的有声书文件并更新其数据库记录。"
+
+#: templates/settings/settings_global.html:58
+msgid "SMTP Settings (for Send to Kindle)"
+msgstr "SMTP 设置（用于发送到 Kindle）"
+
+#: templates/settings/settings_global.html:60
+msgid "SMTP Server"
+msgstr "SMTP 服务器"
+
+#: templates/settings/settings_global.html:64
+msgid "SMTP Port"
+msgstr "SMTP 端口"
+
+#: templates/settings/settings_global.html:68
+msgid "SMTP Username (usually your email)"
+msgstr "SMTP 用户名（通常是您的电子邮件）"
+
+#: templates/settings/settings_global.html:72
+msgid "SMTP Password"
+msgstr "SMTP 密码"
+
+#: templates/settings/settings_global.html:76
+msgid "Encryption Method"
+msgstr "加密方法"
+
+#: templates/settings/settings_global.html:78
+msgid "None"
+msgstr "无"
+
+#: templates/settings/settings_global.html:79
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: templates/settings/settings_global.html:80
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: templates/settings/settings_global.html:82
+msgid ""
+"SSL/TLS is usually used for port 465, STARTTLS is usually used for port "
+"587."
+msgstr "SSL/TLS 通常用于端口 465，STARTTLS 通常用于端口 587。"
+
+#: templates/settings/settings_global.html:85
+msgid "Security"
+msgstr "安全"
+
+#: templates/settings/settings_global.html:87
+msgid "Login Failure Lock Threshold"
+msgstr "登录失败锁定阈值"
+
+#: templates/settings/settings_global.html:89
+msgid "Set to 0 to disable this feature."
+msgstr "设置为 0 以禁用此功能。"
+
+#: templates/settings/settings_global.html:92
+msgid "Session Lifetime (days)"
+msgstr "会话生命周期（天）"
+
+#: templates/settings/settings_global.html:94
+msgid "The number of days a user's session remains valid after logging in."
+msgstr "用户登录后会话保持有效的天数。"
+
+#: templates/settings/settings_global.html:98
+msgid "Require Invite Code for Registration"
+msgstr "注册时需要邀请码"
+
+#: templates/settings/settings_global.html:99
+msgid ""
+"If enabled, users must provide a valid invite code to register. Admins "
+"can generate invite codes in the Invite Code Management tab."
+msgstr "如果启用，用户必须提供有效的邀请码才能注册。管理员可以在邀请码管理标签页中生成邀请码。"
+
+#: templates/settings/settings_global.html:103
+msgid "Enable User Activity Logging"
+msgstr "启用用户活动日志"
+
+#: templates/settings/settings_global.html:104
+msgid ""
+"If enabled, the system will record user activities such as login, "
+"download, upload, and other operations in the database for audit "
+"purposes."
+msgstr "如果启用，系统将在数据库中记录用户登录、下载、上传等活动，以供审计。"
+
+#: templates/settings/settings_global.html:108
+msgid "Test Inbox"
+msgstr "测试收件箱"
+
+#: templates/settings/settings_global.html:109
+msgid "Enter an email address to receive a test email"
+msgstr "输入一个电子邮件地址以接收测试邮件"
+
+#: templates/settings/settings_global.html:112
+msgid "Send Test Email"
+msgstr "发送测试邮件"
+
+#: templates/settings/settings_global.html:113
+msgid "Save Global Settings"
+msgstr "保存全局设置"
+
+#: templates/settings/settings_invite_code.html:4
+msgid "Generate New Invite Code"
+msgstr "生成新的邀请码"
+
+#: templates/settings/settings_invite_code.html:6
+msgid "Custom Invite Code"
+msgstr "自定义邀请码"
+
+#: templates/settings/settings_invite_code.html:7
+msgid "Leave blank to auto-generate"
+msgstr "留空则自动生成"
+
+#: templates/settings/settings_invite_code.html:8
+msgid ""
+"Custom invite code (optional). If left blank, a random code will be "
+"generated."
+msgstr "自定义邀请码（可选）。如果留空，将生成一个随机码。"
+
+#: templates/settings/settings_invite_code.html:11
+msgid "Maximum Uses"
+msgstr "最大使用次数"
+
+#: templates/settings/settings_invite_code.html:13
+msgid "How many times this invite code can be used"
+msgstr "此邀请码可以使用的次数"
+
+#: templates/settings/settings_invite_code.html:16
+msgid "Expires After (Hours)"
+msgstr "过期时间（小时）"
+
+#: templates/settings/settings_invite_code.html:17
+msgid "Leave blank for no expiration"
+msgstr "留空则永不过期"
+
+#: templates/settings/settings_invite_code.html:18
+msgid "Number of hours after which this invite code will expire (optional)"
+msgstr "此邀请码将在此小时数后过期（可选）"
+
+#: templates/settings/settings_invite_code.html:21
+msgid "Generate Invite Code"
+msgstr "生成邀请码"
+
+#: templates/settings/settings_invite_code.html:25
+msgid "Existing Invite Codes"
+msgstr "现有邀请码"
+
+#: templates/settings/settings_invite_code.html:29
+msgid "Code"
+msgstr "代码"
+
+#: templates/settings/settings_invite_code.html:30
+msgid "Max Uses"
+msgstr "最大使用次数"
+
+#: templates/settings/settings_invite_code.html:31
+msgid "Current Uses"
+msgstr "当前使用次数"
+
+#: templates/settings/settings_invite_code.html:32
+msgid "Created By"
+msgstr "创建者"
+
+#: templates/settings/settings_invite_code.html:33
+msgid "Created At"
+msgstr "创建于"
+
+#: templates/settings/settings_invite_code.html:34
+msgid "Expires At"
+msgstr "过期于"
+
+#: templates/settings/settings_invite_code.html:35
+msgid "Status"
+msgstr "状态"
+
+#: templates/settings/settings_invite_code.html:36
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_management.html:36
+msgid "Actions"
+msgstr "操作"
+
+#: templates/settings/settings_koreader.html:3
+msgid "KOReader Sync Settings"
+msgstr "KOReader 同步设置"
+
+#: templates/settings/settings_koreader.html:5
+msgid "Step 1: Configure WebDAV Cloud Storage"
+msgstr "步骤 1：配置 WebDAV 云存储"
+
+#: templates/settings/settings_koreader.html:7
+msgid "In KOReader, go to `Cloud storage` -> `Add new cloud storage`."
+msgstr "在 KOReader 中，转到 `云存储` -> `添加新的云存储`。"
+
+#: templates/settings/settings_koreader.html:8
+msgid "Select `WebDAV`."
+msgstr "选择 `WebDAV`。"
+
+#: templates/settings/settings_koreader.html:9
+msgid "Server address"
+msgstr "服务器地址"
+
+#: templates/settings/settings_koreader.html:9
+msgid ""
+"Fill in the address below, and <strong>ensure the path ends with a "
+"`/`</strong>."
+msgstr "填写以下地址，并<strong>确保路径以 `/` 结尾</strong>。"
+
+#: templates/settings/settings_koreader.html:13
+msgid "Your Anx Calibre Manager login password."
+msgstr "您的 Anx Calibre Manager 登录密码。"
+
+#: templates/settings/settings_koreader.html:14
+msgid "Folder"
+msgstr "文件夹"
+
+#: templates/settings/settings_koreader.html:15
+msgid ""
+"Click `Connect` and save. You should now be able to see your Anx library "
+"in KOReader's file browser."
+msgstr "点击 `连接` 并保存。您现在应该可以在 KOReader 的文件浏览器中看到您的 Anx 书库。"
+
+#: templates/settings/settings_koreader.html:18
+msgid "Step 2: Install and Configure the Sync Plugin"
+msgstr "步骤 2：安装和配置同步插件"
+
+#: templates/settings/settings_koreader.html:21
+msgid "Download Plugin"
+msgstr "下载插件"
+
+#: templates/settings/settings_koreader.html:21
+msgid "Click the button below to download the plugin zip file."
+msgstr "点击下面的按钮下载插件 zip 文件。"
+
+#: templates/settings/settings_koreader.html:23
+msgid "Download KOReader Plugin (.zip)"
+msgstr "下载 KOReader 插件 (.zip)"
+
+#: templates/settings/settings_koreader.html:26
+msgid "Install Plugin"
+msgstr "安装插件"
+
+#: templates/settings/settings_koreader.html:26
+msgid ""
+"Unzip the downloaded `.zip` file, and you will get a folder named `anx-"
+"calibre-manager-koreader-plugin.koplugin`. Copy this <strong>entire "
+"folder</strong> to the `koreader/plugins/` directory on your KOReader "
+"device."
+msgstr ""
+"解压下载的 `.zip` 文件，您将得到一个名为 `anx-calibre-manager-koreader-plugin.koplugin` "
+"的文件夹。将此<strong>整个文件夹</strong>复制到您的 KOReader 设备上的 `koreader/plugins/` 目录中。"
+
+#: templates/settings/settings_koreader.html:27
+msgid "Restart KOReader"
+msgstr "重启 KOReader"
+
+#: templates/settings/settings_koreader.html:27
+msgid ""
+"Completely close and reopen the KOReader application to load the new "
+"plugin."
+msgstr "完全关闭并重新打开 KOReader 应用程序以加载新插件。"
+
+#: templates/settings/settings_koreader.html:28
+msgid "Configure Sync Server"
+msgstr "配置同步服务器"
+
+#: templates/settings/settings_koreader.html:30
+msgid "Important"
+msgstr "重要提示"
+
+#: templates/settings/settings_koreader.html:30
+msgid ""
+"First, please open and start reading a book via the WebDAV set up in the "
+"previous step. The plugin menu will <strong>only appear in the reading "
+"interface</strong>."
+msgstr "首先，请通过上一步设置的 WebDAV 打开并开始阅读一本书。插件菜单将<strong>仅出现在阅读界面中</strong>。"
+
+#: templates/settings/settings_koreader.html:31
+msgid ""
+"In the reading interface, go to `Tools (wrench icon)` -> `Next page` -> "
+"`More tools` -> `ANX Calibre Manager`."
+msgstr "在阅读界面中，转到 `工具（扳手图标）` -> `下一页` -> `更多工具` -> `ANX Calibre Manager`。"
+
+#: templates/settings/settings_koreader.html:32
+msgid "Select `Custom sync server`."
+msgstr "选择 `自定义同步服务器`。"
+
+#: templates/settings/settings_koreader.html:33
+msgid "Custom sync server address"
+msgstr "自定义同步服务器地址"
+
+#: templates/settings/settings_koreader.html:34
+msgid ""
+"Return to the previous menu, select `Login`, and enter your Anx Calibre "
+"Manager username and password."
+msgstr "返回上一级菜单，选择 `登录`，然后输入您的 Anx Calibre Manager 用户名和密码。"
+
+#: templates/settings/settings_koreader.html:38
+msgid ""
+"Once configured, the plugin will automatically or manually sync your "
+"reading progress and time. You can adjust settings like sync frequency in"
+" the plugin menu."
+msgstr "配置完成后，插件将自动或手动同步您的阅读进度和时间。您可以在插件菜单中调整同步频率等设置。"
+
+#: templates/settings/settings_koreader.html:39
+msgid "Note: Only supports epub book synchronization"
+msgstr "注意：仅支持 epub 图书同步"
+
+#: templates/settings/settings_mcp.html:3
+msgid "MCP API Tokens"
+msgstr "MCP API 令牌"
+
+#: templates/settings/settings_mcp.html:4
+msgid ""
+"You can use these tokens to interact with your library via the MCP "
+"protocol."
+msgstr "您可以使用这些令牌通过 MCP 协议与您的书库进行交互。"
+
+#: templates/settings/settings_mcp.html:9
+msgid "Generate New Token"
+msgstr "生成新令牌"
+
+#: templates/settings/settings_mcp.html:13
+msgid "MCP Endpoint"
+msgstr "MCP 端点"
+
+#: templates/settings/settings_mcp.html:15
+msgid "Authentication"
+msgstr "认证"
+
+#: templates/settings/settings_mcp.html:16
+msgid "Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL."
+msgstr "通过在 URL 后附加 `?token=YOUR_TOKEN` 参数进行身份验证。"
+
+#: templates/settings/settings_mcp.html:17
+msgid "Prompt Examples"
+msgstr "提示词示例"
+
+#: templates/settings/settings_mcp.html:18
+msgid ""
+"Here are some examples of natural language prompts you can use with an AI"
+" agent. The agent will intelligently call one or more tools to fulfill "
+"your request."
+msgstr "这里有一些自然语言提示词的示例，您可以将其用于 AI 代理。代理将智能地调用一个或多个工具来满足您的请求。"
+
+#: templates/settings/settings_mcp.html:21
+msgid "Simple & Advanced Search"
+msgstr "简单和高级搜索"
+
+#: templates/settings/settings_mcp.html:23
+msgid "Find books about Python programming."
+msgstr "查找关于 Python 编程的书籍。"
+
+#: templates/settings/settings_mcp.html:26
+msgid "Search for science fiction books by Isaac Asimov published after 1950."
+msgstr "搜索艾萨克·阿西莫夫在 1950 年后出版的科幻小说。"
+
+#: templates/settings/settings_mcp.html:30
+msgid "Book Management"
+msgstr "书籍管理"
+
+#: templates/settings/settings_mcp.html:32
+msgid "What are the 5 most recently added books? Send the first one to my Kindle."
+msgstr "最近添加的 5 本书是哪些？把第一本发送到我的 Kindle。"
+
+#: templates/settings/settings_mcp.html:35
+msgid "Push the book 'Dune' to my Anx reader."
+msgstr "将书籍《沙丘》推送到我的 Anx 阅读器。"
+
+#: templates/settings/settings_mcp.html:38
+msgid "Upload the book 'The Three-Body Problem' from my Anx library to Calibre."
+msgstr "将我的 Anx 书库中的《三体》上传到 Calibre。"
+
+#: templates/settings/settings_mcp.html:41
+msgid "Generate an audiobook for the book 'The Three-Body Problem'."
+msgstr "为书籍《三体》生成有声书。"
+
+#: templates/settings/settings_mcp.html:44
+msgid ""
+"What is the status of the audiobook generation for 'The Three-Body "
+"Problem'?"
+msgstr "书籍《三体》的有声书生成状态如何？"
+
+#: templates/settings/settings_mcp.html:48
+msgid "Content Interaction & Summarization"
+msgstr "内容交互与摘要"
+
+#: templates/settings/settings_mcp.html:50
+msgid "Show me the table of contents for the book 'Foundation'."
+msgstr "显示书籍《基地》的目录。"
+
+#: templates/settings/settings_mcp.html:53
+msgid "Fetch the first chapter of 'Foundation' and give me a summary."
+msgstr "获取《基地》的第一章并给我一个摘要。"
+
+#: templates/settings/settings_mcp.html:56
+msgid ""
+"Based on the chapter 'The Psychohistorians' from the book 'Foundation', "
+"what are the main ideas of psychohistory?"
+msgstr "根据书籍《基地》中的章节“心理史学家”，心理史学的主要思想是什么？"
+
+#: templates/settings/settings_mcp.html:59
+msgid ""
+"Read the entire book 'The Little Prince' and tell me what the fox's "
+"secret is."
+msgstr "阅读整本《小王子》，并告诉我狐狸的秘密是什么。"
+
+#: templates/settings/settings_mcp.html:63
+msgid "Reading Statistics & Progress"
+msgstr "阅读统计与进度"
+
+#: templates/settings/settings_mcp.html:65
+msgid ""
+"How many words is the book 'Dune' in total, and list the word count for "
+"each chapter."
+msgstr "《沙丘》这本书总共有多少字，并列出每个章节的字数。"
+
+#: templates/settings/settings_mcp.html:68
+msgid "How many books have I read this year?"
+msgstr "我今年读了多少本书？"
+
+#: templates/settings/settings_mcp.html:71
+msgid "What's my reading progress on 'Dune'?"
+msgstr "我的《沙丘》阅读进度如何？"
+
+#: templates/settings/settings_mcp.html:74
+msgid ""
+"Who is the author of 'Project Hail Mary' and how long have I been reading"
+" it?"
+msgstr "《Project Hail Mary》的作者是谁？这本书我读了多久了？"
+
+#: templates/settings/settings_mcp.html:79
+msgid "Available Tools"
+msgstr "可用工具"
+
+#: templates/settings/settings_mcp.html:80
+msgid ""
+"You can get a list of all available tools by calling the `tools/list` "
+"method. The currently supported tools are:"
+msgstr "你可以通过调用 `tools/list` 方法获取所有可用工具的列表。当前支持的工具包括："
+
+#: templates/settings/settings_mcp.html:82
+msgid ""
+"Search Calibre books using Calibre's search syntax. Parameters: "
+"`search_expression` (str), `limit` (int, optional)"
+msgstr ""
+"使用 Calibre 的搜索语法搜索 Calibre 书籍。参数: `search_expression` (str), `limit` "
+"(int, 可选)"
+
+#: templates/settings/settings_mcp.html:83
+msgid ""
+"Get recent books from a library. Parameters: `library_type` (str, \"anx\""
+" or \"calibre\"), `limit` (int, optional)"
+msgstr ""
+"从书库获取最近的书籍。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `limit` (int,"
+" 可选)"
+
+#: templates/settings/settings_mcp.html:84
+msgid ""
+"Get details for a book. Parameters: `library_type` (str, \"anx\" or "
+"\"calibre\"), `book_id` (int)"
+msgstr "获取书籍的详细信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:85
+msgid "Push a Calibre book to the user's Anx library. Parameters: `book_id` (int)"
+msgstr "将 Calibre 书籍推送到用户的 Anx 书库。参数: `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:86
+msgid ""
+"Upload a book from the user's Anx library to the public Calibre library. "
+"Parameters: `book_id` (int)"
+msgstr "将用户的 Anx 书库中的书籍上传到公共 Calibre 书库。参数: `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:87
+msgid ""
+"Send a Calibre book to the user's configured Kindle email. Parameters: "
+"`book_id` (int)"
+msgstr "将 Calibre 书籍发送到用户配置的 Kindle 邮箱。参数: `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:88
+msgid ""
+"Get the table of contents for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr "获取书籍的目录。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` (int)"
+
+#: templates/settings/settings_mcp.html:89
+msgid ""
+"Get the content of a specific chapter. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int), `chapter_number` (int)"
+msgstr ""
+"获取特定章节的内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
+"(int), `chapter_number` (int)"
+
+#: templates/settings/settings_mcp.html:90
+msgid ""
+"Get the entire text content of a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr ""
+"获取书籍的全部文本内容。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
+"(int)"
+
+#: templates/settings/settings_mcp.html:91
+msgid ""
+"Get word count statistics for a book. Parameters: `library_type` (str, "
+"\"anx\" or \"calibre\"), `book_id` (int)"
+msgstr ""
+"获取书籍的字数统计信息。参数: `library_type` (str, \"anx\" 或 \"calibre\"), `book_id` "
+"(int)"
+
+#: templates/settings/settings_mcp.html:92
+msgid ""
+"Generate an audiobook for a book. Parameters: `book_id` (int), "
+"`library_type` (str, \"anx\" or \"calibre\")"
+msgstr "为书籍生成有声书。参数: `book_id` (int), `library_type` (str, \"anx\" 或 \"calibre\")"
+
+#: templates/settings/settings_mcp.html:93
+msgid "Get audiobook generation status by task ID. Parameters: `task_id` (str)"
+msgstr "通过任务 ID 获取有声书生成状态。参数: `task_id` (str)"
+
+#: templates/settings/settings_mcp.html:94
+msgid ""
+"Get the latest audiobook task status for a book. Parameters: `book_id` "
+"(int), `library_type` (str, \"anx\" or \"calibre\")"
+msgstr ""
+"获取书籍的最新有声书任务状态。参数: `book_id` (int), `library_type` (str, \"anx\" 或 "
+"\"calibre\")"
+
+#: templates/settings/settings_mcp.html:95
+msgid ""
+"Get reading statistics for the current user. `time_range` is a required "
+"parameter and can be \"all\", \"today\", \"this_week\", \"this_month\", "
+"\"this_year\", a number of recent days (e.g., \"7\", \"30\"), or a date "
+"range \"YYYY-MM-DD:YYYY-MM-DD\"."
+msgstr ""
+"获取当前用户的阅读统计信息。`time_range` "
+"是一个必需参数，可以是“all”、“today”、“this_week”、“this_month”、“this_year”、最近几天的天数（例如“7”、“30”）或日期范围"
+"“YYYY-MM-DD:YYYY-MM-DD”。"
+
+#: templates/settings/settings_user_activities.html:10
+msgid "Activity Logging is Disabled"
+msgstr "活动日志已禁用"
+
+#: templates/settings/settings_user_activities.html:12
+msgid ""
+"The administrator has disabled activity logging. No activity data is "
+"being recorded."
+msgstr "管理员已禁用活动日志。没有活动数据被记录。"
+
+#: templates/settings/settings_user_activities.html:15
+msgid "To enable activity logging, go to"
+msgstr "要启用活动日志，请转到"
+
+#: templates/settings/settings_user_activities.html:15
+msgid "and enable"
+msgstr "并启用"
+
+#: templates/settings/settings_user_activities.html:15
+msgid "Enable Activity Log"
+msgstr "启用活动日志"
+
+#: templates/settings/settings_user_activities.html:18
+msgid "Go to Global Settings"
+msgstr "前往全局设置"
+
+#: templates/settings/settings_user_activities.html:26
+msgid "Global Statistics"
+msgstr "全局统计"
+
+#: templates/settings/settings_user_activities.html:34
+msgid "Activity Trends"
+msgstr "活动趋势"
+
+#: templates/settings/settings_user_activities.html:37
+msgid "Daily Activity Trend"
+msgstr "每日活动趋势"
+
+#: templates/settings/settings_user_activities.html:41
+msgid "Event Type Distribution"
+msgstr "事件类型分布"
+
+#: templates/settings/settings_user_activities.html:49
+msgid "Global Event Statistics"
+msgstr "全局事件统计"
+
+#: templates/settings/settings_user_activities.html:57
+msgid "User Activity List"
+msgstr "用户活动列表"
+
+#: templates/settings/settings_user_activities.html:58
+msgid "Refresh"
+msgstr "刷新"
+
+#: templates/settings/settings_user_activities.html:61
+msgid "Search username..."
+msgstr "搜索用户名..."
+
+#: templates/settings/settings_user_activities.html:68
+msgid "User"
+msgstr "用户"
+
+#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_management.html:16
+#: templates/settings/settings_user_management.html:35
+msgid "Role"
+msgstr "角色"
+
+#: templates/settings/settings_user_activities.html:70
+#: templates/settings/settings_user_activities.html:105
+#, fuzzy
+msgid "Last Login"
+msgstr "登录"
+
+#: templates/settings/settings_user_activities.html:71
+msgid "Last Login IP"
+msgstr ""
+
+#: templates/settings/settings_user_activities.html:72
+#: templates/settings/settings_user_activities.html:101
+#, fuzzy
+msgid "Login Count"
+msgstr "登出"
+
+#: templates/settings/settings_user_activities.html:74
+msgid "Failed Attempts"
+msgstr "失败尝试次数"
+
+#: templates/settings/settings_user_activities.html:75
+msgid "Account Status"
+msgstr "账户状态"
+
+#: templates/settings/settings_user_activities.html:112
+msgid "Last Activity Times by Type"
+msgstr "各类型最后活动时间"
+
+#: templates/settings/settings_user_activities.html:120
+msgid "Recent Failed Login Attempts"
+msgstr "最近的登录失败尝试"
+
+#: templates/settings/settings_user_activities.html:128
+msgid "Activity History"
+msgstr "活动历史"
+
+#: templates/settings/settings_user_activities.html:130
+msgid "All Types"
+msgstr "所有类型"
+
+#: templates/settings/settings_user_activities.html:178
+msgid "Lock Duration (minutes)"
+msgstr "锁定时长（分钟）"
+
+#: templates/settings/settings_user_activities.html:183
+msgid "Reason"
+msgstr "原因"
+
+#: templates/settings/settings_user_activities.html:184
+msgid "Optional: Reason for locking account"
+msgstr "可选：锁定账户的原因"
+
+#: templates/settings/settings_user_activities.html:189
+msgid "Confirm Lock"
+msgstr "确认锁定"
+
+#: templates/settings/settings_user_management.html:5
+msgid "New User"
+msgstr "新用户"
+
+#: templates/settings/settings_user_management.html:13
+msgid "Leave blank to not change the existing user's password."
+msgstr "留空则不更改现有用户的密码。"
+
+#: templates/settings/settings_user_management.html:18
+msgid "Normal User"
+msgstr "普通用户"
+
+#: templates/settings/settings_user_management.html:19
+msgid "Calibre Library Maintainer"
+msgstr "Calibre 书库维护员"
+
+#: templates/settings/settings_user_management.html:20
+msgid "Administrator"
+msgstr "管理员"
+
+#: templates/settings/settings_user_management.html:29
+msgid "Existing Users"
+msgstr "现有用户"
+
+#: templates/settings/settings_user_management.html:33
+msgid "ID"
+msgstr "ID"
+
+#: templates/settings/settings_user_settings.html:4
+msgid "Profile"
+msgstr "个人资料"
+
+#: templates/settings/settings_user_settings.html:10
+msgid "Change Password"
+msgstr "修改密码"
+
+#: templates/settings/settings_user_settings.html:14
+msgid "Appearance"
+msgstr "外观"
+
+#: templates/settings/settings_user_settings.html:16
+msgid "Theme"
+msgstr "主题"
+
+#: templates/settings/settings_user_settings.html:18
+msgid "Auto (Follow system)"
+msgstr "自动（跟随系统）"
+
+#: templates/settings/settings_user_settings.html:19
+msgid "Light Mode"
+msgstr "浅色模式"
+
+#: templates/settings/settings_user_settings.html:20
+msgid "Dark Mode"
+msgstr "深色模式"
+
+#: templates/settings/settings_user_settings.html:24
+msgid "Push Settings"
+msgstr "推送设置"
+
+#: templates/settings/settings_user_settings.html:26
+msgid "Kindle Email Address"
+msgstr "Kindle 邮箱地址"
+
+#: templates/settings/settings_user_settings.html:31
+msgid "Format Priority"
+msgstr "格式优先级"
+
+#: templates/settings/settings_user_settings.html:33
+msgid ""
+"When downloading or pushing to Kindle / ANX library, available formats "
+"will be searched in this priority order. Use commas to separate, e.g., "
+"epub, mobi, pdf, azw3"
+msgstr "下载或推送到 Kindle / ANX 书库时，将按此优先顺序搜索可用格式。使用逗号分隔，例如：epub, mobi, pdf, azw3"
+
+#: templates/settings/settings_user_settings.html:37
+msgid "Force EPUB Conversion"
+msgstr "强制 EPUB 转换"
+
+#: templates/settings/settings_user_settings.html:38
+msgid ""
+"If enabled, will always try to convert the book to an optimized EPUB "
+"format when downloading or pushing to the ANX library, instead of sending"
+" the original format."
+msgstr "如果启用，在下载或推送到 ANX 书库时，将始终尝试将图书转换为优化的 EPUB 格式，而不是发送原始格式。"
+
+#: templates/settings/settings_user_settings.html:41
+msgid "Audiobook Generation Settings"
+msgstr "有声书生成设置"
+
+#: templates/settings/settings_user_settings.html:43
+msgid "TTS Profile"
+msgstr "TTS 配置方案"
+
+#: templates/settings/settings_user_settings.html:46
+#: templates/settings/settings_user_settings.html:114
+msgid "Save Preset"
+msgstr "保存预设"
+
+#: templates/settings/settings_user_settings.html:47
+#: templates/settings/settings_user_settings.html:115
+msgid "Save As Preset"
+msgstr "另存为预设"
+
+#: templates/settings/settings_user_settings.html:50
+msgid "Load, save or delete TTS configuration profiles."
+msgstr "加载、保存或删除 TTS 配置方案。"
+
+#: templates/settings/settings_user_settings.html:53
+msgid "TTS Provider"
+msgstr "TTS 提供商"
+
+#: templates/settings/settings_user_settings.html:58
+msgid "The text-to-speech service provider to use."
+msgstr "要使用的文本转语音服务提供商。"
+
+#: templates/settings/settings_user_settings.html:62
+msgid "Select or type a voice"
+msgstr "选择或自定义朗读音色"
+
+#: templates/settings/settings_user_settings.html:66
+msgid "The voice to use for generation. e.g., zh-CN-YunjianNeural for Edge TTS."
+msgstr "用于生成语音的声音。例如，Edge TTS 的 zh-CN-YunjianNeural。"
+
+#: templates/settings/settings_user_settings.html:69
+#: templates/settings/settings_user_settings.html:133
+msgid "API Key"
+msgstr "API 密钥"
+
+#: templates/settings/settings_user_settings.html:71
+msgid "API key for the selected provider (if required)."
+msgstr "所选提供商的 API 密钥（如果需要）。"
+
+#: templates/settings/settings_user_settings.html:74
+#: templates/settings/settings_user_settings.html:128
+msgid "Base URL"
+msgstr "基础 URL"
+
+#: templates/settings/settings_user_settings.html:76
+msgid "Custom base URL for the API (for proxies or self-hosted models)."
+msgstr "API 的自定义基础 URL（用于代理或自托管模型）。"
+
+#: templates/settings/settings_user_settings.html:79
+#: templates/settings/settings_user_settings.html:138
+msgid "Model"
+msgstr "模型"
+
+#: templates/settings/settings_user_settings.html:81
+msgid "The specific model to use, e.g., tts-1-hd (if supported by the provider)."
+msgstr "要使用的特定模型，例如 tts-1-hd（如果提供商支持）。"
+
+#: templates/settings/settings_user_settings.html:86
+#, python-format
+msgid "Speaking rate. e.g., +10%% or -10%%."
+msgstr "语速。例如：+10%% 或 -10%%。"
+
+#: templates/settings/settings_user_settings.html:89
+msgid "Volume"
+msgstr "音量"
+
+#: templates/settings/settings_user_settings.html:91
+#, python-format
+msgid "Volume level. e.g., +10%% or -10%%."
+msgstr "音量大小。例如：+10%% 或 -10%%。"
+
+#: templates/settings/settings_user_settings.html:96
+msgid "Speaking pitch. e.g., +10Hz or -10Hz."
+msgstr "音高。例如：+10Hz 或 -10Hz。"
+
+#: templates/settings/settings_user_settings.html:99
+msgid "Sentence Pause (ms)"
+msgstr "句间停顿（毫秒）"
+
+#: templates/settings/settings_user_settings.html:101
+msgid "Pause duration between sentences in milliseconds."
+msgstr "句子之间的停顿时间（毫秒）。"
+
+#: templates/settings/settings_user_settings.html:104
+msgid "Paragraph Pause (ms)"
+msgstr "段间停顿（毫秒）"
+
+#: templates/settings/settings_user_settings.html:106
+msgid "Pause duration between paragraphs in milliseconds."
+msgstr "段落之间的停顿时间（毫秒）。"
+
+#: templates/settings/settings_user_settings.html:109
+msgid "LLM Provider Settings"
+msgstr "LLM 提供商设置"
+
+#: templates/settings/settings_user_settings.html:111
+msgid "LLM Profile"
+msgstr "LLM 配置方案"
+
+#: templates/settings/settings_user_settings.html:118
+msgid "Load, save or delete LLM configuration profiles."
+msgstr "加载、保存或删除 LLM 配置方案。"
+
+#: templates/settings/settings_user_settings.html:121
+msgid "LLM Provider"
+msgstr "LLM 提供商"
+
+#: templates/settings/settings_user_settings.html:125
+msgid "The Large Language Model provider to use for MCP."
+msgstr "用于 MCP 的大语言模型提供商。"
+
+#: templates/settings/settings_user_settings.html:130
+msgid "Custom base URL for the API (e.g., for proxies or self-hosted models)."
+msgstr "API 的自定义基础 URL（例如，用于代理或自托管模型）。"
+
+#: templates/settings/settings_user_settings.html:135
+msgid "API key for the selected provider."
+msgstr "所选提供商的 API 密钥。"
+
+#: templates/settings/settings_user_settings.html:139
+msgid "Select or type a model"
+msgstr "选择或输入一个模型"
+
+#: templates/settings/settings_user_settings.html:143
+msgid "The specific model to use, e.g., gpt-4o."
+msgstr "要使用的具体模型，例如 gpt-4o。"
+
+#: templates/settings/settings_user_settings.html:146
+msgid "Statistics Settings"
+msgstr "统计设置"
+
+#: templates/settings/settings_user_settings.html:149
+msgid "Enable Reading Statistics Page"
+msgstr "启用阅读统计页面"
+
+#: templates/settings/settings_user_settings.html:150
+msgid "Allows you to view your reading statistics after logging in."
+msgstr "允许您在登录后查看您的阅读统计信息。"
+
+#: templates/settings/settings_user_settings.html:154
+msgid "Make Statistics Page Public"
+msgstr "将统计页面设为公开"
+
+#: templates/settings/settings_user_settings.html:155
+msgid ""
+"If enabled, your statistics page will be publicly accessible without "
+"needing to log in."
+msgstr "如果启用，您的统计页面将在无需登录的情况下公开访问。"
+
+#: templates/settings/settings_user_settings.html:158
+msgid "Your Statistics Page URL"
+msgstr "您的统计页面 URL"
+
+#: templates/settings/settings_user_settings.html:162
+msgid "Two-Factor Authentication (2FA)"
+msgstr "双因素身份验证 (2FA)"
+
+#: templates/settings/settings_user_settings.html:165
+msgid "Please use your authenticator app to scan this QR code:"
+msgstr "请使用您的身份验证器应用扫描此二维码："
+
+#: templates/settings/settings_user_settings.html:167
+msgid "Or manually enter the key:"
+msgstr "或手动输入密钥："
+
+#: templates/settings/settings_user_settings.html:169
+msgid "Verification Code"
+msgstr "验证码"
+
+#: templates/settings/settings_user_settings.html:170
+msgid "Enter the 6-digit code to complete setup"
+msgstr "输入 6 位代码以完成设置"
+
+#: templates/settings/settings_user_settings.html:172
+msgid "Verify and Enable"
+msgstr "验证并启用"
+
+#: templates/settings/settings_user_settings.html:177
+msgid "Save User Settings"
+msgstr "保存用户设置"
 
 #: utils/decorators.py:10
 msgid "Administrator permission required."

@@ -1,0 +1,98 @@
+<!-- MCP 设置 -->
+<div id="mcpSettings" class="tab-content page-transition">
+    <h3>{{ _('MCP API Tokens') }}</h3>
+    <p>{{ _('You can use these tokens to interact with your library via the MCP protocol.') }}</p>
+    <div id="mcp-token-list">
+        <!-- Tokens will be loaded here by JavaScript -->
+    </div>
+    <div style="text-align: right; margin-top: 1rem;">
+        <button class="button-primary" onclick="generateMcpToken()">{{ _('Generate New Token') }}</button>
+    </div>
+
+    <div class="mcp-docs">
+        <h4>{{ _('MCP Endpoint') }}</h4>
+        <p><code>{{ request.host_url.rstrip('/') }}/mcp?token=YOUR_TOKEN</code></p>
+        <h4>{{ _('Authentication') }}</h4>
+        <p>{{ _('Authenticate by appending the `?token=YOUR_TOKEN` parameter to the URL.') }}</p>
+        <h4>{{ _('Prompt Examples') }}</h4>
+        <p>{{ _('Here are some examples of natural language prompts you can use with an AI agent. The agent will intelligently call one or more tools to fulfill your request.') }}</p>
+        <div class="prompt-examples-container">
+            <div class="prompt-card">
+                <h5>{{ _('Simple & Advanced Search') }}</h5>
+                <div class="prompt-item">
+                    <p>"{{ _('Find books about Python programming.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Search for science fiction books by Isaac Asimov published after 1950.') }}"</p>
+                </div>
+            </div>
+            <div class="prompt-card">
+                <h5>{{ _('Book Management') }}</h5>
+                <div class="prompt-item">
+                    <p>"{{ _('What are the 5 most recently added books? Send the first one to my Kindle.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Push the book \'Dune\' to my Anx reader.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Upload the book \'The Three-Body Problem\' from my Anx library to Calibre.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Generate an audiobook for the book \'The Three-Body Problem\'.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('What is the status of the audiobook generation for \'The Three-Body Problem\'?') }}"</p>
+                </div>
+            </div>
+            <div class="prompt-card">
+                <h5>{{ _('Content Interaction & Summarization') }}</h5>
+                <div class="prompt-item">
+                    <p>"{{ _('Show me the table of contents for the book \'Foundation\'.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Fetch the first chapter of \'Foundation\' and give me a summary.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Based on the chapter \'The Psychohistorians\' from the book \'Foundation\', what are the main ideas of psychohistory?') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Read the entire book \'The Little Prince\' and tell me what the fox\'s secret is.') }}"</p>
+                </div>
+            </div>
+            <div class="prompt-card">
+                <h5>{{ _('Reading Statistics & Progress') }}</h5>
+                <div class="prompt-item">
+                    <p>"{{ _('How many words is the book \'Dune\' in total, and list the word count for each chapter.') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('How many books have I read this year?') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('What\'s my reading progress on \'Dune\'?') }}"</p>
+                </div>
+                <div class="prompt-item">
+                    <p>"{{ _('Who is the author of \'Project Hail Mary\' and how long have I been reading it?') }}"</p>
+                </div>
+            </div>
+        </div>
+
+        <h4>{{ _('Available Tools') }}</h4>
+        <p>{{ _("You can get a list of all available tools by calling the `tools/list` method. The currently supported tools are:") }}</p>
+        <ul>
+            <li><strong>search_calibre_books</strong>: {{ _('Search Calibre books using Calibre\'s search syntax. Parameters: `search_expression` (str), `limit` (int, optional)') }}</li>
+            <li><strong>get_recent_books</strong>: {{ _('Get recent books from a library. Parameters: `library_type` (str, "anx" or "calibre"), `limit` (int, optional)') }}</li>
+            <li><strong>get_book_details</strong>: {{ _('Get details for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+            <li><strong>push_calibre_book_to_anx</strong>: {{ _('Push a Calibre book to the user\'s Anx library. Parameters: `book_id` (int)') }}</li>
+            <li><strong>push_anx_book_to_calibre</strong>: {{ _('Upload a book from the user\'s Anx library to the public Calibre library. Parameters: `book_id` (int)') }}</li>
+            <li><strong>send_calibre_book_to_kindle</strong>: {{ _('Send a Calibre book to the user\'s configured Kindle email. Parameters: `book_id` (int)') }}</li>
+            <li><strong>get_table_of_contents</strong>: {{ _('Get the table of contents for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+            <li><strong>get_chapter_content</strong>: {{ _('Get the content of a specific chapter. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int), `chapter_number` (int)') }}</li>
+            <li><strong>get_entire_book_content</strong>: {{ _('Get the entire text content of a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+            <li><strong>get_word_count_statistics</strong>: {{ _('Get word count statistics for a book. Parameters: `library_type` (str, "anx" or "calibre"), `book_id` (int)') }}</li>
+            <li><strong>generate_audiobook</strong>: {{ _('Generate an audiobook for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
+            <li><strong>get_audiobook_generation_status</strong>: {{ _('Get audiobook generation status by task ID. Parameters: `task_id` (str)') }}</li>
+            <li><strong>get_audiobook_status_by_book</strong>: {{ _('Get the latest audiobook task status for a book. Parameters: `book_id` (int), `library_type` (str, "anx" or "calibre")') }}</li>
+            <li><strong>get_user_reading_stats</strong>: {{ _('Get reading statistics for the current user. `time_range` is a required parameter and can be "all", "today", "this_week", "this_month", "this_year", a number of recent days (e.g., "7", "30"), or a date range "YYYY-MM-DD:YYYY-MM-DD".') }}</li>
+        </ul>
+    </div>
+</div>

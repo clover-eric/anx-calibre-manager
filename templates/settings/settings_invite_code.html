@@ -1,0 +1,43 @@
+<!-- 邀请码管理 (仅限管理员) -->
+<div id="inviteCodeManagement" class="tab-content page-transition">
+    <form id="inviteCodeForm" onsubmit="generateInviteCode(event)" class="form-container" style="margin-bottom: 2rem;">
+        <h3>{{ _('Generate New Invite Code') }}</h3>
+        <div class="form-group">
+            <label for="custom_code">{{ _('Custom Invite Code') }}</label>
+            <input type="text" id="custom_code" name="custom_code" placeholder="{{ _('Leave blank to auto-generate') }}">
+            <small>{{ _('Custom invite code (optional). If left blank, a random code will be generated.') }}</small>
+        </div>
+        <div class="form-group">
+            <label for="max_uses">{{ _('Maximum Uses') }}</label>
+            <input type="number" id="max_uses" name="max_uses" value="1" min="1">
+            <small>{{ _('How many times this invite code can be used') }}</small>
+        </div>
+        <div class="form-group">
+            <label for="expires_hours">{{ _('Expires After (Hours)') }}</label>
+            <input type="number" id="expires_hours" name="expires_hours" placeholder="{{ _('Leave blank for no expiration') }}">
+            <small>{{ _('Number of hours after which this invite code will expire (optional)') }}</small>
+        </div>
+        <div style="text-align: right;">
+            <button type="submit" class="button-primary">{{ _('Generate Invite Code') }}</button>
+        </div>
+    </form>
+
+    <h3>{{ _('Existing Invite Codes') }}</h3>
+    <table id="inviteCodeTable">
+        <thead>
+            <tr>
+                <th>{{ _('Code') }}</th>
+                <th>{{ _('Max Uses') }}</th>
+                <th>{{ _('Current Uses') }}</th>
+                <th>{{ _('Created By') }}</th>
+                <th>{{ _('Created At') }}</th>
+                <th>{{ _('Expires At') }}</th>
+                <th>{{ _('Status') }}</th>
+                <th>{{ _('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 邀请码数据将由 JavaScript 动态填充 -->
+        </tbody>
+    </table>
+</div>
