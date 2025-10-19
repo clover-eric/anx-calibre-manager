@@ -15,7 +15,8 @@ RUN apt-get update && \
     poppler-utils \
     zlib1g-dev \
     fonts-liberation \
-    zip
+    zip \
+    fonts-wqy-microhei
 
 # Create a non-root user for security
 RUN useradd --create-home appuser
@@ -57,7 +58,8 @@ RUN apt-get update && \
     locales \
     libxslt1.1 \
     libxml2 \
-    ffmpeg && \
+    ffmpeg \
+    fonts-wqy-microhei && \
     rm -rf /var/lib/apt/lists/*
 
 # Configure locales

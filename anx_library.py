@@ -323,3 +323,71 @@ def delete_anx_book(username, book_id):
     except Exception as e:
         print(f"Error deleting book {book_id} for user {username}: {e}")
         return False, f"删除书籍时出错: {e}"
+
+def add_book_to_anx_db(username, book_data, new_file_path, new_cover_path):
+    """
+    Adds or reactivates a single, processed book in the user's Anx database.
+    Handles duplicate checks and reactivates soft-deleted books.
+    """
+    dirs = get_anx_user_dirs(username)
+    if not dirs or not os.path.exists(dirs["db_path"]):
+        raise FileNotFoundError("Anx database not found.")
+
+    with closing(sqlite3.connect(dirs["db_path"])) as db:
+        cursor = db.cursor()
+        
+        cursor.execute("SELECT id, is_deleted FROM tb_books WHERE file_md5 = ?", (book_data['file_md5'],))
+        existing = cursor.fetchone()
+        
+        current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+
+        if existing:
+            existing_id, is_deleted = existing
+            if is_deleted == 1:
+                # Reactivate the book
+                cursor.execute("""
+                    UPDATE tb_books
+                    SET is_deleted = 0,
+                        update_time = ?,
+                        file_path = ?,
+                        cover_path = ?,
+                        title = ?,
+                        author = ?,
+                        description = ?
+                    WHERE id = ?
+                """, (
+                    current_time,
+                    new_file_path,
+                    new_cover_path,
+                    book_data.get('title', 'Unknown Title'),
+                    book_data.get('author', 'Unknown Author'),
+                    book_data.get('description', ''),
+                    existing_id
+                ))
+                db.commit()
+                return True, "REACTIVATED"
+            else:
+                # It's a true duplicate
+                return False, "DUPLICATE"
+
+        # Insert new book
+        cursor.execute("""
+            INSERT INTO tb_books (
+                title, author, cover_path, file_path, file_md5, create_time, update_time,
+                is_deleted, last_read_position, reading_percentage, rating, group_id, description
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            book_data.get('title', 'Unknown Title'),
+            book_data.get('author', 'Unknown Author'),
+            new_cover_path,
+            new_file_path,
+            book_data.get('file_md5', ''),
+            current_time,
+            current_time,
+            0, '', 0.0, 0.0, 0,
+            book_data.get('description', '')
+        ))
+        db.commit()
+    
+    return True, "SUCCESS"

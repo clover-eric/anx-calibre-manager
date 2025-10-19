@@ -2,6 +2,7 @@ import re
 import os
 import tempfile
 from typing import Dict, Any
+import ebooklib
 from ebooklib import epub
 
 # 延迟导入以避免循环依赖

@@ -149,6 +149,11 @@
         <div class="library" id="anx-library">
             <div class="library-header">
                 <h2>{{ _('Anx Library') }}</h2>
+                <div class="header-actions">
+                    {% if not (disable_normal_user_upload and g.user.role == 'user') %}
+                    <button type="button" class="button-primary" data-action="show-anx-upload-modal">{{ _('Upload') }}</button>
+                    {% endif %}
+                </div>
             </div>
             <div id="anx-library-subheader">
                  <p class="webdav-info">{{ _('Enter the WebDAV address in the Anx Reader settings page to synchronize (username and password are your login credentials):') }} <span id="anx-webdav-url" class="webdav-url" title="{{ _('Click to copy') }}"></span></p>
@@ -243,6 +248,28 @@
         <div class="modal-footer">
             <button type="button" class="button" data-action="close-modal">{{ _('Cancel') }}</button>
             <button type="button" class="button-primary" data-action="save-changes"><span class="button-text">{{ _('Save') }}</span></button>
+        </div>
+    </div>
+</div>
+<div id="anxUploadModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{{ _('Upload Books to Anx Library') }}</h2>
+            <button class="close-button" data-action="close-modal">&times;</button>
+        </div>
+         <div class="modal-body">
+            <form id="anxUploadForm" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="anx-book-upload-input">{{ _('Select files:') }}</label>
+                    <input id="anx-book-upload-input" type="file" name="books" required multiple accept=".epub,.mobi,.azw3,.fb2,.txt,.pdf">
+                </div>
+                <div id="anx-upload-progress-container" class="upload-progress-container"></div>
+                <div class="modal-footer">
+                     <button type="button" class="button" data-action="close-modal">{{ _('Cancel') }}</button>
+                    <button type="submit" class="button-primary">{{ _('Upload') }}</button>
+                    <button type="button" id="anx-upload-done-button" class="button-primary" style="display: none;">{{ _('Done') }}</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

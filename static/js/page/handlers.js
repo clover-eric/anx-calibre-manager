@@ -261,6 +261,11 @@ export function setupEventHandlers(
                 }
                 break;
             }
+            case 'show-anx-upload-modal': {
+                const anxUploadModal = document.getElementById('anxUploadModal');
+                if (anxUploadModal) showModal(anxUploadModal);
+                break;
+            }
             case 'show-upload-modal':
                 showModal(uploadModal);
                 break;
@@ -480,6 +485,124 @@ export function setupEventHandlers(
     document.getElementById('upload-done-button').addEventListener('click', () => {
         const uploadModal = document.getElementById('uploadModal');
         hideModal(uploadModal);
+        // Use a short delay to allow the modal to close before reloading
+        setTimeout(() => {
+            location.reload();
+        }, 100);
+    });
+
+    document.getElementById('anxUploadForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const uploadForm = this;
+        const uploadButton = uploadForm.querySelector('button[type="submit"]');
+        const cancelButton = uploadForm.querySelector('button[data-action="close-modal"]');
+        const doneButton = document.getElementById('anx-upload-done-button');
+
+        const files = Array.from(document.getElementById('anx-book-upload-input').files);
+        const progressContainer = document.getElementById('anx-upload-progress-container');
+        progressContainer.innerHTML = ''; // Clear previous results
+
+        if (files.length === 0) {
+            alert(t.selectFilesToUpload);
+            return;
+        }
+
+        // Hide original buttons and show progress
+        uploadButton.style.display = 'none';
+        cancelButton.style.display = 'none';
+        doneButton.style.display = 'none'; // Ensure it's hidden initially
+
+        // --- Step 1: Create all UI elements first ---
+        const progressElements = files.map(file => {
+            const progressWrapper = document.createElement('div');
+            progressWrapper.className = 'progress-wrapper';
+            const fileNameSpan = document.createElement('span');
+            fileNameSpan.textContent = file.name;
+            const progressBar = document.createElement('progress');
+            progressBar.max = 100;
+            progressBar.value = 0;
+            const progressLabel = document.createElement('span');
+            progressLabel.textContent = t.waiting; // Set initial state to Waiting
+            progressWrapper.appendChild(fileNameSpan);
+            progressWrapper.appendChild(progressBar);
+            progressWrapper.appendChild(progressLabel);
+            progressContainer.appendChild(progressWrapper);
+            return { wrapper: progressWrapper, bar: progressBar, label: progressLabel };
+        });
+
+        // --- Step 2: Process files sequentially ---
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const { wrapper, bar, label } = progressElements[i];
+            
+            label.textContent = t.uploading; // Update status before starting
+
+            await new Promise((resolve) => {
+                const formData = new FormData();
+                formData.append('books', file);
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', "/api/upload_to_anx", true);
+
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        const percentComplete = (event.loaded / event.total) * 100;
+                        bar.value = percentComplete;
+                        if (percentComplete >= 100) {
+                            label.textContent = t.processing;
+                        } else {
+                            label.textContent = Math.round(percentComplete) + '%';
+                        }
+                    }
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const results = JSON.parse(xhr.responseText);
+                            const result = results[0]; // Assuming single file upload response is an array
+                            if (result.success) {
+                                label.textContent = '✅ ' + result.message;
+                                wrapper.classList.add('success');
+                            } else {
+                                label.textContent = '❌ ' + result.error;
+                                wrapper.classList.add('error');
+                            }
+                        } catch (e) {
+                            label.textContent = `❌ ${t.uploadFailed}: Invalid server response.`;
+                            wrapper.classList.add('error');
+                        }
+                    } else {
+                        let errorMessage = xhr.statusText;
+                        try {
+                            const errorJson = JSON.parse(xhr.responseText);
+                            errorMessage = errorJson.error || errorMessage;
+                        } catch (e) {
+                            // Ignore if response is not JSON
+                        }
+                        label.textContent = `❌ ${t.uploadFailed}: ${errorMessage}`;
+                        wrapper.classList.add('error');
+                    }
+                    resolve(); // Resolve regardless of success or failure
+                };
+
+                xhr.onerror = function() {
+                    label.textContent = `❌ ${t.networkError}.`;
+                    wrapper.classList.add('error');
+                    resolve(); // Resolve regardless of success or failure
+                };
+
+                xhr.send(formData);
+            });
+        }
+
+        // --- Step 3: Show Done button ---
+        doneButton.style.display = 'inline-block';
+    });
+
+    document.getElementById('anx-upload-done-button').addEventListener('click', () => {
+        const anxUploadModal = document.getElementById('anxUploadModal');
+        hideModal(anxUploadModal);
         // Use a short delay to allow the modal to close before reloading
         setTimeout(() => {
             location.reload();

@@ -518,6 +518,148 @@ def _push_anx_to_calibre_logic(user_dict, book_id):
     except requests.exceptions.RequestException as e:
         return {'success': False, 'error': _("Error connecting to Calibre server: %(error)s", error=e), 'code': 500}
 
+
+import hashlib
+import posixpath
+from utils.ebook_utils import process_uploaded_ebook
+from utils.text import safe_title, safe_author, sanitize_filename
+from anx_library import add_book_to_anx_db
+
+def _upload_to_anx_logic(user_dict, uploaded_files):
+    """Core logic to upload books to a user's Anx library."""
+    username = user_dict.get('username')
+    if not username:
+        return {'success': False, 'error': 'Username not found in user_dict.'}
+
+    if not uploaded_files:
+        return {'success': False, 'error': _('No files were uploaded.')}
+
+    dirs = get_anx_user_dirs(username)
+    if not dirs:
+        return {'success': False, 'error': _('User directory not configured.')}
+
+    # Since the frontend sends one file at a time, we process the first one.
+    file = uploaded_files[0]
+    if not file.filename:
+        return {'success': False, 'error': _('No files selected for uploading.')}
+
+    original_filename = os.path.basename(file.filename)
+    _unused, ext = os.path.splitext(original_filename)
+    temp_filepath = None
+
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as temp_file:
+            file.save(temp_file.name)
+            temp_filepath = temp_file.name
+
+        # Force EPUB conversion if the user setting is enabled
+        if user_dict.get('force_epub_conversion') and ext.lower() != '.epub':
+            if not shutil.which('ebook-converter'):
+                raise Exception(_('`ebook-converter` tool is missing, cannot convert file.'))
+            
+            converted_epub_path = os.path.join(tempfile.gettempdir(), f"{uuid.uuid4()}.epub")
+            subprocess.run(
+                ['ebook-converter', temp_filepath, converted_epub_path],
+                capture_output=True, text=True, check=True, timeout=300
+            )
+            os.unlink(temp_filepath)
+            temp_filepath = converted_epub_path
+            ext = '.epub'
+
+        metadata = process_uploaded_ebook(temp_filepath, original_filename=original_filename)
+        
+        title = safe_title(metadata['title'])
+        author = safe_author(metadata['author'])
+        
+        base_filename = f"{title} - {author}"
+        
+        new_book_filename = f"{base_filename}{ext}"
+        new_cover_filename = f"{base_filename}.jpg"
+
+        # Create subdirectories
+        file_dir = dirs['file']
+        cover_dir = dirs['cover']
+        os.makedirs(file_dir, exist_ok=True)
+        os.makedirs(cover_dir, exist_ok=True)
+
+        book_dest_path = os.path.join(file_dir, new_book_filename)
+        cover_dest_path = os.path.join(cover_dir, new_cover_filename)
+
+        # Calculate MD5 before moving
+        with open(temp_filepath, 'rb') as f:
+            file_md5 = hashlib.md5(f.read()).hexdigest()
+
+        # Prepare data for DB
+        book_data_for_db = {
+            'title': title,
+            'author': author,
+            'description': metadata.get('comments', ''),
+            'file_md5': file_md5
+        }
+        
+        # Use POSIX paths for DB
+        db_file_path = posixpath.join('file', new_book_filename)
+        db_cover_path = posixpath.join('cover', new_cover_filename)
+
+        success, status = add_book_to_anx_db(username, book_data_for_db, db_file_path, db_cover_path)
+
+        if status == "DUPLICATE":
+            os.unlink(temp_filepath) # Clean up temp file
+            return {'success': True, 'message': _("Book '%(title)s' already exists in the library.", title=title)}
+        
+        # If reactivated or new, move/save the files
+        shutil.move(temp_filepath, book_dest_path)
+        if metadata['cover']:
+            with open(cover_dest_path, 'wb') as f:
+                f.write(metadata['cover'])
+
+        if status == "REACTIVATED":
+            return {'success': True, 'message': _("Reactivated previously deleted book '%(title)s'.", title=title)}
+        
+        return {'success': True, 'message': _("Book '%(title)s' uploaded successfully.", title=title)}
+
+    except Exception as e:
+        logging.error(f"Failed to process uploaded file {original_filename} for user {username}: {e}")
+        if temp_filepath and os.path.exists(temp_filepath):
+            os.unlink(temp_filepath)
+        return {'success': False, 'error': _("Failed to process '%(filename)s': %(error)s", filename=original_filename, error=str(e))}
+
+
+@books_bp.route('/upload_to_anx', methods=['POST'])
+def upload_to_anx_api():
+    # Permission check for normal users
+    if config_manager.config.get('DISABLE_NORMAL_USER_UPLOAD') and g.user.role == 'user':
+        error_msg = _('You do not have permission to upload books.')
+        log_activity(ActivityType.UPLOAD_BOOK, library_type='anx', success=False, failure_reason=error_msg)
+        return jsonify([{'success': False, 'error': error_msg}]), 403
+
+    if 'books' not in request.files:
+        return jsonify([{'success': False, 'error': _('No file part in the request.')}]), 400
+
+    uploaded_files = request.files.getlist('books')
+    if not uploaded_files or all(f.filename == '' for f in uploaded_files):
+        return jsonify([{'success': False, 'error': _('No files selected for uploading.')}]), 400
+
+    # We process one file at a time as per the frontend logic, but the logic can handle multiple
+    user_dict = {'username': g.user.username}
+    result = _upload_to_anx_logic(user_dict, uploaded_files)
+
+    # The frontend expects a list of results, even for a single file.
+    final_result = {
+        'success': result['success'],
+        'message': result.get('message'),
+        'error': result.get('error')
+    }
+
+    if result['success']:
+        log_activity(ActivityType.UPLOAD_BOOK, library_type='anx', success=True, detail=result.get('message'))
+        return jsonify([final_result])
+    else:
+        log_activity(ActivityType.UPLOAD_BOOK, library_type='anx', success=False, failure_reason=result.get('error'))
+        status_code = result.get('code', 500)
+        return jsonify([final_result]), status_code
+
+
 @books_bp.route('/push_anx_to_calibre/<int:book_id>', methods=['POST'])
 def push_anx_to_calibre_api(book_id):
     book_details = get_anx_book_details(g.user.username, book_id, as_dict=True)
