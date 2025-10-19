@@ -16,7 +16,6 @@ from wsgidav.wsgidav_app import WsgiDAVApp
 from wsgidav.fs_dav_provider import FilesystemProvider
 from wsgidav.dc.base_dc import BaseDomainController
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 class User:
     def __init__(self, row):
