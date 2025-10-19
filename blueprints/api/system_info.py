@@ -45,11 +45,10 @@ def get_system_info():
         # Get logs from log files (limited to avoid GitHub URL length issues)
         container_logs = ""
         try:
-            # Read from configured log directory - only error logs, no access logs
+            # Read from configured log directory - only application log
             log_dir = os.environ.get('LOG_DIR', '/config/logs')
             log_files = [
                 os.path.join(log_dir, 'app.log'),
-                os.path.join(log_dir, 'gunicorn-error.log'),
             ]
             
             log_content_parts = []

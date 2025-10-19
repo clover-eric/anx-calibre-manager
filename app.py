@@ -105,12 +105,10 @@ class AnxDomainController(BaseDomainController):
 def create_app():
     app = Flask(__name__)
 
-    # 当应用由 Gunicorn 运行时，将其日志记录器与 Gunicorn 的错误日志记录器集成
-    # 这样可以确保所有日志都通过 Gunicorn 的 master 进程进行管理，避免多进程日志冲突
-    if __name__ != '__main__':
-        gunicorn_logger = logging.getLogger('gunicorn.error')
-        app.logger.handlers = gunicorn_logger.handlers
-        app.logger.setLevel(gunicorn_logger.level)
+    # Gunicorn's logging is handled via its command-line flags.
+    # The application's logging is configured in basicConfig at the top of this file,
+    # which outputs to both stream (console) and a rotating file.
+    # We no longer need to integrate Gunicorn's logger with the app's logger.
 
     # --- Version ---
     APP_VERSION = "__VERSION__"

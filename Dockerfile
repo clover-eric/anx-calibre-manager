@@ -141,5 +141,6 @@ ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 # Define the default command
 # The --pid flag tells Gunicorn to write its master process ID to a file.
 # This allows us to send signals (like SIGHUP for reloading) to it.
-# Gunicorn error logs are written to both stdout and log files in /config/logs
-CMD gunicorn --bind 0.0.0.0:$PORT --workers ${GUNICORN_WORKERS} --timeout 3600 --pid /tmp/gunicorn.pid --access-logfile - --error-logfile /config/logs/gunicorn-error.log --capture-output --enable-stdio-inheritance "app:create_app()"
+# Access logs are disabled. Error logs go to stderr (visible in `docker logs`).
+# Application logs are saved to /config/logs/app.log and also output to stdout.
+CMD gunicorn --bind 0.0.0.0:$PORT --workers ${GUNICORN_WORKERS} --timeout 3600 --pid /tmp/gunicorn.pid --access-logfile /dev/null --error-logfile - --capture-output --enable-stdio-inheritance "app:create_app()"
