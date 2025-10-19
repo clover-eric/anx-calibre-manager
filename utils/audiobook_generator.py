@@ -170,7 +170,7 @@ class EdgeTTSProvider(BaseTTSProvider):
                     logger.info(f"Skipping chunk {chunk_counter}/{total_chunks} as it contains only skippable characters.")
                     continue
 
-                logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks}...")
+                #logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks}...")
                 for attempt in range(MAX_TTS_RETRIES):
                     try:
                         communicate = CommWithPauses(
