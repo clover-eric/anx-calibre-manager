@@ -382,6 +382,11 @@ export function setupEventHandlers(
 
     document.getElementById('uploadForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+        const uploadForm = this;
+        const uploadButton = uploadForm.querySelector('button[type="submit"]');
+        const cancelButton = uploadForm.querySelector('button[data-action="close-modal"]');
+        const doneButton = document.getElementById('upload-done-button');
+
         const files = Array.from(document.getElementById('book-upload-input').files);
         const progressContainer = document.getElementById('upload-progress-container');
         progressContainer.innerHTML = ''; // Clear previous results
@@ -390,6 +395,11 @@ export function setupEventHandlers(
             alert(t.selectFilesToUpload);
             return;
         }
+
+        // Hide original buttons and show progress
+        uploadButton.style.display = 'none';
+        cancelButton.style.display = 'none';
+        doneButton.style.display = 'none'; // Ensure it's hidden initially
 
         // --- Step 1: Create all UI elements first ---
         const progressElements = files.map(file => {
@@ -410,15 +420,13 @@ export function setupEventHandlers(
         });
 
         // --- Step 2: Process files sequentially ---
-        let all_successful = true;
-
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const { wrapper, bar, label } = progressElements[i];
             
             label.textContent = t.uploading; // Update status before starting
 
-            const success = await new Promise((resolve) => {
+            await new Promise((resolve) => {
                 const formData = new FormData();
                 formData.append('books', file);
 
@@ -444,44 +452,38 @@ export function setupEventHandlers(
                         if (result.success) {
                             label.textContent = '✅ ' + result.message;
                             wrapper.classList.add('success');
-                            resolve(true);
                         } else {
                             label.textContent = '❌ ' + result.error;
                             wrapper.classList.add('error');
-                            resolve(false);
                         }
                     } else {
                         label.textContent = `❌ ${t.uploadFailed}: ${xhr.statusText}`;
                         wrapper.classList.add('error');
-                        resolve(false);
                     }
+                    resolve(); // Resolve regardless of success or failure
                 };
 
                 xhr.onerror = function() {
                     label.textContent = `❌ ${t.networkError}.`;
                     wrapper.classList.add('error');
-                    resolve(false);
+                    resolve(); // Resolve regardless of success or failure
                 };
 
                 xhr.send(formData);
             });
-
-            if (!success) {
-                all_successful = false;
-            }
         }
 
-        // --- Step 3: Final notification ---
-        if (all_successful) {
-            alert(t.allBooksUploaded);
-        } else {
-            alert(t.someFilesFailedUpload);
-        }
-        
-        // Reload the page after user confirms the alert, regardless of success or failure
+        // --- Step 3: Show Done button ---
+        doneButton.style.display = 'inline-block';
+    });
+
+    document.getElementById('upload-done-button').addEventListener('click', () => {
+        const uploadModal = document.getElementById('uploadModal');
+        hideModal(uploadModal);
+        // Use a short delay to allow the modal to close before reloading
         setTimeout(() => {
             location.reload();
-        }, 500);
+        }, 100);
     });
 
     document.querySelector('.search-form').addEventListener('submit', function(e) {
