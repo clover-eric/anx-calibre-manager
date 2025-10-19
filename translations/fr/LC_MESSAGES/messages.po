@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 13:54+0800\n"
+"POT-Creation-Date: 2025-10-19 15:00+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -800,8 +800,8 @@ msgid "Failed to load activities"
 msgstr "Échec du chargement des activités"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:349
-#: static/js/settings/user_activities.js:353
+#: static/js/settings/user_activities.js:352
+#: static/js/settings/user_activities.js:356
 msgid "Failed to load activity details"
 msgstr "Échec du chargement des détails de l'activité"
 
@@ -810,7 +810,7 @@ msgid "Failed to load event statistics"
 msgstr "Échec du chargement des statistiques d'événements"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:640
+#: static/js/settings/user_activities.js:643
 msgid "Locked by administrator"
 msgstr "Verrouillé par l'administrateur"
 
@@ -825,13 +825,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "Compte verrouillé jusqu'à %(time)s. Raison : %(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:645
+#: static/js/settings/user_activities.js:648
 msgid "User account locked successfully"
 msgstr "Compte utilisateur verrouillé avec succès"
 
 #: blueprints/api/user_activities.py:310
-#: static/js/settings/user_activities.js:650
-#: static/js/settings/user_activities.js:654
+#: static/js/settings/user_activities.js:653
+#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "Échec du verrouillage du compte utilisateur"
 
@@ -840,13 +840,13 @@ msgid "Account unlocked by administrator"
 msgstr "Compte déverrouillé par l'administrateur"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:677
+#: static/js/settings/user_activities.js:680
 msgid "User account unlocked successfully"
 msgstr "Compte utilisateur déverrouillé avec succès"
 
 #: blueprints/api/user_activities.py:345
-#: static/js/settings/user_activities.js:681
-#: static/js/settings/user_activities.js:685
+#: static/js/settings/user_activities.js:684
+#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "Échec du déverrouillage du compte utilisateur"
 
@@ -855,14 +855,13 @@ msgid "Failed login attempts reset by administrator"
 msgstr "Tentatives de connexion échouées réinitialisées par l'administrateur"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:708
+#: static/js/settings/user_activities.js:711
 msgid "Failed login attempts reset successfully"
 msgstr "Tentatives de connexion échouées réinitialisées avec succès"
 
 #: blueprints/api/user_activities.py:379
-#: static/js/settings/user_activities.js:712
-#: static/js/settings/user_activities.js:716
-#, python-brace-format
+#: static/js/settings/user_activities.js:715
+#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "Échec de la réinitialisation des tentatives de connexion"
 
@@ -1132,7 +1131,7 @@ msgstr ""
 msgid "Generating..."
 msgstr "Génération en cours..."
 
-#: static/js/page/translations.js:40 static/js/settings/user_activities.js:29
+#: static/js/page/translations.js:40 static/js/settings/user_activities.js:32
 msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
@@ -1140,7 +1139,7 @@ msgstr "Télécharger le livre audio"
 msgid "Listen to Audiobook"
 msgstr "Écouter le livre audio"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:42 static/js/page/translations.js:143
 msgid "Failed"
 msgstr "Échec"
 
@@ -1371,7 +1370,7 @@ msgstr "Toutes les tentatives de re-essai ont échoué en raison de réponses vi
 msgid "Failed to fetch audiobook list."
 msgstr "Échec de la récupération de la liste des livres audio."
 
-#: static/js/page/translations.js:108 static/js/settings/user_activities.js:30
+#: static/js/page/translations.js:108 static/js/settings/user_activities.js:33
 msgid "Delete Audiobook"
 msgstr "Supprimer le livre audio"
 
@@ -1460,6 +1459,120 @@ msgstr "Lecture/Pause"
 #: static/js/page/translations.js:129
 msgid "Playback Speed"
 msgstr "Vitesse de lecture"
+
+#: static/js/page/translations.js:132
+msgid "Total Users"
+msgstr "Utilisateurs totaux"
+
+#: static/js/page/translations.js:133
+msgid "Active Today"
+msgstr "Actifs aujourd'hui"
+
+#: static/js/page/translations.js:134
+msgid "Total Logins"
+msgstr "Connexions totales"
+
+#: static/js/page/translations.js:135
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:97
+msgid "Total Activities"
+msgstr "Total des activités"
+
+#: static/js/page/translations.js:136
+msgid "Unique Users"
+msgstr "Utilisateurs uniques"
+
+#: static/js/page/translations.js:137
+msgid "Time"
+msgstr "Heure"
+
+#: static/js/page/translations.js:138
+msgid "Activity Type"
+msgstr "Type d'activité"
+
+#: static/js/page/translations.js:139
+#: templates/settings/settings_invite_code.html:35
+msgid "Status"
+msgstr "Statut"
+
+#: static/js/page/translations.js:140
+msgid "Details"
+msgstr "Détails"
+
+#: static/js/page/translations.js:141
+#: templates/settings/settings_user_activities.html:68
+msgid "User"
+msgstr "Utilisateur"
+
+#: static/js/page/translations.js:142
+msgid "Success"
+msgstr "Succès"
+
+#: static/js/page/translations.js:144 templates/stats.html:97
+msgid "Total"
+msgstr "Total"
+
+#: static/js/page/translations.js:145 static/js/settings/common.js:35
+msgid "Active"
+msgstr "Actif"
+
+#: static/js/page/translations.js:146
+msgid "View Details"
+msgstr "Voir les détails"
+
+#: static/js/page/translations.js:147
+msgid "Lock"
+msgstr "Verrouiller"
+
+#: static/js/page/translations.js:148
+msgid "Unlock"
+msgstr "Déverrouiller"
+
+#: static/js/page/translations.js:149
+msgid "Reset Failed"
+msgstr "Réinitialiser les échecs"
+
+#: static/js/page/translations.js:150
+msgid "No activities found"
+msgstr "Aucune activité trouvée"
+
+#: static/js/page/translations.js:151
+msgid "No recent activities"
+msgstr "Aucune activité récente"
+
+#: static/js/page/translations.js:152
+msgid "No failed login attempts"
+msgstr "Aucune tentative de connexion échouée"
+
+#: static/js/page/translations.js:153
+msgid "Locked until"
+msgstr "Verrouillé jusqu'à"
+
+#: static/js/page/translations.js:154
+msgid "IP"
+msgstr "IP"
+
+#: static/js/page/translations.js:155
+#: templates/settings/settings_user_activities.html:183
+msgid "Reason"
+msgstr "Raison"
+
+#: static/js/page/translations.js:156
+#: templates/settings/settings_user_activities.html:70
+#: templates/settings/settings_user_activities.html:105
+msgid "Last Login"
+msgstr "Dernière connexion"
+
+#: static/js/page/translations.js:157
+#: templates/settings/settings_user_activities.html:71
+msgid "Last Login IP"
+msgstr "IP de dernière connexion"
+
+#: static/js/page/translations.js:158
+#: templates/settings/settings_user_activities.html:72
+#: templates/settings/settings_user_activities.html:101
+msgid "Login Count"
+msgstr "Nombre de connexions"
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1561,10 +1674,6 @@ msgstr "Ajouter"
 #: static/js/settings/common.js:34
 msgid "Are you sure you want to delete this user?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
-
-#: static/js/settings/common.js:35
-msgid "Active"
-msgstr "Actif"
 
 #: static/js/settings/common.js:36
 msgid "Disabled"
@@ -1700,245 +1809,225 @@ msgstr "Profil LLM supprimé avec succès !"
 msgid "Failed to delete LLM profile"
 msgstr "Échec de la suppression du profil LLM"
 
-#: static/js/settings/user_activities.js:16
+#: static/js/settings/user_activities.js:19
 #: templates/settings/settings_user_activities.html:131
 msgid "Login Success"
 msgstr "Connexion réussie"
 
-#: static/js/settings/user_activities.js:17
+#: static/js/settings/user_activities.js:20
 #: templates/settings/settings_user_activities.html:132
 msgid "Login Failed"
 msgstr "Échec de connexion"
 
-#: static/js/settings/user_activities.js:18 templates/base.html:90
+#: static/js/settings/user_activities.js:21 templates/base.html:90
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: static/js/settings/user_activities.js:19 templates/register.html:3
+#: static/js/settings/user_activities.js:22 templates/register.html:3
 #: templates/register.html:58
 msgid "Register"
 msgstr "S'inscrire"
 
-#: static/js/settings/user_activities.js:20
-#: static/js/settings/user_activities.js:437
+#: static/js/settings/user_activities.js:23
+#: static/js/settings/user_activities.js:440
 #: templates/settings/settings_user_activities.html:133
 msgid "Download Book"
 msgstr "Télécharger le livre"
 
-#: static/js/settings/user_activities.js:21
-#: static/js/settings/user_activities.js:438
+#: static/js/settings/user_activities.js:24
+#: static/js/settings/user_activities.js:441
 #: templates/settings/settings_user_activities.html:134
 msgid "Upload Book"
 msgstr "Téléverser le livre"
 
-#: static/js/settings/user_activities.js:22
+#: static/js/settings/user_activities.js:25
 msgid "Delete Book"
 msgstr "Supprimer le livre"
 
-#: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:439
+#: static/js/settings/user_activities.js:26
+#: static/js/settings/user_activities.js:442
 #: templates/settings/settings_user_activities.html:135
 msgid "Search Books"
 msgstr "Rechercher des livres"
 
-#: static/js/settings/user_activities.js:24
+#: static/js/settings/user_activities.js:27
 msgid "Edit Metadata"
 msgstr "Modifier les métadonnées"
 
-#: static/js/settings/user_activities.js:25
-#: static/js/settings/user_activities.js:441
+#: static/js/settings/user_activities.js:28
+#: static/js/settings/user_activities.js:444
 #: templates/settings/settings_user_activities.html:136
 msgid "Push to Kindle"
 msgstr "Envoyer vers Kindle"
 
-#: static/js/settings/user_activities.js:26
+#: static/js/settings/user_activities.js:29
 msgid "Push to Anx"
 msgstr "Envoyer vers Anx"
 
-#: static/js/settings/user_activities.js:27
+#: static/js/settings/user_activities.js:30
 msgid "Push Anx to Calibre"
 msgstr "Envoyer Anx vers Calibre"
 
-#: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:442 templates/index.html:123
+#: static/js/settings/user_activities.js:31
+#: static/js/settings/user_activities.js:445 templates/index.html:123
 #: templates/index.html:197
 #: templates/settings/settings_user_activities.html:137
 msgid "Generate Audiobook"
 msgstr "Générer un livre audio"
 
-#: static/js/settings/user_activities.js:31
+#: static/js/settings/user_activities.js:34
 msgid "Update Audiobook Progress"
 msgstr "Mettre à jour la progression du livre audio"
 
-#: static/js/settings/user_activities.js:32
+#: static/js/settings/user_activities.js:35
 msgid "Update Audiobook Reading Time"
 msgstr "Mettre à jour le temps de lecture du livre audio"
 
-#: static/js/settings/user_activities.js:33
+#: static/js/settings/user_activities.js:36
 #: templates/settings/settings_user_activities.html:138
 msgid "Update Reading Progress"
 msgstr "Mettre à jour la progression de lecture"
 
-#: static/js/settings/user_activities.js:34
+#: static/js/settings/user_activities.js:37
 msgid "Update Reading Time"
 msgstr "Mettre à jour le temps de lecture"
 
-#: static/js/settings/user_activities.js:35
+#: static/js/settings/user_activities.js:38
 msgid "Start LLM Chat"
 msgstr "Démarrer une discussion LLM"
 
-#: static/js/settings/user_activities.js:36
+#: static/js/settings/user_activities.js:39
 msgid "LLM Chat Message"
 msgstr "Message de discussion LLM"
 
-#: static/js/settings/user_activities.js:37
+#: static/js/settings/user_activities.js:40
 msgid "Delete LLM Session"
 msgstr "Supprimer la session LLM"
 
-#: static/js/settings/user_activities.js:38
+#: static/js/settings/user_activities.js:41
 msgid "Delete LLM Message"
 msgstr "Supprimer le message LLM"
 
-#: static/js/settings/user_activities.js:39
+#: static/js/settings/user_activities.js:42
 msgid "Generate MCP Token"
 msgstr "Générer un jeton MCP"
 
-#: static/js/settings/user_activities.js:40
+#: static/js/settings/user_activities.js:43
 msgid "Delete MCP Token"
 msgstr "Supprimer le jeton MCP"
 
-#: static/js/settings/user_activities.js:41
+#: static/js/settings/user_activities.js:44
 msgid "MCP API Call"
 msgstr "Appel API MCP"
 
-#: static/js/settings/user_activities.js:42
+#: static/js/settings/user_activities.js:45
 msgid "Update User Settings"
 msgstr "Mettre à jour les paramètres utilisateur"
 
-#: static/js/settings/user_activities.js:43
+#: static/js/settings/user_activities.js:46
 msgid "Update Global Settings"
 msgstr "Mettre à jour les paramètres globaux"
 
-#: static/js/settings/user_activities.js:44
+#: static/js/settings/user_activities.js:47
 msgid "Update Password"
 msgstr "Mettre à jour le mot de passe"
 
-#: static/js/settings/user_activities.js:45
+#: static/js/settings/user_activities.js:48
 msgid "Enable 2FA"
 msgstr "Activer l'A2F"
 
-#: static/js/settings/user_activities.js:46
+#: static/js/settings/user_activities.js:49
 msgid "Disable 2FA"
 msgstr "Désactiver l'A2F"
 
-#: static/js/settings/user_activities.js:47
+#: static/js/settings/user_activities.js:50
 msgid "Create User"
 msgstr "Créer un utilisateur"
 
-#: static/js/settings/user_activities.js:48
+#: static/js/settings/user_activities.js:51
 msgid "Update User"
 msgstr "Mettre à jour l'utilisateur"
 
-#: static/js/settings/user_activities.js:49
+#: static/js/settings/user_activities.js:52
 msgid "Delete User"
 msgstr "Supprimer l'utilisateur"
 
-#: static/js/settings/user_activities.js:50
+#: static/js/settings/user_activities.js:53
 msgid "Create Invite Code"
 msgstr "Créer un code d'invitation"
 
-#: static/js/settings/user_activities.js:51
+#: static/js/settings/user_activities.js:54
 msgid "Delete Invite Code"
 msgstr "Supprimer le code d'invitation"
 
-#: static/js/settings/user_activities.js:52
+#: static/js/settings/user_activities.js:55
 msgid "Use Invite Code"
 msgstr "Utiliser le code d'invitation"
 
-#: static/js/settings/user_activities.js:53
+#: static/js/settings/user_activities.js:56
 msgid "Toggle Invite Code"
 msgstr "Basculer le code d'invitation"
 
-#: static/js/settings/user_activities.js:54
+#: static/js/settings/user_activities.js:57
 msgid "Create Service Config"
 msgstr "Créer une configuration de service"
 
-#: static/js/settings/user_activities.js:55
+#: static/js/settings/user_activities.js:58
 msgid "Update Service Config"
 msgstr "Mettre à jour la configuration de service"
 
-#: static/js/settings/user_activities.js:56
+#: static/js/settings/user_activities.js:59
 msgid "Delete Service Config"
 msgstr "Supprimer la configuration de service"
 
-#: static/js/settings/user_activities.js:57
+#: static/js/settings/user_activities.js:60
 msgid "Test SMTP"
 msgstr "Tester SMTP"
 
-#: static/js/settings/user_activities.js:58
+#: static/js/settings/user_activities.js:61
 msgid "KOReader Sync Progress"
 msgstr "Synchronisation de progression KOReader"
 
-#: static/js/settings/user_activities.js:59
+#: static/js/settings/user_activities.js:62
 msgid "KOReader Sync Reading Time"
 msgstr "Synchronisation du temps de lecture KOReader"
 
-#: static/js/settings/user_activities.js:60
+#: static/js/settings/user_activities.js:63
 msgid "KOReader Update Summary"
 msgstr "Mettre à jour le résumé KOReader"
 
-#: static/js/settings/user_activities.js:191
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
-msgid "Total Activities"
-msgstr "Total des activités"
+#: static/js/settings/user_activities.js:380
+#: static/js/settings/user_activities.js:526
+msgid "Activity Details for"
+msgstr "Détails de l'activité pour"
 
-#: static/js/settings/user_activities.js:198
-msgid "Unique Users"
-msgstr "Utilisateurs uniques"
-
-#: static/js/settings/user_activities.js:304
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-#: static/js/settings/user_activities.js:305
-msgid "Lock"
-msgstr "Verrouiller"
-
-#: static/js/settings/user_activities.js:308
-msgid "Reset Failed"
-msgstr "Réinitialiser les échecs"
-
-#: static/js/settings/user_activities.js:377
-#: static/js/settings/user_activities.js:523
-msgid "Activity Details for: "
-msgstr "Détails de l'activité pour : "
-
-#: static/js/settings/user_activities.js:440 templates/index.html:178
+#: static/js/settings/user_activities.js:443 templates/index.html:178
 msgid "Reading Progress"
 msgstr "Progression de la lecture"
 
-#: static/js/settings/user_activities.js:503
-#: static/js/settings/user_activities.js:507
+#: static/js/settings/user_activities.js:506
+#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "Échec du chargement des détails du type d'événement"
 
-#: static/js/settings/user_activities.js:603
+#: static/js/settings/user_activities.js:606
 #: templates/settings/settings_user_activities.html:170
 msgid "Lock User Account"
 msgstr "Verrouiller le compte utilisateur"
 
-#: static/js/settings/user_activities.js:628
+#: static/js/settings/user_activities.js:631
 msgid "Please enter a valid duration"
 msgstr "Veuillez saisir une durée valide"
 
-#: static/js/settings/user_activities.js:664
+#: static/js/settings/user_activities.js:667
 msgid "Are you sure you want to unlock this user account?"
 msgstr "Êtes-vous sûr de vouloir déverrouiller ce compte utilisateur ?"
 
-#: static/js/settings/user_activities.js:695
+#: static/js/settings/user_activities.js:698
 msgid "Are you sure you want to reset failed login attempts for this user?"
-msgstr "Êtes-vous sûr de vouloir réinitialiser les tentatives de connexion échouées pour cet utilisateur ?"
+msgstr ""
+"Êtes-vous sûr de vouloir réinitialiser les tentatives de connexion "
+"échouées pour cet utilisateur ?"
 
 #: templates/audio_player.html:6
 msgid "Audiobook Player"
@@ -2373,10 +2462,6 @@ msgstr "Ce mois-ci"
 msgid "This Year"
 msgstr "Cette année"
 
-#: templates/stats.html:97
-msgid "Total"
-msgstr "Total"
-
 #: templates/stats.html:103
 msgid "Reading Heatmap (Last 365 Days)"
 msgstr "Carte de chaleur de lecture (365 derniers jours)"
@@ -2717,10 +2802,6 @@ msgstr "Créé le"
 #: templates/settings/settings_invite_code.html:34
 msgid "Expires At"
 msgstr "Expire le"
-
-#: templates/settings/settings_invite_code.html:35
-msgid "Status"
-msgstr "Statut"
 
 #: templates/settings/settings_invite_code.html:36
 #: templates/settings/settings_user_activities.html:76
@@ -3207,29 +3288,11 @@ msgstr "Actualiser"
 msgid "Search username..."
 msgstr "Rechercher un nom d'utilisateur..."
 
-#: templates/settings/settings_user_activities.html:68
-msgid "User"
-msgstr "Utilisateur"
-
 #: templates/settings/settings_user_activities.html:69
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "Rôle"
-
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
-msgid "Last Login"
-msgstr "Dernière connexion"
-
-#: templates/settings/settings_user_activities.html:71
-msgid "Last Login IP"
-msgstr "IP de dernière connexion"
-
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
-msgid "Login Count"
-msgstr "Nombre de connexions"
 
 #: templates/settings/settings_user_activities.html:74
 msgid "Failed Attempts"
@@ -3258,10 +3321,6 @@ msgstr "Tous les types"
 #: templates/settings/settings_user_activities.html:178
 msgid "Lock Duration (minutes)"
 msgstr "Durée du verrouillage (minutes)"
-
-#: templates/settings/settings_user_activities.html:183
-msgid "Reason"
-msgstr "Raison"
 
 #: templates/settings/settings_user_activities.html:184
 msgid "Optional: Reason for locking account"

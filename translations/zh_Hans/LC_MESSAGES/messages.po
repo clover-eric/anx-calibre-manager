@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 13:54+0800\n"
+"POT-Creation-Date: 2025-10-19 15:00+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -761,8 +761,8 @@ msgid "Failed to load activities"
 msgstr "加载活动失败"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:349
-#: static/js/settings/user_activities.js:353
+#: static/js/settings/user_activities.js:352
+#: static/js/settings/user_activities.js:356
 msgid "Failed to load activity details"
 msgstr "加载活动详情失败"
 
@@ -771,7 +771,7 @@ msgid "Failed to load event statistics"
 msgstr "加载事件统计失败"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:640
+#: static/js/settings/user_activities.js:643
 msgid "Locked by administrator"
 msgstr "被管理员锁定"
 
@@ -786,13 +786,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "账户已锁定至 %(time)s。原因：%(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:645
+#: static/js/settings/user_activities.js:648
 msgid "User account locked successfully"
 msgstr "用户账户锁定成功"
 
 #: blueprints/api/user_activities.py:310
-#: static/js/settings/user_activities.js:650
-#: static/js/settings/user_activities.js:654
+#: static/js/settings/user_activities.js:653
+#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "锁定用户账户失败"
 
@@ -801,13 +801,13 @@ msgid "Account unlocked by administrator"
 msgstr "账户已被管理员解锁"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:677
+#: static/js/settings/user_activities.js:680
 msgid "User account unlocked successfully"
 msgstr "用户账户解锁成功"
 
 #: blueprints/api/user_activities.py:345
-#: static/js/settings/user_activities.js:681
-#: static/js/settings/user_activities.js:685
+#: static/js/settings/user_activities.js:684
+#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "解锁用户账户失败"
 
@@ -816,14 +816,13 @@ msgid "Failed login attempts reset by administrator"
 msgstr "登录失败次数已被管理员重置"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:708
+#: static/js/settings/user_activities.js:711
 msgid "Failed login attempts reset successfully"
 msgstr "登录失败次数重置成功"
 
 #: blueprints/api/user_activities.py:379
-#: static/js/settings/user_activities.js:712
-#: static/js/settings/user_activities.js:716
-#, python-brace-format
+#: static/js/settings/user_activities.js:715
+#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "重置登录失败次数失败"
 
@@ -1072,7 +1071,7 @@ msgstr "部分文件上传失败。请查看进度详情。"
 msgid "Generating..."
 msgstr "生成中..."
 
-#: static/js/page/translations.js:40 static/js/settings/user_activities.js:29
+#: static/js/page/translations.js:40 static/js/settings/user_activities.js:32
 msgid "Download Audiobook"
 msgstr "下载有声书"
 
@@ -1080,7 +1079,7 @@ msgstr "下载有声书"
 msgid "Listen to Audiobook"
 msgstr "听有声书"
 
-#: static/js/page/translations.js:42
+#: static/js/page/translations.js:42 static/js/page/translations.js:143
 msgid "Failed"
 msgstr "失败"
 
@@ -1307,7 +1306,7 @@ msgstr "所有重试尝试均因空响应而失败。"
 msgid "Failed to fetch audiobook list."
 msgstr "获取有声书列表失败。"
 
-#: static/js/page/translations.js:108 static/js/settings/user_activities.js:30
+#: static/js/page/translations.js:108 static/js/settings/user_activities.js:33
 msgid "Delete Audiobook"
 msgstr "删除有声书"
 
@@ -1394,6 +1393,120 @@ msgstr "播放/暂停"
 #: static/js/page/translations.js:129
 msgid "Playback Speed"
 msgstr "播放速度"
+
+#: static/js/page/translations.js:132
+msgid "Total Users"
+msgstr "总用户数"
+
+#: static/js/page/translations.js:133
+msgid "Active Today"
+msgstr "今日活跃"
+
+#: static/js/page/translations.js:134
+msgid "Total Logins"
+msgstr "总登录次数"
+
+#: static/js/page/translations.js:135
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:97
+msgid "Total Activities"
+msgstr "总活动数"
+
+#: static/js/page/translations.js:136
+msgid "Unique Users"
+msgstr "独立用户"
+
+#: static/js/page/translations.js:137
+msgid "Time"
+msgstr "时间"
+
+#: static/js/page/translations.js:138
+msgid "Activity Type"
+msgstr "活动类型"
+
+#: static/js/page/translations.js:139
+#: templates/settings/settings_invite_code.html:35
+msgid "Status"
+msgstr "状态"
+
+#: static/js/page/translations.js:140
+msgid "Details"
+msgstr "详情"
+
+#: static/js/page/translations.js:141
+#: templates/settings/settings_user_activities.html:68
+msgid "User"
+msgstr "用户"
+
+#: static/js/page/translations.js:142
+msgid "Success"
+msgstr "成功"
+
+#: static/js/page/translations.js:144 templates/stats.html:97
+msgid "Total"
+msgstr "总计"
+
+#: static/js/page/translations.js:145 static/js/settings/common.js:35
+msgid "Active"
+msgstr "启用"
+
+#: static/js/page/translations.js:146
+msgid "View Details"
+msgstr "查看详情"
+
+#: static/js/page/translations.js:147
+msgid "Lock"
+msgstr "锁定"
+
+#: static/js/page/translations.js:148
+msgid "Unlock"
+msgstr "解锁"
+
+#: static/js/page/translations.js:149
+msgid "Reset Failed"
+msgstr "重置失败"
+
+#: static/js/page/translations.js:150
+msgid "No activities found"
+msgstr "未找到活动"
+
+#: static/js/page/translations.js:151
+msgid "No recent activities"
+msgstr "没有最近的活动"
+
+#: static/js/page/translations.js:152
+msgid "No failed login attempts"
+msgstr "无登录失败尝试"
+
+#: static/js/page/translations.js:153
+msgid "Locked until"
+msgstr "锁定至"
+
+#: static/js/page/translations.js:154
+msgid "IP"
+msgstr "IP地址"
+
+#: static/js/page/translations.js:155
+#: templates/settings/settings_user_activities.html:183
+msgid "Reason"
+msgstr "原因"
+
+#: static/js/page/translations.js:156
+#: templates/settings/settings_user_activities.html:70
+#: templates/settings/settings_user_activities.html:105
+msgid "Last Login"
+msgstr "最后登录"
+
+#: static/js/page/translations.js:157
+#: templates/settings/settings_user_activities.html:71
+msgid "Last Login IP"
+msgstr "最后登录IP"
+
+#: static/js/page/translations.js:158
+#: templates/settings/settings_user_activities.html:72
+#: templates/settings/settings_user_activities.html:101
+msgid "Login Count"
+msgstr "登录次数"
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1491,10 +1604,6 @@ msgstr "添加"
 #: static/js/settings/common.js:34
 msgid "Are you sure you want to delete this user?"
 msgstr "你确定要删除这个用户吗？"
-
-#: static/js/settings/common.js:35
-msgid "Active"
-msgstr "启用"
 
 #: static/js/settings/common.js:36
 msgid "Disabled"
@@ -1630,243 +1739,221 @@ msgstr "LLM 配置方案删除成功！"
 msgid "Failed to delete LLM profile"
 msgstr "删除 LLM 配置方案失败"
 
-#: static/js/settings/user_activities.js:16
+#: static/js/settings/user_activities.js:19
 #: templates/settings/settings_user_activities.html:131
 msgid "Login Success"
 msgstr "登录成功"
 
-#: static/js/settings/user_activities.js:17
+#: static/js/settings/user_activities.js:20
 #: templates/settings/settings_user_activities.html:132
 msgid "Login Failed"
 msgstr "登录失败"
 
-#: static/js/settings/user_activities.js:18 templates/base.html:90
+#: static/js/settings/user_activities.js:21 templates/base.html:90
 msgid "Logout"
 msgstr "登出"
 
-#: static/js/settings/user_activities.js:19 templates/register.html:3
+#: static/js/settings/user_activities.js:22 templates/register.html:3
 #: templates/register.html:58
 msgid "Register"
 msgstr "注册"
 
-#: static/js/settings/user_activities.js:20
-#: static/js/settings/user_activities.js:437
+#: static/js/settings/user_activities.js:23
+#: static/js/settings/user_activities.js:440
 #: templates/settings/settings_user_activities.html:133
 msgid "Download Book"
 msgstr "下载图书"
 
-#: static/js/settings/user_activities.js:21
-#: static/js/settings/user_activities.js:438
+#: static/js/settings/user_activities.js:24
+#: static/js/settings/user_activities.js:441
 #: templates/settings/settings_user_activities.html:134
 msgid "Upload Book"
 msgstr "上传图书"
 
-#: static/js/settings/user_activities.js:22
+#: static/js/settings/user_activities.js:25
 msgid "Delete Book"
 msgstr "删除图书"
 
-#: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:439
+#: static/js/settings/user_activities.js:26
+#: static/js/settings/user_activities.js:442
 #: templates/settings/settings_user_activities.html:135
 msgid "Search Books"
 msgstr "搜索图书"
 
-#: static/js/settings/user_activities.js:24
+#: static/js/settings/user_activities.js:27
 msgid "Edit Metadata"
 msgstr "编辑元数据"
 
-#: static/js/settings/user_activities.js:25
-#: static/js/settings/user_activities.js:441
+#: static/js/settings/user_activities.js:28
+#: static/js/settings/user_activities.js:444
 #: templates/settings/settings_user_activities.html:136
 msgid "Push to Kindle"
 msgstr "推送到 Kindle"
 
-#: static/js/settings/user_activities.js:26
+#: static/js/settings/user_activities.js:29
 msgid "Push to Anx"
 msgstr "推送到 Anx"
 
-#: static/js/settings/user_activities.js:27
+#: static/js/settings/user_activities.js:30
 msgid "Push Anx to Calibre"
 msgstr "推送 Anx 到 Calibre"
 
-#: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:442 templates/index.html:123
+#: static/js/settings/user_activities.js:31
+#: static/js/settings/user_activities.js:445 templates/index.html:123
 #: templates/index.html:197
 #: templates/settings/settings_user_activities.html:137
 msgid "Generate Audiobook"
 msgstr "生成有声书"
 
-#: static/js/settings/user_activities.js:31
+#: static/js/settings/user_activities.js:34
 msgid "Update Audiobook Progress"
 msgstr "更新有声书进度"
 
-#: static/js/settings/user_activities.js:32
+#: static/js/settings/user_activities.js:35
 msgid "Update Audiobook Reading Time"
 msgstr "更新有声书阅读时间"
 
-#: static/js/settings/user_activities.js:33
+#: static/js/settings/user_activities.js:36
 #: templates/settings/settings_user_activities.html:138
 msgid "Update Reading Progress"
 msgstr "更新阅读进度"
 
-#: static/js/settings/user_activities.js:34
+#: static/js/settings/user_activities.js:37
 msgid "Update Reading Time"
 msgstr "更新阅读时间"
 
-#: static/js/settings/user_activities.js:35
+#: static/js/settings/user_activities.js:38
 msgid "Start LLM Chat"
 msgstr "开始 LLM 聊天"
 
-#: static/js/settings/user_activities.js:36
+#: static/js/settings/user_activities.js:39
 msgid "LLM Chat Message"
 msgstr "LLM 聊天消息"
 
-#: static/js/settings/user_activities.js:37
+#: static/js/settings/user_activities.js:40
 msgid "Delete LLM Session"
 msgstr "删除 LLM 会话"
 
-#: static/js/settings/user_activities.js:38
+#: static/js/settings/user_activities.js:41
 msgid "Delete LLM Message"
 msgstr "删除 LLM 消息"
 
-#: static/js/settings/user_activities.js:39
+#: static/js/settings/user_activities.js:42
 msgid "Generate MCP Token"
 msgstr "生成 MCP 令牌"
 
-#: static/js/settings/user_activities.js:40
+#: static/js/settings/user_activities.js:43
 msgid "Delete MCP Token"
 msgstr "删除 MCP 令牌"
 
-#: static/js/settings/user_activities.js:41
+#: static/js/settings/user_activities.js:44
 msgid "MCP API Call"
 msgstr "MCP API 调用"
 
-#: static/js/settings/user_activities.js:42
+#: static/js/settings/user_activities.js:45
 msgid "Update User Settings"
 msgstr "更新用户设置"
 
-#: static/js/settings/user_activities.js:43
+#: static/js/settings/user_activities.js:46
 msgid "Update Global Settings"
 msgstr "更新全局设置"
 
-#: static/js/settings/user_activities.js:44
+#: static/js/settings/user_activities.js:47
 msgid "Update Password"
 msgstr "更新密码"
 
-#: static/js/settings/user_activities.js:45
+#: static/js/settings/user_activities.js:48
 msgid "Enable 2FA"
 msgstr "启用双因素身份验证"
 
-#: static/js/settings/user_activities.js:46
+#: static/js/settings/user_activities.js:49
 msgid "Disable 2FA"
 msgstr "禁用双因素身份验证"
 
-#: static/js/settings/user_activities.js:47
+#: static/js/settings/user_activities.js:50
 msgid "Create User"
 msgstr "创建用户"
 
-#: static/js/settings/user_activities.js:48
+#: static/js/settings/user_activities.js:51
 msgid "Update User"
 msgstr "更新用户"
 
-#: static/js/settings/user_activities.js:49
+#: static/js/settings/user_activities.js:52
 msgid "Delete User"
 msgstr "删除用户"
 
-#: static/js/settings/user_activities.js:50
+#: static/js/settings/user_activities.js:53
 msgid "Create Invite Code"
 msgstr "创建邀请码"
 
-#: static/js/settings/user_activities.js:51
+#: static/js/settings/user_activities.js:54
 msgid "Delete Invite Code"
 msgstr "删除邀请码"
 
-#: static/js/settings/user_activities.js:52
+#: static/js/settings/user_activities.js:55
 msgid "Use Invite Code"
 msgstr "使用邀请码"
 
-#: static/js/settings/user_activities.js:53
+#: static/js/settings/user_activities.js:56
 msgid "Toggle Invite Code"
 msgstr "切换邀请码状态"
 
-#: static/js/settings/user_activities.js:54
+#: static/js/settings/user_activities.js:57
 msgid "Create Service Config"
 msgstr "创建服务配置"
 
-#: static/js/settings/user_activities.js:55
+#: static/js/settings/user_activities.js:58
 msgid "Update Service Config"
 msgstr "更新服务配置"
 
-#: static/js/settings/user_activities.js:56
+#: static/js/settings/user_activities.js:59
 msgid "Delete Service Config"
 msgstr "删除服务配置"
 
-#: static/js/settings/user_activities.js:57
+#: static/js/settings/user_activities.js:60
 msgid "Test SMTP"
 msgstr "测试 SMTP"
 
-#: static/js/settings/user_activities.js:58
+#: static/js/settings/user_activities.js:61
 msgid "KOReader Sync Progress"
 msgstr "KOReader 同步进度"
 
-#: static/js/settings/user_activities.js:59
+#: static/js/settings/user_activities.js:62
 msgid "KOReader Sync Reading Time"
 msgstr "KOReader 同步阅读时间"
 
-#: static/js/settings/user_activities.js:60
+#: static/js/settings/user_activities.js:63
 msgid "KOReader Update Summary"
 msgstr "KOReader 更新摘要"
 
-#: static/js/settings/user_activities.js:191
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
-msgid "Total Activities"
-msgstr "总活动数"
+#: static/js/settings/user_activities.js:380
+#: static/js/settings/user_activities.js:526
+msgid "Activity Details for"
+msgstr "活动详情"
 
-#: static/js/settings/user_activities.js:198
-msgid "Unique Users"
-msgstr "独立用户"
-
-#: static/js/settings/user_activities.js:304
-msgid "Unlock"
-msgstr "解锁"
-
-#: static/js/settings/user_activities.js:305
-msgid "Lock"
-msgstr "锁定"
-
-#: static/js/settings/user_activities.js:308
-msgid "Reset Failed"
-msgstr "重置失败"
-
-#: static/js/settings/user_activities.js:377
-#: static/js/settings/user_activities.js:523
-msgid "Activity Details for: "
-msgstr "活动详情："
-
-#: static/js/settings/user_activities.js:440 templates/index.html:178
+#: static/js/settings/user_activities.js:443 templates/index.html:178
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: static/js/settings/user_activities.js:503
-#: static/js/settings/user_activities.js:507
+#: static/js/settings/user_activities.js:506
+#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "加载事件类型详情失败"
 
-#: static/js/settings/user_activities.js:603
+#: static/js/settings/user_activities.js:606
 #: templates/settings/settings_user_activities.html:170
 msgid "Lock User Account"
 msgstr "锁定用户账户"
 
-#: static/js/settings/user_activities.js:628
+#: static/js/settings/user_activities.js:631
 msgid "Please enter a valid duration"
 msgstr "请输入有效的时长"
 
-#: static/js/settings/user_activities.js:664
+#: static/js/settings/user_activities.js:667
 msgid "Are you sure you want to unlock this user account?"
 msgstr "您确定要解锁此用户账户吗？"
 
-#: static/js/settings/user_activities.js:695
+#: static/js/settings/user_activities.js:698
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr "您确定要重置此用户的登录失败次数吗？"
 
@@ -2296,10 +2383,6 @@ msgstr "本月"
 msgid "This Year"
 msgstr "今年"
 
-#: templates/stats.html:97
-msgid "Total"
-msgstr "总计"
-
 #: templates/stats.html:103
 msgid "Reading Heatmap (Last 365 Days)"
 msgstr "阅读热力图（最近 365 天）"
@@ -2611,10 +2694,6 @@ msgstr "创建于"
 #: templates/settings/settings_invite_code.html:34
 msgid "Expires At"
 msgstr "过期于"
-
-#: templates/settings/settings_invite_code.html:35
-msgid "Status"
-msgstr "状态"
 
 #: templates/settings/settings_invite_code.html:36
 #: templates/settings/settings_user_activities.html:76
@@ -3036,31 +3115,11 @@ msgstr "刷新"
 msgid "Search username..."
 msgstr "搜索用户名..."
 
-#: templates/settings/settings_user_activities.html:68
-msgid "User"
-msgstr "用户"
-
 #: templates/settings/settings_user_activities.html:69
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "角色"
-
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
-#, fuzzy
-msgid "Last Login"
-msgstr "登录"
-
-#: templates/settings/settings_user_activities.html:71
-msgid "Last Login IP"
-msgstr ""
-
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
-#, fuzzy
-msgid "Login Count"
-msgstr "登出"
 
 #: templates/settings/settings_user_activities.html:74
 msgid "Failed Attempts"
@@ -3089,10 +3148,6 @@ msgstr "所有类型"
 #: templates/settings/settings_user_activities.html:178
 msgid "Lock Duration (minutes)"
 msgstr "锁定时长（分钟）"
-
-#: templates/settings/settings_user_activities.html:183
-msgid "Reason"
-msgstr "原因"
 
 #: templates/settings/settings_user_activities.html:184
 msgid "Optional: Reason for locking account"

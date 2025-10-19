@@ -2,6 +2,9 @@
 // ==================== User Activities Management (Admin Only) ====================
 // This file handles user activity monitoring, statistics display, and user account management
 
+// Import translations from centralized location
+import { t, initializeTranslations } from '../page/translations.js';
+
 let dailyActivityChart = null;
 let eventTypeChart = null;
 let currentUserActivitiesData = null;
@@ -96,19 +99,19 @@ function displayActivityStats(stats) {
     
     statsContainer.innerHTML = `
         <div class="stat-card">
-            <h5>${_('Total Users')}</h5>
+            <h5>${t.totalUsers}</h5>
             <p class="stat-number">${stats.total_users || 0}</p>
         </div>
         <div class="stat-card">
-            <h5>${_('Active Today')}</h5>
+            <h5>${t.activeToday}</h5>
             <p class="stat-number">${stats.active_today || 0}</p>
         </div>
         <div class="stat-card">
-            <h5>${_('Total Logins')}</h5>
+            <h5>${t.totalLogins}</h5>
             <p class="stat-number">${stats.total_logins || 0}</p>
         </div>
         <div class="stat-card">
-            <h5>${_('Total Activities')}</h5>
+            <h5>${t.totalActivities}</h5>
             <p class="stat-number">${stats.total_activities || 0}</p>
         </div>
     `;
@@ -131,15 +134,15 @@ function displayGlobalEventStats(globalStats) {
             <h6>${getActivityTypeName(eventType)}</h6>
             <div class="event-stat-numbers">
                 <span class="total">
-                    <span class="label">${_('Total')}</span>
+                    <span class="label">${t.total}</span>
                     <span class="value">${stats.total}</span>
                 </span>
                 <span class="success">
-                    <span class="label">${_('Success')}</span>
+                    <span class="label">${t.success}</span>
                     <span class="value">${stats.success}</span>
                 </span>
                 <span class="failure">
-                    <span class="label">${_('Failed')}</span>
+                    <span class="label">${t.failed}</span>
                     <span class="value">${stats.failure}</span>
                 </span>
             </div>
@@ -188,14 +191,14 @@ function displayDailyActivityChart(dailyStats) {
             labels: labels,
             datasets: [
                 {
-                    label: _('Total Activities'),
+                    label: t.totalActivities,
                     data: activities,
                     borderColor: 'rgb(102, 126, 234)',
                     backgroundColor: 'rgba(102, 126, 234, 0.1)',
                     tension: 0.4
                 },
                 {
-                    label: _('Unique Users'),
+                    label: t.uniqueUsers,
                     data: uniqueUsers,
                     borderColor: 'rgb(67, 233, 123)',
                     backgroundColor: 'rgba(67, 233, 123, 0.1)',
@@ -293,19 +296,19 @@ function displayUserActivitiesList(users) {
         let statusHtml = '';
         if (user.is_locked) {
             const lockedUntil = new Date(user.locked_until).toLocaleString();
-            statusHtml = `<span class="status-badge status-locked">${_('Locked')} (${lockedUntil})</span>`;
+            statusHtml = `<span class="status-badge status-locked">${t.lockedUntil}: ${lockedUntil}</span>`;
         } else {
-            statusHtml = `<span class="status-badge status-active">${_('Active')}</span>`;
+            statusHtml = `<span class="status-badge status-active">${t.active}</span>`;
         }
         
         const actionsHtml = `
-            <button class="button button-small" onclick="viewUserActivityDetails(${user.id}, '${user.username}')">${_('View Details')}</button>
-            ${user.is_locked ? 
-                `<button class="button button-small button-success" onclick="unlockUserAccount(${user.id}, '${user.username}')">${_('Unlock')}</button>` :
-                `<button class="button button-small button-warning" onclick="showLockUserModal(${user.id}, '${user.username}')">${_('Lock')}</button>`
+            <button class="button button-small" onclick="viewUserActivityDetails(${user.id}, '${user.username}')">${t.viewDetails}</button>
+            ${user.is_locked ?
+                `<button class="button button-small button-success" onclick="unlockUserAccount(${user.id}, '${user.username}')">${t.unlock}</button>` :
+                `<button class="button button-small button-warning" onclick="showLockUserModal(${user.id}, '${user.username}')">${t.lock}</button>`
             }
             ${user.failed_login_attempts > 0 ?
-                `<button class="button button-small" onclick="resetFailedAttempts(${user.id}, '${user.username}')">${_('Reset Failed')}</button>` :
+                `<button class="button button-small" onclick="resetFailedAttempts(${user.id}, '${user.username}')">${t.resetFailed}</button>` :
                 ''
             }
         `;
@@ -374,7 +377,7 @@ function showActivityDetailsModal(username, activities, userData) {
     
     if (!modal || !modalUserName || !contentDiv) return;
     
-    modalUserName.textContent = _('Activity Details for: ') + username;
+    modalUserName.textContent = _('Activity Details for') + ': ' + username;
     
     // 显示用户统计
     document.getElementById('userTotalActivities').textContent = userData.activity_count || 0;
@@ -396,14 +399,14 @@ function showActivityDetailsModal(username, activities, userData) {
     
     // 显示活动历史表格
     let html = '<table class="data-table"><thead><tr>';
-    html += `<th>${_('Time')}</th>`;
-    html += `<th>${_('Activity Type')}</th>`;
-    html += `<th>${_('Status')}</th>`;
-    html += `<th>${_('Details')}</th>`;
+    html += `<th>${t.time}</th>`;
+    html += `<th>${t.activityType}</th>`;
+    html += `<th>${t.status}</th>`;
+    html += `<th>${t.details}</th>`;
     html += '</tr></thead><tbody>';
     
     if (activities.length === 0) {
-        html += `<tr><td colspan="4" style="text-align: center;">${_('No activities found')}</td></tr>`;
+        html += `<tr><td colspan="4" style="text-align: center;">${t.noActivitiesFound}</td></tr>`;
     } else {
         activities.forEach(activity => {
             const time = new Date(activity.timestamp).toLocaleString();
@@ -443,7 +446,7 @@ function displayLastActivities(lastActivities) {
     };
     
     if (Object.keys(lastActivities).length === 0) {
-        container.innerHTML = `<p>${_('No recent activities')}</p>`;
+        container.innerHTML = `<p>${t.noRecentActivities}</p>`;
         return;
     }
     
@@ -464,7 +467,7 @@ function displayFailedLogins(failedLogin) {
     if (!container) return;
     
     if (!failedLogin) {
-        container.innerHTML = `<div class="no-failed-logins">${_('No failed login attempts')}</div>`;
+        container.innerHTML = `<div class="no-failed-logins">${t.noFailedLoginAttempts}</div>`;
         return;
     }
     
@@ -472,8 +475,8 @@ function displayFailedLogins(failedLogin) {
         <div class="failed-login-item">
             <div class="time">${new Date(failedLogin.created_at).toLocaleString()}</div>
             <div class="details">
-                ${_('IP')}: ${failedLogin.ip_address || '-'}<br>
-                ${_('Reason')}: ${failedLogin.failure_reason || '-'}
+                ${t.ip}: ${failedLogin.ip_address || '-'}<br>
+                ${t.reason}: ${failedLogin.failure_reason || '-'}
             </div>
         </div>
     `;
@@ -520,13 +523,13 @@ function showEventTypeDetailsModal(eventType, activities) {
     
     if (!modal || !modalTitle || !contentDiv) return;
     
-    modalTitle.textContent = _('Activity Details for: ') + getActivityTypeName(eventType);
+    modalTitle.textContent = _('Activity Details for') + ': ' + getActivityTypeName(eventType);
     
     let html = '<table class="data-table"><thead><tr>';
-    html += `<th>${_('Time')}</th>`;
-    html += `<th>${_('User')}</th>`;
-    html += `<th>${_('Status')}</th>`;
-    html += `<th>${_('Details')}</th>`;
+    html += `<th>${t.time}</th>`;
+    html += `<th>${t.user}</th>`;
+    html += `<th>${t.status}</th>`;
+    html += `<th>${t.details}</th>`;
     html += '</tr></thead><tbody>';
     
     activities.forEach(activity => {
@@ -600,7 +603,7 @@ window.showLockUserModal = function(userId, username) {
     document.getElementById('lockUserName').value = username;
     document.getElementById('lockDuration').value = 30;
     document.getElementById('lockReason').value = '';
-    document.getElementById('lockModalTitle').textContent = _('Lock User Account') + ': ' + username;
+    document.getElementById('lockModalTitle').textContent = _('Lock User Account') + ' - ' + username;
     
     modal.style.display = 'block';
 }
@@ -737,6 +740,9 @@ if (userSearchInput) {
 
 // Initialize user activities when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize translations first
+    await initializeTranslations();
+    
     if (isAdmin) {
         await loadUserActivities();
     }

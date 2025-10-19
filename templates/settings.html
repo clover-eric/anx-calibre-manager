@@ -55,6 +55,6 @@
 <script src="{{ url_for('static', filename='js/settings/user_management.js') }}"></script>
 <script src="{{ url_for('static', filename='js/settings/invite_codes.js') }}"></script>
 <script src="{{ url_for('static', filename='js/settings/service_profiles.js') }}"></script>
-<script src="{{ url_for('static', filename='js/settings/user_activities.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/settings/user_activities.js') }}?v={{ cache_buster }}"></script>
 <script src="{{ url_for('static', filename='js/settings/main.js') }}"></script>
 {% endblock %}
