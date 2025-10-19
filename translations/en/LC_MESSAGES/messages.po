@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 15:00+0800\n"
+"POT-Creation-Date: 2025-10-19 16:08+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -745,10 +745,6 @@ msgstr ""
 "Updating the configuration will restart the server workers and interrupt "
 "these tasks. Do you want to continue?"
 
-#: blueprints/api/settings.py:176
-msgid "Global settings updated"
-msgstr "Global settings updated."
-
 #: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "Global settings updated."
@@ -790,8 +786,8 @@ msgid "Failed to load activities"
 msgstr "Failed to load activities"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:352
-#: static/js/settings/user_activities.js:356
+#: static/js/settings/user_activities.js:355
+#: static/js/settings/user_activities.js:359
 msgid "Failed to load activity details"
 msgstr "Failed to load activity details"
 
@@ -800,12 +796,12 @@ msgid "Failed to load event statistics"
 msgstr "Failed to load event statistics"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:643
+#: static/js/settings/user_activities.js:639
 msgid "Locked by administrator"
 msgstr "Locked by administrator"
 
 #: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
-#: blueprints/api/user_activities.py:358
+#: blueprints/api/user_activities.py:358 blueprints/api/user_activities.py:392
 msgid "User not found"
 msgstr "User not found"
 
@@ -815,13 +811,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "Account locked until %(time)s. Reason: %(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:648
+#: static/js/settings/user_activities.js:644
 msgid "User account locked successfully"
 msgstr "User account locked successfully"
 
 #: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:649
 #: static/js/settings/user_activities.js:653
-#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "Failed to lock user account"
 
@@ -830,13 +826,13 @@ msgid "Account unlocked by administrator"
 msgstr "Account unlocked by administrator"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:680
+#: static/js/settings/user_activities.js:676
 msgid "User account unlocked successfully"
 msgstr "User account unlocked successfully"
 
 #: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:680
 #: static/js/settings/user_activities.js:684
-#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "Failed to unlock user account"
 
@@ -845,15 +841,42 @@ msgid "Failed login attempts reset by administrator"
 msgstr "Failed login attempts reset by administrator"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:707
 msgid "Failed login attempts reset successfully"
 msgstr "Failed login attempts reset successfully"
 
 #: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:711
 #: static/js/settings/user_activities.js:715
-#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "Failed to reset login attempts"
+
+#: blueprints/api/user_activities.py:401
+#, python-format
+msgid "Administrator %(admin)s deleted all activity logs for user: %(username)s"
+msgstr "Administrator %(admin)s deleted all activity logs for user: %(username)s"
+
+#: blueprints/api/user_activities.py:405
+#, python-format
+msgid "Successfully deleted all activities for user %(username)s"
+msgstr "Successfully deleted all activities for user %(username)s"
+
+#: blueprints/api/user_activities.py:409
+msgid "Failed to delete user activities"
+msgstr "Failed to delete user activities"
+
+#: blueprints/api/user_activities.py:427
+#, python-format
+msgid "Administrator %(admin)s deleted all user activity logs"
+msgstr "Administrator %(admin)s deleted all user activity logs"
+
+#: blueprints/api/user_activities.py:430
+msgid "Successfully deleted all user activity logs"
+msgstr "Successfully deleted all user activity logs"
+
+#: blueprints/api/user_activities.py:434
+msgid "Failed to delete all user activities"
+msgstr "Failed to delete all user activities"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1455,8 +1478,8 @@ msgid "Total Logins"
 msgstr "Total Logins"
 
 #: static/js/page/translations.js:135
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:100
 msgid "Total Activities"
 msgstr "Total Activities"
 
@@ -1482,7 +1505,7 @@ msgid "Details"
 msgstr "Details"
 
 #: static/js/page/translations.js:141
-#: templates/settings/settings_user_activities.html:68
+#: templates/settings/settings_user_activities.html:71
 msgid "User"
 msgstr "User"
 
@@ -1535,26 +1558,75 @@ msgid "IP"
 msgstr "IP"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:183
+#: templates/settings/settings_user_activities.html:186
 msgid "Reason"
 msgstr "Reason"
 
 #: static/js/page/translations.js:156
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:108
 msgid "Last Login"
 msgstr "Last Login"
 
 #: static/js/page/translations.js:157
-#: templates/settings/settings_user_activities.html:71
+#: templates/settings/settings_user_activities.html:74
 msgid "Last Login IP"
 msgstr "Last Login IP"
 
 #: static/js/page/translations.js:158
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
+#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:104
 msgid "Login Count"
 msgstr "Login Count"
+
+#: static/js/page/translations.js:159
+msgid "Delete Activities"
+msgstr "Delete Activities"
+
+#: static/js/page/translations.js:160
+#: templates/settings/settings_user_activities.html:60
+msgid "Delete All Activities"
+msgstr "Delete All Activities"
+
+#: static/js/page/translations.js:161
+msgid "Are you sure you want to delete all activities for user"
+msgstr "Are you sure you want to delete all activities for user"
+
+#: static/js/page/translations.js:162
+msgid "This action cannot be undone."
+msgstr "This action cannot be undone."
+
+#: static/js/page/translations.js:163
+msgid "Activities deleted successfully."
+msgstr "Activities deleted successfully."
+
+#: static/js/page/translations.js:164
+msgid "Failed to delete activities"
+msgstr "Failed to delete activities"
+
+#: static/js/page/translations.js:165
+msgid "An error occurred while deleting activities."
+msgstr "An error occurred while deleting activities."
+
+#: static/js/page/translations.js:166
+msgid ""
+"Are you absolutely sure you want to delete all activity logs for ALL "
+"users? This action is irreversible."
+msgstr ""
+"Are you absolutely sure you want to delete all activity logs for ALL "
+"users? This action is irreversible."
+
+#: static/js/page/translations.js:167
+msgid "All activities deleted successfully."
+msgstr "All activities deleted successfully."
+
+#: static/js/page/translations.js:168
+msgid "Failed to delete all activities"
+msgstr "Failed to delete all activities"
+
+#: static/js/page/translations.js:169
+msgid "An error occurred while deleting all activities."
+msgstr "An error occurred while deleting all activities."
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1792,12 +1864,12 @@ msgid "Failed to delete LLM profile"
 msgstr "Failed to delete LLM profile"
 
 #: static/js/settings/user_activities.js:19
-#: templates/settings/settings_user_activities.html:131
+#: templates/settings/settings_user_activities.html:134
 msgid "Login Success"
 msgstr "Login Success"
 
 #: static/js/settings/user_activities.js:20
-#: templates/settings/settings_user_activities.html:132
+#: templates/settings/settings_user_activities.html:135
 msgid "Login Failed"
 msgstr "Login Failed"
 
@@ -1811,14 +1883,14 @@ msgid "Register"
 msgstr "Register"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:440
-#: templates/settings/settings_user_activities.html:133
+#: static/js/settings/user_activities.js:436
+#: templates/settings/settings_user_activities.html:136
 msgid "Download Book"
 msgstr "Download Book"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:441
-#: templates/settings/settings_user_activities.html:134
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:137
 msgid "Upload Book"
 msgstr "Upload Book"
 
@@ -1827,8 +1899,8 @@ msgid "Delete Book"
 msgstr "Delete Book"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:135
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:138
 msgid "Search Books"
 msgstr "Search Books"
 
@@ -1837,8 +1909,8 @@ msgid "Edit Metadata"
 msgstr "Edit Metadata"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:440
+#: templates/settings/settings_user_activities.html:139
 msgid "Push to Kindle"
 msgstr "Push to Kindle"
 
@@ -1851,9 +1923,9 @@ msgid "Push Anx to Calibre"
 msgstr "Push Anx to Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:445 templates/index.html:123
+#: static/js/settings/user_activities.js:441 templates/index.html:123
 #: templates/index.html:197
-#: templates/settings/settings_user_activities.html:137
+#: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "Generate Audiobook"
 
@@ -1866,7 +1938,7 @@ msgid "Update Audiobook Reading Time"
 msgstr "Update Audiobook Reading Time"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:138
+#: templates/settings/settings_user_activities.html:141
 msgid "Update Reading Progress"
 msgstr "Update Reading Progress"
 
@@ -1978,34 +2050,42 @@ msgstr "KOReader Sync Reading Time"
 msgid "KOReader Update Summary"
 msgstr "KOReader Update Summary"
 
-#: static/js/settings/user_activities.js:380
-#: static/js/settings/user_activities.js:526
+#: static/js/settings/user_activities.js:64
+msgid "Delete User Activity Log"
+msgstr "Delete User Activity Log"
+
+#: static/js/settings/user_activities.js:65
+msgid "Delete All Activity Logs"
+msgstr "Delete All Activity Logs"
+
+#: static/js/settings/user_activities.js:376
+#: static/js/settings/user_activities.js:522
 msgid "Activity Details for"
 msgstr "Activity Details for"
 
-#: static/js/settings/user_activities.js:443 templates/index.html:178
+#: static/js/settings/user_activities.js:439 templates/index.html:178
 msgid "Reading Progress"
 msgstr "Reading Progress"
 
+#: static/js/settings/user_activities.js:502
 #: static/js/settings/user_activities.js:506
-#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "Failed to load event type details"
 
-#: static/js/settings/user_activities.js:606
-#: templates/settings/settings_user_activities.html:170
+#: static/js/settings/user_activities.js:602
+#: templates/settings/settings_user_activities.html:173
 msgid "Lock User Account"
 msgstr "Lock User Account"
 
-#: static/js/settings/user_activities.js:631
+#: static/js/settings/user_activities.js:627
 msgid "Please enter a valid duration"
 msgstr "Please enter a valid duration"
 
-#: static/js/settings/user_activities.js:667
+#: static/js/settings/user_activities.js:663
 msgid "Are you sure you want to unlock this user account?"
 msgstr "Are you sure you want to unlock this user account?"
 
-#: static/js/settings/user_activities.js:698
+#: static/js/settings/user_activities.js:694
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr "Are you sure you want to reset failed login attempts for this user?"
 
@@ -2255,7 +2335,7 @@ msgid "Select files:"
 msgstr "Select files:"
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_activities.html:193
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -2777,7 +2857,7 @@ msgid "Expires At"
 msgstr "Expires At"
 
 #: templates/settings/settings_invite_code.html:36
-#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:79
 #: templates/settings/settings_user_management.html:36
 msgid "Actions"
 msgstr "Actions"
@@ -3236,53 +3316,53 @@ msgstr "Global Event Statistics"
 msgid "User Activity List"
 msgstr "User Activity List"
 
-#: templates/settings/settings_user_activities.html:58
+#: templates/settings/settings_user_activities.html:59
 msgid "Refresh"
 msgstr "Refresh"
 
-#: templates/settings/settings_user_activities.html:61
+#: templates/settings/settings_user_activities.html:64
 msgid "Search username..."
 msgstr "Search username..."
 
-#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_activities.html:72
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "Role"
 
-#: templates/settings/settings_user_activities.html:74
+#: templates/settings/settings_user_activities.html:77
 msgid "Failed Attempts"
 msgstr "Failed Attempts"
 
-#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:78
 msgid "Account Status"
 msgstr "Account Status"
 
-#: templates/settings/settings_user_activities.html:112
+#: templates/settings/settings_user_activities.html:115
 msgid "Last Activity Times by Type"
 msgstr "Last Activity Times by Type"
 
-#: templates/settings/settings_user_activities.html:120
+#: templates/settings/settings_user_activities.html:123
 msgid "Recent Failed Login Attempts"
 msgstr "Recent Failed Login Attempts"
 
-#: templates/settings/settings_user_activities.html:128
+#: templates/settings/settings_user_activities.html:131
 msgid "Activity History"
 msgstr "Activity History"
 
-#: templates/settings/settings_user_activities.html:130
+#: templates/settings/settings_user_activities.html:133
 msgid "All Types"
 msgstr "All Types"
 
-#: templates/settings/settings_user_activities.html:178
+#: templates/settings/settings_user_activities.html:181
 msgid "Lock Duration (minutes)"
 msgstr "Lock Duration (minutes)"
 
-#: templates/settings/settings_user_activities.html:184
+#: templates/settings/settings_user_activities.html:187
 msgid "Optional: Reason for locking account"
 msgstr "Optional: Reason for locking account"
 
-#: templates/settings/settings_user_activities.html:189
+#: templates/settings/settings_user_activities.html:192
 msgid "Confirm Lock"
 msgstr "Confirm Lock"
 
@@ -3572,4 +3652,7 @@ msgstr "Save User Settings"
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "Administrator permission required."
+
+#~ msgid "Global settings updated"
+#~ msgstr "Global settings updated."
 

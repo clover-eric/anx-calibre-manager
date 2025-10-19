@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 15:00+0800\n"
+"POT-Creation-Date: 2025-10-19 16:08+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -751,10 +751,6 @@ msgstr ""
 " die Aktualisierung der Konfiguration werden die Server-Worker neu "
 "gestartet und diese Aufgaben unterbrochen. Möchten Sie fortfahren?"
 
-#: blueprints/api/settings.py:176
-msgid "Global settings updated"
-msgstr "Globale Einstellungen aktualisiert."
-
 #: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "Globale Einstellungen aktualisiert."
@@ -796,8 +792,8 @@ msgid "Failed to load activities"
 msgstr "Fehler beim Laden der Aktivitäten"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:352
-#: static/js/settings/user_activities.js:356
+#: static/js/settings/user_activities.js:355
+#: static/js/settings/user_activities.js:359
 msgid "Failed to load activity details"
 msgstr "Fehler beim Laden der Aktivitätsdetails"
 
@@ -806,12 +802,12 @@ msgid "Failed to load event statistics"
 msgstr "Fehler beim Laden der Ereignisstatistiken"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:643
+#: static/js/settings/user_activities.js:639
 msgid "Locked by administrator"
 msgstr "Vom Administrator gesperrt"
 
 #: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
-#: blueprints/api/user_activities.py:358
+#: blueprints/api/user_activities.py:358 blueprints/api/user_activities.py:392
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
@@ -821,13 +817,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "Konto gesperrt bis %(time)s. Grund: %(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:648
+#: static/js/settings/user_activities.js:644
 msgid "User account locked successfully"
 msgstr "Benutzerkonto erfolgreich gesperrt"
 
 #: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:649
 #: static/js/settings/user_activities.js:653
-#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "Fehler beim Sperren des Benutzerkontos"
 
@@ -836,13 +832,13 @@ msgid "Account unlocked by administrator"
 msgstr "Konto vom Administrator entsperrt"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:680
+#: static/js/settings/user_activities.js:676
 msgid "User account unlocked successfully"
 msgstr "Benutzerkonto erfolgreich entsperrt"
 
 #: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:680
 #: static/js/settings/user_activities.js:684
-#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "Fehler beim Entsperren des Benutzerkontos"
 
@@ -851,15 +847,42 @@ msgid "Failed login attempts reset by administrator"
 msgstr "Fehlgeschlagene Anmeldeversuche vom Administrator zurückgesetzt"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:707
 msgid "Failed login attempts reset successfully"
 msgstr "Fehlgeschlagene Anmeldeversuche erfolgreich zurückgesetzt"
 
 #: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:711
 #: static/js/settings/user_activities.js:715
-#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "Fehler beim Zurücksetzen der Anmeldeversuche"
+
+#: blueprints/api/user_activities.py:401
+#, python-format
+msgid "Administrator %(admin)s deleted all activity logs for user: %(username)s"
+msgstr "Administrator %(admin)s hat alle Aktivitätsprotokolle für Benutzer %(username)s gelöscht"
+
+#: blueprints/api/user_activities.py:405
+#, python-format
+msgid "Successfully deleted all activities for user %(username)s"
+msgstr "Alle Aktivitäten für Benutzer %(username)s erfolgreich gelöscht"
+
+#: blueprints/api/user_activities.py:409
+msgid "Failed to delete user activities"
+msgstr "Fehler beim Löschen der Benutzeraktivitäten"
+
+#: blueprints/api/user_activities.py:427
+#, python-format
+msgid "Administrator %(admin)s deleted all user activity logs"
+msgstr "Administrator %(admin)s hat alle Benutzeraktivitätsprotokolle gelöscht"
+
+#: blueprints/api/user_activities.py:430
+msgid "Successfully deleted all user activity logs"
+msgstr "Alle Benutzeraktivitätsprotokolle erfolgreich gelöscht"
+
+#: blueprints/api/user_activities.py:434
+msgid "Failed to delete all user activities"
+msgstr "Fehler beim Löschen aller Benutzeraktivitäten"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1467,8 +1490,8 @@ msgid "Total Logins"
 msgstr "Gesamte Anmeldungen"
 
 #: static/js/page/translations.js:135
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:100
 msgid "Total Activities"
 msgstr "Gesamte Aktivitäten"
 
@@ -1494,7 +1517,7 @@ msgid "Details"
 msgstr "Details"
 
 #: static/js/page/translations.js:141
-#: templates/settings/settings_user_activities.html:68
+#: templates/settings/settings_user_activities.html:71
 msgid "User"
 msgstr "Benutzer"
 
@@ -1547,26 +1570,73 @@ msgid "IP"
 msgstr "IP"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:183
+#: templates/settings/settings_user_activities.html:186
 msgid "Reason"
 msgstr "Grund"
 
 #: static/js/page/translations.js:156
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:108
 msgid "Last Login"
 msgstr "Letzte Anmeldung"
 
 #: static/js/page/translations.js:157
-#: templates/settings/settings_user_activities.html:71
+#: templates/settings/settings_user_activities.html:74
 msgid "Last Login IP"
 msgstr "Letzte Anmelde-IP"
 
 #: static/js/page/translations.js:158
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
+#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:104
 msgid "Login Count"
 msgstr "Anzahl Anmeldungen"
+
+#: static/js/page/translations.js:159
+msgid "Delete Activities"
+msgstr "Aktivitäten löschen"
+
+#: static/js/page/translations.js:160
+#: templates/settings/settings_user_activities.html:60
+msgid "Delete All Activities"
+msgstr "Alle Aktivitäten löschen"
+
+#: static/js/page/translations.js:161
+msgid "Are you sure you want to delete all activities for user"
+msgstr "Sind Sie sicher, dass Sie alle Aktivitäten für den Benutzer löschen möchten"
+
+#: static/js/page/translations.js:162
+msgid "This action cannot be undone."
+msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: static/js/page/translations.js:163
+msgid "Activities deleted successfully."
+msgstr "Aktivitäten erfolgreich gelöscht."
+
+#: static/js/page/translations.js:164
+msgid "Failed to delete activities"
+msgstr "Fehler beim Löschen der Aktivitäten"
+
+#: static/js/page/translations.js:165
+msgid "An error occurred while deleting activities."
+msgstr "Beim Löschen der Aktivitäten ist ein Fehler aufgetreten."
+
+#: static/js/page/translations.js:166
+msgid ""
+"Are you absolutely sure you want to delete all activity logs for ALL "
+"users? This action is irreversible."
+msgstr "Sind Sie absolut sicher, dass Sie alle Aktivitätsprotokolle für ALLE Benutzer löschen möchten? Diese Aktion ist unumkehrbar."
+
+#: static/js/page/translations.js:167
+msgid "All activities deleted successfully."
+msgstr "Alle Aktivitäten erfolgreich gelöscht."
+
+#: static/js/page/translations.js:168
+msgid "Failed to delete all activities"
+msgstr "Fehler beim Löschen aller Aktivitäten"
+
+#: static/js/page/translations.js:169
+msgid "An error occurred while deleting all activities."
+msgstr "Beim Löschen aller Aktivitäten ist ein Fehler aufgetreten."
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1805,12 +1875,12 @@ msgid "Failed to delete LLM profile"
 msgstr "Fehler beim Löschen des LLM-Profils"
 
 #: static/js/settings/user_activities.js:19
-#: templates/settings/settings_user_activities.html:131
+#: templates/settings/settings_user_activities.html:134
 msgid "Login Success"
 msgstr "Anmeldung erfolgreich"
 
 #: static/js/settings/user_activities.js:20
-#: templates/settings/settings_user_activities.html:132
+#: templates/settings/settings_user_activities.html:135
 msgid "Login Failed"
 msgstr "Anmeldung fehlgeschlagen"
 
@@ -1824,14 +1894,14 @@ msgid "Register"
 msgstr "Registrieren"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:440
-#: templates/settings/settings_user_activities.html:133
+#: static/js/settings/user_activities.js:436
+#: templates/settings/settings_user_activities.html:136
 msgid "Download Book"
 msgstr "Buch herunterladen"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:441
-#: templates/settings/settings_user_activities.html:134
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:137
 msgid "Upload Book"
 msgstr "Buch hochladen"
 
@@ -1840,8 +1910,8 @@ msgid "Delete Book"
 msgstr "Buch löschen"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:135
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:138
 msgid "Search Books"
 msgstr "Bücher suchen"
 
@@ -1850,8 +1920,8 @@ msgid "Edit Metadata"
 msgstr "Metadaten bearbeiten"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:440
+#: templates/settings/settings_user_activities.html:139
 msgid "Push to Kindle"
 msgstr "An Kindle senden"
 
@@ -1864,9 +1934,9 @@ msgid "Push Anx to Calibre"
 msgstr "Anx zu Calibre senden"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:445 templates/index.html:123
+#: static/js/settings/user_activities.js:441 templates/index.html:123
 #: templates/index.html:197
-#: templates/settings/settings_user_activities.html:137
+#: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "Hörbuch generieren"
 
@@ -1879,7 +1949,7 @@ msgid "Update Audiobook Reading Time"
 msgstr "Hörbuch-Lesezeit aktualisieren"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:138
+#: templates/settings/settings_user_activities.html:141
 msgid "Update Reading Progress"
 msgstr "Lesefortschritt aktualisieren"
 
@@ -1991,34 +2061,42 @@ msgstr "KOReader-Lesezeit synchronisieren"
 msgid "KOReader Update Summary"
 msgstr "KOReader-Zusammenfassung aktualisieren"
 
-#: static/js/settings/user_activities.js:380
-#: static/js/settings/user_activities.js:526
+#: static/js/settings/user_activities.js:64
+msgid "Delete User Activity Log"
+msgstr "Benutzeraktivitätsprotokoll löschen"
+
+#: static/js/settings/user_activities.js:65
+msgid "Delete All Activity Logs"
+msgstr "Alle Aktivitätsprotokolle löschen"
+
+#: static/js/settings/user_activities.js:376
+#: static/js/settings/user_activities.js:522
 msgid "Activity Details for"
 msgstr "Aktivitätsdetails für"
 
-#: static/js/settings/user_activities.js:443 templates/index.html:178
+#: static/js/settings/user_activities.js:439 templates/index.html:178
 msgid "Reading Progress"
 msgstr "Lesefortschritt"
 
+#: static/js/settings/user_activities.js:502
 #: static/js/settings/user_activities.js:506
-#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "Fehler beim Laden der Ereignistypdetails"
 
-#: static/js/settings/user_activities.js:606
-#: templates/settings/settings_user_activities.html:170
+#: static/js/settings/user_activities.js:602
+#: templates/settings/settings_user_activities.html:173
 msgid "Lock User Account"
 msgstr "Benutzerkonto sperren"
 
-#: static/js/settings/user_activities.js:631
+#: static/js/settings/user_activities.js:627
 msgid "Please enter a valid duration"
 msgstr "Bitte geben Sie eine gültige Dauer ein"
 
-#: static/js/settings/user_activities.js:667
+#: static/js/settings/user_activities.js:663
 msgid "Are you sure you want to unlock this user account?"
 msgstr "Möchten Sie dieses Benutzerkonto wirklich entsperren?"
 
-#: static/js/settings/user_activities.js:698
+#: static/js/settings/user_activities.js:694
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr ""
 "Möchten Sie die fehlgeschlagenen Anmeldeversuche für diesen Benutzer "
@@ -2271,7 +2349,7 @@ msgid "Select files:"
 msgstr "Dateien auswählen:"
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_activities.html:193
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -2797,7 +2875,7 @@ msgid "Expires At"
 msgstr "Läuft ab am"
 
 #: templates/settings/settings_invite_code.html:36
-#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:79
 #: templates/settings/settings_user_management.html:36
 msgid "Actions"
 msgstr "Aktionen"
@@ -3269,53 +3347,53 @@ msgstr "Globale Ereignisstatistiken"
 msgid "User Activity List"
 msgstr "Benutzeraktivitätsliste"
 
-#: templates/settings/settings_user_activities.html:58
+#: templates/settings/settings_user_activities.html:59
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: templates/settings/settings_user_activities.html:61
+#: templates/settings/settings_user_activities.html:64
 msgid "Search username..."
 msgstr "Benutzername suchen..."
 
-#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_activities.html:72
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "Rolle"
 
-#: templates/settings/settings_user_activities.html:74
+#: templates/settings/settings_user_activities.html:77
 msgid "Failed Attempts"
 msgstr "Fehlgeschlagene Versuche"
 
-#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:78
 msgid "Account Status"
 msgstr "Kontostatus"
 
-#: templates/settings/settings_user_activities.html:112
+#: templates/settings/settings_user_activities.html:115
 msgid "Last Activity Times by Type"
 msgstr "Letzte Aktivitätszeiten nach Typ"
 
-#: templates/settings/settings_user_activities.html:120
+#: templates/settings/settings_user_activities.html:123
 msgid "Recent Failed Login Attempts"
 msgstr "Letzte fehlgeschlagene Anmeldeversuche"
 
-#: templates/settings/settings_user_activities.html:128
+#: templates/settings/settings_user_activities.html:131
 msgid "Activity History"
 msgstr "Aktivitätsverlauf"
 
-#: templates/settings/settings_user_activities.html:130
+#: templates/settings/settings_user_activities.html:133
 msgid "All Types"
 msgstr "Alle Typen"
 
-#: templates/settings/settings_user_activities.html:178
+#: templates/settings/settings_user_activities.html:181
 msgid "Lock Duration (minutes)"
 msgstr "Sperrdauer (Minuten)"
 
-#: templates/settings/settings_user_activities.html:184
+#: templates/settings/settings_user_activities.html:187
 msgid "Optional: Reason for locking account"
 msgstr "Optional: Grund für die Kontosperrung"
 
-#: templates/settings/settings_user_activities.html:189
+#: templates/settings/settings_user_activities.html:192
 msgid "Confirm Lock"
 msgstr "Sperrung bestätigen"
 
@@ -3613,4 +3691,7 @@ msgstr "Benutzereinstellungen speichern"
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "Administratorberechtigung erforderlich."
+
+#~ msgid "Global settings updated"
+#~ msgstr "Globale Einstellungen aktualisiert."
 

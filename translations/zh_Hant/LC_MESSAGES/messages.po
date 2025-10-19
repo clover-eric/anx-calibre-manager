@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 15:00+0800\n"
+"POT-Creation-Date: 2025-10-19 16:08+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: Roo\n"
 "Language: zh_Hant\n"
@@ -716,10 +716,6 @@ msgid ""
 "these tasks. Do you want to continue?"
 msgstr "目前有 %(count)s 個有聲書生成任務正在進行中。更新設定將重新啟動伺服器工作執行緒並中斷這些任務。您確定要繼續嗎？"
 
-#: blueprints/api/settings.py:176
-msgid "Global settings updated"
-msgstr "全域設定已更新。"
-
 #: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "全域設定已更新。"
@@ -761,8 +757,8 @@ msgid "Failed to load activities"
 msgstr "載入活動失敗"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:352
-#: static/js/settings/user_activities.js:356
+#: static/js/settings/user_activities.js:355
+#: static/js/settings/user_activities.js:359
 msgid "Failed to load activity details"
 msgstr "載入活動詳情失敗"
 
@@ -771,12 +767,12 @@ msgid "Failed to load event statistics"
 msgstr "載入事件統計失敗"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:643
+#: static/js/settings/user_activities.js:639
 msgid "Locked by administrator"
 msgstr "已被管理員鎖定"
 
 #: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
-#: blueprints/api/user_activities.py:358
+#: blueprints/api/user_activities.py:358 blueprints/api/user_activities.py:392
 msgid "User not found"
 msgstr "找不到使用者"
 
@@ -786,13 +782,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "帳號已鎖定至 %(time)s。原因：%(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:648
+#: static/js/settings/user_activities.js:644
 msgid "User account locked successfully"
 msgstr "使用者帳號鎖定成功"
 
 #: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:649
 #: static/js/settings/user_activities.js:653
-#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "鎖定使用者帳號失敗"
 
@@ -801,13 +797,13 @@ msgid "Account unlocked by administrator"
 msgstr "帳號已由管理員解鎖"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:680
+#: static/js/settings/user_activities.js:676
 msgid "User account unlocked successfully"
 msgstr "使用者帳號解鎖成功"
 
 #: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:680
 #: static/js/settings/user_activities.js:684
-#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "解鎖使用者帳號失敗"
 
@@ -816,15 +812,42 @@ msgid "Failed login attempts reset by administrator"
 msgstr "登入失敗次數已由管理員重設"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:707
 msgid "Failed login attempts reset successfully"
 msgstr "登入失敗次數重設成功"
 
 #: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:711
 #: static/js/settings/user_activities.js:715
-#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "重設登入失敗次數失敗"
+
+#: blueprints/api/user_activities.py:401
+#, python-format
+msgid "Administrator %(admin)s deleted all activity logs for user: %(username)s"
+msgstr "管理員 %(admin)s 刪除了使用者 %(username)s 的所有活動日誌"
+
+#: blueprints/api/user_activities.py:405
+#, python-format
+msgid "Successfully deleted all activities for user %(username)s"
+msgstr "已成功刪除使用者 %(username)s 的所有活動"
+
+#: blueprints/api/user_activities.py:409
+msgid "Failed to delete user activities"
+msgstr "刪除使用者活動失敗"
+
+#: blueprints/api/user_activities.py:427
+#, python-format
+msgid "Administrator %(admin)s deleted all user activity logs"
+msgstr "管理員 %(admin)s 刪除了所有使用者活動日誌"
+
+#: blueprints/api/user_activities.py:430
+msgid "Successfully deleted all user activity logs"
+msgstr "已成功刪除所有使用者活動日誌"
+
+#: blueprints/api/user_activities.py:434
+msgid "Failed to delete all user activities"
+msgstr "刪除所有使用者活動失敗"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1407,8 +1430,8 @@ msgid "Total Logins"
 msgstr "總登入次數"
 
 #: static/js/page/translations.js:135
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:100
 msgid "Total Activities"
 msgstr "總活動數"
 
@@ -1434,7 +1457,7 @@ msgid "Details"
 msgstr "詳情"
 
 #: static/js/page/translations.js:141
-#: templates/settings/settings_user_activities.html:68
+#: templates/settings/settings_user_activities.html:71
 msgid "User"
 msgstr "使用者"
 
@@ -1487,26 +1510,73 @@ msgid "IP"
 msgstr "IP位址"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:183
+#: templates/settings/settings_user_activities.html:186
 msgid "Reason"
 msgstr "原因"
 
 #: static/js/page/translations.js:156
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:108
 msgid "Last Login"
 msgstr "最後登入"
 
 #: static/js/page/translations.js:157
-#: templates/settings/settings_user_activities.html:71
+#: templates/settings/settings_user_activities.html:74
 msgid "Last Login IP"
 msgstr "最後登入 IP"
 
 #: static/js/page/translations.js:158
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
+#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:104
 msgid "Login Count"
 msgstr "登入次數"
+
+#: static/js/page/translations.js:159
+msgid "Delete Activities"
+msgstr "刪除活動"
+
+#: static/js/page/translations.js:160
+#: templates/settings/settings_user_activities.html:60
+msgid "Delete All Activities"
+msgstr "刪除所有活動"
+
+#: static/js/page/translations.js:161
+msgid "Are you sure you want to delete all activities for user"
+msgstr "您確定要刪除該使用者的所有活動嗎"
+
+#: static/js/page/translations.js:162
+msgid "This action cannot be undone."
+msgstr "此操作無法復原。"
+
+#: static/js/page/translations.js:163
+msgid "Activities deleted successfully."
+msgstr "活動已成功刪除。"
+
+#: static/js/page/translations.js:164
+msgid "Failed to delete activities"
+msgstr "刪除活動失敗"
+
+#: static/js/page/translations.js:165
+msgid "An error occurred while deleting activities."
+msgstr "刪除活動時發生錯誤。"
+
+#: static/js/page/translations.js:166
+msgid ""
+"Are you absolutely sure you want to delete all activity logs for ALL "
+"users? This action is irreversible."
+msgstr "您確定要刪除所有使用者的全部活動日誌嗎？此操作不可逆。"
+
+#: static/js/page/translations.js:167
+msgid "All activities deleted successfully."
+msgstr "所有活動已成功刪除。"
+
+#: static/js/page/translations.js:168
+msgid "Failed to delete all activities"
+msgstr "刪除所有活動失敗"
+
+#: static/js/page/translations.js:169
+msgid "An error occurred while deleting all activities."
+msgstr "刪除所有活動時發生錯誤。"
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1740,12 +1810,12 @@ msgid "Failed to delete LLM profile"
 msgstr "刪除 LLM 設定預設集失敗"
 
 #: static/js/settings/user_activities.js:19
-#: templates/settings/settings_user_activities.html:131
+#: templates/settings/settings_user_activities.html:134
 msgid "Login Success"
 msgstr "登入成功"
 
 #: static/js/settings/user_activities.js:20
-#: templates/settings/settings_user_activities.html:132
+#: templates/settings/settings_user_activities.html:135
 msgid "Login Failed"
 msgstr "登入失敗"
 
@@ -1759,14 +1829,14 @@ msgid "Register"
 msgstr "註冊"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:440
-#: templates/settings/settings_user_activities.html:133
+#: static/js/settings/user_activities.js:436
+#: templates/settings/settings_user_activities.html:136
 msgid "Download Book"
 msgstr "下載圖書"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:441
-#: templates/settings/settings_user_activities.html:134
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:137
 msgid "Upload Book"
 msgstr "上傳圖書"
 
@@ -1775,8 +1845,8 @@ msgid "Delete Book"
 msgstr "刪除圖書"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:135
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:138
 msgid "Search Books"
 msgstr "搜尋圖書"
 
@@ -1785,8 +1855,8 @@ msgid "Edit Metadata"
 msgstr "編輯中繼資料"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:440
+#: templates/settings/settings_user_activities.html:139
 msgid "Push to Kindle"
 msgstr "推送到 Kindle"
 
@@ -1799,9 +1869,9 @@ msgid "Push Anx to Calibre"
 msgstr "推送 Anx 到 Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:445 templates/index.html:123
+#: static/js/settings/user_activities.js:441 templates/index.html:123
 #: templates/index.html:197
-#: templates/settings/settings_user_activities.html:137
+#: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "產生有聲書"
 
@@ -1814,7 +1884,7 @@ msgid "Update Audiobook Reading Time"
 msgstr "更新有聲書閱讀時間"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:138
+#: templates/settings/settings_user_activities.html:141
 msgid "Update Reading Progress"
 msgstr "更新閱讀進度"
 
@@ -1926,34 +1996,42 @@ msgstr "KOReader 同步閱讀時間"
 msgid "KOReader Update Summary"
 msgstr "KOReader 更新摘要"
 
-#: static/js/settings/user_activities.js:380
-#: static/js/settings/user_activities.js:526
+#: static/js/settings/user_activities.js:64
+msgid "Delete User Activity Log"
+msgstr "刪除使用者活動日誌"
+
+#: static/js/settings/user_activities.js:65
+msgid "Delete All Activity Logs"
+msgstr "刪除所有活動日誌"
+
+#: static/js/settings/user_activities.js:376
+#: static/js/settings/user_activities.js:522
 msgid "Activity Details for"
 msgstr "活動詳情"
 
-#: static/js/settings/user_activities.js:443 templates/index.html:178
+#: static/js/settings/user_activities.js:439 templates/index.html:178
 msgid "Reading Progress"
 msgstr "閱讀進度"
 
+#: static/js/settings/user_activities.js:502
 #: static/js/settings/user_activities.js:506
-#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "載入事件類型詳情失敗"
 
-#: static/js/settings/user_activities.js:606
-#: templates/settings/settings_user_activities.html:170
+#: static/js/settings/user_activities.js:602
+#: templates/settings/settings_user_activities.html:173
 msgid "Lock User Account"
 msgstr "鎖定使用者帳號"
 
-#: static/js/settings/user_activities.js:631
+#: static/js/settings/user_activities.js:627
 msgid "Please enter a valid duration"
 msgstr "請輸入有效的時長"
 
-#: static/js/settings/user_activities.js:667
+#: static/js/settings/user_activities.js:663
 msgid "Are you sure you want to unlock this user account?"
 msgstr "您確定要解鎖此使用者帳號嗎？"
 
-#: static/js/settings/user_activities.js:698
+#: static/js/settings/user_activities.js:694
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr "您確定要重設此使用者的登入失敗次數嗎？"
 
@@ -2199,7 +2277,7 @@ msgid "Select files:"
 msgstr "選取檔案："
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_activities.html:193
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -2696,7 +2774,7 @@ msgid "Expires At"
 msgstr "過期於"
 
 #: templates/settings/settings_invite_code.html:36
-#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:79
 #: templates/settings/settings_user_management.html:36
 msgid "Actions"
 msgstr "操作"
@@ -3107,53 +3185,53 @@ msgstr "全域事件統計"
 msgid "User Activity List"
 msgstr "使用者活動清單"
 
-#: templates/settings/settings_user_activities.html:58
+#: templates/settings/settings_user_activities.html:59
 msgid "Refresh"
 msgstr "重新整理"
 
-#: templates/settings/settings_user_activities.html:61
+#: templates/settings/settings_user_activities.html:64
 msgid "Search username..."
 msgstr "搜尋使用者名稱..."
 
-#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_activities.html:72
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings/settings_user_activities.html:74
+#: templates/settings/settings_user_activities.html:77
 msgid "Failed Attempts"
 msgstr "失敗嘗試次數"
 
-#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:78
 msgid "Account Status"
 msgstr "帳號狀態"
 
-#: templates/settings/settings_user_activities.html:112
+#: templates/settings/settings_user_activities.html:115
 msgid "Last Activity Times by Type"
 msgstr "各類型最後活動時間"
 
-#: templates/settings/settings_user_activities.html:120
+#: templates/settings/settings_user_activities.html:123
 msgid "Recent Failed Login Attempts"
 msgstr "最近登入失敗嘗試"
 
-#: templates/settings/settings_user_activities.html:128
+#: templates/settings/settings_user_activities.html:131
 msgid "Activity History"
 msgstr "活動歷史"
 
-#: templates/settings/settings_user_activities.html:130
+#: templates/settings/settings_user_activities.html:133
 msgid "All Types"
 msgstr "所有類型"
 
-#: templates/settings/settings_user_activities.html:178
+#: templates/settings/settings_user_activities.html:181
 msgid "Lock Duration (minutes)"
 msgstr "鎖定時長（分鐘）"
 
-#: templates/settings/settings_user_activities.html:184
+#: templates/settings/settings_user_activities.html:187
 msgid "Optional: Reason for locking account"
 msgstr "選填：鎖定帳號的原因"
 
-#: templates/settings/settings_user_activities.html:189
+#: templates/settings/settings_user_activities.html:192
 msgid "Confirm Lock"
 msgstr "確認鎖定"
 
@@ -3435,4 +3513,7 @@ msgstr "儲存使用者設定"
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "需要管理員權限。"
+
+#~ msgid "Global settings updated"
+#~ msgstr "全域設定已更新。"
 

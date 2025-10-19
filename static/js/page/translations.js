@@ -156,6 +156,17 @@ export function initializeTranslations() {
         lastLogin: _('Last Login'),
         lastLoginIP: _('Last Login IP'),
         loginCount: _('Login Count'),
+        deleteActivities: _('Delete Activities'),
+        deleteAllActivities: _('Delete All Activities'),
+        areYouSureDeleteUserActivities: _('Are you sure you want to delete all activities for user'),
+        thisActionCannotBeUndone: _('This action cannot be undone.'),
+        activitiesDeletedSuccess: _('Activities deleted successfully.'),
+        failedToDeleteActivities: _('Failed to delete activities'),
+        errorDeletingActivities: _('An error occurred while deleting activities.'),
+        areYouSureDeleteAllActivities: _('Are you absolutely sure you want to delete all activity logs for ALL users? This action is irreversible.'),
+        allActivitiesDeletedSuccess: _('All activities deleted successfully.'),
+        failedToDeleteAllActivities: _('Failed to delete all activities'),
+        errorDeletingAllActivities: _('An error occurred while deleting all activities.'),
     });
 }
 

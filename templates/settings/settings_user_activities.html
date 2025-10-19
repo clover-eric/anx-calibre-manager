@@ -55,7 +55,10 @@
     <!-- 用户活动列表 -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
         <h4 style="margin: 0;">{{ _('User Activity List') }}</h4>
-        <button onclick="refreshUserActivities()" class="button button-primary">{{ _('Refresh') }}</button>
+        <div>
+            <button onclick="refreshUserActivities()" class="button button-primary">{{ _('Refresh') }}</button>
+            <button onclick="deleteAllActivities()" class="button button-danger" style="margin-left: 0.5rem;">{{ _('Delete All Activities') }}</button>
+        </div>
     </div>
     <div class="table-controls">
         <input type="text" id="userSearchInput" placeholder="{{ _('Search username...') }}" class="search-input">

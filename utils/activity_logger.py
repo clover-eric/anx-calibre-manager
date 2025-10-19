@@ -34,7 +34,7 @@ def filter_sensitive_data(data):
    return clean_data
 
 class ActivityType:
-   """活动类型常量"""
+    """活动类型常量"""
     # 认证相关
     LOGIN_SUCCESS = 'login_success'
     LOGIN_FAILED = 'login_failed'
@@ -105,6 +105,10 @@ class ActivityType:
     KOREADER_SYNC_PROGRESS = 'koreader_sync_progress'
     KOREADER_SYNC_READING_TIME = 'koreader_sync_reading_time'
     KOREADER_UPDATE_SUMMARY = 'koreader_update_summary'
+    
+    # 管理活动记录日志操作
+    DELETE_USER_ACTIVITY_LOG = 'delete_user_activity_log'
+    DELETE_ALL_ACTIVITY_LOGS = 'delete_all_activity_logs'
 
 
 def log_activity(

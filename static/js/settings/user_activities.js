@@ -60,7 +60,9 @@ function getActivityTypeName(activityType) {
         'test_smtp': _('Test SMTP'),
         'koreader_sync_progress': _('KOReader Sync Progress'),
         'koreader_sync_reading_time': _('KOReader Sync Reading Time'),
-        'koreader_update_summary': _('KOReader Update Summary')
+        'koreader_update_summary': _('KOReader Update Summary'),
+        'delete_user_activity_log': _('Delete User Activity Log'),
+        'delete_all_activity_logs': _('Delete All Activity Logs')
     };
     
     return activityTypeNames[activityType] || activityType;
@@ -311,6 +313,7 @@ function displayUserActivitiesList(users) {
                 `<button class="button button-small" onclick="resetFailedAttempts(${user.id}, '${user.username}')">${t.resetFailed}</button>` :
                 ''
             }
+            <button class="button button-small button-danger" onclick="deleteUserActivities(${user.id}, '${user.username}')">${t.deleteActivities}</button>
         `;
         
         row.innerHTML = `
@@ -740,4 +743,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadUserActivities();
     }
 });
-            
+
+/**
+ * Delete all activities for a specific user
+ * @param {number} userId - User ID
+ * @param {string} username - Username
+ */
+window.deleteUserActivities = async function(userId, username) {
+    if (!confirm(t.areYouSureDeleteUserActivities.replace('%s', username))) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/admin/users/${userId}/activities`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert(data.message || t.deleteUserActivitiesSuccess.replace('%s', username));
+            await loadUserActivities();
+        } else {
+            const data = await response.json();
+            alert(t.deleteActivitiesError + ': ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error deleting user activities:', error);
+        alert(t.deleteActivitiesError);
+    }
+}
+
+/**
+ * Delete all activities for all users
+ */
+window.deleteAllActivities = async function() {
+    if (!confirm(t.areYouSureDeleteAllActivities)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/admin/user-activities/all', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert(data.message || t.deleteAllActivitiesSuccess);
+            await loadUserActivities();
+        } else {
+            const data = await response.json();
+            alert(t.deleteAllActivitiesError + ': ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error deleting all activities:', error);
+        alert(t.deleteAllActivitiesError);
+    }
+}

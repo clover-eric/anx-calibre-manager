@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 15:00+0800\n"
+"POT-Creation-Date: 2025-10-19 16:08+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -716,10 +716,6 @@ msgid ""
 "these tasks. Do you want to continue?"
 msgstr "当前有 %(count)s 个有声书生成任务正在进行中。更新配置将重启服务器工作进程并中断这些任务。您确定要继续吗？"
 
-#: blueprints/api/settings.py:176
-msgid "Global settings updated"
-msgstr "全局设置已更新。"
-
 #: blueprints/api/settings.py:177
 msgid "Global settings updated."
 msgstr "全局设置已更新。"
@@ -761,8 +757,8 @@ msgid "Failed to load activities"
 msgstr "加载活动失败"
 
 #: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:352
-#: static/js/settings/user_activities.js:356
+#: static/js/settings/user_activities.js:355
+#: static/js/settings/user_activities.js:359
 msgid "Failed to load activity details"
 msgstr "加载活动详情失败"
 
@@ -771,12 +767,12 @@ msgid "Failed to load event statistics"
 msgstr "加载事件统计失败"
 
 #: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:643
+#: static/js/settings/user_activities.js:639
 msgid "Locked by administrator"
 msgstr "被管理员锁定"
 
 #: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
-#: blueprints/api/user_activities.py:358
+#: blueprints/api/user_activities.py:358 blueprints/api/user_activities.py:392
 msgid "User not found"
 msgstr "未找到用户"
 
@@ -786,13 +782,13 @@ msgid "Account locked until %(time)s. Reason: %(reason)s"
 msgstr "账户已锁定至 %(time)s。原因：%(reason)s"
 
 #: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:648
+#: static/js/settings/user_activities.js:644
 msgid "User account locked successfully"
 msgstr "用户账户锁定成功"
 
 #: blueprints/api/user_activities.py:310
+#: static/js/settings/user_activities.js:649
 #: static/js/settings/user_activities.js:653
-#: static/js/settings/user_activities.js:657
 msgid "Failed to lock user account"
 msgstr "锁定用户账户失败"
 
@@ -801,13 +797,13 @@ msgid "Account unlocked by administrator"
 msgstr "账户已被管理员解锁"
 
 #: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:680
+#: static/js/settings/user_activities.js:676
 msgid "User account unlocked successfully"
 msgstr "用户账户解锁成功"
 
 #: blueprints/api/user_activities.py:345
+#: static/js/settings/user_activities.js:680
 #: static/js/settings/user_activities.js:684
-#: static/js/settings/user_activities.js:688
 msgid "Failed to unlock user account"
 msgstr "解锁用户账户失败"
 
@@ -816,15 +812,42 @@ msgid "Failed login attempts reset by administrator"
 msgstr "登录失败次数已被管理员重置"
 
 #: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:707
 msgid "Failed login attempts reset successfully"
 msgstr "登录失败次数重置成功"
 
 #: blueprints/api/user_activities.py:379
+#: static/js/settings/user_activities.js:711
 #: static/js/settings/user_activities.js:715
-#: static/js/settings/user_activities.js:719
 msgid "Failed to reset login attempts"
 msgstr "重置登录失败次数失败"
+
+#: blueprints/api/user_activities.py:401
+#, python-format
+msgid "Administrator %(admin)s deleted all activity logs for user: %(username)s"
+msgstr "管理员 %(admin)s 删除了用户 %(username)s 的所有活动日志"
+
+#: blueprints/api/user_activities.py:405
+#, python-format
+msgid "Successfully deleted all activities for user %(username)s"
+msgstr "已成功删除用户 %(username)s 的所有活动"
+
+#: blueprints/api/user_activities.py:409
+msgid "Failed to delete user activities"
+msgstr "删除用户活动失败"
+
+#: blueprints/api/user_activities.py:427
+#, python-format
+msgid "Administrator %(admin)s deleted all user activity logs"
+msgstr "管理员 %(admin)s 删除了所有用户活动日志"
+
+#: blueprints/api/user_activities.py:430
+msgid "Successfully deleted all user activity logs"
+msgstr "已成功删除所有用户活动日志"
+
+#: blueprints/api/user_activities.py:434
+msgid "Failed to delete all user activities"
+msgstr "删除所有用户活动失败"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1407,8 +1430,8 @@ msgid "Total Logins"
 msgstr "总登录次数"
 
 #: static/js/page/translations.js:135
-#: templates/settings/settings_user_activities.html:73
-#: templates/settings/settings_user_activities.html:97
+#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:100
 msgid "Total Activities"
 msgstr "总活动数"
 
@@ -1434,7 +1457,7 @@ msgid "Details"
 msgstr "详情"
 
 #: static/js/page/translations.js:141
-#: templates/settings/settings_user_activities.html:68
+#: templates/settings/settings_user_activities.html:71
 msgid "User"
 msgstr "用户"
 
@@ -1487,26 +1510,73 @@ msgid "IP"
 msgstr "IP地址"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:183
+#: templates/settings/settings_user_activities.html:186
 msgid "Reason"
 msgstr "原因"
 
 #: static/js/page/translations.js:156
-#: templates/settings/settings_user_activities.html:70
-#: templates/settings/settings_user_activities.html:105
+#: templates/settings/settings_user_activities.html:73
+#: templates/settings/settings_user_activities.html:108
 msgid "Last Login"
 msgstr "最后登录"
 
 #: static/js/page/translations.js:157
-#: templates/settings/settings_user_activities.html:71
+#: templates/settings/settings_user_activities.html:74
 msgid "Last Login IP"
 msgstr "最后登录IP"
 
 #: static/js/page/translations.js:158
-#: templates/settings/settings_user_activities.html:72
-#: templates/settings/settings_user_activities.html:101
+#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:104
 msgid "Login Count"
 msgstr "登录次数"
+
+#: static/js/page/translations.js:159
+msgid "Delete Activities"
+msgstr "删除活动"
+
+#: static/js/page/translations.js:160
+#: templates/settings/settings_user_activities.html:60
+msgid "Delete All Activities"
+msgstr "删除所有活动"
+
+#: static/js/page/translations.js:161
+msgid "Are you sure you want to delete all activities for user"
+msgstr "您确定要删除用户的所有活动吗"
+
+#: static/js/page/translations.js:162
+msgid "This action cannot be undone."
+msgstr "此操作无法撤销。"
+
+#: static/js/page/translations.js:163
+msgid "Activities deleted successfully."
+msgstr "活动已成功删除。"
+
+#: static/js/page/translations.js:164
+msgid "Failed to delete activities"
+msgstr "删除活动失败"
+
+#: static/js/page/translations.js:165
+msgid "An error occurred while deleting activities."
+msgstr "删除活动时发生错误。"
+
+#: static/js/page/translations.js:166
+msgid ""
+"Are you absolutely sure you want to delete all activity logs for ALL "
+"users? This action is irreversible."
+msgstr "您确定要删除所有用户的全部活动日志吗？此操作不可逆。"
+
+#: static/js/page/translations.js:167
+msgid "All activities deleted successfully."
+msgstr "所有活动已成功删除。"
+
+#: static/js/page/translations.js:168
+msgid "Failed to delete all activities"
+msgstr "删除所有活动失败"
+
+#: static/js/page/translations.js:169
+msgid "An error occurred while deleting all activities."
+msgstr "删除所有活动时发生错误。"
 
 #: static/js/settings/common.js:13
 #, python-brace-format
@@ -1740,12 +1810,12 @@ msgid "Failed to delete LLM profile"
 msgstr "删除 LLM 配置方案失败"
 
 #: static/js/settings/user_activities.js:19
-#: templates/settings/settings_user_activities.html:131
+#: templates/settings/settings_user_activities.html:134
 msgid "Login Success"
 msgstr "登录成功"
 
 #: static/js/settings/user_activities.js:20
-#: templates/settings/settings_user_activities.html:132
+#: templates/settings/settings_user_activities.html:135
 msgid "Login Failed"
 msgstr "登录失败"
 
@@ -1759,14 +1829,14 @@ msgid "Register"
 msgstr "注册"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:440
-#: templates/settings/settings_user_activities.html:133
+#: static/js/settings/user_activities.js:436
+#: templates/settings/settings_user_activities.html:136
 msgid "Download Book"
 msgstr "下载图书"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:441
-#: templates/settings/settings_user_activities.html:134
+#: static/js/settings/user_activities.js:437
+#: templates/settings/settings_user_activities.html:137
 msgid "Upload Book"
 msgstr "上传图书"
 
@@ -1775,8 +1845,8 @@ msgid "Delete Book"
 msgstr "删除图书"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:135
+#: static/js/settings/user_activities.js:438
+#: templates/settings/settings_user_activities.html:138
 msgid "Search Books"
 msgstr "搜索图书"
 
@@ -1785,8 +1855,8 @@ msgid "Edit Metadata"
 msgstr "编辑元数据"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:440
+#: templates/settings/settings_user_activities.html:139
 msgid "Push to Kindle"
 msgstr "推送到 Kindle"
 
@@ -1799,9 +1869,9 @@ msgid "Push Anx to Calibre"
 msgstr "推送 Anx 到 Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:445 templates/index.html:123
+#: static/js/settings/user_activities.js:441 templates/index.html:123
 #: templates/index.html:197
-#: templates/settings/settings_user_activities.html:137
+#: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "生成有声书"
 
@@ -1814,7 +1884,7 @@ msgid "Update Audiobook Reading Time"
 msgstr "更新有声书阅读时间"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:138
+#: templates/settings/settings_user_activities.html:141
 msgid "Update Reading Progress"
 msgstr "更新阅读进度"
 
@@ -1926,34 +1996,42 @@ msgstr "KOReader 同步阅读时间"
 msgid "KOReader Update Summary"
 msgstr "KOReader 更新摘要"
 
-#: static/js/settings/user_activities.js:380
-#: static/js/settings/user_activities.js:526
+#: static/js/settings/user_activities.js:64
+msgid "Delete User Activity Log"
+msgstr "删除用户活动日志"
+
+#: static/js/settings/user_activities.js:65
+msgid "Delete All Activity Logs"
+msgstr "删除所有活动日志"
+
+#: static/js/settings/user_activities.js:376
+#: static/js/settings/user_activities.js:522
 msgid "Activity Details for"
 msgstr "活动详情"
 
-#: static/js/settings/user_activities.js:443 templates/index.html:178
+#: static/js/settings/user_activities.js:439 templates/index.html:178
 msgid "Reading Progress"
 msgstr "阅读进度"
 
+#: static/js/settings/user_activities.js:502
 #: static/js/settings/user_activities.js:506
-#: static/js/settings/user_activities.js:510
 msgid "Failed to load event type details"
 msgstr "加载事件类型详情失败"
 
-#: static/js/settings/user_activities.js:606
-#: templates/settings/settings_user_activities.html:170
+#: static/js/settings/user_activities.js:602
+#: templates/settings/settings_user_activities.html:173
 msgid "Lock User Account"
 msgstr "锁定用户账户"
 
-#: static/js/settings/user_activities.js:631
+#: static/js/settings/user_activities.js:627
 msgid "Please enter a valid duration"
 msgstr "请输入有效的时长"
 
-#: static/js/settings/user_activities.js:667
+#: static/js/settings/user_activities.js:663
 msgid "Are you sure you want to unlock this user account?"
 msgstr "您确定要解锁此用户账户吗？"
 
-#: static/js/settings/user_activities.js:698
+#: static/js/settings/user_activities.js:694
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr "您确定要重置此用户的登录失败次数吗？"
 
@@ -2199,7 +2277,7 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:226 templates/index.html:243
-#: templates/settings/settings_user_activities.html:190
+#: templates/settings/settings_user_activities.html:193
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -2696,7 +2774,7 @@ msgid "Expires At"
 msgstr "过期于"
 
 #: templates/settings/settings_invite_code.html:36
-#: templates/settings/settings_user_activities.html:76
+#: templates/settings/settings_user_activities.html:79
 #: templates/settings/settings_user_management.html:36
 msgid "Actions"
 msgstr "操作"
@@ -3107,53 +3185,53 @@ msgstr "全局事件统计"
 msgid "User Activity List"
 msgstr "用户活动列表"
 
-#: templates/settings/settings_user_activities.html:58
+#: templates/settings/settings_user_activities.html:59
 msgid "Refresh"
 msgstr "刷新"
 
-#: templates/settings/settings_user_activities.html:61
+#: templates/settings/settings_user_activities.html:64
 msgid "Search username..."
 msgstr "搜索用户名..."
 
-#: templates/settings/settings_user_activities.html:69
+#: templates/settings/settings_user_activities.html:72
 #: templates/settings/settings_user_management.html:16
 #: templates/settings/settings_user_management.html:35
 msgid "Role"
 msgstr "角色"
 
-#: templates/settings/settings_user_activities.html:74
+#: templates/settings/settings_user_activities.html:77
 msgid "Failed Attempts"
 msgstr "失败尝试次数"
 
-#: templates/settings/settings_user_activities.html:75
+#: templates/settings/settings_user_activities.html:78
 msgid "Account Status"
 msgstr "账户状态"
 
-#: templates/settings/settings_user_activities.html:112
+#: templates/settings/settings_user_activities.html:115
 msgid "Last Activity Times by Type"
 msgstr "各类型最后活动时间"
 
-#: templates/settings/settings_user_activities.html:120
+#: templates/settings/settings_user_activities.html:123
 msgid "Recent Failed Login Attempts"
 msgstr "最近的登录失败尝试"
 
-#: templates/settings/settings_user_activities.html:128
+#: templates/settings/settings_user_activities.html:131
 msgid "Activity History"
 msgstr "活动历史"
 
-#: templates/settings/settings_user_activities.html:130
+#: templates/settings/settings_user_activities.html:133
 msgid "All Types"
 msgstr "所有类型"
 
-#: templates/settings/settings_user_activities.html:178
+#: templates/settings/settings_user_activities.html:181
 msgid "Lock Duration (minutes)"
 msgstr "锁定时长（分钟）"
 
-#: templates/settings/settings_user_activities.html:184
+#: templates/settings/settings_user_activities.html:187
 msgid "Optional: Reason for locking account"
 msgstr "可选：锁定账户的原因"
 
-#: templates/settings/settings_user_activities.html:189
+#: templates/settings/settings_user_activities.html:192
 msgid "Confirm Lock"
 msgstr "确认锁定"
 
@@ -3435,4 +3513,7 @@ msgstr "保存用户设置"
 #: utils/decorators.py:10
 msgid "Administrator permission required."
 msgstr "需要管理员权限。"
+
+#~ msgid "Global settings updated"
+#~ msgstr "全局设置已更新。"
 

@@ -377,3 +377,58 @@ def reset_failed_attempts(user_id):
     except Exception as e:
         print(f"Error resetting failed attempts: {e}")
         return jsonify({'error': _('Failed to reset login attempts')}), 500
+
+
+@user_activities_bp.route('/users/<int:user_id>/activities', methods=['DELETE'])
+@admin_required_api
+def delete_user_activities(user_id):
+    """
+    删除单个用户的所有活动记录
+    """
+    try:
+        with closing(database.get_db()) as db:
+            user = db.execute('SELECT username FROM users WHERE id = ?', (user_id,)).fetchone()
+            if not user:
+                return jsonify({'error': _('User not found')}), 404
+            
+            db.execute('DELETE FROM user_activity_log WHERE user_id = ?', (user_id,))
+            db.commit()
+            
+            log_activity(
+                ActivityType.DELETE_USER_ACTIVITY_LOG,
+                user_id=g.user.id,
+                success=True,
+                detail=_('Administrator %(admin)s deleted all activity logs for user: %(username)s',
+                         admin=g.user.username, username=user['username'])
+            )
+            
+            return jsonify({'message': _('Successfully deleted all activities for user %(username)s', username=user['username'])})
+    
+    except Exception as e:
+        print(f"Error deleting user activities: {e}")
+        return jsonify({'error': _('Failed to delete user activities')}), 500
+
+
+@user_activities_bp.route('/user-activities/all', methods=['DELETE'])
+@admin_required_api
+def delete_all_activities():
+    """
+    删除所有用户的活动记录
+    """
+    try:
+        with closing(database.get_db()) as db:
+            db.execute('DELETE FROM user_activity_log')
+            db.commit()
+            
+            log_activity(
+                ActivityType.DELETE_ALL_ACTIVITY_LOGS,
+                user_id=g.user.id,
+                success=True,
+                detail=_('Administrator %(admin)s deleted all user activity logs', admin=g.user.username)
+            )
+            
+            return jsonify({'message': _('Successfully deleted all user activity logs')})
+    
+    except Exception as e:
+        print(f"Error deleting all activities: {e}")
+        return jsonify({'error': _('Failed to delete all user activities')}), 500
