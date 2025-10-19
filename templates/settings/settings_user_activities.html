@@ -179,7 +179,12 @@
                 
                 <div class="form-group">
                     <label for="lockDuration">{{ _('Lock Duration (minutes)') }}:</label>
-                    <input type="number" id="lockDuration" value="30" min="1" max="10080" class="form-input">
+                    <input type="number" id="lockDuration" value="30" min="1" max="525600" class="form-input">
+                </div>
+
+                <div class="form-group form-group-checkbox">
+                    <input type="checkbox" id="lockPermanent" onchange="togglePermanentLock(this)">
+                    <label for="lockPermanent">{{ _('Lock Permanently') }}</label>
                 </div>
                 
                 <div class="form-group">

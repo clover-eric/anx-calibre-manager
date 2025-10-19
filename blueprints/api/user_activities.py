@@ -83,11 +83,34 @@ def get_user_activities_summary():
                 # 判断账户状态
                 is_locked = False
                 locked_until = None
+                lock_reason = None
                 if user['account_locked_until']:
                     locked_until_dt = datetime.fromisoformat(user['account_locked_until'])
                     if datetime.now() < locked_until_dt:
                         is_locked = True
                         locked_until = user['account_locked_until']
+                        
+                        # 查询锁定原因
+                        lock_log = db.execute('''
+                            SELECT detail FROM user_activity_log
+                            WHERE user_id = ? AND activity_type = ? AND success = 1
+                            ORDER BY created_at DESC
+                            LIMIT 1
+                        ''', (user_id, ActivityType.LOCK_USER)).fetchone()
+                        
+                        if lock_log and 'Reason:' in lock_log['detail']:
+                            try:
+                                # 解析 'Account locked until ... Reason: ...' 格式的字符串
+                                reason_part = lock_log['detail'].split('Reason:')[1].strip()
+                                lock_reason = reason_part
+                            except IndexError:
+                                lock_reason = _('Reason not specified')
+                        elif lock_log:
+                            lock_reason = lock_log['detail'] # Fallback for other lock-related messages
+                        else:
+                            # Fallback for locks without a specific log entry (e.g., automatic locks)
+                            lock_reason = _('Account locked due to multiple failed login attempts.')
+
                 
                 user_list.append({
                     'id': user_id,
@@ -99,6 +122,7 @@ def get_user_activities_summary():
                     'activity_count': activity_count,
                     'is_locked': is_locked,
                     'locked_until': locked_until,
+                    'lock_reason': lock_reason,
                     'failed_login_attempts': user['failed_login_attempts'],
                     'last_failed_login': dict(last_failed_login) if last_failed_login else None,
                     'last_activities': last_activities
@@ -274,11 +298,18 @@ def lock_user(user_id):
     """
     try:
         data = request.get_json()
-        duration_minutes = data.get('duration_minutes', 30)  # 默认锁定30分钟
+        duration_minutes = data.get('duration_minutes', 30)
         reason = data.get('reason', _('Locked by administrator'))
         
-        locked_until = (datetime.now() + timedelta(minutes=duration_minutes)).isoformat()
-        
+        locked_until_str = ""
+        if duration_minutes > 0:
+            locked_until = (datetime.now() + timedelta(minutes=duration_minutes))
+            locked_until_str = locked_until.isoformat()
+        else:
+            # 永久锁定 (设置为一个非常遥远的未来)
+            locked_until = datetime(9999, 12, 31, 23, 59, 59)
+            locked_until_str = locked_until.isoformat()
+
         with closing(database.get_db()) as db:
             user = db.execute('SELECT username FROM users WHERE id = ?', (user_id,)).fetchone()
             if not user:
@@ -288,21 +319,23 @@ def lock_user(user_id):
                 UPDATE users 
                 SET account_locked_until = ?
                 WHERE id = ?
-            ''', (locked_until, user_id))
+            ''', (locked_until_str, user_id))
             db.commit()
             
+            lock_time_detail = _('permanently') if duration_minutes <= 0 else locked_until.strftime('%Y-%m-%d %H:%M:%S')
+            
             log_activity(
-                ActivityType.UPDATE_USER,
+                ActivityType.LOCK_USER,
                 username=user['username'],
                 user_id=user_id,
                 success=True,
-                detail=_('Account locked until %(time)s. Reason: %(reason)s', 
-                        time=locked_until, reason=reason)
+                detail=_('Account locked %(time)s. Reason: %(reason)s',
+                        time=lock_time_detail, reason=reason)
             )
             
             return jsonify({
                 'message': _('User account locked successfully'),
-                'locked_until': locked_until
+                'locked_until': locked_until_str
             })
     
     except Exception as e:
@@ -331,7 +364,7 @@ def unlock_user(user_id):
             db.commit()
             
             log_activity(
-                ActivityType.UPDATE_USER,
+                ActivityType.UNLOCK_USER,
                 username=user['username'],
                 user_id=user_id,
                 success=True,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 16:08+0800\n"
+"POT-Creation-Date: 2025-10-19 17:21+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -18,47 +18,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: blueprints/auth.py:26 blueprints/auth.py:141
+#: blueprints/auth.py:26 blueprints/auth.py:159
 msgid "Username or password is incorrect."
 msgstr "El nombre de usuario o la contraseña son incorrectos."
 
-#: blueprints/auth.py:42
+#: blueprints/auth.py:59
+#, python-format
+msgid ""
+"Account is locked. Reason: %(reason)s. Please try again in %(minutes)s "
+"minutes."
+msgstr ""
+"La cuenta está bloqueada. Razón: %(reason)s. Por favor, inténtalo de nuevo "
+"en %(minutes)s minutos."
+
+#: blueprints/auth.py:61
 #, python-format
 msgid "Account is locked. Please try again in %(minutes)s minutes."
 msgstr ""
 "La cuenta está bloqueada. Por favor, inténtalo de nuevo en %(minutes)s "
 "minutos."
 
-#: blueprints/auth.py:63
+#: blueprints/auth.py:83
 msgid "Session invalid, please login again."
 msgstr "Sesión inválida, por favor, inicia sesión de nuevo."
 
-#: blueprints/auth.py:67
+#: blueprints/auth.py:87
 msgid "Two-factor authentication code is incorrect."
 msgstr "El código de autenticación de dos factores es incorrecto."
 
-#: blueprints/auth.py:119
+#: blueprints/auth.py:137
 msgid "Too many failed login attempts. Account locked for 30 minutes."
 msgstr ""
 "Demasiados intentos de inicio de sesión fallidos. Cuenta bloqueada "
 "durante 30 minutos."
 
-#: blueprints/auth.py:139
+#: blueprints/auth.py:157
 #, python-format
 msgid "Username or password is incorrect. %(remaining)s attempt(s) remaining."
 msgstr ""
 "El nombre de usuario o la contraseña son incorrectos. Quedan "
 "%(remaining)s intento(s)."
 
-#: blueprints/auth.py:169
+#: blueprints/auth.py:187
 msgid "You have been logged out successfully."
 msgstr "Has cerrado sesión correctamente."
 
-#: blueprints/auth.py:192
+#: blueprints/auth.py:210
 msgid "Username and password cannot be empty."
 msgstr "El nombre de usuario y la contraseña no pueden estar vacíos."
 
-#: blueprints/auth.py:204
+#: blueprints/auth.py:222
 #, python-format
 msgid ""
 "Administrator account created, but failed to initialize Anx library: "
@@ -67,15 +76,15 @@ msgstr ""
 "Cuenta de administrador creada, pero falló la inicialización de la "
 "biblioteca Anx: %(message)s"
 
-#: blueprints/auth.py:206
+#: blueprints/auth.py:224
 msgid "Administrator account has been created, please login."
 msgstr "Se ha creado la cuenta de administrador, por favor, inicia sesión."
 
-#: blueprints/auth.py:228
+#: blueprints/auth.py:246
 msgid "Username and password cannot be empty"
 msgstr "El nombre de usuario y la contraseña no pueden estar vacíos"
 
-#: blueprints/auth.py:231 static/js/register.js:6
+#: blueprints/auth.py:249 static/js/register.js:6
 msgid ""
 "Username can only contain letters, numbers and underscores, 3-50 "
 "characters long"
@@ -83,35 +92,35 @@ msgstr ""
 "El nombre de usuario solo puede contener letras, números y guiones bajos,"
 " con una longitud de 3 a 50 caracteres"
 
-#: blueprints/auth.py:234 static/js/register.js:5
+#: blueprints/auth.py:252 static/js/register.js:5
 msgid "Password must be at least 6 characters"
 msgstr "La contraseña debe tener al menos 6 caracteres"
 
-#: blueprints/api/users.py:54 blueprints/auth.py:239
+#: blueprints/api/users.py:54 blueprints/auth.py:257
 msgid "Username already exists"
 msgstr "El nombre de usuario ya existe"
 
-#: blueprints/auth.py:243
+#: blueprints/auth.py:261
 msgid "Please enter invite code"
 msgstr "Por favor, introduce el código de invitación"
 
-#: blueprints/auth.py:252
+#: blueprints/auth.py:270
 msgid "Invite code is invalid"
 msgstr "El código de invitación no es válido"
 
-#: blueprints/auth.py:255
+#: blueprints/auth.py:273
 msgid "Invite code has reached usage limit"
 msgstr "El código de invitación ha alcanzado el límite de uso"
 
-#: blueprints/auth.py:260
+#: blueprints/auth.py:278
 msgid "Invite code has expired"
 msgstr "El código de invitación ha caducado"
 
-#: blueprints/auth.py:299 static/js/register.js:7
+#: blueprints/auth.py:317 static/js/register.js:7
 msgid "Registration successful! Please login."
 msgstr "¡Registro exitoso! Por favor, inicia sesión."
 
-#: blueprints/auth.py:305
+#: blueprints/auth.py:323
 msgid "An error occurred during registration"
 msgstr "Ocurrió un error durante el registro"
 
@@ -787,104 +796,123 @@ msgstr "ID del token: %(token_id)s"
 msgid "Token deleted."
 msgstr "Token eliminado."
 
-#: blueprints/api/user_activities.py:147
+#: blueprints/api/user_activities.py:107
+msgid "Reason not specified"
+msgstr "Razón no especificada"
+
+#: blueprints/api/user_activities.py:112
+msgid "Account locked due to multiple failed login attempts."
+msgstr ""
+"Cuenta bloqueada debido a múltiples intentos de inicio de sesión fallidos."
+
+#: blueprints/api/user_activities.py:171
 msgid "Failed to load user activities"
 msgstr "Error al cargar las actividades del usuario"
 
-#: blueprints/api/user_activities.py:184
+#: blueprints/api/user_activities.py:208
 msgid "Failed to load activities"
 msgstr "Error al cargar las actividades"
 
-#: blueprints/api/user_activities.py:219
-#: static/js/settings/user_activities.js:355
-#: static/js/settings/user_activities.js:359
+#: blueprints/api/user_activities.py:243
+#: static/js/settings/user_activities.js:361
+#: static/js/settings/user_activities.js:365
 msgid "Failed to load activity details"
 msgstr "Error al cargar los detalles de la actividad"
 
-#: blueprints/api/user_activities.py:266
+#: blueprints/api/user_activities.py:290
 msgid "Failed to load event statistics"
 msgstr "Error al cargar las estadísticas de eventos"
 
-#: blueprints/api/user_activities.py:278
-#: static/js/settings/user_activities.js:639
+#: blueprints/api/user_activities.py:302
+#: static/js/settings/user_activities.js:654
 msgid "Locked by administrator"
 msgstr "Bloqueado por el administrador"
 
-#: blueprints/api/user_activities.py:285 blueprints/api/user_activities.py:323
-#: blueprints/api/user_activities.py:358 blueprints/api/user_activities.py:392
+#: blueprints/api/user_activities.py:316 blueprints/api/user_activities.py:356
+#: blueprints/api/user_activities.py:391 blueprints/api/user_activities.py:425
 msgid "User not found"
 msgstr "Usuario no encontrado"
 
-#: blueprints/api/user_activities.py:299
-#, python-format
-msgid "Account locked until %(time)s. Reason: %(reason)s"
-msgstr "Cuenta bloqueada hasta %(time)s. Motivo: %(reason)s"
+#: blueprints/api/user_activities.py:325
+msgid "permanently"
+msgstr "permanentemente"
 
-#: blueprints/api/user_activities.py:304
-#: static/js/settings/user_activities.js:644
+#: blueprints/api/user_activities.py:332
+#, python-format
+msgid "Account locked %(time)s. Reason: %(reason)s"
+msgstr "Cuenta bloqueada hasta %(time)s. Razón: %(reason)s"
+
+#: blueprints/api/user_activities.py:337
+#: static/js/settings/user_activities.js:659
 msgid "User account locked successfully"
 msgstr "Cuenta de usuario bloqueada correctamente"
 
-#: blueprints/api/user_activities.py:310
-#: static/js/settings/user_activities.js:649
-#: static/js/settings/user_activities.js:653
+#: blueprints/api/user_activities.py:343
+#: static/js/settings/user_activities.js:664
+#: static/js/settings/user_activities.js:668
 msgid "Failed to lock user account"
 msgstr "Error al bloquear la cuenta de usuario"
 
-#: blueprints/api/user_activities.py:338
+#: blueprints/api/user_activities.py:371
 msgid "Account unlocked by administrator"
 msgstr "Cuenta desbloqueada por el administrador"
 
-#: blueprints/api/user_activities.py:341
-#: static/js/settings/user_activities.js:676
+#: blueprints/api/user_activities.py:374
+#: static/js/settings/user_activities.js:691
 msgid "User account unlocked successfully"
 msgstr "Cuenta de usuario desbloqueada correctamente"
 
-#: blueprints/api/user_activities.py:345
-#: static/js/settings/user_activities.js:680
-#: static/js/settings/user_activities.js:684
+#: blueprints/api/user_activities.py:378
+#: static/js/settings/user_activities.js:695
+#: static/js/settings/user_activities.js:699
 msgid "Failed to unlock user account"
 msgstr "Error al desbloquear la cuenta de usuario"
 
-#: blueprints/api/user_activities.py:372
+#: blueprints/api/user_activities.py:405
 msgid "Failed login attempts reset by administrator"
 msgstr "Intentos de inicio de sesión fallidos restablecidos por el administrador"
 
-#: blueprints/api/user_activities.py:375
-#: static/js/settings/user_activities.js:707
+#: blueprints/api/user_activities.py:408
+#: static/js/settings/user_activities.js:722
 msgid "Failed login attempts reset successfully"
 msgstr "Intentos de inicio de sesión fallidos restablecidos correctamente"
 
-#: blueprints/api/user_activities.py:379
-#: static/js/settings/user_activities.js:711
-#: static/js/settings/user_activities.js:715
+#: blueprints/api/user_activities.py:412
+#: static/js/settings/user_activities.js:726
+#: static/js/settings/user_activities.js:730
 msgid "Failed to reset login attempts"
 msgstr "Error al restablecer los intentos de inicio de sesión"
 
-#: blueprints/api/user_activities.py:401
+#: blueprints/api/user_activities.py:434
 #, python-format
 msgid "Administrator %(admin)s deleted all activity logs for user: %(username)s"
-msgstr "El administrador %(admin)s eliminó todos los registros de actividad del usuario: %(username)s"
+msgstr ""
+"El administrador %(admin)s eliminó todos los registros de actividad del "
+"usuario: %(username)s"
 
-#: blueprints/api/user_activities.py:405
+#: blueprints/api/user_activities.py:438
 #, python-format
 msgid "Successfully deleted all activities for user %(username)s"
 msgstr "Se eliminaron correctamente todas las actividades del usuario %(username)s"
 
-#: blueprints/api/user_activities.py:409
+#: blueprints/api/user_activities.py:442
 msgid "Failed to delete user activities"
 msgstr "Error al eliminar las actividades del usuario"
 
-#: blueprints/api/user_activities.py:427
+#: blueprints/api/user_activities.py:460
 #, python-format
 msgid "Administrator %(admin)s deleted all user activity logs"
-msgstr "El administrador %(admin)s eliminó todos los registros de actividad de los usuarios"
+msgstr ""
+"El administrador %(admin)s eliminó todos los registros de actividad de "
+"los usuarios"
 
-#: blueprints/api/user_activities.py:430
+#: blueprints/api/user_activities.py:463
 msgid "Successfully deleted all user activity logs"
-msgstr "Se eliminaron correctamente todos los registros de actividad de los usuarios"
+msgstr ""
+"Se eliminaron correctamente todos los registros de actividad de los "
+"usuarios"
 
-#: blueprints/api/user_activities.py:434
+#: blueprints/api/user_activities.py:467
 msgid "Failed to delete all user activities"
 msgstr "Error al eliminar todas las actividades de los usuarios"
 
@@ -1574,7 +1602,7 @@ msgid "IP"
 msgstr "IP"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:186
+#: templates/settings/settings_user_activities.html:191
 msgid "Reason"
 msgstr "Motivo"
 
@@ -1629,8 +1657,8 @@ msgid ""
 "Are you absolutely sure you want to delete all activity logs for ALL "
 "users? This action is irreversible."
 msgstr ""
-"¿Estás absolutamente seguro de que quieres eliminar todos los registros de "
-"actividad de TODOS los usuarios? Esta acción es irreversible."
+"¿Estás absolutamente seguro de que quieres eliminar todos los registros "
+"de actividad de TODOS los usuarios? Esta acción es irreversible."
 
 #: static/js/page/translations.js:167
 msgid "All activities deleted successfully."
@@ -1902,13 +1930,13 @@ msgid "Register"
 msgstr "Registrarse"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:436
+#: static/js/settings/user_activities.js:442
 #: templates/settings/settings_user_activities.html:136
 msgid "Download Book"
 msgstr "Descargar libro"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:437
+#: static/js/settings/user_activities.js:443
 #: templates/settings/settings_user_activities.html:137
 msgid "Upload Book"
 msgstr "Subir libro"
@@ -1918,7 +1946,7 @@ msgid "Delete Book"
 msgstr "Eliminar libro"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:438
+#: static/js/settings/user_activities.js:444
 #: templates/settings/settings_user_activities.html:138
 msgid "Search Books"
 msgstr "Buscar libros"
@@ -1928,7 +1956,7 @@ msgid "Edit Metadata"
 msgstr "Editar metadatos"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:440
+#: static/js/settings/user_activities.js:446
 #: templates/settings/settings_user_activities.html:139
 msgid "Push to Kindle"
 msgstr "Enviar a Kindle"
@@ -1942,7 +1970,7 @@ msgid "Push Anx to Calibre"
 msgstr "Enviar Anx a Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:441 templates/index.html:123
+#: static/js/settings/user_activities.js:447 templates/index.html:123
 #: templates/index.html:197
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
@@ -2026,85 +2054,93 @@ msgid "Delete User"
 msgstr "Eliminar usuario"
 
 #: static/js/settings/user_activities.js:53
+msgid "Lock User"
+msgstr "Bloquear usuario"
+
+#: static/js/settings/user_activities.js:54
+msgid "Unlock User"
+msgstr "Desbloquear usuario"
+
+#: static/js/settings/user_activities.js:55
 msgid "Create Invite Code"
 msgstr "Crear código de invitación"
 
-#: static/js/settings/user_activities.js:54
+#: static/js/settings/user_activities.js:56
 msgid "Delete Invite Code"
 msgstr "Eliminar código de invitación"
 
-#: static/js/settings/user_activities.js:55
+#: static/js/settings/user_activities.js:57
 msgid "Use Invite Code"
 msgstr "Usar código de invitación"
 
-#: static/js/settings/user_activities.js:56
+#: static/js/settings/user_activities.js:58
 msgid "Toggle Invite Code"
 msgstr "Activar/desactivar código de invitación"
 
-#: static/js/settings/user_activities.js:57
+#: static/js/settings/user_activities.js:59
 msgid "Create Service Config"
 msgstr "Crear configuración de servicio"
 
-#: static/js/settings/user_activities.js:58
+#: static/js/settings/user_activities.js:60
 msgid "Update Service Config"
 msgstr "Actualizar configuración de servicio"
 
-#: static/js/settings/user_activities.js:59
+#: static/js/settings/user_activities.js:61
 msgid "Delete Service Config"
 msgstr "Eliminar configuración de servicio"
 
-#: static/js/settings/user_activities.js:60
+#: static/js/settings/user_activities.js:62
 msgid "Test SMTP"
 msgstr "Probar SMTP"
 
-#: static/js/settings/user_activities.js:61
+#: static/js/settings/user_activities.js:63
 msgid "KOReader Sync Progress"
 msgstr "Sincronizar progreso de KOReader"
 
-#: static/js/settings/user_activities.js:62
+#: static/js/settings/user_activities.js:64
 msgid "KOReader Sync Reading Time"
 msgstr "Sincronizar tiempo de lectura de KOReader"
 
-#: static/js/settings/user_activities.js:63
+#: static/js/settings/user_activities.js:65
 msgid "KOReader Update Summary"
 msgstr "Actualizar resumen de KOReader"
 
-#: static/js/settings/user_activities.js:64
+#: static/js/settings/user_activities.js:66
 msgid "Delete User Activity Log"
 msgstr "Eliminar Registro de Actividad del Usuario"
 
-#: static/js/settings/user_activities.js:65
+#: static/js/settings/user_activities.js:67
 msgid "Delete All Activity Logs"
 msgstr "Eliminar Todos los Registros de Actividad"
 
-#: static/js/settings/user_activities.js:376
-#: static/js/settings/user_activities.js:522
+#: static/js/settings/user_activities.js:382
+#: static/js/settings/user_activities.js:528
 msgid "Activity Details for"
 msgstr "Detalles de actividad para"
 
-#: static/js/settings/user_activities.js:439 templates/index.html:178
+#: static/js/settings/user_activities.js:445 templates/index.html:178
 msgid "Reading Progress"
 msgstr "Progreso de lectura"
 
-#: static/js/settings/user_activities.js:502
-#: static/js/settings/user_activities.js:506
+#: static/js/settings/user_activities.js:508
+#: static/js/settings/user_activities.js:512
 msgid "Failed to load event type details"
 msgstr "Error al cargar los detalles del tipo de evento"
 
-#: static/js/settings/user_activities.js:602
+#: static/js/settings/user_activities.js:610
 #: templates/settings/settings_user_activities.html:173
 msgid "Lock User Account"
 msgstr "Bloquear cuenta de usuario"
 
-#: static/js/settings/user_activities.js:627
+#: static/js/settings/user_activities.js:642
 msgid "Please enter a valid duration"
 msgstr "Por favor, introduce una duración válida"
 
-#: static/js/settings/user_activities.js:663
+#: static/js/settings/user_activities.js:678
 msgid "Are you sure you want to unlock this user account?"
 msgstr "¿Estás seguro de que quieres desbloquear esta cuenta de usuario?"
 
-#: static/js/settings/user_activities.js:694
+#: static/js/settings/user_activities.js:709
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr ""
 "¿Estás seguro de que quieres restablecer los intentos de inicio de sesión"
@@ -2356,18 +2392,22 @@ msgstr "Subir libros"
 msgid "Select files:"
 msgstr "Seleccionar archivos:"
 
-#: templates/index.html:226 templates/index.html:243
-#: templates/settings/settings_user_activities.html:193
+#: templates/index.html:226 templates/index.html:244
+#: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: templates/index.html:236
+#: templates/index.html:228
+msgid "Done"
+msgstr "Hecho"
+
+#: templates/index.html:237
 msgid "Edit Book Information"
 msgstr "Editar información del libro"
 
-#: templates/index.html:244 templates/settings/settings_user_management.html:24
+#: templates/index.html:245 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "Guardar"
 
@@ -3403,10 +3443,14 @@ msgid "Lock Duration (minutes)"
 msgstr "Duración del bloqueo (minutos)"
 
 #: templates/settings/settings_user_activities.html:187
+msgid "Lock Permanently"
+msgstr "Bloquear permanentemente"
+
+#: templates/settings/settings_user_activities.html:192
 msgid "Optional: Reason for locking account"
 msgstr "Opcional: Motivo para bloquear la cuenta"
 
-#: templates/settings/settings_user_activities.html:192
+#: templates/settings/settings_user_activities.html:197
 msgid "Confirm Lock"
 msgstr "Confirmar bloqueo"
 

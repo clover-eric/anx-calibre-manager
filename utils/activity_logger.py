@@ -86,6 +86,8 @@ class ActivityType:
     CREATE_USER = 'create_user'
     UPDATE_USER = 'update_user'
     DELETE_USER = 'delete_user'
+    LOCK_USER = 'lock_user'
+    UNLOCK_USER = 'unlock_user'
     
     # 邀请码管理
     CREATE_INVITE_CODE = 'create_invite_code'

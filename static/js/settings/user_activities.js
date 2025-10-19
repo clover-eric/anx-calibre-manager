@@ -50,6 +50,8 @@ function getActivityTypeName(activityType) {
         'create_user': _('Create User'),
         'update_user': _('Update User'),
         'delete_user': _('Delete User'),
+        'lock_user': _('Lock User'),
+        'unlock_user': _('Unlock User'),
         'create_invite_code': _('Create Invite Code'),
         'delete_invite_code': _('Delete Invite Code'),
         'use_invite_code': _('Use Invite Code'),
@@ -298,7 +300,11 @@ function displayUserActivitiesList(users) {
         let statusHtml = '';
         if (user.is_locked) {
             const lockedUntil = new Date(user.locked_until).toLocaleString();
-            statusHtml = `<span class="status-badge status-locked">${t.lockedUntil}: ${lockedUntil}</span>`;
+            let reasonHtml = '';
+            if (user.lock_reason) {
+                reasonHtml = `<br><small>${t.reason}: ${user.lock_reason}</small>`;
+            }
+            statusHtml = `<span class="status-badge status-locked">${t.lockedUntil}: ${lockedUntil}${reasonHtml}</span>`;
         } else {
             statusHtml = `<span class="status-badge status-active">${t.active}</span>`;
         }
@@ -599,6 +605,8 @@ window.showLockUserModal = function(userId, username) {
     document.getElementById('lockUserName').value = username;
     document.getElementById('lockDuration').value = 30;
     document.getElementById('lockReason').value = '';
+    document.getElementById('lockPermanent').checked = false;
+    document.getElementById('lockDuration').disabled = false;
     document.getElementById('lockModalTitle').textContent = _('Lock User Account') + ' - ' + username;
     
     modal.style.display = 'block';
@@ -617,13 +625,20 @@ window.closeLockModal = function() {
 /**
  * Confirm lock user
  */
+window.togglePermanentLock = function(checkbox) {
+    const durationInput = document.getElementById('lockDuration');
+    durationInput.disabled = checkbox.checked;
+}
+
 window.confirmLockUser = async function() {
     const userId = document.getElementById('lockUserId').value;
-    const username = document.getElementById('lockUserName').value;
-    const duration = parseInt(document.getElementById('lockDuration').value);
+    const isPermanent = document.getElementById('lockPermanent').checked;
+    let duration = parseInt(document.getElementById('lockDuration').value);
     const reason = document.getElementById('lockReason').value;
-    
-    if (!duration || duration < 1) {
+
+    if (isPermanent) {
+        duration = 0; // 0 or negative for permanent lock
+    } else if (!duration || duration < 1) {
         alert(_('Please enter a valid duration'));
         return;
     }
