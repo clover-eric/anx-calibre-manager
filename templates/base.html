@@ -222,39 +222,64 @@
         <p>{{ _('Find This Helpful?') }} <a href="https://ptbsare.org/about/" target="_blank" rel="noopener noreferrer">{{ _('Buy me a Coffee ☕') }}</a></p>
         <p>Anx Calibre Manager {{ app_version }} by <a href="https://github.com/ptbsare" target="_blank" rel="noopener noreferrer">ptbsare</a></p>
         <script>
-        // Generate Quick Bug Report Link with Server System Information
+        // Generate Quick Bug Report Link with Server System Information (lazy loading)
         (function() {
             const version = '{{ app_version }}';
             const bugReportLink = document.getElementById('quick-bug-report-link');
             
             if (!bugReportLink) return;
             
-            // Show loading state
-            bugReportLink.textContent = '⏳ ' + _('Loading...') || 'Loading...';
+            // Set default link text
+            bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
             
-            // Fetch system information from server
-            fetch('/api/system/info')
-                .then(response => response.json())
-                .then(data => {
-                    const baseUrl = 'https://github.com/ptbsare/anx-calibre-manager/issues/new';
-                    const params = new URLSearchParams({
-                        template: 'bug_report.yml',
-                        title: '[Bug]: ',
-                        version: version,
-                        os: data.os || 'Unknown',
-                        architecture: data.architecture || 'Unknown',
-                        logs: data.container_logs || ''
+            let systemInfoFetched = false;
+            
+            // Only fetch system info when user clicks the link
+            bugReportLink.addEventListener('click', function(e) {
+                if (systemInfoFetched) return; // Already fetched, let the link work normally
+                
+                e.preventDefault(); // Prevent navigation
+                
+                // Show loading state
+                bugReportLink.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (_('Loading...') || 'Loading...');
+                
+                // Fetch system information from server
+                fetch('/api/system/info')
+                    .then(response => response.json())
+                    .then(data => {
+                        const baseUrl = 'https://github.com/ptbsare/anx-calibre-manager/issues/new';
+                        const params = new URLSearchParams({
+                            template: 'bug_report.yml',
+                            title: '[Bug]: ',
+                            version: version,
+                            os: data.os || 'Unknown',
+                            architecture: data.architecture || 'Unknown',
+                            logs: data.container_logs || ''
+                        });
+                        
+                        bugReportLink.href = baseUrl + '?' + params.toString();
+                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                        systemInfoFetched = true;
+                        
+                        // Trigger the navigation
+                        window.open(bugReportLink.href, '_blank');
+                    })
+                    .catch(error => {
+                        console.error('Failed to fetch system info:', error);
+                        // Fallback: use basic template without pre-filled data
+                        const baseUrl = 'https://github.com/ptbsare/anx-calibre-manager/issues/new';
+                        const params = new URLSearchParams({
+                            template: 'bug_report.yml',
+                            version: version
+                        });
+                        bugReportLink.href = baseUrl + '?' + params.toString();
+                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                        systemInfoFetched = true;
+                        
+                        // Trigger the navigation
+                        window.open(bugReportLink.href, '_blank');
                     });
-                    
-                    bugReportLink.href = baseUrl + '?' + params.toString();
-                    bugReportLink.textContent = '🐛 ' + (_('Quick Bug Report') || 'Quick Bug Report');
-                })
-                .catch(error => {
-                    console.error('Failed to fetch system info:', error);
-                    // Fallback: use basic template without pre-filled data
-                    bugReportLink.href = 'https://github.com/ptbsare/anx-calibre-manager/issues/new?template=bug_report.yml&version=' + version;
-                    bugReportLink.textContent = '🐛 ' + (_('Quick Bug Report') || 'Quick Bug Report');
-                });
+            });
         })();
         </script>
         {% if enable_activity_log %}
