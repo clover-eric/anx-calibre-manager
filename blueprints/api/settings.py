@@ -83,7 +83,7 @@ def user_settings_api():
                 if password_updated:
                     log_activity(ActivityType.UPDATE_PASSWORD, success=True)
                 # detail 不需要国际化，因为它记录的是原始数据
-                log_activity(ActivityType.UPDATE_USER_SETTINGS, success=True, detail=json.dumps({k: v for k, v in data.items() if k != 'new_password'}))
+                log_activity(ActivityType.UPDATE_USER_SETTINGS, success=True, detail={k: v for k, v in data.items() if k != 'new_password'})
 
         return jsonify({'success': True, 'message': _('User settings updated.')})
     else: # GET
@@ -173,7 +173,7 @@ def global_settings_api():
                     data[checkbox_field] = str(value).lower() == 'true'
         
         config_manager.config.save_config(data)
-        log_activity(ActivityType.UPDATE_GLOBAL_SETTINGS, success=True, detail=_('Global settings updated'))
+        log_activity(ActivityType.UPDATE_GLOBAL_SETTINGS, success=True, detail=data)
         return jsonify({'message': _('Global settings updated.')})
     else: # GET
         return jsonify(config_manager.config.get_all())
