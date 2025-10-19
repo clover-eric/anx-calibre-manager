@@ -74,6 +74,21 @@ body:
       required: true
 
   - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce | 复现步骤
+      description: |
+        Please provide detailed steps to reproduce the issue
+        请提供详细的复现步骤
+      placeholder: |
+        1. Go to '...' | 进入 '...'
+        2. Click on '...' | 点击 '...'
+        3. Scroll down to '...' | 向下滚动到 '...'
+        4. See error | 看到错误
+    validations:
+      required: true
+
+  - type: textarea
     id: actual-behavior
     attributes:
       label: Actual Behavior (Bug Phenomenon) | 实际行为（Bug 现象）
@@ -99,21 +114,6 @@ body:
       placeholder: |
         Describe what you expected to happen
         描述您期望发生的情况
-    validations:
-      required: true
-
-  - type: textarea
-    id: reproduction-steps
-    attributes:
-      label: Steps to Reproduce | 复现步骤
-      description: |
-        Please provide detailed steps to reproduce the issue
-        请提供详细的复现步骤
-      placeholder: |
-        1. Go to '...' | 进入 '...'
-        2. Click on '...' | 点击 '...'
-        3. Scroll down to '...' | 向下滚动到 '...'
-        4. See error | 看到错误
     validations:
       required: true
 
