@@ -203,14 +203,39 @@
 .profile-controls {
     display: flex;
     gap: 5px;
-    align-items: center;
+    align-items: flex-start; /* 改为顶部对齐，适应多行文字 */
+    flex-wrap: wrap; /* 允许元素换行 */
 }
 
 .profile-controls select {
-    flex-grow: 1;
+    flex: 1 1 200px; /* 最小宽度200px，可以增长和缩小 */
+    min-width: 0; /* 允许缩小到最小尺寸 */
 }
 
 .profile-controls button {
-    flex-shrink: 0;
+    flex: 0 1 auto; /* 允许按钮根据内容调整 */
     padding: 5px 8px;
+    white-space: normal; /* 允许按钮文字换行 */
+    word-break: break-word; /* 在需要时断词 */
+    min-width: 60px; /* 按钮最小宽度 */
+    max-width: 150px; /* 按钮最大宽度，防止过宽 */
+    line-height: 1.2; /* 多行文字的行高 */
+    text-align: center; /* 文字居中 */
+}
+
+/* 在小屏幕上让按钮占满剩余宽度 */
+@media (max-width: 768px) {
+    .profile-controls {
+        flex-wrap: wrap;
+    }
+    
+    .profile-controls select {
+        flex: 1 1 100%; /* 选择框占满一行 */
+        margin-bottom: 5px;
+    }
+    
+    .profile-controls button {
+        flex: 1 1 calc(33.333% - 5px); /* 三个按钮平分宽度 */
+        max-width: none; /* 移除最大宽度限制 */
+    }
 }
