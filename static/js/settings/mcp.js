@@ -19,7 +19,7 @@ async function fetchMcpTokens() {
             item.innerHTML = `
                 <div>
                     <span class="token-value">${token.token}</span>
-                    <small style="display: block; color: #666;">${t.createdAt}: ${new Date(token.created_at).toLocaleString()}</small>
+                    <small style="display: block; color: #666;">${t.createdAt}: ${formatLocalTime(token.created_at)}</small>
                 </div>
                 <button class="button-danger button-small" onclick="deleteMcpToken(${token.id})">${t.delete}</button>
             `;

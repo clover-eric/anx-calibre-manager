@@ -294,12 +294,12 @@ function displayUserActivitiesList(users) {
     tbody.innerHTML = '';
     users.forEach(user => {
         const row = document.createElement('tr');
-        const lastLogin = user.last_login ? new Date(user.last_login).toLocaleString() : '-';
+        const lastLogin = user.last_login ? formatLocalTime(user.last_login) : '-';
         const lastLoginIP = user.last_login_ip || '-';
         
         let statusHtml = '';
         if (user.is_locked) {
-            const lockedUntil = new Date(user.locked_until).toLocaleString();
+            const lockedUntil = formatLocalTime(user.locked_until);
             let reasonHtml = '';
             if (user.lock_reason) {
                 reasonHtml = `<br><small>${t.reason}: ${user.lock_reason}</small>`;
@@ -385,7 +385,7 @@ function showActivityDetailsModal(username, activities, userData) {
     document.getElementById('userTotalActivities').textContent = userData.activity_count || 0;
     document.getElementById('userLoginCount').textContent = userData.login_count || 0;
     document.getElementById('userLastLogin').textContent = userData.last_login ?
-        new Date(userData.last_login).toLocaleString() : '-';
+        formatLocalTime(userData.last_login) : '-';
     
     // 显示最后活动时间
     displayLastActivities(userData.last_activities);
@@ -411,7 +411,7 @@ function showActivityDetailsModal(username, activities, userData) {
         html += `<tr><td colspan="4" style="text-align: center;">${t.noActivitiesFound}</td></tr>`;
     } else {
         activities.forEach(activity => {
-            const time = new Date(activity.timestamp).toLocaleString();
+            const time = formatLocalTime(activity.timestamp);
             const statusIcon = activity.success ? '✓' : '✗';
             const statusClass = activity.success ? 'success' : 'failure';
             const details = activity.failure_reason || activity.detail || activity.book_title || '-';
@@ -455,7 +455,7 @@ function displayLastActivities(lastActivities) {
     container.innerHTML = Object.entries(lastActivities).map(([type, time]) => `
         <div class="last-activity-item">
             <div class="activity-type">${activityTypeNames[type] || type}</div>
-            <div class="activity-time">${new Date(time).toLocaleString()}</div>
+            <div class="activity-time">${formatLocalTime(time)}</div>
         </div>
     `).join('');
 }
@@ -475,7 +475,7 @@ function displayFailedLogins(failedLogin) {
     
     container.innerHTML = `
         <div class="failed-login-item">
-            <div class="time">${new Date(failedLogin.created_at).toLocaleString()}</div>
+            <div class="time">${formatLocalTime(failedLogin.created_at)}</div>
             <div class="details">
                 ${t.ip}: ${failedLogin.ip_address || '-'}<br>
                 ${t.reason}: ${failedLogin.failure_reason || '-'}
@@ -535,7 +535,7 @@ function showEventTypeDetailsModal(eventType, activities) {
     html += '</tr></thead><tbody>';
     
     activities.forEach(activity => {
-        const time = new Date(activity.timestamp).toLocaleString();
+        const time = formatLocalTime(activity.timestamp);
         const statusIcon = activity.success ? '✓' : '✗';
         const statusClass = activity.success ? 'success' : 'failure';
         const details = activity.failure_reason || activity.detail || activity.book_title || '-';

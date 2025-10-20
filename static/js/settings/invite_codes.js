@@ -18,8 +18,8 @@ async function loadInviteCodes() {
             codes.forEach(code => {
                 const row = document.createElement('tr');
                 const statusText = code.is_active ? t.active : t.disabled;
-                const expiresAt = code.expires_at ? new Date(code.expires_at).toLocaleString() : t.neverExpires;
-                const createdAt = new Date(code.created_at).toLocaleString();
+                const expiresAt = code.expires_at ? formatLocalTime(code.expires_at) : t.neverExpires;
+                const createdAt = formatLocalTime(code.created_at);
                 
                 row.innerHTML = `
                     <td><code>${code.code}</code></td>

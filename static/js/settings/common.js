@@ -3,6 +3,47 @@
 
 const isAdmin = JSON.parse(document.getElementById('is-admin-data').textContent);
 
+/**
+ * Format UTC timestamp to local time string
+ * SQLite stores timestamps as UTC strings without timezone info (e.g., "2024-01-01 12:00:00")
+ * This function ensures proper conversion to browser's local timezone
+ * @param {string} utcTimestamp - UTC timestamp from backend (SQLite format)
+ * @returns {string} Formatted local time string
+ */
+function formatLocalTime(utcTimestamp) {
+    if (!utcTimestamp) return '-';
+    
+    try {
+        // SQLite returns UTC time without 'Z' suffix, so we need to add it
+        // to ensure JavaScript interprets it as UTC
+        let dateStr = utcTimestamp;
+        
+        // If the timestamp doesn't end with 'Z' and doesn't have timezone info,
+        // assume it's UTC and add 'Z'
+        if (!dateStr.endsWith('Z') && !dateStr.includes('+') && !dateStr.includes('T')) {
+            // SQLite format: "2024-01-01 12:00:00" -> "2024-01-01T12:00:00Z"
+            dateStr = dateStr.replace(' ', 'T') + 'Z';
+        } else if (!dateStr.includes('T') && dateStr.includes(' ')) {
+            // Convert space to T for ISO format
+            dateStr = dateStr.replace(' ', 'T');
+        }
+        
+        const date = new Date(dateStr);
+        
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+            console.warn('Invalid date:', utcTimestamp);
+            return utcTimestamp;
+        }
+        
+        // Return localized string based on browser's locale and timezone
+        return date.toLocaleString();
+    } catch (error) {
+        console.error('Error formatting time:', error, utcTimestamp);
+        return utcTimestamp;
+    }
+}
+
 let ttsVoiceLists = {
     edge: [],
     openai: []
