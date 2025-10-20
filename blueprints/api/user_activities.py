@@ -2,7 +2,7 @@
 用户活动管理 API
 提供用户活动统计、详情查询和用户账户管理功能
 """
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request, jsonify, g
 from flask_babel import gettext as _
 from contextlib import closing
@@ -132,7 +132,7 @@ def get_user_activities_summary():
             total_users = len(users)
             
             # 今天活跃用户数
-            today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+            today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
             active_today = db.execute('''
                 SELECT COUNT(DISTINCT user_id) as count
                 FROM user_activity_log
