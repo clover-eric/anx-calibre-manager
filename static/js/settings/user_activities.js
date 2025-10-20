@@ -199,28 +199,74 @@ function displayDailyActivityChart(dailyStats) {
                     data: activities,
                     borderColor: 'rgb(102, 126, 234)',
                     backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    tension: 0.4
+                    tension: 0.4,
+                    yAxisID: 'y-activities'  // 使用左侧Y轴
                 },
                 {
                     label: t.uniqueUsers,
                     data: uniqueUsers,
                     borderColor: 'rgb(67, 233, 123)',
                     backgroundColor: 'rgba(67, 233, 123, 0.1)',
-                    tension: 0.4
+                    tension: 0.4,
+                    yAxisID: 'y-users'  // 使用右侧Y轴
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
             plugins: {
                 legend: {
                     position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += context.parsed.y;
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: true
+                'y-activities': {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: t.totalActivities,
+                        color: 'rgb(102, 126, 234)'
+                    },
+                    ticks: {
+                        color: 'rgb(102, 126, 234)'
+                    }
+                },
+                'y-users': {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: t.uniqueUsers,
+                        color: 'rgb(67, 233, 123)'
+                    },
+                    ticks: {
+                        color: 'rgb(67, 233, 123)'
+                    },
+                    grid: {
+                        drawOnChartArea: false  // 不在图表区域绘制网格线，避免重叠
+                    }
                 }
             }
         }
