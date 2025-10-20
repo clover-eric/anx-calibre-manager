@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 20:20+0800\n"
+"POT-Creation-Date: 2025-10-20 09:16+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -121,16 +121,16 @@ msgstr "Inscription réussie ! Veuillez vous connecter."
 msgid "An error occurred during registration"
 msgstr "Une erreur s'est produite lors de l'inscription"
 
-#: blueprints/main.py:111 blueprints/stats.py:16
+#: blueprints/main.py:103 blueprints/stats.py:16
 msgid "0 minutes"
 msgstr "0 minutes"
 
-#: blueprints/main.py:115 blueprints/stats.py:20
+#: blueprints/main.py:107 blueprints/stats.py:20
 #, python-format
 msgid "%(hours)s hours %(minutes)s minutes"
 msgstr "%(hours)s heures %(minutes)s minutes"
 
-#: blueprints/main.py:116 blueprints/stats.py:21
+#: blueprints/main.py:108 blueprints/stats.py:21
 #, python-format
 msgid "%(minutes)s minutes"
 msgstr "%(minutes)s minutes"
@@ -199,7 +199,7 @@ msgstr "Authentification requise"
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "Permission refusée pour supprimer ce livre audio Anx"
 
-#: blueprints/api/audiobook.py:291 utils/decorators.py:19
+#: blueprints/api/audiobook.py:291 utils/decorators.py:28
 msgid "Maintainer or administrator permission required."
 msgstr "Permission de mainteneur ou d'administrateur requise."
 
@@ -393,7 +393,9 @@ msgstr "Aucun fichier sélectionné pour le téléversement."
 
 #: blueprints/api/books.py:558
 msgid "`ebook-converter` tool is missing, cannot convert file."
-msgstr "L'outil `ebook-converter` est manquant, impossible de convertir le fichier."
+msgstr ""
+"L'outil `ebook-converter` est manquant, impossible de convertir le "
+"fichier."
 
 #: blueprints/api/books.py:568
 #, python-format
@@ -543,35 +545,31 @@ msgstr "L'opération a échoué : %(error)s"
 msgid "Operation failed"
 msgstr "L'opération a échoué"
 
-#: blueprints/api/llm.py:27
-msgid "Authentication required."
-msgstr "Authentification requise."
-
-#: blueprints/api/llm.py:150
+#: blueprints/api/llm.py:142
 msgid "Book ID and type are required."
 msgstr "L'ID et le type du livre sont requis."
 
-#: blueprints/api/llm.py:159
+#: blueprints/api/llm.py:151
 msgid "No history found for this book."
 msgstr "Aucun historique trouvé pour ce livre."
 
-#: blueprints/api/llm.py:175
+#: blueprints/api/llm.py:167
 msgid "MCP module is not available, cannot process book content."
 msgstr ""
 "Le module MCP n'est pas disponible, impossible de traiter le contenu du "
 "livre."
 
-#: blueprints/api/llm.py:185 blueprints/api/service_configs.py:32
+#: blueprints/api/llm.py:177 blueprints/api/service_configs.py:32
 #: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "Champs obligatoires manquants."
 
-#: blueprints/api/llm.py:219 blueprints/api/llm.py:290
+#: blueprints/api/llm.py:211 blueprints/api/llm.py:282
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "L'heure actuelle est %(current_time)s."
 
-#: blueprints/api/llm.py:220 blueprints/api/llm.py:291
+#: blueprints/api/llm.py:212 blueprints/api/llm.py:283
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -580,7 +578,7 @@ msgstr ""
 "Vous êtes un assistant serviable. L'utilisateur pose une question sur le "
 "livre '%(book_title)s'."
 
-#: blueprints/api/llm.py:221 blueprints/api/llm.py:292
+#: blueprints/api/llm.py:213 blueprints/api/llm.py:284
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
@@ -588,7 +586,7 @@ msgstr ""
 "Vous pouvez utiliser la syntaxe mermaid pour les diagrammes en "
 "l'entourant de ```mermaid ... ```."
 
-#: blueprints/api/llm.py:224
+#: blueprints/api/llm.py:216
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -612,24 +610,24 @@ msgstr ""
 "N'utilisez pas de définitions `style` ou `linkStyle` ; le thème est géré "
 "automatiquement."
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
+#: blueprints/api/llm.py:226 blueprints/api/llm.py:296
 msgid "Invalid book type."
 msgstr "Type de livre invalide."
 
-#: blueprints/api/llm.py:235 blueprints/api/llm.py:305
+#: blueprints/api/llm.py:227 blueprints/api/llm.py:297
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Échec de la récupération du contenu du livre : %(error)s"
 
-#: blueprints/api/llm.py:236 blueprints/api/llm.py:306
+#: blueprints/api/llm.py:228 blueprints/api/llm.py:298
 msgid "Could not extract text from the book."
 msgstr "Impossible d'extraire le texte du livre."
 
-#: blueprints/api/llm.py:237 blueprints/api/llm.py:307
+#: blueprints/api/llm.py:229 blueprints/api/llm.py:299
 msgid "LLM settings are not configured in user settings."
 msgstr "Les paramètres LLM ne sont pas configurés dans les paramètres utilisateur."
 
-#: blueprints/api/llm.py:238 blueprints/api/llm.py:308
+#: blueprints/api/llm.py:230 blueprints/api/llm.py:300
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -644,45 +642,45 @@ msgstr ""
 "%(book_content)s\n"
 "---FIN DU CONTENU DU LIVRE---"
 
-#: blueprints/api/llm.py:239 blueprints/api/llm.py:309
+#: blueprints/api/llm.py:231 blueprints/api/llm.py:301
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Veuillez fournir un résumé complet et une critique approfondie de ce "
 "livre."
 
-#: blueprints/api/llm.py:240 blueprints/api/llm.py:310
+#: blueprints/api/llm.py:232 blueprints/api/llm.py:302
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Échec de la communication avec le fournisseur LLM : %(error)s"
 
-#: blueprints/api/llm.py:241 blueprints/api/llm.py:311
+#: blueprints/api/llm.py:233 blueprints/api/llm.py:303
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "Extraction du contenu complet du livre..."
 
-#: blueprints/api/llm.py:242 blueprints/api/llm.py:312
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "Réflexion..."
 
-#: blueprints/api/llm.py:255
+#: blueprints/api/llm.py:247
 msgid "Message ID is required."
 msgstr "L'ID du message est requis."
 
-#: blueprints/api/llm.py:266
+#: blueprints/api/llm.py:258
 msgid "Message not found."
 msgstr "Message non trouvé."
 
-#: blueprints/api/llm.py:268
+#: blueprints/api/llm.py:260
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: blueprints/api/llm.py:277
+#: blueprints/api/llm.py:269
 msgid "Regenerate response"
 msgstr "Régénérer la réponse"
 
-#: blueprints/api/llm.py:294
+#: blueprints/api/llm.py:286
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -705,48 +703,48 @@ msgstr ""
 "`-->`, `---`, `==>`.\\n5. N'utilisez pas de définitions `style` ou "
 "`linkStyle` ; le thème est géré automatiquement."
 
-#: blueprints/api/llm.py:333
+#: blueprints/api/llm.py:325
 msgid "Base URL and API Key are required."
 msgstr "L'URL de base et la clé API sont requises."
 
-#: blueprints/api/llm.py:349
+#: blueprints/api/llm.py:341
 msgid "Unexpected response format from model provider."
 msgstr "Format de réponse inattendu du fournisseur de modèle."
 
-#: blueprints/api/llm.py:354
+#: blueprints/api/llm.py:346
 msgid "Authentication error. Please check your API Key."
 msgstr "Erreur d'authentification. Veuillez vérifier votre clé API."
 
-#: blueprints/api/llm.py:356
+#: blueprints/api/llm.py:348
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr ""
 "Point de terminaison d'API non valide. Veuillez vérifier votre URL de "
 "base."
 
-#: blueprints/api/llm.py:358
+#: blueprints/api/llm.py:350
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Impossible de se connecter au fournisseur de modèle : %(error)s"
 
-#: blueprints/api/llm.py:360
+#: blueprints/api/llm.py:352
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Une erreur inattendue est survenue : %(error)s"
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:364
 msgid "Session not found or permission denied."
 msgstr "Session non trouvée ou permission refusée."
 
-#: blueprints/api/llm.py:379
+#: blueprints/api/llm.py:371
 #, python-format
 msgid "Session ID: %(session_id)s"
 msgstr "ID de session : %(session_id)s"
 
-#: blueprints/api/llm.py:380
+#: blueprints/api/llm.py:372
 msgid "Chat session deleted successfully."
 msgstr "Session de discussion supprimée avec succès."
 
-#: blueprints/api/llm.py:403
+#: blueprints/api/llm.py:395
 #, python-format
 msgid "Message ID: %(message_id)s"
 msgstr "ID du message : %(message_id)s"
@@ -963,6 +961,14 @@ msgstr ""
 #: blueprints/api/user_activities.py:467
 msgid "Failed to delete all user activities"
 msgstr "Échec de la suppression de toutes les activités des utilisateurs"
+
+#: blueprints/api/user_activities_user.py:20
+msgid "User not logged in"
+msgstr "Utilisateur non connecté"
+
+#: blueprints/api/user_activities_user.py:39
+msgid "Failed to load pushed book list"
+msgstr "Échec du chargement de la liste des livres poussés"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1272,7 +1278,7 @@ msgid "Reading Progress (%)"
 msgstr "Progression de la lecture (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:108 templates/index.html:189
+#: templates/index.html:108 templates/index.html:194
 msgid "Description"
 msgstr "Description"
 
@@ -1289,7 +1295,7 @@ msgstr ""
 "et peuvent prendre un moment à s'appliquer."
 
 #: static/js/page/translations.js:55 templates/index.html:98
-#: templates/index.html:182
+#: templates/index.html:187
 msgid "Publisher"
 msgstr "Éditeur"
 
@@ -1771,7 +1777,7 @@ msgstr "Aucun jeton disponible."
 msgid "Created at"
 msgstr "Créé à"
 
-#: static/js/settings/common.js:24 templates/index.html:199
+#: static/js/settings/common.js:24 templates/index.html:204
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
@@ -1809,8 +1815,8 @@ msgstr "Une erreur est survenue"
 msgid "Please enter a test recipient email address."
 msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
 
-#: static/js/settings/common.js:32 templates/index.html:119
-#: templates/index.html:198
+#: static/js/settings/common.js:32 templates/index.html:124
+#: templates/index.html:203
 msgid "Edit"
 msgstr "Modifier"
 
@@ -2017,8 +2023,8 @@ msgid "Push Anx to Calibre"
 msgstr "Envoyer Anx vers Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:447 templates/index.html:123
-#: templates/index.html:202
+#: static/js/settings/user_activities.js:447 templates/index.html:128
+#: templates/index.html:207
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "Générer un livre audio"
@@ -2165,7 +2171,7 @@ msgstr "Supprimer tous les journaux d'activité"
 msgid "Activity Details for"
 msgstr "Détails de l'activité pour"
 
-#: static/js/settings/user_activities.js:445 templates/index.html:183
+#: static/js/settings/user_activities.js:445 templates/index.html:188
 msgid "Reading Progress"
 msgstr "Progression de la lecture"
 
@@ -2205,7 +2211,7 @@ msgstr "Retour à la bibliothèque principale"
 msgid "Calibre Library"
 msgstr "Bibliothèque Calibre"
 
-#: templates/audio_player.html:29 templates/index.html:151
+#: templates/audio_player.html:29 templates/index.html:156
 msgid "Anx Library"
 msgstr "Bibliothèque Anx"
 
@@ -2243,7 +2249,7 @@ msgid "Library"
 msgstr "Bibliothèque"
 
 #: templates/base.html:110 templates/chat_player.html:54
-#: templates/index.html:115
+#: templates/index.html:120
 msgid "Anx"
 msgstr "Anx"
 
@@ -2252,8 +2258,12 @@ msgid "Having issues or suggestions?"
 msgstr "Vous avez des problèmes ou des suggestions ?"
 
 #: templates/base.html:221
-msgid "Submit an issue on GitHub"
-msgstr "Signaler un problème sur GitHub"
+msgid "Bug Report"
+msgstr "Signaler un bug"
+
+#: templates/base.html:221
+msgid "Submit Suggestion"
+msgstr "Soumettre une suggestion"
 
 #: templates/base.html:222
 msgid "Find This Helpful?"
@@ -2263,19 +2273,19 @@ msgstr "Trouvez-vous cela utile ?"
 msgid "Buy me a Coffee ☕"
 msgstr "Offrez-moi un café ☕"
 
-#: templates/base.html:225
+#: templates/base.html:286
 msgid ""
-"The administrator has enabled auditing. Your web activities may be "
+"The administrator has enabled logging. Your web activities may be "
 "recorded."
 msgstr ""
-"L'administrateur a activé l'audit. Vos activités web peuvent être "
+"L'administrateur a activé la journalisation. Vos activités web peuvent être "
 "enregistrées."
 
 #: templates/chat_player.html:6
 msgid "AI Chat"
 msgstr "Chat IA"
 
-#: templates/chat_player.html:53 templates/index.html:196
+#: templates/chat_player.html:53 templates/index.html:201
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -2311,37 +2321,37 @@ msgstr "Accueil"
 msgid "Search Calibre books..."
 msgstr "Rechercher des livres Calibre..."
 
-#: templates/index.html:26 templates/index.html:154 templates/index.html:232
-#: templates/index.html:269
+#: templates/index.html:26 templates/index.html:159 templates/index.html:237
+#: templates/index.html:274
 msgid "Upload"
 msgstr "Téléverser"
 
-#: templates/index.html:31 templates/index.html:132
+#: templates/index.html:31 templates/index.html:137
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "Total %(total_books)s livres (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:36 templates/index.html:137
+#: templates/index.html:36 templates/index.html:142
 msgid "20/page"
 msgstr "20/page"
 
-#: templates/index.html:37 templates/index.html:138
+#: templates/index.html:37 templates/index.html:143
 msgid "50/page"
 msgstr "50/page"
 
-#: templates/index.html:38 templates/index.html:139
+#: templates/index.html:38 templates/index.html:144
 msgid "100/page"
 msgstr "100/page"
 
-#: templates/index.html:40 templates/index.html:141
+#: templates/index.html:40 templates/index.html:146
 msgid "Previous"
 msgstr "Précédent"
 
-#: templates/index.html:42 templates/index.html:143
+#: templates/index.html:42 templates/index.html:148
 msgid "Go"
 msgstr "Aller"
 
-#: templates/index.html:43 templates/index.html:144
+#: templates/index.html:43 templates/index.html:149
 msgid "Next"
 msgstr "Suivant"
 
@@ -2366,11 +2376,11 @@ msgstr "Le serveur a retourné une erreur HTTP %(status_code)s."
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "Une erreur inconnue s'est produite lors de la connexion à Calibre."
 
-#: templates/index.html:90 templates/index.html:175
+#: templates/index.html:90 templates/index.html:180
 msgid "Ask AI"
 msgstr "Demander à l'IA"
 
-#: templates/index.html:96 templates/index.html:181 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:186 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "Note"
@@ -2383,19 +2393,23 @@ msgstr "Formats"
 msgid "Read Date"
 msgstr "Date de lecture"
 
-#: templates/index.html:113 templates/index.html:194
+#: templates/index.html:111
+msgid "Pushed to Anx"
+msgstr "Poussé vers Anx"
+
+#: templates/index.html:118 templates/index.html:199
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/index.html:114
+#: templates/index.html:119
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:128
+#: templates/index.html:133
 msgid "No books in Calibre library."
 msgstr "Aucun livre dans la bibliothèque Calibre."
 
-#: templates/index.html:159
+#: templates/index.html:164
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
@@ -2404,62 +2418,62 @@ msgstr ""
 "synchroniser (le nom d'utilisateur et le mot de passe sont vos "
 "identifiants de connexion) :"
 
-#: templates/index.html:159 templates/settings/settings_koreader.html:10
+#: templates/index.html:164 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "Cliquez pour copier"
 
-#: templates/index.html:184 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:189 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "Temps de lecture total"
 
-#: templates/index.html:185
+#: templates/index.html:190
 msgid "Note Count"
 msgstr "Nombre de notes"
 
-#: templates/index.html:186
+#: templates/index.html:191
 msgid "Creation Time"
 msgstr "Date de création"
 
-#: templates/index.html:187
+#: templates/index.html:192
 msgid "Update Time"
 msgstr "Date de mise à jour"
 
-#: templates/index.html:188
+#: templates/index.html:193
 msgid "Producer"
 msgstr "Producteur"
 
-#: templates/index.html:208
+#: templates/index.html:213
 msgid "No books in Anx library."
 msgstr "Aucun livre dans la bibliothèque Anx."
 
-#: templates/index.html:220
+#: templates/index.html:225
 msgid "Upload Books"
 msgstr "Téléverser des livres"
 
-#: templates/index.html:226 templates/index.html:263
+#: templates/index.html:231 templates/index.html:268
 msgid "Select files:"
 msgstr "Sélectionner des fichiers :"
 
-#: templates/index.html:231 templates/index.html:249 templates/index.html:268
+#: templates/index.html:236 templates/index.html:254 templates/index.html:273
 #: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "Annuler"
 
-#: templates/index.html:233 templates/index.html:270
+#: templates/index.html:238 templates/index.html:275
 msgid "Done"
 msgstr "Terminé"
 
-#: templates/index.html:242
+#: templates/index.html:247
 msgid "Edit Book Information"
 msgstr "Modifier les informations du livre"
 
-#: templates/index.html:250 templates/settings/settings_user_management.html:24
+#: templates/index.html:255 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "Enregistrer"
 
-#: templates/index.html:257
+#: templates/index.html:262
 msgid "Upload Books to Anx Library"
 msgstr "Téléverser des livres dans la bibliothèque Anx"
 
@@ -3804,10 +3818,20 @@ msgstr "Vérifier et activer"
 msgid "Save User Settings"
 msgstr "Enregistrer les paramètres utilisateur"
 
-#: utils/decorators.py:10
+#: utils/decorators.py:19
 msgid "Administrator permission required."
 msgstr "Permission administrateur requise."
 
+#: utils/decorators.py:37
+msgid "Authentication required."
+msgstr "Authentification requise."
+
 #~ msgid "Global settings updated"
 #~ msgstr "Paramètres globaux mis à jour."
+
+#~ msgid "Submit an issue on GitHub"
+#~ msgstr "Signaler un problème sur GitHub"
+
+#~ msgid "Quick Bug Report"
+#~ msgstr ""
 

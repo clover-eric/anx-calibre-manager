@@ -218,7 +218,7 @@
                 {% endfor %}
             </select>
         </div>
-        <p>{{ _('Having issues or suggestions?') }} <a href="#" id="quick-bug-report-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-bug"></i> {{ _('Quick Bug Report') }}</a> | <a href="https://github.com/ptbsare/anx-calibre-manager/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer"><i class="fas fa-lightbulb"></i> {{ _('Submit Suggestion') }}</a></p>
+        <p>{{ _('Having issues or suggestions?') }} <a href="#" id="quick-bug-report-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-bug"></i> {{ _('Bug Report') }}</a> | <a href="https://github.com/ptbsare/anx-calibre-manager/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer"><i class="fas fa-lightbulb"></i> {{ _('Submit Suggestion') }}</a></p>
         <p>{{ _('Find This Helpful?') }} <a href="https://ptbsare.org/about/" target="_blank" rel="noopener noreferrer">{{ _('Buy me a Coffee ☕') }}</a></p>
         <p>Anx Calibre Manager {{ app_version }} by <a href="https://github.com/ptbsare" target="_blank" rel="noopener noreferrer">ptbsare</a></p>
         <script>
@@ -230,7 +230,7 @@
             if (!bugReportLink) return;
             
             // Set default link text
-            bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
+            bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Bug Report') || 'Bug Report');
             
             let systemInfoFetched = false;
             
@@ -258,7 +258,7 @@
                         });
                         
                         bugReportLink.href = baseUrl + '?' + params.toString();
-                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Bug Report') || 'Bug Report');
                         systemInfoFetched = true;
                         
                         // Trigger the navigation
@@ -273,7 +273,7 @@
                             version: version
                         });
                         bugReportLink.href = baseUrl + '?' + params.toString();
-                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Quick Bug Report') || 'Quick Bug Report');
+                        bugReportLink.innerHTML = '<i class="fas fa-bug"></i> ' + (_('Bug Report') || 'Bug Report');
                         systemInfoFetched = true;
                         
                         // Trigger the navigation
@@ -283,7 +283,7 @@
         })();
         </script>
         {% if enable_activity_log %}
-        <p class="footer-audit-note">{{ _('The administrator has enabled auditing. Your web activities may be recorded.') }}</p>
+        <p class="footer-audit-note">{{ _('The administrator has enabled logging. Your web activities may be recorded.') }}</p>
         {% endif %}
     </footer>
     {% endif %}

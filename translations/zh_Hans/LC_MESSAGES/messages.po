@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-19 20:20+0800\n"
+"POT-Creation-Date: 2025-10-20 09:16+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -112,16 +112,16 @@ msgstr "注册成功！请登录。"
 msgid "An error occurred during registration"
 msgstr "注册过程中发生错误"
 
-#: blueprints/main.py:111 blueprints/stats.py:16
+#: blueprints/main.py:103 blueprints/stats.py:16
 msgid "0 minutes"
 msgstr "0 分钟"
 
-#: blueprints/main.py:115 blueprints/stats.py:20
+#: blueprints/main.py:107 blueprints/stats.py:20
 #, python-format
 msgid "%(hours)s hours %(minutes)s minutes"
 msgstr "%(hours)s 小时 %(minutes)s 分钟"
 
-#: blueprints/main.py:116 blueprints/stats.py:21
+#: blueprints/main.py:108 blueprints/stats.py:21
 #, python-format
 msgid "%(minutes)s minutes"
 msgstr "%(minutes)s 分钟"
@@ -190,7 +190,7 @@ msgstr "需要身份验证"
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "无权删除此 Anx 有声书"
 
-#: blueprints/api/audiobook.py:291 utils/decorators.py:19
+#: blueprints/api/audiobook.py:291 utils/decorators.py:28
 msgid "Maintainer or administrator permission required."
 msgstr "需要维护者或管理员权限。"
 
@@ -520,46 +520,42 @@ msgstr "操作失败：%(error)s"
 msgid "Operation failed"
 msgstr "操作失败"
 
-#: blueprints/api/llm.py:27
-msgid "Authentication required."
-msgstr "需要身份验证。"
-
-#: blueprints/api/llm.py:150
+#: blueprints/api/llm.py:142
 msgid "Book ID and type are required."
 msgstr "书籍 ID 和类型是必需的。"
 
-#: blueprints/api/llm.py:159
+#: blueprints/api/llm.py:151
 msgid "No history found for this book."
 msgstr "未找到该书籍的历史记录。"
 
-#: blueprints/api/llm.py:175
+#: blueprints/api/llm.py:167
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP 模块不可用，无法处理书籍内容。"
 
-#: blueprints/api/llm.py:185 blueprints/api/service_configs.py:32
+#: blueprints/api/llm.py:177 blueprints/api/service_configs.py:32
 #: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:219 blueprints/api/llm.py:290
+#: blueprints/api/llm.py:211 blueprints/api/llm.py:282
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "当前时间是 %(current_time)s。"
 
-#: blueprints/api/llm.py:220 blueprints/api/llm.py:291
+#: blueprints/api/llm.py:212 blueprints/api/llm.py:283
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:221 blueprints/api/llm.py:292
+#: blueprints/api/llm.py:213 blueprints/api/llm.py:284
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 语法来绘制图表。"
 
-#: blueprints/api/llm.py:224
+#: blueprints/api/llm.py:216
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -580,24 +576,24 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
+#: blueprints/api/llm.py:226 blueprints/api/llm.py:296
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:235 blueprints/api/llm.py:305
+#: blueprints/api/llm.py:227 blueprints/api/llm.py:297
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:236 blueprints/api/llm.py:306
+#: blueprints/api/llm.py:228 blueprints/api/llm.py:298
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:237 blueprints/api/llm.py:307
+#: blueprints/api/llm.py:229 blueprints/api/llm.py:299
 msgid "LLM settings are not configured in user settings."
 msgstr "用户设置中未配置 LLM。"
 
-#: blueprints/api/llm.py:238 blueprints/api/llm.py:308
+#: blueprints/api/llm.py:230 blueprints/api/llm.py:300
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -612,43 +608,43 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:239 blueprints/api/llm.py:309
+#: blueprints/api/llm.py:231 blueprints/api/llm.py:301
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:240 blueprints/api/llm.py:310
+#: blueprints/api/llm.py:232 blueprints/api/llm.py:302
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:241 blueprints/api/llm.py:311
+#: blueprints/api/llm.py:233 blueprints/api/llm.py:303
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
-#: blueprints/api/llm.py:242 blueprints/api/llm.py:312
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:255
+#: blueprints/api/llm.py:247
 msgid "Message ID is required."
 msgstr "消息 ID 是必需的。"
 
-#: blueprints/api/llm.py:266
+#: blueprints/api/llm.py:258
 msgid "Message not found."
 msgstr "消息未找到。"
 
-#: blueprints/api/llm.py:268
+#: blueprints/api/llm.py:260
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: blueprints/api/llm.py:277
+#: blueprints/api/llm.py:269
 msgid "Regenerate response"
 msgstr "重新生成回应"
 
-#: blueprints/api/llm.py:294
+#: blueprints/api/llm.py:286
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -669,46 +665,46 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:333
+#: blueprints/api/llm.py:325
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:349
+#: blueprints/api/llm.py:341
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:354
+#: blueprints/api/llm.py:346
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:356
+#: blueprints/api/llm.py:348
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:358
+#: blueprints/api/llm.py:350
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:360
+#: blueprints/api/llm.py:352
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:364
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:379
+#: blueprints/api/llm.py:371
 #, python-format
 msgid "Session ID: %(session_id)s"
 msgstr "会话 ID：%(session_id)s"
 
-#: blueprints/api/llm.py:380
+#: blueprints/api/llm.py:372
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
-#: blueprints/api/llm.py:403
+#: blueprints/api/llm.py:395
 #, python-format
 msgid "Message ID: %(message_id)s"
 msgstr "消息 ID：%(message_id)s"
@@ -914,6 +910,14 @@ msgstr "已成功删除所有用户活动日志"
 #: blueprints/api/user_activities.py:467
 msgid "Failed to delete all user activities"
 msgstr "删除所有用户活动失败"
+
+#: blueprints/api/user_activities_user.py:20
+msgid "User not logged in"
+msgstr "用户未登录"
+
+#: blueprints/api/user_activities_user.py:39
+msgid "Failed to load pushed book list"
+msgstr "加载推送图书列表失败"
 
 #: blueprints/api/users.py:31
 msgid "Username and password are required."
@@ -1202,7 +1206,7 @@ msgid "Reading Progress (%)"
 msgstr "阅读进度 (%)"
 
 #: static/js/page/translations.js:52 static/js/page/translations.js:123
-#: templates/index.html:108 templates/index.html:189
+#: templates/index.html:108 templates/index.html:194
 msgid "Description"
 msgstr "描述"
 
@@ -1217,7 +1221,7 @@ msgid ""
 msgstr "Calibre 图书的元数据更新是异步的，可能需要一些时间才能生效。"
 
 #: static/js/page/translations.js:55 templates/index.html:98
-#: templates/index.html:182
+#: templates/index.html:187
 msgid "Publisher"
 msgstr "出版社"
 
@@ -1691,7 +1695,7 @@ msgstr "没有可用的令牌。"
 msgid "Created at"
 msgstr "创建时间"
 
-#: static/js/settings/common.js:24 templates/index.html:199
+#: static/js/settings/common.js:24 templates/index.html:204
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
@@ -1727,8 +1731,8 @@ msgstr "发生错误"
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings/common.js:32 templates/index.html:119
-#: templates/index.html:198
+#: static/js/settings/common.js:32 templates/index.html:124
+#: templates/index.html:203
 msgid "Edit"
 msgstr "编辑"
 
@@ -1935,8 +1939,8 @@ msgid "Push Anx to Calibre"
 msgstr "推送 Anx 到 Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:447 templates/index.html:123
-#: templates/index.html:202
+#: static/js/settings/user_activities.js:447 templates/index.html:128
+#: templates/index.html:207
 #: templates/settings/settings_user_activities.html:140
 msgid "Generate Audiobook"
 msgstr "生成有声书"
@@ -2083,7 +2087,7 @@ msgstr "删除所有活动日志"
 msgid "Activity Details for"
 msgstr "活动详情："
 
-#: static/js/settings/user_activities.js:445 templates/index.html:183
+#: static/js/settings/user_activities.js:445 templates/index.html:188
 msgid "Reading Progress"
 msgstr "阅读进度"
 
@@ -2121,7 +2125,7 @@ msgstr "返回主书库"
 msgid "Calibre Library"
 msgstr "Calibre 书库"
 
-#: templates/audio_player.html:29 templates/index.html:151
+#: templates/audio_player.html:29 templates/index.html:156
 msgid "Anx Library"
 msgstr "Anx 书库"
 
@@ -2159,7 +2163,7 @@ msgid "Library"
 msgstr "书库"
 
 #: templates/base.html:110 templates/chat_player.html:54
-#: templates/index.html:115
+#: templates/index.html:120
 msgid "Anx"
 msgstr "Anx"
 
@@ -2168,8 +2172,12 @@ msgid "Having issues or suggestions?"
 msgstr "有任何问题或建议吗？"
 
 #: templates/base.html:221
-msgid "Submit an issue on GitHub"
-msgstr "在 GitHub 上提交问题"
+msgid "Bug Report"
+msgstr "报告问题"
+
+#: templates/base.html:221
+msgid "Submit Suggestion"
+msgstr "提交建议"
 
 #: templates/base.html:222
 msgid "Find This Helpful?"
@@ -2179,17 +2187,17 @@ msgstr "觉得这个有帮助吗？"
 msgid "Buy me a Coffee ☕"
 msgstr "请我喝杯咖啡 ☕"
 
-#: templates/base.html:225
+#: templates/base.html:286
 msgid ""
-"The administrator has enabled auditing. Your web activities may be "
+"The administrator has enabled logging. Your web activities may be "
 "recorded."
-msgstr "管理员已启用审计功能。您的网页活动可能会被记录。"
+msgstr "管理员已启用日志记录。您的网页活动可能会被记录。"
 
 #: templates/chat_player.html:6
 msgid "AI Chat"
 msgstr "AI 聊天"
 
-#: templates/chat_player.html:53 templates/index.html:196
+#: templates/chat_player.html:53 templates/index.html:201
 msgid "Calibre"
 msgstr "Calibre"
 
@@ -2225,37 +2233,37 @@ msgstr "主页"
 msgid "Search Calibre books..."
 msgstr "搜索 Calibre 图书..."
 
-#: templates/index.html:26 templates/index.html:154 templates/index.html:232
-#: templates/index.html:269
+#: templates/index.html:26 templates/index.html:159 templates/index.html:237
+#: templates/index.html:274
 msgid "Upload"
 msgstr "上传"
 
-#: templates/index.html:31 templates/index.html:132
+#: templates/index.html:31 templates/index.html:137
 #, python-format
 msgid "Total %(total_books)s books (%(page)s/%(total_pages)s)"
 msgstr "共 %(total_books)s 本书 (%(page)s/%(total_pages)s)"
 
-#: templates/index.html:36 templates/index.html:137
+#: templates/index.html:36 templates/index.html:142
 msgid "20/page"
 msgstr "20/页"
 
-#: templates/index.html:37 templates/index.html:138
+#: templates/index.html:37 templates/index.html:143
 msgid "50/page"
 msgstr "50/页"
 
-#: templates/index.html:38 templates/index.html:139
+#: templates/index.html:38 templates/index.html:144
 msgid "100/page"
 msgstr "100/页"
 
-#: templates/index.html:40 templates/index.html:141
+#: templates/index.html:40 templates/index.html:146
 msgid "Previous"
 msgstr "上一页"
 
-#: templates/index.html:42 templates/index.html:143
+#: templates/index.html:42 templates/index.html:148
 msgid "Go"
 msgstr "前往"
 
-#: templates/index.html:43 templates/index.html:144
+#: templates/index.html:43 templates/index.html:149
 msgid "Next"
 msgstr "下一页"
 
@@ -2280,11 +2288,11 @@ msgstr "服务器返回 HTTP %(status_code)s 错误。"
 msgid "An unknown error occurred while connecting to Calibre."
 msgstr "连接到 Calibre 时发生未知错误。"
 
-#: templates/index.html:90 templates/index.html:175
+#: templates/index.html:90 templates/index.html:180
 msgid "Ask AI"
 msgstr "询问 AI"
 
-#: templates/index.html:96 templates/index.html:181 templates/stats.html:125
+#: templates/index.html:96 templates/index.html:186 templates/stats.html:125
 #: templates/stats.html:156
 msgid "Rating"
 msgstr "评分"
@@ -2297,80 +2305,84 @@ msgstr "格式"
 msgid "Read Date"
 msgstr "阅读日期"
 
-#: templates/index.html:113 templates/index.html:194
+#: templates/index.html:111
+msgid "Pushed to Anx"
+msgstr "已推送到 Anx"
+
+#: templates/index.html:118 templates/index.html:199
 msgid "Download"
 msgstr "下载"
 
-#: templates/index.html:114
+#: templates/index.html:119
 msgid "Kindle"
 msgstr "Kindle"
 
-#: templates/index.html:128
+#: templates/index.html:133
 msgid "No books in Calibre library."
 msgstr "Calibre 书库中没有图书。"
 
-#: templates/index.html:159
+#: templates/index.html:164
 msgid ""
 "Enter the WebDAV address in the Anx Reader settings page to synchronize "
 "(username and password are your login credentials):"
 msgstr "在Anx阅读器设置页面输入 WebDAV 地址以进行同步（用户名和密码是您的登录凭据）："
 
-#: templates/index.html:159 templates/settings/settings_koreader.html:10
+#: templates/index.html:164 templates/settings/settings_koreader.html:10
 msgid "Click to copy"
 msgstr "点击复制"
 
-#: templates/index.html:184 templates/stats.html:126 templates/stats.html:157
+#: templates/index.html:189 templates/stats.html:126 templates/stats.html:157
 msgid "Total Reading Time"
 msgstr "总阅读时间"
 
-#: templates/index.html:185
+#: templates/index.html:190
 msgid "Note Count"
 msgstr "笔记数量"
 
-#: templates/index.html:186
+#: templates/index.html:191
 msgid "Creation Time"
 msgstr "创建时间"
 
-#: templates/index.html:187
+#: templates/index.html:192
 msgid "Update Time"
 msgstr "更新时间"
 
-#: templates/index.html:188
+#: templates/index.html:193
 msgid "Producer"
 msgstr "制作者"
 
-#: templates/index.html:208
+#: templates/index.html:213
 msgid "No books in Anx library."
 msgstr "Anx 书库中没有图书。"
 
-#: templates/index.html:220
+#: templates/index.html:225
 msgid "Upload Books"
 msgstr "上传图书"
 
-#: templates/index.html:226 templates/index.html:263
+#: templates/index.html:231 templates/index.html:268
 msgid "Select files:"
 msgstr "选择文件："
 
-#: templates/index.html:231 templates/index.html:249 templates/index.html:268
+#: templates/index.html:236 templates/index.html:254 templates/index.html:273
 #: templates/settings/settings_user_activities.html:198
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/index.html:233 templates/index.html:270
+#: templates/index.html:238 templates/index.html:275
 msgid "Done"
 msgstr "完成"
 
-#: templates/index.html:242
+#: templates/index.html:247
 msgid "Edit Book Information"
 msgstr "编辑图书信息"
 
-#: templates/index.html:250 templates/settings/settings_user_management.html:24
+#: templates/index.html:255 templates/settings/settings_user_management.html:24
 msgid "Save"
 msgstr "保存"
 
-#: templates/index.html:257
+#: templates/index.html:262
 msgid "Upload Books to Anx Library"
 msgstr "上传图书到 Anx 书库"
 
@@ -3597,10 +3609,20 @@ msgstr "验证并启用"
 msgid "Save User Settings"
 msgstr "保存用户设置"
 
-#: utils/decorators.py:10
+#: utils/decorators.py:19
 msgid "Administrator permission required."
 msgstr "需要管理员权限。"
 
+#: utils/decorators.py:37
+msgid "Authentication required."
+msgstr "需要身份验证。"
+
 #~ msgid "Global settings updated"
 #~ msgstr "全局设置已更新。"
+
+#~ msgid "Submit an issue on GitHub"
+#~ msgstr "在 GitHub 上提交问题"
+
+#~ msgid "Quick Bug Report"
+#~ msgstr ""
 
