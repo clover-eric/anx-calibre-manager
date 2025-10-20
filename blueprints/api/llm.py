@@ -176,14 +176,19 @@ def chat_with_book():
     if not all([book_id, book_type, book_title, user_message]):
         return jsonify({'error': _('Missing required fields.')}), 400
 
+    # 标记是否为新会话
+    is_new_session = not session_id
+    
     with closing(database.get_db()) as db:
         cursor = db.cursor()
-        if not session_id:
+        if is_new_session:
             session_id = str(uuid.uuid4())
             cursor.execute(
                 'INSERT INTO llm_chat_sessions (id, user_id, book_id, book_type, book_title) VALUES (?, ?, ?, ?, ?)',
                 (session_id, g.user.id, book_id, book_type, book_title)
             )
+            # 记录新会话开始
+            log_activity(ActivityType.LLM_CHAT_START, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
         
         cursor.execute(
             'INSERT INTO llm_chat_messages (session_id, role, content) VALUES (?, ?, ?)',
@@ -192,9 +197,7 @@ def chat_with_book():
         user_message_id = cursor.lastrowid
         db.commit()
         
-        # 记录LLM对话活动
-        if not session_id or session_id == str(uuid.uuid4()):
-            log_activity(ActivityType.LLM_CHAT_START, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
+        # 记录LLM对话消息
         log_activity(ActivityType.LLM_CHAT_MESSAGE, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
 
     app = current_app._get_current_object()
