@@ -161,19 +161,31 @@ def process_anx_import_folder(username):
     processed_count = 0
     skipped_count = 0
     
-    for filename in os.listdir(dirs["import"]):
-        file_path = os.path.join(dirs["import"], filename)
-        if not os.path.isfile(file_path):
-            continue
+    # Classify files first to avoid premature moves
+    all_files = [f for f in os.listdir(dirs["import"]) if os.path.isfile(os.path.join(dirs["import"], f))]
+    
+    ebook_extensions = {"epub", "mobi", "azw3", "pdf", "txt"}
+    cover_extensions = {"jpg", "jpeg", "png", "gif"}
+    
+    ebook_files = {}
+    cover_files = {}
+    other_files = []
 
+    for filename in all_files:
         base_name, extension = os.path.splitext(filename)
-        extension = extension[1:].lower()
+        ext_lower = extension[1:].lower()
         
-        allowed_extensions = ["epub", "mobi", "azw3", "pdf", "txt"]
-        if extension not in allowed_extensions:
-            shutil.move(file_path, os.path.join(dirs["already_in"], filename))
-            continue
+        if ext_lower in ebook_extensions:
+            ebook_files[base_name] = filename
+        elif ext_lower in cover_extensions:
+            cover_files[base_name] = filename
+        else:
+            other_files.append(filename)
 
+    # Process ebooks and their matching covers
+    for base_name, ebook_filename in ebook_files.items():
+        file_path = os.path.join(dirs["import"], ebook_filename)
+        
         title, author = base_name, "Unknown Author"
         match = re.match(r'^(.*) - (.*)$', base_name)
         if match:
@@ -186,72 +198,75 @@ def process_anx_import_folder(username):
             cursor.execute("SELECT id, is_deleted FROM tb_books WHERE file_md5 = ?", (file_md5,))
             existing = cursor.fetchone()
 
+            # Find associated cover
+            cover_filename = cover_files.pop(base_name, None)
+            cover_relative_path = ""
+
             if existing:
                 existing_id, is_deleted = existing
                 # If the book was soft-deleted, reactivate it
                 if is_deleted == 1:
                     print(f"Reactivating deleted book with MD5: {file_md5}")
                     
-                    # Move new book file into place
-                    dest_file_path = os.path.join(dirs["file"], filename)
+                    dest_file_path = os.path.join(dirs["file"], ebook_filename)
                     shutil.move(file_path, dest_file_path)
-                    file_relative_path = 'file/' + filename
+                    file_relative_path = 'file/' + ebook_filename
 
-                    # Move new cover file into place
-                    cover_filename = f"{base_name}.jpg"
-                    cover_path = os.path.join(dirs["import"], cover_filename)
-                    cover_relative_path = ""
-                    if os.path.exists(cover_path):
+                    if cover_filename:
+                        cover_path = os.path.join(dirs["import"], cover_filename)
                         dest_cover_path = os.path.join(dirs["cover"], cover_filename)
                         shutil.move(cover_path, dest_cover_path)
                         cover_relative_path = 'cover/' + cover_filename
 
-                    # Update the database record
                     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
                     cursor.execute("""
                         UPDATE tb_books
-                        SET is_deleted = 0,
-                            update_time = ?,
-                            file_path = ?,
-                            cover_path = ?
+                        SET is_deleted = 0, update_time = ?, file_path = ?, cover_path = ?
                         WHERE id = ?
                     """, (current_time, file_relative_path, cover_relative_path, existing_id))
                     db.commit()
                     processed_count += 1
                 else:
-                    # It's a true duplicate, skip it
-                    shutil.move(file_path, os.path.join(dirs["already_in"], filename))
+                    # True duplicate, move book and its potential cover to already_in
+                    shutil.move(file_path, os.path.join(dirs["already_in"], ebook_filename))
+                    if cover_filename:
+                        cover_path = os.path.join(dirs["import"], cover_filename)
+                        shutil.move(cover_path, os.path.join(dirs["already_in"], cover_filename))
                     skipped_count += 1
-                
                 continue
 
             # New book
-            dest_file_path = os.path.join(dirs["file"], filename)
+            dest_file_path = os.path.join(dirs["file"], ebook_filename)
             shutil.move(file_path, dest_file_path)
+            file_relative_path = 'file/' + ebook_filename
 
-            cover_filename = f"{base_name}.jpg"
-            cover_path = os.path.join(dirs["import"], cover_filename)
-            cover_relative_path = ""
-            if os.path.exists(cover_path):
+            if cover_filename:
+                cover_path = os.path.join(dirs["import"], cover_filename)
                 dest_cover_path = os.path.join(dirs["cover"], cover_filename)
                 shutil.move(cover_path, dest_cover_path)
                 cover_relative_path = 'cover/' + cover_filename
             
             current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-            file_relative_path = 'file/' + filename
-
+            
             cursor.execute("""
                 INSERT INTO tb_books (
-                    title, author, cover_path, file_path, file_md5, create_time, update_time, 
+                    title, author, cover_path, file_path, file_md5, create_time, update_time,
                     is_deleted, last_read_position, reading_percentage, rating, group_id, description
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
-                title, author, cover_relative_path, file_relative_path, file_md5, 
+                title, author, cover_relative_path, file_relative_path, file_md5,
                 current_time, current_time, 0, '', 0.0, 0.0, 0, ''
             ))
             db.commit()
             processed_count += 1
+
+    # Move remaining files (unmatched covers and other files) to already_in
+    remaining_files = other_files + list(cover_files.values())
+    for filename in remaining_files:
+        file_path = os.path.join(dirs["import"], filename)
+        if os.path.exists(file_path): # Check if it wasn't moved already (e.g. as a duplicate's cover)
+            shutil.move(file_path, os.path.join(dirs["already_in"], filename))
             
     return {"processed": processed_count, "skipped": skipped_count}
 
