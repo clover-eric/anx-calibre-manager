@@ -270,13 +270,13 @@ def get_event_statistics():
             
             # 按日期统计活动趋势
             daily_stats = db.execute('''
-                SELECT 
-                    DATE(created_at) as date,
+                SELECT
+                    substr(created_at, 1, 10) as date,
                     COUNT(*) as count,
                     COUNT(DISTINCT user_id) as unique_users
                 FROM user_activity_log
                 WHERE created_at >= ?
-                GROUP BY DATE(created_at)
+                GROUP BY substr(created_at, 1, 10)
                 ORDER BY date
             ''', (start_date,)).fetchall()
             
