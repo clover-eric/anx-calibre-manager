@@ -7,6 +7,8 @@ from contextlib import closing
 from datetime import datetime
 from config_manager import config
 from anx_db_schema import ANX_DB_SCHEMA
+from utils.ebook_utils import extract_ebook_metadata, generate_cover_image
+from utils.text import safe_title, safe_author
 
 def initialize_anx_user_data(username):
     """Creates the necessary directory structure and initializes an empty Anx database for a new user."""
@@ -186,11 +188,22 @@ def process_anx_import_folder(username):
     for base_name, ebook_filename in ebook_files.items():
         file_path = os.path.join(dirs["import"], ebook_filename)
         
+        # --- Optimized Metadata Handling ---
+        # 1. Extract metadata from file ONCE.
+        metadata = extract_ebook_metadata(file_path)
+
+        # 2. Determine title and author, with filename having priority.
         title, author = base_name, "Unknown Author"
         match = re.match(r'^(.*) - (.*)$', base_name)
         if match:
             title, author = match.groups()
-            
+        elif metadata:  # Fallback to extracted metadata if filename is not standard
+            if metadata.get('title') and metadata['title'] != 'Unknown Title':
+                title = safe_title(metadata['title'])
+            if metadata.get('author') and metadata['author'] != 'Unknown Author':
+                author = safe_author(metadata['author'])
+        
+        # 3. Calculate MD5
         file_md5 = _calculate_md5(file_path)
 
         with closing(sqlite3.connect(dirs["db_path"])) as db:
@@ -198,56 +211,72 @@ def process_anx_import_folder(username):
             cursor.execute("SELECT id, is_deleted FROM tb_books WHERE file_md5 = ?", (file_md5,))
             existing = cursor.fetchone()
 
-            # Find associated cover
             cover_filename = cover_files.pop(base_name, None)
             cover_relative_path = ""
 
+            # --- Book Processing (Reactivate or Add New) ---
             if existing:
                 existing_id, is_deleted = existing
-                # If the book was soft-deleted, reactivate it
-                if is_deleted == 1:
+                if is_deleted == 1: # Reactivate soft-deleted book
                     print(f"Reactivating deleted book with MD5: {file_md5}")
                     
                     dest_file_path = os.path.join(dirs["file"], ebook_filename)
                     shutil.move(file_path, dest_file_path)
                     file_relative_path = 'file/' + ebook_filename
 
+                    # --- Cover Handling for Reactivation ---
                     if cover_filename:
                         cover_path = os.path.join(dirs["import"], cover_filename)
                         dest_cover_path = os.path.join(dirs["cover"], cover_filename)
                         shutil.move(cover_path, dest_cover_path)
                         cover_relative_path = 'cover/' + cover_filename
-
+                    else:
+                        cover_data = metadata.get('cover') if metadata else None
+                        if not cover_data:
+                            cover_data = generate_cover_image(title, author)
+                        if cover_data:
+                            new_cover_filename = f"{base_name}.jpg"
+                            dest_cover_path = os.path.join(dirs["cover"], new_cover_filename)
+                            with open(dest_cover_path, 'wb') as f: f.write(cover_data)
+                            cover_relative_path = 'cover/' + new_cover_filename
+                    
                     current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
                     cursor.execute("""
                         UPDATE tb_books
-                        SET is_deleted = 0, update_time = ?, file_path = ?, cover_path = ?
+                        SET is_deleted = 0, update_time = ?, file_path = ?, cover_path = ?, title = ?, author = ?
                         WHERE id = ?
-                    """, (current_time, file_relative_path, cover_relative_path, existing_id))
+                    """, (current_time, file_relative_path, cover_relative_path, title, author, existing_id))
                     db.commit()
                     processed_count += 1
-                else:
-                    # True duplicate, move book and its potential cover to already_in
+                else: # True duplicate
                     shutil.move(file_path, os.path.join(dirs["already_in"], ebook_filename))
                     if cover_filename:
-                        cover_path = os.path.join(dirs["import"], cover_filename)
-                        shutil.move(cover_path, os.path.join(dirs["already_in"], cover_filename))
+                        shutil.move(os.path.join(dirs["import"], cover_filename), os.path.join(dirs["already_in"], cover_filename))
                     skipped_count += 1
                 continue
 
-            # New book
+            # --- Add New Book ---
             dest_file_path = os.path.join(dirs["file"], ebook_filename)
             shutil.move(file_path, dest_file_path)
             file_relative_path = 'file/' + ebook_filename
 
+            # --- Cover Handling for New Book ---
             if cover_filename:
                 cover_path = os.path.join(dirs["import"], cover_filename)
                 dest_cover_path = os.path.join(dirs["cover"], cover_filename)
                 shutil.move(cover_path, dest_cover_path)
                 cover_relative_path = 'cover/' + cover_filename
+            else:
+                cover_data = metadata.get('cover') if metadata else None
+                if not cover_data:
+                    cover_data = generate_cover_image(title, author)
+                if cover_data:
+                    new_cover_filename = f"{base_name}.jpg"
+                    dest_cover_path = os.path.join(dirs["cover"], new_cover_filename)
+                    with open(dest_cover_path, 'wb') as f: f.write(cover_data)
+                    cover_relative_path = 'cover/' + new_cover_filename
             
             current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-            
             cursor.execute("""
                 INSERT INTO tb_books (
                     title, author, cover_path, file_path, file_md5, create_time, update_time,
