@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastListenLogTime = null;
     let accumulatedListenTime = 0;
     const LISTEN_LOG_THRESHOLD = 30; // Log every 30 seconds
+    const AUTO_SAVE_INTERVAL = 420000; // 7 minutes in milliseconds
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
     // --- DOM Elements ---
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
        }
    };
 
-    const saveProgress = () => {
+    const saveProgress = (isUserAction = false) => {
         if (currentTrackIndex === -1 || !dom.audioElement.src || dom.audioElement.currentTime === 0) return;
         const track = currentAudiobooks[currentTrackIndex];
         const currentTime = dom.audioElement.currentTime;
@@ -103,12 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
                 currentTime: currentTime,
                 totalDuration: dom.audioElement.duration,
-                playbackRate: playbackRate
+                playbackRate: playbackRate,
+                isUserAction: isUserAction
             }),
         });
     };
 
-    const logListenTime = () => {
+    const logListenTime = (isUserAction = false) => {
         if (currentTrackIndex === -1 || dom.audioElement.paused || !lastListenLogTime) {
             return;
         }
@@ -131,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     book_id: track.book_id,
                     listen_duration_seconds: timeToSend,
+                    isUserAction: isUserAction
                 }),
             }).catch(error => console.error('Failed to log listen time:', error));
         }
@@ -422,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Player Logic ---
     const playAudiobook = async (index) => {
-        saveProgress(); // Save progress of the current track before switching
+        saveProgress(true); // Save progress of the current track before switching (user action)
         if (saveProgressInterval) clearInterval(saveProgressInterval);
         currentTrackIndex = index;
         const track = currentAudiobooks[index];
@@ -476,9 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
 
         saveProgressInterval = setInterval(() => {
-            saveProgress();
-            logListenTime();
-        }, 5000);
+            saveProgress(false); // Auto-save, not user action
+            logListenTime(false); // Auto-log, not user action
+        }, AUTO_SAVE_INTERVAL);
     };
 
     const togglePlayPause = () => {
@@ -487,8 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
             dom.audioElement.play();
         } else {
             dom.audioElement.pause();
-            saveProgress(); // Save progress on pause
-            logListenTime(); // Log listen time on pause
+            saveProgress(true); // Save progress on pause (user action)
+            logListenTime(true); // Log listen time on pause (user action)
         }
     };
 
@@ -731,8 +734,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('beforeunload', () => {
-        saveProgress();
-        logListenTime();
+        saveProgress(true); // Save on page close (user action)
+        logListenTime(true); // Log on page close (user action)
     });
 
     // Keyboard shortcuts listener (keep for non-media keys)

@@ -123,6 +123,7 @@ def handle_progress(task_id):
             current_time = data.get('currentTime')
             total_duration = data.get('totalDuration')
             playback_rate = data.get('playbackRate', 1.0)
+            is_user_action = data.get('isUserAction', False)  # 标记是否为用户主动操作
             
             if current_time is None or total_duration is None:
                 return jsonify({'error': 'Invalid progress data'}), 400
@@ -141,8 +142,11 @@ def handle_progress(task_id):
             """, (user_id, task_id, progress_ms, duration_ms, playback_rate))
             
             db.commit()
-            # 记录有声书播放进度更新
-            log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=True)
+            
+            # 只在用户主动播放时记录活动日志
+            if is_user_action:
+                log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=True)
+            
             return jsonify({'message': 'Progress and playback rate updated'})
         else:  # GET
             progress = db.execute("SELECT progress_ms, playback_rate FROM audiobook_progress WHERE user_id = ? AND task_id = ?", (user_id, task_id)).fetchone()
@@ -183,6 +187,7 @@ def log_listen_time():
     data = request.get_json()
     book_id = data.get('book_id')
     listen_duration_seconds = data.get('listen_duration_seconds')
+    is_user_action = data.get('isUserAction', False)  # 标记是否为用户主动操作
 
     if not book_id or not listen_duration_seconds:
         return jsonify({'error': 'book_id and listen_duration_seconds are required.'}), 400
@@ -215,8 +220,9 @@ def log_listen_time():
         
         db.commit()
         
-        # 记录有声书阅读时间更新活动
-        log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_TIME, book_id=book_id, library_type='anx', success=True, detail=f'{listen_duration}s')
+        # 只在用户主动操作时记录活动日志
+        if is_user_action:
+            log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_TIME, book_id=book_id, library_type='anx', success=True, detail=f'{listen_duration}s')
 
     return jsonify({'message': 'Listen time logged successfully.'})
 
