@@ -92,7 +92,7 @@ class AnxDomainController(BaseDomainController):
             logging.warning(f"WebDAV auth failed: user '{user_name}' attempted to access path '{path_info}'.")
             return False
         
-        logging.info(f"WebDAV auth successful for user '{user_name}'.")
+        # 移除了认证成功的日志，减少频繁输出
         webdav_root = self.wsgidav_app.config["provider_mapping"]["/"].root_folder_path
         user_dir = os.path.join(webdav_root, user_name)
         if not os.path.exists(user_dir):
