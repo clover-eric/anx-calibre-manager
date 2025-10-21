@@ -31,6 +31,10 @@ _PARAGRAPH_BREAK_MARKER = "_PARAGRAPH_BREAK_"
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# 抑制 httpx 和 openai 库的 INFO 级别日志，减少冗余输出
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("openai").setLevel(logging.WARNING)
+
 OUTPUT_DIR = "/audiobooks"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 CONCURRENT_TTS_REQUESTS = 5
