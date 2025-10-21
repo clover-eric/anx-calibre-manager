@@ -260,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let accumulatedReadingTime = 0;
         let lastSaveTime = Date.now();
         let currentLocation = null;
+        let pageFlipCount = 0;
+        const PAGE_FLIP_THRESHOLD = 7; // Save every 7 page flips
 
         const saveProgress = (isUnloading = false) => {
             if (bookType !== 'anx' || !currentLocation) return;
@@ -300,13 +302,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
             accumulatedReadingTime = 0;
+            pageFlipCount = 0; // Reset page flip counter after saving
         };
-        
-        const debouncedSaveProgress = debounce(saveProgress, 3000);
 
         viewInstance.addEventListener('relocate', ({ detail }) => {
             currentLocation = detail;
-            debouncedSaveProgress();
+            pageFlipCount++;
+            
+            // Save progress every 7 page flips
+            if (pageFlipCount >= PAGE_FLIP_THRESHOLD) {
+                saveProgress();
+            }
         });
 
         window.addEventListener('beforeunload', () => {
