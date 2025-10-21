@@ -41,7 +41,7 @@ def get_tts_voices():
 def get_calibre_book_as_temp_file(user_dict, book_id):
     """获取 Calibre 书籍的 EPUB 内容并存入临时文件"""
     language = (user_dict.get('language') or 'zh').split('_')[0]
-    content, filename, _ = _get_processed_epub_for_book(book_id, user_dict, language=language)
+    content, filename, _unused = _get_processed_epub_for_book(book_id, user_dict, language=language)
     
     if filename == 'CONVERTER_NOT_FOUND':
         raise RuntimeError("ebook-converter tool is missing.")
@@ -83,7 +83,7 @@ def generate_audiobook_route():
     
     book_title = None
     if library == 'anx':
-        book_title, _ = get_anx_book_details(g.user.username, book_id)
+        book_title, _unused = get_anx_book_details(g.user.username, book_id)
     elif library == 'calibre':
         details = get_calibre_book_details(book_id)
         if details:
@@ -210,7 +210,7 @@ def get_task_status_for_book():
 def download_audiobook(task_id):
     task = get_audiobook_task_by_id(task_id)
     
-    book_title, _ = get_anx_book_details(g.user.username, task['book_id']) if task and task['library_type'] == 'anx' else (None, None)
+    book_title, _unused = get_anx_book_details(g.user.username, task['book_id']) if task and task['library_type'] == 'anx' else (None, None)
     if not book_title and task and task['library_type'] == 'calibre':
         details = get_calibre_book_details(task['book_id'])
         if details: book_title = details.get('title')
@@ -268,15 +268,19 @@ def delete_audiobook(task_id):
         cursor.execute("SELECT * FROM audiobook_tasks WHERE task_id = ?", (task_id,))
         task = cursor.fetchone()
 
-        book_title, _ = get_anx_book_details(g.user.username, task['book_id']) if task and task['library_type'] == 'anx' else (None, None)
-        if not book_title and task and task['library_type'] == 'calibre':
-            details = get_calibre_book_details(task['book_id'])
-            if details: book_title = details.get('title')
-
         if not task:
             error_msg = _('Task not found')
             log_activity(ActivityType.DELETE_AUDIOBOOK, task_id=task_id, success=False, failure_reason=error_msg)
             return jsonify({'error': error_msg}), 404
+
+        # 获取书籍标题用于日志记录
+        book_title = None
+        if task['library_type'] == 'anx':
+            book_title, _unused = get_anx_book_details(g.user.username, task['book_id'])
+        elif task['library_type'] == 'calibre':
+            details = get_calibre_book_details(task['book_id'])
+            if details:
+                book_title = details.get('title')
 
         # Permission Check
         is_owner = task['user_id'] == g.user.id
