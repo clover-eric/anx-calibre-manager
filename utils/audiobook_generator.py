@@ -167,7 +167,7 @@ class EdgeTTSProvider(BaseTTSProvider):
                 
                 # 在发送到 TTS 之前，跳过只包含标点或空白的块
                 if is_skippable_chunk(chunk):
-                    logger.info(f"Skipping chunk {chunk_counter}/{total_chunks} as it contains only skippable characters.")
+                    logger.info(f"Skipping chunk {chunk_counter}/{total_chunks} as it contains only skippable characters. Original content: {chunk!r}")
                     continue
 
                 #logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks}...")
@@ -188,8 +188,7 @@ class EdgeTTSProvider(BaseTTSProvider):
                         break
                     except Exception as e:
                         # 增强日志：当 TTS 失败时，记录下导致失败的具体文本块内容
-                        logger.warning(f"EdgeTTS error on chunk {chunk_counter} (attempt {attempt + 1}/{MAX_TTS_RETRIES}): {e}")
-                        logger.warning(f"Problematic chunk content: {chunk!r}") # 使用 !r 来显示原始字符串表示
+
                         if attempt < MAX_TTS_RETRIES - 1:
                             sleep(min(60, 2 ** attempt)) # 指数退避，但上限为60秒
                         else:
@@ -220,7 +219,7 @@ class OpenAITTSProvider(BaseTTSProvider):
         self.client = OpenAI(
             api_key=self.config.api_key,
             base_url=self.config.base_url,
-            max_retries=4
+            max_retries=0 # Manual retry logic is implemented in text_to_speech
         )
 
     def _convert_rate_to_speed(self, rate: str) -> float:
@@ -255,60 +254,56 @@ class OpenAITTSProvider(BaseTTSProvider):
             
             for chunk in text_chunks:
                 chunk_counter += 1
-                logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks} via OpenAI...")
-                try:
-                    response = self.client.audio.speech.create(
-                        model=self.config.model or "tts-1",
-                        voice=self.config.voice or "alloy",
-                        speed=speed,
-                        input=chunk,
-                        response_format="mp3",
-                    )
-                    
-                    # 智能检测并处理不同音频格式
-                    audio_bytes = response.content
-                    logger.debug(f"Received {len(audio_bytes)} bytes. First 12 bytes: {audio_bytes[:12]}")
-                    
-                    # 使用临时文件避免流式数据的 seek 问题
-                    import tempfile
-                    with tempfile.NamedTemporaryFile(suffix='.audio', delete=False) as tmp_file:
-                        tmp_file.write(audio_bytes)
-                        tmp_path = tmp_file.name
-                    
-                    try:
-                        # 检测音频格式
-                        if audio_bytes.startswith(b'RIFF') and b'WAVE' in audio_bytes[:20]:
-                            # WAV 格式
-                            logger.debug("Detected WAV format")
-                            segment = AudioSegment.from_file(tmp_path, format="wav")
-                        elif audio_bytes.startswith(b'ID3') or audio_bytes.startswith(b'\xff\xfb') or audio_bytes.startswith(b'\xff\xf3'):
-                            # MP3 格式 (ID3 标签或 MPEG 帧头)
-                            logger.debug("Detected MP3 format")
-                            segment = AudioSegment.from_file(tmp_path, format="mp3")
-                        elif audio_bytes.startswith(b'OggS'):
-                            # OGG 格式
-                            logger.debug("Detected OGG format")
-                            segment = AudioSegment.from_file(tmp_path, format="ogg")
-                        elif audio_bytes.startswith(b'fLaC'):
-                            # FLAC 格式
-                            logger.debug("Detected FLAC format")
-                            segment = AudioSegment.from_file(tmp_path, format="flac")
-                        else:
-                            # 未知格式,让 pydub 自动检测
-                            logger.warning(f"Unknown audio format. First 20 bytes: {audio_bytes[:20].hex()}")
-                            segment = AudioSegment.from_file(tmp_path)
-                        
-                        segments.append(segment)
-                        # 每个句子块（chunk）后面都添加停顿
-                        segments.append(sentence_pause)
-                    finally:
-                        # 确保删除临时文件
-                        if os.path.exists(tmp_path):
-                            os.remove(tmp_path)
 
-                except Exception as e:
-                    logger.error(f"OpenAI TTS error on chunk {chunk_counter}: {e}")
-                    return False
+                if is_skippable_chunk(chunk):
+                    logger.info(f"Skipping chunk {chunk_counter}/{total_chunks} as it contains only skippable characters. Original content: {chunk!r}")
+                    continue
+
+                # logger.info(f"Generating audio for chunk {chunk_counter}/{total_chunks} via OpenAI...")
+                
+                for attempt in range(MAX_TTS_RETRIES):
+                    try:
+                        response = self.client.audio.speech.create(
+                            model=self.config.model or "tts-1",
+                            voice=self.config.voice or "alloy",
+                            speed=speed,
+                            input=chunk,
+                            response_format="mp3",
+                        )
+                        
+                        audio_bytes = response.content
+                        
+                        import tempfile
+                        with tempfile.NamedTemporaryFile(suffix='.audio', delete=False) as tmp_file:
+                            tmp_file.write(audio_bytes)
+                            tmp_path = tmp_file.name
+                        
+                        try:
+                            if audio_bytes.startswith(b'RIFF') and b'WAVE' in audio_bytes[:20]:
+                                segment = AudioSegment.from_file(tmp_path, format="wav")
+                            elif audio_bytes.startswith(b'ID3') or audio_bytes.startswith(b'\xff\xfb') or audio_bytes.startswith(b'\xff\xf3'):
+                                segment = AudioSegment.from_file(tmp_path, format="mp3")
+                            elif audio_bytes.startswith(b'OggS'):
+                                segment = AudioSegment.from_file(tmp_path, format="ogg")
+                            elif audio_bytes.startswith(b'fLaC'):
+                                segment = AudioSegment.from_file(tmp_path, format="flac")
+                            else:
+                                logger.warning(f"Unknown audio format. First 20 bytes: {audio_bytes[:20].hex()}")
+                                segment = AudioSegment.from_file(tmp_path)
+                            
+                            segments.append(segment)
+                            segments.append(sentence_pause)
+                        finally:
+                            if os.path.exists(tmp_path):
+                                os.remove(tmp_path)
+                        
+                        break # Success, exit retry loop
+                    
+                    except Exception as e:
+                        if attempt < MAX_TTS_RETRIES - 1:
+                            sleep(min(60, 2 ** attempt))
+                        else:
+                            logger.error(f"Skipping chunk after {MAX_TTS_RETRIES} retries due to persistent errors. Content: {chunk!r}")
             
             if para_idx < len(paragraphs) - 1 and segments:
                 # 移除最后一个多余的句子停顿，替换为更长的段落停顿
