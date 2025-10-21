@@ -124,9 +124,21 @@ def _generate_llm_response(session_id, book_id, book_type, user_info_dict, trans
                 (session_id, 'model', final_text)
             )
             model_message_id = cursor.lastrowid
+            
+            # Update the session's updated_at timestamp
+            cursor.execute(
+                'UPDATE llm_chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                (session_id,)
+            )
+            
+            # Get the updated timestamp
+            session_info = cursor.execute(
+                'SELECT updated_at FROM llm_chat_sessions WHERE id = ?',
+                (session_id,)
+            ).fetchone()
             db.commit()
 
-        yield f"event: end\ndata: {json.dumps({'model_message_id': model_message_id})}\n\n"
+        yield f"event: end\ndata: {json.dumps({'model_message_id': model_message_id, 'updated_at': session_info['updated_at'] if session_info else None})}\n\n"
 
     except Exception as e:
         error_text = llm_comm_fail_msg % {'error': str(e)}
@@ -189,6 +201,12 @@ def chat_with_book():
             )
             # 记录新会话开始
             log_activity(ActivityType.LLM_CHAT_START, book_id=book_id, book_title=book_title, library_type=book_type, success=True)
+        else:
+            # Update the session's updated_at when user sends a message
+            cursor.execute(
+                'UPDATE llm_chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                (session_id,)
+            )
         
         cursor.execute(
             'INSERT INTO llm_chat_messages (session_id, role, content) VALUES (?, ?, ?)',
@@ -265,6 +283,11 @@ def regenerate_chat_response():
         db.execute(
             'DELETE FROM llm_chat_messages WHERE session_id = ? AND created_at > ?',
             (msg_info['session_id'], msg_info['created_at'])
+        )
+        # Also update the session's updated_at timestamp
+        db.execute(
+            'UPDATE llm_chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+            (msg_info['session_id'],)
         )
         db.commit()
         

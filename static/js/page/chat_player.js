@@ -162,8 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (sessionItem) {
                             const timeAgoEl = sessionItem.querySelector('.time-ago');
                             if (timeAgoEl) {
+                                // Use the updated_at from server if available, otherwise use current time
+                                const timestamp = data.updated_at || new Date().toISOString().slice(0, 19).replace('T', ' ');
+                                timeAgoEl.dataset.timestamp = timestamp;
                                 timeAgoEl.textContent = t.justNow;
-                                timeAgoEl.dataset.timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                            }
+                            // Move the updated session to the top of the list
+                            const parentList = sessionItem.parentElement;
+                            if (parentList) {
+                                parentList.prepend(sessionItem);
                             }
                         }
                         if (data.model_message_id && modelMessageWrapper) {
@@ -265,9 +272,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const optimisticallyUpdateSessionList = () => {
+        if (!currentSession.sessionId) return;
+        const sessionItem = document.querySelector(`.session-item[data-session-id="${currentSession.sessionId}"]`);
+        if (sessionItem) {
+            const timeAgoEl = sessionItem.querySelector('.time-ago');
+            if (timeAgoEl) {
+                timeAgoEl.textContent = t.justNow;
+                // The accurate timestamp will be set from the server 'end' event
+            }
+            const parentList = sessionItem.parentElement;
+            if (parentList) {
+                parentList.prepend(sessionItem);
+            }
+        }
+    };
+
     const handleRegenerate = async (messageWrapper) => {
         const messageId = messageWrapper.dataset.messageId;
         if (!messageId) return;
+        optimisticallyUpdateSessionList();
 
         let nextSibling = messageWrapper.nextElementSibling;
         while (nextSibling) {
@@ -292,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const sendMessage = async (message) => {
         if (!currentSession.bookId || !message.trim()) return;
+        optimisticallyUpdateSessionList();
 
         const userMessageWrapper = addMessageToUI({ role: 'user', content: message });
         dom.chatInput.value = '';
