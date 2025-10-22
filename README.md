@@ -85,12 +85,48 @@ This application is designed to be deployed using Docker.
 
 ### Prerequisites
 
+#### Option 1: AIO (All-In-One) Version (Recommended for Beginners)
 - [Docker](https://www.docker.com/get-started) installed on your server.
-- An existing Calibre server (optional, but required for most features). We recommend the [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) image. For a lightweight alternative, consider [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (note: its default port is `8085`).
+- **No separate Calibre server needed!** The AIO image includes a built-in `calibre-server`, making it perfect for users who want a simple, single-container deployment.
+
+#### Option 2: Standard Version (For Advanced Users)
+- [Docker](https://www.docker.com/get-started) installed on your server.
+- An existing Calibre server (required for most features). We recommend the [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) image. For a lightweight alternative, consider [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (note: its default port is `8085`).
 
 ### Quick Start (Docker Run)
 
-This is the simplest way to get started.
+#### AIO Version (All-In-One - Recommended)
+Perfect if you don't want to manage a separate Calibre server!
+
+1.  Create three directories for persistent data:
+    ```bash
+    mkdir -p ./config
+    mkdir -p ./webdav
+    mkdir -p ./library
+    ```
+
+2.  Run the AIO Docker container:
+    ```bash
+    docker run -d \
+      --name anx-calibre-manager-aio \
+      -p 5000:5000 \
+      -p 8080:8080 \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
+      -v $(pwd)/library:/library \
+      -e CALIBRE_URL=http://localhost:8080 \
+      -e CALIBRE_USERNAME=admin \
+      -e CALIBRE_PASSWORD=password \
+      --restart unless-stopped \
+      ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+    ```
+
+3.  Access the application at `http://localhost:5000`. The built-in Calibre server will be available at `http://localhost:8080`.
+    - **Note**: The `/library` directory is your Calibre library folder. It will contain `metadata.db` (the Calibre database), book files, and cover images. This is where all your ebooks are stored and managed by the built-in Calibre server.
+    - **Note**: Change the default username (`admin`) and password (`password`) for security.
+
+#### Standard Version
+This is for users who already have a separate Calibre server.
 
 1.  Create two directories for persistent data:
     ```bash

@@ -15,6 +15,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        build_type: [standard, aio]
 
     steps:
       - name: Checkout repository
@@ -55,12 +58,12 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            # on push to main branch, tag with beta
-            type=raw,value=beta,enable=${{ github.ref == 'refs/heads/main' }}
-            # on release (tag push), tag with latest and version
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
-            type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            # on push to main branch, tag with beta or aio-beta
+            type=raw,value=${{ matrix.build_type == 'aio' && 'aio-beta' || 'beta' }},enable=${{ github.ref == 'refs/heads/main' }}
+            # on release (tag push), tag with latest/aio-latest and version/aio-version
+            type=raw,value=${{ matrix.build_type == 'aio' && 'aio-latest' || 'latest' }},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern=${{ matrix.build_type == 'aio' && 'aio-{{version}}' || '{{version}}' }},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern=${{ matrix.build_type == 'aio' && 'aio-{{major}}.{{minor}}' || '{{major}}.{{minor}}' }},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -71,5 +74,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_TYPE=${{ matrix.build_type }}
+          cache-from: type=gha,scope=${{ matrix.build_type }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.build_type }}

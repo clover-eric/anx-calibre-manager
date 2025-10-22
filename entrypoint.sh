@@ -30,5 +30,45 @@ mkdir -p /config/logs
 # Take ownership of the config and data directories
 chown -R appuser:appuser /config /webdav
 
+# Check if calibre-server is installed (AIO mode)
+if command -v calibre-server >/dev/null 2>&1; then
+    echo "AIO mode detected: Starting calibre-server..."
+    
+    # Parse port from CALIBRE_URL (default: http://localhost:8080)
+    CALIBRE_URL=${CALIBRE_URL:-http://localhost:8080}
+    CALIBRE_SERVER_PORT=$(echo "$CALIBRE_URL" | sed -n 's/.*:\([0-9]\+\).*/\1/p')
+    CALIBRE_SERVER_PORT=${CALIBRE_SERVER_PORT:-8080}
+    
+    # Set default credentials
+    CALIBRE_USERNAME=${CALIBRE_USERNAME:-admin}
+    CALIBRE_PASSWORD=${CALIBRE_PASSWORD:-password}
+    
+    # Ensure /library directory ownership
+    if [ -d /library ]; then
+        chown -R appuser:appuser /library
+    fi
+    
+    # Create user database if it doesn't exist
+    if [ ! -f /config/calibre-users.sqlite ]; then
+        echo "Creating calibre-server user database..."
+        gosu appuser calibre-server \
+            --userdb /config/calibre-users.sqlite \
+            --manage-users add "$CALIBRE_USERNAME" "$CALIBRE_PASSWORD"
+    fi
+    
+    # Start calibre-server in background
+    echo "Starting calibre-server on port $CALIBRE_SERVER_PORT..."
+    gosu appuser calibre-server \
+        --enable-auth \
+        --userdb /config/calibre-users.sqlite \
+        --port="$CALIBRE_SERVER_PORT" \
+        --enable-local-write \
+        --log=/config/logs/calibre-server.log \
+        --access-log=/config/logs/calibre-server-access.log \
+        /library &
+    
+    echo "calibre-server started with PID $!"
+fi
+
 # Execute the command passed to this script (the Dockerfile's CMD)
 exec gosu appuser "$@"

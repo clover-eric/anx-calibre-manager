@@ -1,5 +1,11 @@
+# Build argument to control whether to include calibre-server (AIO mode)
+ARG BUILD_TYPE=standard
+# BUILD_TYPE can be: standard or aio
+
 # Stage 1: Builder - To build dependencies
 FROM python:3.12-slim-bookworm AS builder
+
+ARG BUILD_TYPE
 
 # Set the working directory
 WORKDIR /app
@@ -47,7 +53,10 @@ RUN git clone https://github.com/johnfactotum/foliate-js.git /home/appuser/folia
 # Stage 2: Final image - For running the application
 FROM python:3.12-slim-bookworm
 
+ARG BUILD_TYPE
+
 # Install gosu for user switching, tini for signal handling, and runtime deps for ebook-converter
+# For AIO mode, also install calibre
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gosu \
@@ -59,7 +68,8 @@ RUN apt-get update && \
     libxslt1.1 \
     libxml2 \
     ffmpeg \
-    fonts-wqy-microhei && \
+    fonts-wqy-microhei \
+    $(if [ "$BUILD_TYPE" = "aio" ]; then echo "calibre curl"; fi) && \
     rm -rf /var/lib/apt/lists/*
 
 # Configure locales
@@ -91,8 +101,13 @@ ENV DEFAULT_TTS_PARAGRAPH_PAUSE=900
 
 
 # Create app user and standard directories as root
+# For AIO mode, also create /library directory for calibre-server
 RUN useradd --uid 1001 --create-home appuser && \
     mkdir -p /config /webdav /audiobooks /tmp && \
+    if [ "$BUILD_TYPE" = "aio" ]; then \
+        mkdir -p /library && \
+        chown -R appuser:appuser /library; \
+    fi && \
     chown -R appuser:appuser /config /webdav /audiobooks /tmp
 
 # Set working directory
@@ -133,6 +148,7 @@ ENV PATH="/home/appuser/build_venv/bin:/home/appuser/venv/bin:$PATH"
 EXPOSE $PORT
 
 # Define volumes for persistent data
+# For AIO mode, also add /library volume
 VOLUME ["/config", "/webdav", "/audiobooks"]
 
 # Set the entrypoint to use tini for proper signal handling

@@ -86,12 +86,48 @@ Cette application est conçue pour être déployée avec Docker.
 
 ### Prérequis
 
+#### Option 1 : Version AIO (Tout-en-Un) (Recommandé pour les Débutants)
 - [Docker](https://www.docker.com/get-started) installé sur votre serveur.
-- Un serveur Calibre existant (facultatif, mais requis pour la plupart des fonctionnalités). Nous recommandons d'utiliser l'image Docker [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre). Pour une alternative légère, envisagez [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (note : son port par défaut est `8085`).
+- **Aucun serveur Calibre séparé nécessaire !** L'image AIO inclut un `calibre-server` intégré, parfait pour les utilisateurs qui souhaitent un déploiement simple dans un seul conteneur.
+
+#### Option 2 : Version Standard (Pour les Utilisateurs Avancés)
+- [Docker](https://www.docker.com/get-started) installé sur votre serveur.
+- Un serveur Calibre existant (requis pour la plupart des fonctionnalités). Nous recommandons d'utiliser l'image Docker [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre). Pour une alternative légère, envisagez [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (note : son port par défaut est `8085`).
 
 ### Démarrage Rapide (Docker Run)
 
-C'est le moyen le plus simple de démarrer.
+#### Version AIO (Tout-en-Un - Recommandé)
+Parfait si vous ne voulez pas gérer un serveur Calibre séparé !
+
+1.  Créez trois répertoires pour les données persistantes :
+    ```bash
+    mkdir -p ./config
+    mkdir -p ./webdav
+    mkdir -p ./library
+    ```
+
+2.  Exécutez le conteneur Docker AIO :
+    ```bash
+    docker run -d \
+      --name anx-calibre-manager-aio \
+      -p 5000:5000 \
+      -p 8080:8080 \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
+      -v $(pwd)/library:/library \
+      -e CALIBRE_URL=http://localhost:8080 \
+      -e CALIBRE_USERNAME=admin \
+      -e CALIBRE_PASSWORD=password \
+      --restart unless-stopped \
+      ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+    ```
+
+3.  Accédez à l'application à l'adresse `http://localhost:5000`. Le serveur Calibre intégré sera disponible à `http://localhost:8080`.
+    - **Note** : Le répertoire `/library` est votre dossier de bibliothèque Calibre. Il contiendra `metadata.db` (la base de données Calibre), les fichiers de livres et les images de couverture. C'est là que le serveur Calibre intégré stocke et gère tous vos livres électroniques.
+    - **Note** : Changez le nom d'utilisateur (`admin`) et le mot de passe (`password`) par défaut pour des raisons de sécurité.
+
+#### Version Standard
+Pour les utilisateurs qui ont déjà un serveur Calibre séparé.
 
 1.  Créez deux répertoires pour les données persistantes :
     ```bash

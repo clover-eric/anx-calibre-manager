@@ -85,12 +85,48 @@
 
 ### 先决条件
 
+#### 方案一：AIO (一体化) 版本 (推荐新手使用)
 - 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
-- 一个正在运行的 Calibre 服务器 (可选，但大部分功能需要)。我们推荐使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) 镜像。如果需要一个轻量级的替代方案，可以考虑 [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre)（注意：其默认端口是 `8085`）。
+- **无需单独的 Calibre 服务器！** AIO 镜像内置了 `calibre-server`，非常适合想要简单、单容器部署的用户。
+
+#### 方案二：标准版本 (适合高级用户)
+- 您的服务器上已安装 [Docker](https://www.docker.com/get-started)。
+- 一个正在运行的 Calibre 服务器 (大部分功能需要)。我们推荐使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) 镜像。如果需要一个轻量级的替代方案，可以考虑 [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre)（注意：其默认端口是 `8085`）。
 
 ### 快速开始 (使用 Docker Run)
 
-这是最简单的入门方式。
+#### AIO 版本 (一体化 - 推荐)
+如果您不想管理单独的 Calibre 服务器，这是最佳选择！
+
+1.  创建三个用于持久化数据的文件夹：
+    ```bash
+    mkdir -p ./config
+    mkdir -p ./webdav
+    mkdir -p ./library
+    ```
+
+2.  运行 AIO Docker 容器：
+    ```bash
+    docker run -d \
+      --name anx-calibre-manager-aio \
+      -p 5000:5000 \
+      -p 8080:8080 \
+      -v $(pwd)/config:/config \
+      -v $(pwd)/webdav:/webdav \
+      -v $(pwd)/library:/library \
+      -e CALIBRE_URL=http://localhost:8080 \
+      -e CALIBRE_USERNAME=admin \
+      -e CALIBRE_PASSWORD=password \
+      --restart unless-stopped \
+      ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+    ```
+
+3.  在浏览器中访问 `http://localhost:5000`。内置的 Calibre 服务器将在 `http://localhost:8080` 可用。
+    - **注意**：`/library` 目录是您的 Calibre 书库文件夹。它将包含 `metadata.db`（Calibre 数据库）、书籍文件和封面图片。这是内置 Calibre 服务器存储和管理所有电子书的地方。
+    - **注意**：为了安全起见，请修改默认的用户名（`admin`）和密码（`password`）。
+
+#### 标准版本
+适用于已有独立 Calibre 服务器的用户。
 
 1.  创建两个用于持久化数据的文件夹：
     ```bash
