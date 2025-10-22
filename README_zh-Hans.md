@@ -276,6 +276,85 @@
         *   **列类型**: `日期`
     5.  点击 `应用` 并重启您的 Calibre 服务器。添加这些列后，编辑功能即可正常工作。
 
+### 6. 我不想用笨重的 Calibre 客户端或简陋的 calibre-server 来管理书库，能用 Calibre-Web、Calibre-Web-Automated 或 Talebook 等前端吗？
+
+**当然可以！** 您可以在使用本应用的同时，搭配任何兼容 Calibre 的前端程序。这些前端都与同一个 Calibre 书库数据库 (`metadata.db`) 交互，如下图所示：
+
+<p align="center">
+  <img src="screenshots/Document -  BookManagerExplained.jpg" alt="Calibre 书库架构">
+</p>
+
+**推荐方案：Sidecar 模式 (边车模式)**
+
+将您偏好的前端作为独立容器运行，共享同一个书库目录。这种方式特别适合搭配 **AIO 版本** 使用：
+
+**以 Calibre-Web-Automated 为例：**
+
+使用 Docker Run：
+```bash
+# 运行 ANX Calibre Manager AIO (内置 calibre-server)
+docker run -d \
+  --name anx-calibre-manager-aio \
+  -p 5000:5000 \
+  -p 8080:8080 \
+  -v $(pwd)/config:/config \
+  -v $(pwd)/webdav:/webdav \
+  -v $(pwd)/library:/library \
+  -e CALIBRE_URL=http://localhost:8080 \
+  -e CALIBRE_USERNAME=admin \
+  -e CALIBRE_PASSWORD=password \
+  ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+
+# 运行 Calibre-Web-Automated (共享书库)
+docker run -d \
+  --name calibre-web-automated \
+  -p 8083:8083 \
+  -v $(pwd)/library:/calibre-library:rw \
+  -v $(pwd)/cwa-config:/config \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  ghcr.io/crocodilestick/calibre-web-automated:latest
+```
+
+使用 Docker Compose：
+```yaml
+services:
+  anx-calibre-manager-aio:
+    image: ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+    container_name: anx-calibre-manager-aio
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    volumes:
+      - ./config:/config
+      - ./webdav:/webdav
+      - ./library:/library
+    environment:
+      - CALIBRE_URL=http://localhost:8080
+      - CALIBRE_USERNAME=admin
+      - CALIBRE_PASSWORD=password
+    restart: unless-stopped
+
+  calibre-web-automated:
+    image: ghcr.io/crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./library:/calibre-library:rw
+      - ./cwa-config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped
+```
+
+**要点说明：**
+- **共享书库**：将同一个书库目录 (`./library`) 挂载到所有容器
+- **无端口冲突**：每个前端运行在独立端口 (ANX: 5000, calibre-server: 8080, CWA: 8083)
+- **服务独立**：每个容器可以独立启动/停止
+- **适用标准版**：如果您已有独立的 Calibre 服务器，此模式同样适用于标准版 (非 AIO)
+
 ## 📖 KOReader 同步
 
 您可以同步您的阅读进度和阅读时间到 Anx 书库。整个设置过程分为两步：首先配置 WebDAV 以便访问您的书籍，然后配置同步插件来处理进度同步。

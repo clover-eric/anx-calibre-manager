@@ -277,6 +277,85 @@ Aquí hay algunos problemas comunes y sus soluciones:
         *   **Tipo de columna**: `Fecha`
     5.  Haz clic en `Aplicar` y reinicia tu servidor de Calibre si está en funcionamiento. Después de añadir estas columnas, las funciones de edición funcionarán correctamente.
 
+### 6. No quiero usar el pesado cliente de escritorio de Calibre o el básico calibre-server para gestionar mi biblioteca. ¿Puedo usar otros frontends como Calibre-Web, Calibre-Web-Automated o Talebook?
+
+**¡Sí!** Puedes usar cualquier frontend compatible con Calibre junto con esta aplicación. Estos frontends interactúan con la misma base de datos de la biblioteca de Calibre (`metadata.db`), como se muestra en este diagrama:
+
+<p align="center">
+  <img src="screenshots/Document%20-%20BookManagerExplained.jpg" alt="Arquitectura de la biblioteca de Calibre">
+</p>
+
+**Enfoque recomendado: Patrón Sidecar**
+
+Ejecuta tu frontend preferido como un contenedor separado que comparte el mismo directorio de biblioteca. Esto funciona especialmente bien con la **versión AIO**:
+
+**Ejemplo con Calibre-Web-Automated:**
+
+Usando Docker Run:
+```bash
+# Ejecutar ANX Calibre Manager AIO (incluye calibre-server)
+docker run -d \
+  --name anx-calibre-manager-aio \
+  -p 5000:5000 \
+  -p 8080:8080 \
+  -v $(pwd)/config:/config \
+  -v $(pwd)/webdav:/webdav \
+  -v $(pwd)/library:/library \
+  -e CALIBRE_URL=http://localhost:8080 \
+  -e CALIBRE_USERNAME=admin \
+  -e CALIBRE_PASSWORD=password \
+  ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+
+# Ejecutar Calibre-Web-Automated (comparte la biblioteca)
+docker run -d \
+  --name calibre-web-automated \
+  -p 8083:8083 \
+  -v $(pwd)/library:/calibre-library:rw \
+  -v $(pwd)/cwa-config:/config \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  ghcr.io/crocodilestick/calibre-web-automated:latest
+```
+
+Usando Docker Compose:
+```yaml
+services:
+  anx-calibre-manager-aio:
+    image: ghcr.io/ptbsare/anx-calibre-manager:aio-latest
+    container_name: anx-calibre-manager-aio
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    volumes:
+      - ./config:/config
+      - ./webdav:/webdav
+      - ./library:/library
+    environment:
+      - CALIBRE_URL=http://localhost:8080
+      - CALIBRE_USERNAME=admin
+      - CALIBRE_PASSWORD=password
+    restart: unless-stopped
+
+  calibre-web-automated:
+    image: ghcr.io/crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./library:/calibre-library:rw
+      - ./cwa-config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped
+```
+
+**Puntos clave:**
+- **Biblioteca compartida**: Monta el mismo directorio de biblioteca (`./library`) en todos los contenedores
+- **Sin conflictos**: Cada frontend se ejecuta en su propio puerto (ANX: 5000, calibre-server: 8080, CWA: 8083)
+- **Servicios independientes**: Cada contenedor se puede iniciar/detener de forma independiente
+- **Funciona con la versión estándar**: También puedes usar este patrón con la versión estándar (no AIO) si ya tienes un servidor Calibre separado
+
 ## 📖 Sincronización con KOReader
 
 Puedes sincronizar tu progreso de lectura y tiempo de lectura entre tu biblioteca Anx y los dispositivos KOReader. La configuración implica dos pasos principales: configurar WebDAV para acceder a tus libros y configurar el complemento de sincronización para manejar la sincronización del progreso.
