@@ -86,12 +86,36 @@ if command -v calibre-server >/dev/null 2>&1; then
         echo "Existing Calibre library found at /Calibre Library"
     fi
     
-    # Create user database if it doesn't exist
+    # Create user database if it doesn't exist or is corrupted
     if [ ! -f /config/calibre-users.sqlite ]; then
         echo "Creating calibre-server user database..."
+        # Remove any existing corrupted database file
+        rm -f /config/calibre-users.sqlite /config/calibre-users.sqlite-journal
+        
+        # Create the user database with proper ownership
         gosu appuser calibre-server \
             --userdb /config/calibre-users.sqlite \
-            --manage-users add "$CALIBRE_USERNAME" "$CALIBRE_PASSWORD"
+            --manage-users add "$CALIBRE_USERNAME" "$CALIBRE_PASSWORD" 2>&1 || {
+            echo "Failed to create user database, retrying..."
+            rm -f /config/calibre-users.sqlite /config/calibre-users.sqlite-journal
+            sleep 1
+            gosu appuser calibre-server \
+                --userdb /config/calibre-users.sqlite \
+                --manage-users add "$CALIBRE_USERNAME" "$CALIBRE_PASSWORD"
+        }
+        
+        # Ensure proper ownership
+        chown appuser:appuser /config/calibre-users.sqlite 2>/dev/null || true
+    else
+        # Verify existing database is accessible
+        if ! gosu appuser calibre-server --userdb /config/calibre-users.sqlite --manage-users list >/dev/null 2>&1; then
+            echo "Existing user database is corrupted, recreating..."
+            rm -f /config/calibre-users.sqlite /config/calibre-users.sqlite-journal
+            gosu appuser calibre-server \
+                --userdb /config/calibre-users.sqlite \
+                --manage-users add "$CALIBRE_USERNAME" "$CALIBRE_PASSWORD"
+            chown appuser:appuser /config/calibre-users.sqlite 2>/dev/null || true
+        fi
     fi
     
     # Start calibre-server in background
