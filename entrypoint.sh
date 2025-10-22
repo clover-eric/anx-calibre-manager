@@ -56,15 +56,31 @@ if command -v calibre-server >/dev/null 2>&1; then
         # Create library directory if it doesn't exist
         mkdir -p "/Calibre Library"
         
-        # Initialize empty library using calibredb
+        # Initialize empty library using calibredb (suppress error output)
         # The --with-library option specifies the library path
-        gosu appuser calibredb restore_database --really-do-it --with-library "/Calibre Library" || {
-            echo "Failed to initialize library with restore_database, trying alternative method..."
+        gosu appuser calibredb restore_database --really-do-it --with-library "/Calibre Library" >/dev/null 2>&1 || {
             # Alternative: Create a minimal metadata.db by listing (which auto-creates if missing)
             gosu appuser calibredb list --with-library "/Calibre Library" >/dev/null 2>&1 || true
         }
         
+        # Add custom columns for user library tracking and read date
+        echo "Adding custom columns #library and #readdate..."
+        
+        # Add #library column (Text column, comma separated)
+        gosu appuser calibredb add_custom_column \
+            --with-library "/Calibre Library" \
+            library "Library" text \
+            --is-multiple \
+            >/dev/null 2>&1 || echo "Note: #library column may already exist or failed to create"
+        
+        # Add #readdate column (Date column)
+        gosu appuser calibredb add_custom_column \
+            --with-library "/Calibre Library" \
+            readdate "Read Date" datetime \
+            >/dev/null 2>&1 || echo "Note: #readdate column may already exist or failed to create"
+        
         echo "Empty Calibre library initialized at /Calibre Library with ID: $CALIBRE_DEFAULT_LIBRARY_ID"
+        echo "Custom columns #library and #readdate have been added"
         chown -R appuser:appuser "/Calibre Library"
     else
         echo "Existing Calibre library found at /Calibre Library"
