@@ -209,7 +209,7 @@
 | `LOGIN_MAX_ATTEMPTS` | 登入失敗鎖定閾值。設為 `0` 停用此功能。 | `5` |
 | `SESSION_LIFETIME_DAYS` | 使用者登入後會話保持有效的天數。 | `7` |
 | `ENABLE_ACTIVITY_LOG` | 啟用使用者活動日誌記錄（登入、下載、上傳等操作）到資料庫用於稽核目的。 | `false` |
-| `CALIBRE_URL` | 您的 Calibre 內容伺服器的 URL。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
+| `CALIBRE_URL` | 您的 Calibre 內容伺服器的 URL。**在 AIO 版本中具有雙重作用**：(1) 作為 anx-calibre-manager 的全域預設 Calibre 伺服器連線設定。(2) 從中提取連接埠號，用於確定內建 calibre-server 應監聽的連接埠。例如，`http://localhost:8080` 將使 calibre-server 監聽 8080 連接埠。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_USERNAME` | 您的 Calibre 伺服器的使用者名稱。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_PASSWORD` | 您的 Calibre 伺服器的密碼。如有連線問題，請參閱[問題排查](#1-為什麼我的-calibre-清單沒有書籍)。 | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | 預設的 Calibre 庫 ID。詳情請參閱[如何找到我的 `library_id`](#4-我如何找到我的-library_id)。 | `Calibre_Library` |

@@ -209,7 +209,7 @@ Die Anwendung wird über Umgebungsvariablen konfiguriert.
 | `LOGIN_MAX_ATTEMPTS` | Maximale Anzahl von Anmeldeversuchen vor Kontosperrung. Auf `0` setzen, um zu deaktivieren. | `5` |
 | `SESSION_LIFETIME_DAYS` | Anzahl der Tage, die eine Benutzersitzung nach der Anmeldung gültig bleibt. | `7` |
 | `ENABLE_ACTIVITY_LOG` | Aktiviert die Protokollierung von Benutzeraktivitäten (Anmeldung, Download, Upload usw.) in der Datenbank zu Prüfzwecken. | `false` |
-| `CALIBRE_URL` | Die URL Ihres Calibre-Content-Servers. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
+| `CALIBRE_URL` | Die URL Ihres Calibre-Content-Servers. **Doppelte Funktion in der AIO-Version**: (1) Dient als globale Standard-Calibre-Server-Verbindung für anx-calibre-manager. (2) Die Portnummer wird extrahiert, um zu bestimmen, auf welchem Port der integrierte calibre-server lauschen soll. Zum Beispiel bewirkt `http://localhost:8080`, dass calibre-server auf Port 8080 lauscht. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
 | `CALIBRE_USERNAME` | Benutzername für Ihren Calibre-Server. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
 | `CALIBRE_PASSWORD` | Passwort für Ihren Calibre-Server. Siehe [Fehlerbehebung](#1-warum-sind-keine-bücher-in-meiner-calibre-liste), wenn Sie Verbindungsprobleme haben. | `""` |
 | `CALIBRE_DEFAULT_LIBRARY_ID` | Die Standard-Calibre-Bibliotheks-ID. Details finden Sie unter [Wie finde ich meine `library_id`](#4-wie-finde-ich-meine-library_id). | `Calibre_Library` |
