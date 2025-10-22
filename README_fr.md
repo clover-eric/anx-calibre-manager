@@ -114,7 +114,7 @@ Parfait si vous ne voulez pas gérer un serveur Calibre séparé !
       -p 8080:8080 \
       -v $(pwd)/config:/config \
       -v $(pwd)/webdav:/webdav \
-      -v $(pwd)/library:/library \
+      -v $(pwd)/library:"/Calibre Library" \
       -e CALIBRE_URL=http://localhost:8080 \
       -e CALIBRE_USERNAME=admin \
       -e CALIBRE_PASSWORD=password \
@@ -123,7 +123,7 @@ Parfait si vous ne voulez pas gérer un serveur Calibre séparé !
     ```
 
 3.  Accédez à l'application à l'adresse `http://localhost:5000`. Le serveur Calibre intégré sera disponible à `http://localhost:8080`.
-    - **Note** : Le répertoire `/library` est votre dossier de bibliothèque Calibre. Il contiendra `metadata.db` (la base de données Calibre), les fichiers de livres et les images de couverture. C'est là que le serveur Calibre intégré stocke et gère tous vos livres électroniques.
+    - **Note** : Le répertoire `/Calibre Library` est votre dossier de bibliothèque Calibre. Il contiendra `metadata.db` (la base de données Calibre), les fichiers de livres et les images de couverture. C'est là que le serveur Calibre intégré stocke et gère tous vos livres électroniques.
     - **Note** : Changez le nom d'utilisateur (`admin`) et le mot de passe (`password`) par défaut pour des raisons de sécurité.
 
 #### Version Standard
@@ -300,7 +300,7 @@ docker run -d \
   -p 8080:8080 \
   -v $(pwd)/config:/config \
   -v $(pwd)/webdav:/webdav \
-  -v $(pwd)/library:/library \
+  -v $(pwd)/library:"/Calibre Library" \
   -e CALIBRE_URL=http://localhost:8080 \
   -e CALIBRE_USERNAME=admin \
   -e CALIBRE_PASSWORD=password \
@@ -329,7 +329,7 @@ services:
     volumes:
       - ./config:/config
       - ./webdav:/webdav
-      - ./library:/library
+      - ./library:"/Calibre Library"
     environment:
       - CALIBRE_URL=http://localhost:8080
       - CALIBRE_USERNAME=admin

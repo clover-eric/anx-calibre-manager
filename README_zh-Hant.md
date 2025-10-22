@@ -114,7 +114,7 @@
       -p 8080:8080 \
       -v $(pwd)/config:/config \
       -v $(pwd)/webdav:/webdav \
-      -v $(pwd)/library:/library \
+      -v $(pwd)/library:"/Calibre Library" \
       -e CALIBRE_URL=http://localhost:8080 \
       -e CALIBRE_USERNAME=admin \
       -e CALIBRE_PASSWORD=password \
@@ -123,7 +123,7 @@
     ```
 
 3.  在瀏覽器中存取 `http://localhost:5000`。內建的 Calibre 伺服器將在 `http://localhost:8080` 可用。
-    - **注意**：`/library` 目錄是您的 Calibre 書庫資料夾。它將包含 `metadata.db`（Calibre 資料庫）、書籍檔案和封面圖片。這是內建 Calibre 伺服器儲存和管理所有電子書的地方。
+    - **注意**：`/Calibre Library` 目錄是您的 Calibre 書庫資料夾。它將包含 `metadata.db`（Calibre 資料庫）、書籍檔案和封面圖片。這是內建 Calibre 伺服器儲存和管理所有電子書的地方。
     - **注意**：為了安全起見，請修改預設的使用者名稱（`admin`）和密碼（`password`）。
 
 #### 標準版本
@@ -300,7 +300,7 @@ docker run -d \
   -p 8080:8080 \
   -v $(pwd)/config:/config \
   -v $(pwd)/webdav:/webdav \
-  -v $(pwd)/library:/library \
+  -v $(pwd)/library:"/Calibre Library" \
   -e CALIBRE_URL=http://localhost:8080 \
   -e CALIBRE_USERNAME=admin \
   -e CALIBRE_PASSWORD=password \
@@ -329,7 +329,7 @@ services:
     volumes:
       - ./config:/config
       - ./webdav:/webdav
-      - ./library:/library
+      - ./library:"/Calibre Library"
     environment:
       - CALIBRE_URL=http://localhost:8080
       - CALIBRE_USERNAME=admin
