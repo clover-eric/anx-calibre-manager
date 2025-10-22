@@ -86,13 +86,10 @@ Cette application est conçue pour être déployée avec Docker.
 
 ### Prérequis
 
-#### Option 1 : Version AIO (Tout-en-Un) (Recommandé pour les Débutants)
 - [Docker](https://www.docker.com/get-started) installé sur votre serveur.
-- **Aucun serveur Calibre séparé nécessaire !** L'image AIO inclut un `calibre-server` intégré, parfait pour les utilisateurs qui souhaitent un déploiement simple dans un seul conteneur.
-
-#### Option 2 : Version Standard (Pour les Utilisateurs Avancés)
-- [Docker](https://www.docker.com/get-started) installé sur votre serveur.
-- Un serveur Calibre existant (requis pour la plupart des fonctionnalités). Nous recommandons d'utiliser l'image Docker [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre). Pour une alternative légère, envisagez [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (note : son port par défaut est `8085`).
+- **Serveur Calibre** (choisissez une option) :
+  - **Option 1 : Utiliser l'image AIO (Tout-en-Un)** - Inclut un `calibre-server` intégré. Parfait pour les utilisateurs qui souhaitent un déploiement simple dans un seul conteneur.
+  - **Option 2 : Utiliser un serveur Calibre existant** - Exécutez une image Docker de serveur Calibre séparée. Recommandé : [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) ou léger : [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (port par défaut : `8085`).
 
 ### Démarrage Rapide (Docker Run)
 

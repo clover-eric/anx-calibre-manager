@@ -86,13 +86,10 @@
 
 ### 先決條件
 
-#### 方案一：AIO (一體化) 版本 (推薦新手使用)
 - 您的伺服器上已安裝 [Docker](https://www.docker.com/get-started)。
-- **無需單獨的 Calibre 伺服器！** AIO 映像內建了 `calibre-server`，非常適合想要簡單、單容器部署的使用者。
-
-#### 方案二：標準版本 (適合進階使用者)
-- 您的伺服器上已安裝 [Docker](https://www.docker.com/get-started)。
-- 一個正在運行的 Calibre 伺服器 (大部分功能需要)。我們推薦使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) 映像。如果需要一個輕量級的替代方案，可以考慮 [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre)（注意：其預設埠是 `8085`）。
+- **Calibre 伺服器**（二選一）：
+  - **方案一：使用 AIO（一體化）映像** - 內建 `calibre-server`。適合想要簡單、單容器部署的新手使用者。
+  - **方案二：使用現有的 Calibre 伺服器** - 運行單獨的 Calibre 伺服器 Docker 映像。推薦使用 [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) 或輕量級的 [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre)（預設埠：`8085`）。
 
 ### 快速開始 (使用 Docker Run)
 

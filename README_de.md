@@ -86,13 +86,10 @@ Diese Anwendung ist für die Bereitstellung mit Docker konzipiert.
 
 ### Voraussetzungen
 
-#### Option 1: AIO (All-In-One) Version (Empfohlen für Einsteiger)
 - [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
-- **Kein separater Calibre-Server erforderlich!** Das AIO-Image enthält einen integrierten `calibre-server`, ideal für Benutzer, die eine einfache Bereitstellung in einem Container wünschen.
-
-#### Option 2: Standard-Version (Für fortgeschrittene Benutzer)
-- [Docker](https://www.docker.com/get-started) auf Ihrem Server installiert.
-- Ein vorhandener Calibre-Server (für die meisten Funktionen erforderlich). Wir empfehlen die Verwendung des [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) Docker-Images. Für eine leichtgewichtige Alternative ziehen Sie [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) in Betracht (Hinweis: Der Standardport ist `8085`).
+- **Calibre-Server** (wählen Sie eine Option):
+  - **Option 1: AIO (All-In-One) Image verwenden** - Enthält einen integrierten `calibre-server`. Ideal für Benutzer, die eine einfache Bereitstellung in einem Container wünschen.
+  - **Option 2: Vorhandenen Calibre-Server verwenden** - Verwenden Sie ein separates Calibre-Server Docker-Image. Empfohlen: [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre) oder leichtgewichtig: [lucapisciotta/calibre](https://hub.docker.com/r/lucapisciotta/calibre) (Standardport: `8085`).
 
 ### Schnellstart (Docker Run)
 
