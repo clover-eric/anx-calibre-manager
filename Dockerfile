@@ -101,12 +101,12 @@ ENV DEFAULT_TTS_PARAGRAPH_PAUSE=900
 
 
 # Create app user and standard directories as root
-# For AIO mode, also create /library directory for calibre-server
+# For AIO mode, also create /Calibre Library directory for calibre-server
 RUN useradd --uid 1001 --create-home appuser && \
     mkdir -p /config /webdav /audiobooks /tmp && \
     if [ "$BUILD_TYPE" = "aio" ]; then \
-        mkdir -p /library && \
-        chown -R appuser:appuser /library; \
+        mkdir -p "/Calibre Library" && \
+        chown -R appuser:appuser "/Calibre Library"; \
     fi && \
     chown -R appuser:appuser /config /webdav /audiobooks /tmp
 
@@ -148,7 +148,7 @@ ENV PATH="/home/appuser/build_venv/bin:/home/appuser/venv/bin:$PATH"
 EXPOSE $PORT
 
 # Define volumes for persistent data
-# For AIO mode, also add /library volume
+# For AIO mode, also add /Calibre Library volume
 VOLUME ["/config", "/webdav", "/audiobooks"]
 
 # Set the entrypoint to use tini for proper signal handling

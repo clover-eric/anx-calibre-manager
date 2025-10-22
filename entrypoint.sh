@@ -43,9 +43,31 @@ if command -v calibre-server >/dev/null 2>&1; then
     CALIBRE_USERNAME=${CALIBRE_USERNAME:-admin}
     CALIBRE_PASSWORD=${CALIBRE_PASSWORD:-password}
     
-    # Ensure /library directory ownership
-    if [ -d /library ]; then
-        chown -R appuser:appuser /library
+    # Ensure /Calibre Library directory ownership
+    if [ -d "/Calibre Library" ]; then
+        chown -R appuser:appuser "/Calibre Library"
+    fi
+    
+    # Initialize empty Calibre library if metadata.db doesn't exist
+    if [ ! -f "/Calibre Library/metadata.db" ]; then
+        echo "No existing Calibre library found. Initializing empty library..."
+        CALIBRE_DEFAULT_LIBRARY_ID=${CALIBRE_DEFAULT_LIBRARY_ID:-Calibre_Library}
+        
+        # Create library directory if it doesn't exist
+        mkdir -p "/Calibre Library"
+        
+        # Initialize empty library using calibredb
+        # The --with-library option specifies the library path
+        gosu appuser calibredb restore_database --really-do-it --with-library "/Calibre Library" || {
+            echo "Failed to initialize library with restore_database, trying alternative method..."
+            # Alternative: Create a minimal metadata.db by listing (which auto-creates if missing)
+            gosu appuser calibredb list --with-library "/Calibre Library" >/dev/null 2>&1 || true
+        }
+        
+        echo "Empty Calibre library initialized at /Calibre Library with ID: $CALIBRE_DEFAULT_LIBRARY_ID"
+        chown -R appuser:appuser "/Calibre Library"
+    else
+        echo "Existing Calibre library found at /Calibre Library"
     fi
     
     # Create user database if it doesn't exist
@@ -65,7 +87,7 @@ if command -v calibre-server >/dev/null 2>&1; then
         --enable-local-write \
         --log=/config/logs/calibre-server.log \
         --access-log=/config/logs/calibre-server-access.log \
-        /library &
+        "/Calibre Library" &
     
     echo "calibre-server started with PID $!"
 fi
