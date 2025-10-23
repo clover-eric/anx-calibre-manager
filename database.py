@@ -163,6 +163,10 @@ def update_schema_if_needed(db):
             print("Migrating database: adding 'playback_rate' column to audiobook_progress table.")
             cursor.execute("ALTER TABLE audiobook_progress ADD COLUMN playback_rate REAL DEFAULT 1.0")
             db.commit()
+        if 'chapter_index' not in progress_columns:
+            print("Migrating database: adding 'chapter_index' column to audiobook_progress table.")
+            cursor.execute("ALTER TABLE audiobook_progress ADD COLUMN chapter_index INTEGER")
+            db.commit()
     
         # 检查 LLM 聊天表是否存在
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='llm_chat_sessions'")
@@ -202,6 +206,7 @@ def create_audiobook_progress_table(cursor):
             progress_ms INTEGER DEFAULT 0,
             duration_ms INTEGER DEFAULT 0,
             playback_rate REAL DEFAULT 1.0,
+            chapter_index INTEGER,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, task_id),
             FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,

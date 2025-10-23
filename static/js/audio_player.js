@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchProgress = async (taskId) => {
        try {
            const response = await fetch(`/api/audioplayer/progress/${taskId}`);
-           if (!response.ok) return { currentTime: 0, totalDuration: 0 };
+           if (!response.ok) return { currentTime: 0, totalDuration: 0, playbackRate: 1.0, chapterIndex: 0 };
            return await response.json();
        } catch (error) {
-           return { currentTime: 0, totalDuration: 0 };
+           return { currentTime: 0, totalDuration: 0, playbackRate: 1.0, chapterIndex: 0 };
        }
    };
 
@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const track = currentAudiobooks[currentTrackIndex];
         const currentTime = dom.audioElement.currentTime;
         const playbackRate = dom.audioElement.playbackRate;
+        const chapterIndex = getCurrentChapterIndex();
+
         fetch(`/api/audioplayer/progress/${track.task_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -105,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentTime: currentTime,
                 totalDuration: dom.audioElement.duration,
                 playbackRate: playbackRate,
+                chapterIndex: chapterIndex,
                 isUserAction: isUserAction
             }),
         });
@@ -467,13 +470,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressData = await fetchProgress(track.task_id);
         const savedTime = progressData.currentTime || 0;
         const savedRate = progressData.playbackRate || 1.0;
+        const chapterIndex = progressData.chapterIndex || 0;
 
-        applyPlaybackRate(savedRate); // Apply saved rate before playing
+        applyPlaybackRate(savedRate);
 
         dom.audioElement.addEventListener('loadedmetadata', () => {
             const duration = dom.audioElement.duration;
-            if (isFinite(savedTime) && savedTime > 0 && savedTime < duration) {
-                dom.audioElement.currentTime = savedTime;
+            let startTime = savedTime;
+
+            // This logic is now primarily handled by the backend.
+            // The frontend just needs to decide if it should jump to a chapter start or a specific time.
+            if (savedTime === 0 && chapterIndex > 0 && track.chapters && chapterIndex < track.chapters.length) {
+                // Backend decided reader progress was further, so we jump to the start of that chapter.
+                startTime = track.chapters[chapterIndex].start;
+            }
+            // Otherwise, `savedTime` is the correct, more precise timestamp to use, even if chapters are the same.
+            
+            if (isFinite(startTime) && startTime > 0 && startTime < duration) {
+                dom.audioElement.currentTime = startTime;
             }
             dom.audioElement.play();
         }, { once: true });

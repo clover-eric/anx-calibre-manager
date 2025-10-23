@@ -59,6 +59,7 @@ class ActivityType:
     DELETE_AUDIOBOOK = 'delete_audiobook'
     PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS = 'play_audiobook_update_playing_progress'
     PLAY_AUDIOBOOK_UPDATE_READING_TIME = 'play_audiobook_update_reading_time'
+    PLAY_AUDIOBOOK_UPDATE_READING_PROGRESS = "play_audiobook_update_reading_progress"
     
     # 在线阅读
     ONLINE_READING_UPDATE_READING_PROGRESS = 'update_reading_progress'
