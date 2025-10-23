@@ -33,6 +33,7 @@ function getActivityTypeName(activityType) {
         'delete_audiobook': _('Delete Audiobook'),
         'play_audiobook_update_playing_progress': _('Update Audiobook Progress'),
         'play_audiobook_update_reading_time': _('Update Audiobook Reading Time'),
+        'play_audiobook_update_reading_progress': _('Update Audiobook Reading Progress'),
         'update_reading_progress': _('Update Reading Progress'),
         'update_reading_time': _('Update Reading Time'),
         'llm_chat_start': _('Start LLM Chat'),
