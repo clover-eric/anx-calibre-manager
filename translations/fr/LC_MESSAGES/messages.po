@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 09:16+0800\n"
+"POT-Creation-Date: 2025-10-23 19:26+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -147,6 +147,10 @@ msgstr "La page de statistiques de cet utilisateur est privée."
 msgid "Anx library not found for this user."
 msgstr "Bibliothèque Anx introuvable pour cet utilisateur."
 
+#: blueprints/api/audio_player.py:173
+msgid "Progress updated"
+msgstr "Progression mise à jour"
+
 #: blueprints/api/audiobook.py:79 blueprints/api/audiobook.py:201
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' ou 'library' est manquant dans la requête"
@@ -170,7 +174,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "Une erreur inconnue est survenue lors du démarrage de la tâche : %(error)s"
 
 #: blueprints/api/audiobook.py:190 blueprints/api/audiobook.py:219
-#: blueprints/api/audiobook.py:277
+#: blueprints/api/audiobook.py:272
 msgid "Task not found"
 msgstr "Tâche non trouvée"
 
@@ -195,19 +199,19 @@ msgstr "Impossible d'envoyer le fichier : %(error)s"
 msgid "Authentication required"
 msgstr "Authentification requise"
 
-#: blueprints/api/audiobook.py:286
+#: blueprints/api/audiobook.py:290
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "Permission refusée pour supprimer ce livre audio Anx"
 
-#: blueprints/api/audiobook.py:291 utils/decorators.py:28
+#: blueprints/api/audiobook.py:295 utils/decorators.py:28
 msgid "Maintainer or administrator permission required."
 msgstr "Permission de mainteneur ou d'administrateur requise."
 
-#: blueprints/api/audiobook.py:309
+#: blueprints/api/audiobook.py:313
 msgid "Audiobook deleted successfully"
 msgstr "Livre audio supprimé avec succès."
 
-#: blueprints/api/audiobook.py:313
+#: blueprints/api/audiobook.py:317
 msgid "An error occurred during deletion"
 msgstr "Une erreur s'est produite lors de la suppression."
 
@@ -292,7 +296,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "Impossible d'obtenir ou de traiter le fichier EPUB du livre."
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:689 static/js/settings/common.js:41
+#: blueprints/api/books.py:689 static/js/settings/common.js:82
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
@@ -541,35 +545,35 @@ msgstr "ID du code : %(code_id)s"
 msgid "Operation failed: %(error)s"
 msgstr "L'opération a échoué : %(error)s"
 
-#: blueprints/api/invite.py:83 static/js/settings/common.js:44
+#: blueprints/api/invite.py:83 static/js/settings/common.js:85
 msgid "Operation failed"
 msgstr "L'opération a échoué"
 
-#: blueprints/api/llm.py:142
+#: blueprints/api/llm.py:154
 msgid "Book ID and type are required."
 msgstr "L'ID et le type du livre sont requis."
 
-#: blueprints/api/llm.py:151
+#: blueprints/api/llm.py:163
 msgid "No history found for this book."
 msgstr "Aucun historique trouvé pour ce livre."
 
-#: blueprints/api/llm.py:167
+#: blueprints/api/llm.py:179
 msgid "MCP module is not available, cannot process book content."
 msgstr ""
 "Le module MCP n'est pas disponible, impossible de traiter le contenu du "
 "livre."
 
-#: blueprints/api/llm.py:177 blueprints/api/service_configs.py:32
+#: blueprints/api/llm.py:189 blueprints/api/service_configs.py:32
 #: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "Champs obligatoires manquants."
 
-#: blueprints/api/llm.py:211 blueprints/api/llm.py:282
+#: blueprints/api/llm.py:232 blueprints/api/llm.py:308
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "L'heure actuelle est %(current_time)s."
 
-#: blueprints/api/llm.py:212 blueprints/api/llm.py:283
+#: blueprints/api/llm.py:233 blueprints/api/llm.py:309
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
@@ -578,7 +582,7 @@ msgstr ""
 "Vous êtes un assistant serviable. L'utilisateur pose une question sur le "
 "livre '%(book_title)s'."
 
-#: blueprints/api/llm.py:213 blueprints/api/llm.py:284
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:310
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
@@ -586,7 +590,7 @@ msgstr ""
 "Vous pouvez utiliser la syntaxe mermaid pour les diagrammes en "
 "l'entourant de ```mermaid ... ```."
 
-#: blueprints/api/llm.py:216
+#: blueprints/api/llm.py:237
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -610,24 +614,24 @@ msgstr ""
 "N'utilisez pas de définitions `style` ou `linkStyle` ; le thème est géré "
 "automatiquement."
 
-#: blueprints/api/llm.py:226 blueprints/api/llm.py:296
+#: blueprints/api/llm.py:247 blueprints/api/llm.py:322
 msgid "Invalid book type."
 msgstr "Type de livre invalide."
 
-#: blueprints/api/llm.py:227 blueprints/api/llm.py:297
+#: blueprints/api/llm.py:248 blueprints/api/llm.py:323
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "Échec de la récupération du contenu du livre : %(error)s"
 
-#: blueprints/api/llm.py:228 blueprints/api/llm.py:298
+#: blueprints/api/llm.py:249 blueprints/api/llm.py:324
 msgid "Could not extract text from the book."
 msgstr "Impossible d'extraire le texte du livre."
 
-#: blueprints/api/llm.py:229 blueprints/api/llm.py:299
+#: blueprints/api/llm.py:250 blueprints/api/llm.py:325
 msgid "LLM settings are not configured in user settings."
 msgstr "Les paramètres LLM ne sont pas configurés dans les paramètres utilisateur."
 
-#: blueprints/api/llm.py:230 blueprints/api/llm.py:300
+#: blueprints/api/llm.py:251 blueprints/api/llm.py:326
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -642,45 +646,45 @@ msgstr ""
 "%(book_content)s\n"
 "---FIN DU CONTENU DU LIVRE---"
 
-#: blueprints/api/llm.py:231 blueprints/api/llm.py:301
+#: blueprints/api/llm.py:252 blueprints/api/llm.py:327
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr ""
 "Veuillez fournir un résumé complet et une critique approfondie de ce "
 "livre."
 
-#: blueprints/api/llm.py:232 blueprints/api/llm.py:302
+#: blueprints/api/llm.py:253 blueprints/api/llm.py:328
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "Échec de la communication avec le fournisseur LLM : %(error)s"
 
-#: blueprints/api/llm.py:233 blueprints/api/llm.py:303
+#: blueprints/api/llm.py:254 blueprints/api/llm.py:329
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "Extraction du contenu complet du livre..."
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
+#: blueprints/api/llm.py:255 blueprints/api/llm.py:330
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "Réflexion..."
 
-#: blueprints/api/llm.py:247
+#: blueprints/api/llm.py:268
 msgid "Message ID is required."
 msgstr "L'ID du message est requis."
 
-#: blueprints/api/llm.py:258
+#: blueprints/api/llm.py:279
 msgid "Message not found."
 msgstr "Message non trouvé."
 
-#: blueprints/api/llm.py:260
+#: blueprints/api/llm.py:281
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: blueprints/api/llm.py:269
+#: blueprints/api/llm.py:295
 msgid "Regenerate response"
 msgstr "Régénérer la réponse"
 
-#: blueprints/api/llm.py:286
+#: blueprints/api/llm.py:312
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -703,48 +707,48 @@ msgstr ""
 "`-->`, `---`, `==>`.\\n5. N'utilisez pas de définitions `style` ou "
 "`linkStyle` ; le thème est géré automatiquement."
 
-#: blueprints/api/llm.py:325
+#: blueprints/api/llm.py:351
 msgid "Base URL and API Key are required."
 msgstr "L'URL de base et la clé API sont requises."
 
-#: blueprints/api/llm.py:341
+#: blueprints/api/llm.py:367
 msgid "Unexpected response format from model provider."
 msgstr "Format de réponse inattendu du fournisseur de modèle."
 
-#: blueprints/api/llm.py:346
+#: blueprints/api/llm.py:372
 msgid "Authentication error. Please check your API Key."
 msgstr "Erreur d'authentification. Veuillez vérifier votre clé API."
 
-#: blueprints/api/llm.py:348
+#: blueprints/api/llm.py:374
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr ""
 "Point de terminaison d'API non valide. Veuillez vérifier votre URL de "
 "base."
 
-#: blueprints/api/llm.py:350
+#: blueprints/api/llm.py:376
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "Impossible de se connecter au fournisseur de modèle : %(error)s"
 
-#: blueprints/api/llm.py:352
+#: blueprints/api/llm.py:378
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "Une erreur inattendue est survenue : %(error)s"
 
-#: blueprints/api/llm.py:364
+#: blueprints/api/llm.py:390
 msgid "Session not found or permission denied."
 msgstr "Session non trouvée ou permission refusée."
 
-#: blueprints/api/llm.py:371
+#: blueprints/api/llm.py:397
 #, python-format
 msgid "Session ID: %(session_id)s"
 msgstr "ID de session : %(session_id)s"
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:398
 msgid "Chat session deleted successfully."
 msgstr "Session de discussion supprimée avec succès."
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:421
 #, python-format
 msgid "Message ID: %(message_id)s"
 msgstr "ID du message : %(message_id)s"
@@ -858,8 +862,8 @@ msgid "Failed to load activities"
 msgstr "Échec du chargement des activités"
 
 #: blueprints/api/user_activities.py:243
-#: static/js/settings/user_activities.js:361
-#: static/js/settings/user_activities.js:365
+#: static/js/settings/user_activities.js:408
+#: static/js/settings/user_activities.js:412
 msgid "Failed to load activity details"
 msgstr "Échec du chargement des détails de l'activité"
 
@@ -868,7 +872,7 @@ msgid "Failed to load event statistics"
 msgstr "Échec du chargement des statistiques d'événements"
 
 #: blueprints/api/user_activities.py:302
-#: static/js/settings/user_activities.js:654
+#: static/js/settings/user_activities.js:701
 msgid "Locked by administrator"
 msgstr "Verrouillé par l'administrateur"
 
@@ -887,13 +891,13 @@ msgid "Account locked %(time)s. Reason: %(reason)s"
 msgstr "Compte verrouillé %(time)s. Raison : %(reason)s"
 
 #: blueprints/api/user_activities.py:337
-#: static/js/settings/user_activities.js:659
+#: static/js/settings/user_activities.js:706
 msgid "User account locked successfully"
 msgstr "Compte utilisateur verrouillé avec succès"
 
 #: blueprints/api/user_activities.py:343
-#: static/js/settings/user_activities.js:664
-#: static/js/settings/user_activities.js:668
+#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:715
 msgid "Failed to lock user account"
 msgstr "Échec du verrouillage du compte utilisateur"
 
@@ -902,13 +906,13 @@ msgid "Account unlocked by administrator"
 msgstr "Compte déverrouillé par l'administrateur"
 
 #: blueprints/api/user_activities.py:374
-#: static/js/settings/user_activities.js:691
+#: static/js/settings/user_activities.js:738
 msgid "User account unlocked successfully"
 msgstr "Compte utilisateur déverrouillé avec succès"
 
 #: blueprints/api/user_activities.py:378
-#: static/js/settings/user_activities.js:695
-#: static/js/settings/user_activities.js:699
+#: static/js/settings/user_activities.js:742
+#: static/js/settings/user_activities.js:746
 msgid "Failed to unlock user account"
 msgstr "Échec du déverrouillage du compte utilisateur"
 
@@ -917,13 +921,13 @@ msgid "Failed login attempts reset by administrator"
 msgstr "Tentatives de connexion échouées réinitialisées par l'administrateur"
 
 #: blueprints/api/user_activities.py:408
-#: static/js/settings/user_activities.js:722
+#: static/js/settings/user_activities.js:769
 msgid "Failed login attempts reset successfully"
 msgstr "Tentatives de connexion échouées réinitialisées avec succès"
 
 #: blueprints/api/user_activities.py:412
-#: static/js/settings/user_activities.js:726
-#: static/js/settings/user_activities.js:730
+#: static/js/settings/user_activities.js:773
+#: static/js/settings/user_activities.js:777
 msgid "Failed to reset login attempts"
 msgstr "Échec de la réinitialisation des tentatives de connexion"
 
@@ -1237,6 +1241,7 @@ msgid "Generating..."
 msgstr "Génération en cours..."
 
 #: static/js/page/translations.js:40 static/js/settings/user_activities.js:32
+#: templates/settings/settings_user_activities.html:147
 msgid "Download Audiobook"
 msgstr "Télécharger le livre audio"
 
@@ -1476,6 +1481,7 @@ msgid "Failed to fetch audiobook list."
 msgstr "Échec de la récupération de la liste des livres audio."
 
 #: static/js/page/translations.js:108 static/js/settings/user_activities.js:33
+#: templates/settings/settings_user_activities.html:148
 msgid "Delete Audiobook"
 msgstr "Supprimer le livre audio"
 
@@ -1617,7 +1623,7 @@ msgstr "Succès"
 msgid "Total"
 msgstr "Total"
 
-#: static/js/page/translations.js:145 static/js/settings/common.js:35
+#: static/js/page/translations.js:145 static/js/settings/common.js:76
 msgid "Active"
 msgstr "Actif"
 
@@ -1658,7 +1664,7 @@ msgid "IP"
 msgstr "IP"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:191
+#: templates/settings/settings_user_activities.html:204
 msgid "Reason"
 msgstr "Raison"
 
@@ -1728,7 +1734,7 @@ msgstr "Échec de la suppression de toutes les activités"
 msgid "An error occurred while deleting all activities."
 msgstr "Une erreur s'est produite lors de la suppression de toutes les activités."
 
-#: static/js/settings/common.js:13
+#: static/js/settings/common.js:54
 #, python-brace-format
 msgid ""
 "Please make sure to add the sender email address ({email}) to your Amazon"
@@ -1737,65 +1743,65 @@ msgstr ""
 "Veuillez vous assurer d'ajouter l'adresse e-mail de l'expéditeur "
 "({email}) à votre liste d'e-mails de confiance Amazon Kindle."
 
-#: static/js/settings/common.js:14
+#: static/js/settings/common.js:55
 msgid "WebDAV address copied to clipboard"
 msgstr "Adresse WebDAV copiée dans le presse-papiers"
 
-#: static/js/settings/common.js:15
+#: static/js/settings/common.js:56
 msgid "Copy failed"
 msgstr "La copie a échoué"
 
-#: static/js/settings/common.js:16
+#: static/js/settings/common.js:57
 msgid "2FA has been enabled."
 msgstr "L'authentification à deux facteurs a été activée."
 
-#: static/js/settings/common.js:17
+#: static/js/settings/common.js:58
 msgid "Disable"
 msgstr "Désactiver"
 
-#: static/js/settings/common.js:18
+#: static/js/settings/common.js:59
 msgid "2FA is not enabled."
 msgstr "L'authentification à deux facteurs n'est pas activée."
 
-#: static/js/settings/common.js:19
+#: static/js/settings/common.js:60
 msgid "Enable"
 msgstr "Activer"
 
-#: static/js/settings/common.js:20
+#: static/js/settings/common.js:61
 msgid "Failed to start 2FA setup."
 msgstr "Échec du démarrage de la configuration 2FA."
 
-#: static/js/settings/common.js:21
+#: static/js/settings/common.js:62
 msgid "Are you sure you want to disable 2FA?"
 msgstr "Êtes-vous sûr de vouloir désactiver l'A2F ?"
 
-#: static/js/settings/common.js:22
+#: static/js/settings/common.js:63
 msgid "No available tokens."
 msgstr "Aucun jeton disponible."
 
-#: static/js/settings/common.js:23
+#: static/js/settings/common.js:64
 msgid "Created at"
 msgstr "Créé à"
 
-#: static/js/settings/common.js:24 templates/index.html:204
+#: static/js/settings/common.js:65 templates/index.html:204
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
 msgstr "Supprimer"
 
-#: static/js/settings/common.js:25
+#: static/js/settings/common.js:66
 msgid "New token has been generated."
 msgstr "Un nouveau jeton a été généré."
 
-#: static/js/settings/common.js:26
+#: static/js/settings/common.js:67
 msgid "Failed to generate token."
 msgstr "Échec de la génération du jeton."
 
-#: static/js/settings/common.js:27
+#: static/js/settings/common.js:68
 msgid "Are you sure you want to delete this token?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce jeton ?"
 
-#: static/js/settings/common.js:28
+#: static/js/settings/common.js:69
 msgid ""
 "Are you sure you want to delete ALL generated audiobook files? This "
 "action cannot be undone."
@@ -1803,163 +1809,163 @@ msgstr ""
 "Êtes-vous sûr de vouloir supprimer TOUS les fichiers de livres audio "
 "générés ? Cette action est irréversible."
 
-#: static/js/settings/common.js:29
+#: static/js/settings/common.js:70
 msgid "Cleanup failed"
 msgstr "Le nettoyage a échoué"
 
-#: static/js/settings/common.js:30
+#: static/js/settings/common.js:71
 msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
-#: static/js/settings/common.js:31
+#: static/js/settings/common.js:72
 msgid "Please enter a test recipient email address."
 msgstr "Veuillez saisir une adresse e-mail de destinataire de test."
 
-#: static/js/settings/common.js:32 templates/index.html:124
+#: static/js/settings/common.js:73 templates/index.html:124
 #: templates/index.html:203
 msgid "Edit"
 msgstr "Modifier"
 
-#: static/js/settings/common.js:33
+#: static/js/settings/common.js:74
 #: templates/settings/settings_user_management.html:5
 msgid "Add"
 msgstr "Ajouter"
 
-#: static/js/settings/common.js:34
+#: static/js/settings/common.js:75
 msgid "Are you sure you want to delete this user?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
 
-#: static/js/settings/common.js:36
+#: static/js/settings/common.js:77
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: static/js/settings/common.js:37
+#: static/js/settings/common.js:78
 msgid "Never expires"
 msgstr "N'expire jamais"
 
-#: static/js/settings/common.js:38
+#: static/js/settings/common.js:79
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: static/js/settings/common.js:39
+#: static/js/settings/common.js:80
 #, python-brace-format
 msgid "Invite code generated successfully: {code}"
 msgstr "Code d'invitation généré avec succès : {code}"
 
-#: static/js/settings/common.js:40
+#: static/js/settings/common.js:81
 #, python-brace-format
 msgid "Failed to generate: {error}"
 msgstr "Échec de la génération : {error}"
 
-#: static/js/settings/common.js:42
+#: static/js/settings/common.js:83
 msgid "An error occurred while generating the invite code."
 msgstr "Une erreur s'est produite lors de la génération du code d'invitation."
 
-#: static/js/settings/common.js:43
+#: static/js/settings/common.js:84
 #, python-brace-format
 msgid "Operation failed: {error}"
 msgstr "L'opération a échoué : {error}"
 
-#: static/js/settings/common.js:45
+#: static/js/settings/common.js:86
 msgid "Are you sure you want to delete this invite code?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce code d'invitation ?"
 
-#: static/js/settings/common.js:46
+#: static/js/settings/common.js:87
 #, python-brace-format
 msgid "Delete failed: {error}"
 msgstr "Échec de la suppression : {error}"
 
-#: static/js/settings/common.js:47
+#: static/js/settings/common.js:88
 msgid "Delete failed"
 msgstr "Échec de la suppression"
 
-#: static/js/settings/common.js:49
+#: static/js/settings/common.js:90
 msgid "Current Settings"
 msgstr "Paramètres actuels"
 
-#: static/js/settings/common.js:50
+#: static/js/settings/common.js:91
 msgid "Please enter a name for this TTS profile:"
 msgstr "Veuillez saisir un nom pour ce profil TTS :"
 
-#: static/js/settings/common.js:51
+#: static/js/settings/common.js:92
 msgid "TTS profile saved successfully!"
 msgstr "Profil TTS enregistré avec succès !"
 
-#: static/js/settings/common.js:52
+#: static/js/settings/common.js:93
 msgid "Failed to save TTS profile"
 msgstr "Échec de l'enregistrement du profil TTS"
 
-#: static/js/settings/common.js:53 static/js/settings/service_profiles.js:306
+#: static/js/settings/common.js:94 static/js/settings/service_profiles.js:306
 msgid "An error occurred while saving the profile"
 msgstr "Une erreur s'est produite lors de l'enregistrement du profil"
 
-#: static/js/settings/common.js:54 static/js/settings/service_profiles.js:319
+#: static/js/settings/common.js:95 static/js/settings/service_profiles.js:319
 msgid "Please select a profile to update"
 msgstr "Veuillez sélectionner un profil à mettre à jour"
 
-#: static/js/settings/common.js:55 static/js/settings/service_profiles.js:326
+#: static/js/settings/common.js:96 static/js/settings/service_profiles.js:326
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "Mettre à jour le profil \"{name}\" ?"
 
-#: static/js/settings/common.js:56
+#: static/js/settings/common.js:97
 msgid "TTS profile updated successfully!"
 msgstr "Profil TTS mis à jour avec succès !"
 
-#: static/js/settings/common.js:57
+#: static/js/settings/common.js:98
 msgid "Failed to update TTS profile"
 msgstr "Échec de la mise à jour du profil TTS"
 
-#: static/js/settings/common.js:58 static/js/settings/service_profiles.js:348
+#: static/js/settings/common.js:99 static/js/settings/service_profiles.js:348
 msgid "An error occurred while updating the profile"
 msgstr "Une erreur s'est produite lors de la mise à jour du profil"
 
-#: static/js/settings/common.js:59 static/js/settings/service_profiles.js:361
+#: static/js/settings/common.js:100 static/js/settings/service_profiles.js:361
 msgid "Please select a profile to delete"
 msgstr "Veuillez sélectionner un profil à supprimer"
 
-#: static/js/settings/common.js:60 static/js/settings/service_profiles.js:368
+#: static/js/settings/common.js:101 static/js/settings/service_profiles.js:368
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "Supprimer le profil \"{name}\" ? Cette action est irréversible."
 
-#: static/js/settings/common.js:61
+#: static/js/settings/common.js:102
 msgid "TTS profile deleted successfully!"
 msgstr "Profil TTS supprimé avec succès !"
 
-#: static/js/settings/common.js:62
+#: static/js/settings/common.js:103
 msgid "Failed to delete TTS profile"
 msgstr "Échec de la suppression du profil TTS"
 
-#: static/js/settings/common.js:63 static/js/settings/service_profiles.js:384
+#: static/js/settings/common.js:104 static/js/settings/service_profiles.js:384
 msgid "An error occurred while deleting the profile"
 msgstr "Une erreur s'est produite lors de la suppression du profil"
 
-#: static/js/settings/common.js:64 static/js/settings/service_profiles.js:282
+#: static/js/settings/common.js:105 static/js/settings/service_profiles.js:282
 msgid "Please enter a name for this LLM profile:"
 msgstr "Veuillez saisir un nom pour ce profil LLM :"
 
-#: static/js/settings/common.js:65 static/js/settings/service_profiles.js:300
+#: static/js/settings/common.js:106 static/js/settings/service_profiles.js:300
 msgid "LLM profile saved successfully!"
 msgstr "Profil LLM enregistré avec succès !"
 
-#: static/js/settings/common.js:66 static/js/settings/service_profiles.js:303
+#: static/js/settings/common.js:107 static/js/settings/service_profiles.js:303
 msgid "Failed to save LLM profile"
 msgstr "Échec de l'enregistrement du profil LLM"
 
-#: static/js/settings/common.js:67 static/js/settings/service_profiles.js:342
+#: static/js/settings/common.js:108 static/js/settings/service_profiles.js:342
 msgid "LLM profile updated successfully!"
 msgstr "Profil LLM mis à jour avec succès !"
 
-#: static/js/settings/common.js:68 static/js/settings/service_profiles.js:345
+#: static/js/settings/common.js:109 static/js/settings/service_profiles.js:345
 msgid "Failed to update LLM profile"
 msgstr "Échec de la mise à jour du profil LLM"
 
-#: static/js/settings/common.js:69 static/js/settings/service_profiles.js:377
+#: static/js/settings/common.js:110 static/js/settings/service_profiles.js:377
 msgid "LLM profile deleted successfully!"
 msgstr "Profil LLM supprimé avec succès !"
 
-#: static/js/settings/common.js:70 static/js/settings/service_profiles.js:381
+#: static/js/settings/common.js:111 static/js/settings/service_profiles.js:381
 msgid "Failed to delete LLM profile"
 msgstr "Échec de la suppression du profil LLM"
 
@@ -1974,226 +1980,241 @@ msgid "Login Failed"
 msgstr "Échec de connexion"
 
 #: static/js/settings/user_activities.js:21 templates/base.html:90
+#: templates/settings/settings_user_activities.html:136
 msgid "Logout"
 msgstr "Déconnexion"
 
 #: static/js/settings/user_activities.js:22 templates/register.html:3
 #: templates/register.html:58
+#: templates/settings/settings_user_activities.html:137
 msgid "Register"
 msgstr "S'inscrire"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:489
+#: templates/settings/settings_user_activities.html:138
 msgid "Download Book"
 msgstr "Télécharger le livre"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:443
-#: templates/settings/settings_user_activities.html:137
+#: static/js/settings/user_activities.js:490
+#: templates/settings/settings_user_activities.html:139
 msgid "Upload Book"
 msgstr "Téléverser le livre"
 
 #: static/js/settings/user_activities.js:25
+#: templates/settings/settings_user_activities.html:140
 msgid "Delete Book"
 msgstr "Supprimer le livre"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:138
+#: static/js/settings/user_activities.js:491
+#: templates/settings/settings_user_activities.html:141
 msgid "Search Books"
 msgstr "Rechercher des livres"
 
 #: static/js/settings/user_activities.js:27
+#: templates/settings/settings_user_activities.html:142
 msgid "Edit Metadata"
 msgstr "Modifier les métadonnées"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:446
-#: templates/settings/settings_user_activities.html:139
+#: static/js/settings/user_activities.js:493
+#: templates/settings/settings_user_activities.html:143
 msgid "Push to Kindle"
 msgstr "Envoyer vers Kindle"
 
 #: static/js/settings/user_activities.js:29
+#: templates/settings/settings_user_activities.html:144
 msgid "Push to Anx"
 msgstr "Envoyer vers Anx"
 
 #: static/js/settings/user_activities.js:30
+#: templates/settings/settings_user_activities.html:145
 msgid "Push Anx to Calibre"
 msgstr "Envoyer Anx vers Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:447 templates/index.html:128
+#: static/js/settings/user_activities.js:494 templates/index.html:128
 #: templates/index.html:207
-#: templates/settings/settings_user_activities.html:140
+#: templates/settings/settings_user_activities.html:146
 msgid "Generate Audiobook"
 msgstr "Générer un livre audio"
 
 #: static/js/settings/user_activities.js:34
+#: templates/settings/settings_user_activities.html:149
 msgid "Update Audiobook Progress"
 msgstr "Mettre à jour la progression du livre audio"
 
 #: static/js/settings/user_activities.js:35
+#: templates/settings/settings_user_activities.html:150
 msgid "Update Audiobook Reading Time"
 msgstr "Mettre à jour le temps de lecture du livre audio"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:141
+#: templates/settings/settings_user_activities.html:151
+msgid "Update Audiobook Reading Progress"
+msgstr "Mettre à jour la progression du livre audio"
+
+#: static/js/settings/user_activities.js:37
+#: templates/settings/settings_user_activities.html:152
 msgid "Update Reading Progress"
 msgstr "Mettre à jour la progression de lecture"
 
-#: static/js/settings/user_activities.js:37
+#: static/js/settings/user_activities.js:38
+#: templates/settings/settings_user_activities.html:153
 msgid "Update Reading Time"
 msgstr "Mettre à jour le temps de lecture"
 
-#: static/js/settings/user_activities.js:38
+#: static/js/settings/user_activities.js:39
 msgid "Start LLM Chat"
 msgstr "Démarrer une discussion LLM"
 
-#: static/js/settings/user_activities.js:39
+#: static/js/settings/user_activities.js:40
 msgid "LLM Chat Message"
 msgstr "Message de discussion LLM"
 
-#: static/js/settings/user_activities.js:40
+#: static/js/settings/user_activities.js:41
 msgid "Delete LLM Session"
 msgstr "Supprimer la session LLM"
 
-#: static/js/settings/user_activities.js:41
+#: static/js/settings/user_activities.js:42
 msgid "Delete LLM Message"
 msgstr "Supprimer le message LLM"
 
-#: static/js/settings/user_activities.js:42
+#: static/js/settings/user_activities.js:43
 msgid "Generate MCP Token"
 msgstr "Générer un jeton MCP"
 
-#: static/js/settings/user_activities.js:43
+#: static/js/settings/user_activities.js:44
 msgid "Delete MCP Token"
 msgstr "Supprimer le jeton MCP"
 
-#: static/js/settings/user_activities.js:44
+#: static/js/settings/user_activities.js:45
 msgid "MCP API Call"
 msgstr "Appel API MCP"
 
-#: static/js/settings/user_activities.js:45
+#: static/js/settings/user_activities.js:46
 msgid "Update User Settings"
 msgstr "Mettre à jour les paramètres utilisateur"
 
-#: static/js/settings/user_activities.js:46
+#: static/js/settings/user_activities.js:47
 msgid "Update Global Settings"
 msgstr "Mettre à jour les paramètres globaux"
 
-#: static/js/settings/user_activities.js:47
+#: static/js/settings/user_activities.js:48
 msgid "Update Password"
 msgstr "Mettre à jour le mot de passe"
 
-#: static/js/settings/user_activities.js:48
+#: static/js/settings/user_activities.js:49
 msgid "Enable 2FA"
 msgstr "Activer l'A2F"
 
-#: static/js/settings/user_activities.js:49
+#: static/js/settings/user_activities.js:50
 msgid "Disable 2FA"
 msgstr "Désactiver l'A2F"
 
-#: static/js/settings/user_activities.js:50
+#: static/js/settings/user_activities.js:51
 msgid "Create User"
 msgstr "Créer un utilisateur"
 
-#: static/js/settings/user_activities.js:51
+#: static/js/settings/user_activities.js:52
 msgid "Update User"
 msgstr "Mettre à jour l'utilisateur"
 
-#: static/js/settings/user_activities.js:52
+#: static/js/settings/user_activities.js:53
 msgid "Delete User"
 msgstr "Supprimer l'utilisateur"
 
-#: static/js/settings/user_activities.js:53
+#: static/js/settings/user_activities.js:54
 msgid "Lock User"
 msgstr "Verrouiller l'utilisateur"
 
-#: static/js/settings/user_activities.js:54
+#: static/js/settings/user_activities.js:55
 msgid "Unlock User"
 msgstr "Déverrouiller l'utilisateur"
 
-#: static/js/settings/user_activities.js:55
+#: static/js/settings/user_activities.js:56
 msgid "Create Invite Code"
 msgstr "Créer un code d'invitation"
 
-#: static/js/settings/user_activities.js:56
+#: static/js/settings/user_activities.js:57
 msgid "Delete Invite Code"
 msgstr "Supprimer le code d'invitation"
 
-#: static/js/settings/user_activities.js:57
+#: static/js/settings/user_activities.js:58
 msgid "Use Invite Code"
 msgstr "Utiliser le code d'invitation"
 
-#: static/js/settings/user_activities.js:58
+#: static/js/settings/user_activities.js:59
 msgid "Toggle Invite Code"
 msgstr "Basculer le code d'invitation"
 
-#: static/js/settings/user_activities.js:59
+#: static/js/settings/user_activities.js:60
 msgid "Create Service Config"
 msgstr "Créer une configuration de service"
 
-#: static/js/settings/user_activities.js:60
+#: static/js/settings/user_activities.js:61
 msgid "Update Service Config"
 msgstr "Mettre à jour la configuration de service"
 
-#: static/js/settings/user_activities.js:61
+#: static/js/settings/user_activities.js:62
 msgid "Delete Service Config"
 msgstr "Supprimer la configuration de service"
 
-#: static/js/settings/user_activities.js:62
+#: static/js/settings/user_activities.js:63
 msgid "Test SMTP"
 msgstr "Tester SMTP"
 
-#: static/js/settings/user_activities.js:63
+#: static/js/settings/user_activities.js:64
+#: templates/settings/settings_user_activities.html:154
 msgid "KOReader Sync Progress"
 msgstr "Synchronisation de progression KOReader"
 
-#: static/js/settings/user_activities.js:64
+#: static/js/settings/user_activities.js:65
 msgid "KOReader Sync Reading Time"
 msgstr "Synchronisation du temps de lecture KOReader"
 
-#: static/js/settings/user_activities.js:65
+#: static/js/settings/user_activities.js:66
 msgid "KOReader Update Summary"
 msgstr "Mettre à jour le résumé KOReader"
 
-#: static/js/settings/user_activities.js:66
+#: static/js/settings/user_activities.js:67
 msgid "Delete User Activity Log"
 msgstr "Supprimer le journal d'activité de l'utilisateur"
 
-#: static/js/settings/user_activities.js:67
+#: static/js/settings/user_activities.js:68
 msgid "Delete All Activity Logs"
 msgstr "Supprimer tous les journaux d'activité"
 
-#: static/js/settings/user_activities.js:382
-#: static/js/settings/user_activities.js:528
+#: static/js/settings/user_activities.js:429
+#: static/js/settings/user_activities.js:575
 msgid "Activity Details for"
 msgstr "Détails de l'activité pour"
 
-#: static/js/settings/user_activities.js:445 templates/index.html:188
+#: static/js/settings/user_activities.js:492 templates/index.html:188
 msgid "Reading Progress"
 msgstr "Progression de la lecture"
 
-#: static/js/settings/user_activities.js:508
-#: static/js/settings/user_activities.js:512
+#: static/js/settings/user_activities.js:555
+#: static/js/settings/user_activities.js:559
 msgid "Failed to load event type details"
 msgstr "Échec du chargement des détails du type d'événement"
 
-#: static/js/settings/user_activities.js:610
-#: templates/settings/settings_user_activities.html:173
+#: static/js/settings/user_activities.js:657
+#: templates/settings/settings_user_activities.html:186
 msgid "Lock User Account"
 msgstr "Verrouiller le compte utilisateur"
 
-#: static/js/settings/user_activities.js:642
+#: static/js/settings/user_activities.js:689
 msgid "Please enter a valid duration"
 msgstr "Veuillez saisir une durée valide"
 
-#: static/js/settings/user_activities.js:678
+#: static/js/settings/user_activities.js:725
 msgid "Are you sure you want to unlock this user account?"
 msgstr "Êtes-vous sûr de vouloir déverrouiller ce compte utilisateur ?"
 
-#: static/js/settings/user_activities.js:709
+#: static/js/settings/user_activities.js:756
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr ""
 "Êtes-vous sûr de vouloir réinitialiser les tentatives de connexion "
@@ -2278,8 +2299,8 @@ msgid ""
 "The administrator has enabled logging. Your web activities may be "
 "recorded."
 msgstr ""
-"L'administrateur a activé la journalisation. Vos activités web peuvent être "
-"enregistrées."
+"L'administrateur a activé la journalisation. Vos activités web peuvent "
+"être enregistrées."
 
 #: templates/chat_player.html:6
 msgid "AI Chat"
@@ -2455,7 +2476,7 @@ msgid "Select files:"
 msgstr "Sélectionner des fichiers :"
 
 #: templates/index.html:236 templates/index.html:254 templates/index.html:273
-#: templates/settings/settings_user_activities.html:198
+#: templates/settings/settings_user_activities.html:211
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -3505,19 +3526,19 @@ msgstr "Historique des activités"
 msgid "All Types"
 msgstr "Tous les types"
 
-#: templates/settings/settings_user_activities.html:181
+#: templates/settings/settings_user_activities.html:194
 msgid "Lock Duration (minutes)"
 msgstr "Durée du verrouillage (minutes)"
 
-#: templates/settings/settings_user_activities.html:187
+#: templates/settings/settings_user_activities.html:200
 msgid "Lock Permanently"
 msgstr "Verrouiller en permanence"
 
-#: templates/settings/settings_user_activities.html:192
+#: templates/settings/settings_user_activities.html:205
 msgid "Optional: Reason for locking account"
 msgstr "Facultatif : Raison du verrouillage du compte"
 
-#: templates/settings/settings_user_activities.html:197
+#: templates/settings/settings_user_activities.html:210
 msgid "Confirm Lock"
 msgstr "Confirmer le verrouillage"
 
@@ -3826,12 +3847,4 @@ msgstr "Permission administrateur requise."
 msgid "Authentication required."
 msgstr "Authentification requise."
 
-#~ msgid "Global settings updated"
-#~ msgstr "Paramètres globaux mis à jour."
-
-#~ msgid "Submit an issue on GitHub"
-#~ msgstr "Signaler un problème sur GitHub"
-
-#~ msgid "Quick Bug Report"
-#~ msgstr ""
 

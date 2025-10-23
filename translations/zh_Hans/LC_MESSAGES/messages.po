@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 09:16+0800\n"
+"POT-Creation-Date: 2025-10-23 19:26+0800\n"
 "PO-Revision-Date: 2025-08-28 19:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans\n"
@@ -138,6 +138,10 @@ msgstr "该用户的统计页面是私密的。"
 msgid "Anx library not found for this user."
 msgstr "未找到该用户的 Anx 书库。"
 
+#: blueprints/api/audio_player.py:173
+msgid "Progress updated"
+msgstr "进度已更新"
+
 #: blueprints/api/audiobook.py:79 blueprints/api/audiobook.py:201
 msgid "'book_id' or 'library' is missing from the request"
 msgstr "'book_id' 或 'library' 参数缺失"
@@ -161,7 +165,7 @@ msgid "An unknown error occurred while starting the task: %(error)s"
 msgstr "启动任务时发生未知错误：%(error)s"
 
 #: blueprints/api/audiobook.py:190 blueprints/api/audiobook.py:219
-#: blueprints/api/audiobook.py:277
+#: blueprints/api/audiobook.py:272
 msgid "Task not found"
 msgstr "未找到任务"
 
@@ -186,19 +190,19 @@ msgstr "无法发送文件：%(error)s"
 msgid "Authentication required"
 msgstr "需要身份验证"
 
-#: blueprints/api/audiobook.py:286
+#: blueprints/api/audiobook.py:290
 msgid "Permission denied to delete this Anx audiobook"
 msgstr "无权删除此 Anx 有声书"
 
-#: blueprints/api/audiobook.py:291 utils/decorators.py:28
+#: blueprints/api/audiobook.py:295 utils/decorators.py:28
 msgid "Maintainer or administrator permission required."
 msgstr "需要维护者或管理员权限。"
 
-#: blueprints/api/audiobook.py:309
+#: blueprints/api/audiobook.py:313
 msgid "Audiobook deleted successfully"
 msgstr "有声书删除成功"
 
-#: blueprints/api/audiobook.py:313
+#: blueprints/api/audiobook.py:317
 msgid "An error occurred during deletion"
 msgstr "删除过程中发生错误"
 
@@ -277,7 +281,7 @@ msgid "Unable to get or process the EPUB file for the book."
 msgstr "无法获取或处理该图书的 EPUB 文件。"
 
 #: blueprints/api/books.py:263 blueprints/api/books.py:347
-#: blueprints/api/books.py:689 static/js/settings/common.js:41
+#: blueprints/api/books.py:689 static/js/settings/common.js:82
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -516,46 +520,46 @@ msgstr "代码 ID：%(code_id)s"
 msgid "Operation failed: %(error)s"
 msgstr "操作失败：%(error)s"
 
-#: blueprints/api/invite.py:83 static/js/settings/common.js:44
+#: blueprints/api/invite.py:83 static/js/settings/common.js:85
 msgid "Operation failed"
 msgstr "操作失败"
 
-#: blueprints/api/llm.py:142
+#: blueprints/api/llm.py:154
 msgid "Book ID and type are required."
 msgstr "书籍 ID 和类型是必需的。"
 
-#: blueprints/api/llm.py:151
+#: blueprints/api/llm.py:163
 msgid "No history found for this book."
 msgstr "未找到该书籍的历史记录。"
 
-#: blueprints/api/llm.py:167
+#: blueprints/api/llm.py:179
 msgid "MCP module is not available, cannot process book content."
 msgstr "MCP 模块不可用，无法处理书籍内容。"
 
-#: blueprints/api/llm.py:177 blueprints/api/service_configs.py:32
+#: blueprints/api/llm.py:189 blueprints/api/service_configs.py:32
 #: blueprints/api/service_configs.py:60
 msgid "Missing required fields."
 msgstr "缺少必填字段。"
 
-#: blueprints/api/llm.py:211 blueprints/api/llm.py:282
+#: blueprints/api/llm.py:232 blueprints/api/llm.py:308
 #, python-format
 msgid "Current time is %(current_time)s."
 msgstr "当前时间是 %(current_time)s。"
 
-#: blueprints/api/llm.py:212 blueprints/api/llm.py:283
+#: blueprints/api/llm.py:233 blueprints/api/llm.py:309
 #, python-format
 msgid ""
 "You are a helpful assistant. The user is asking about the book "
 "'%(book_title)s'."
 msgstr "你是一个乐于助人的助手。用户正在询问关于《%(book_title)s》这本书的问题。"
 
-#: blueprints/api/llm.py:213 blueprints/api/llm.py:284
+#: blueprints/api/llm.py:234 blueprints/api/llm.py:310
 msgid ""
 "You can use mermaid syntax for diagrams by enclosing it in ```mermaid ..."
 " ```."
 msgstr "您可以在 ```mermaid ... ``` 中使用 mermaid 语法来绘制图表。"
 
-#: blueprints/api/llm.py:216
+#: blueprints/api/llm.py:237
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -576,24 +580,24 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:226 blueprints/api/llm.py:296
+#: blueprints/api/llm.py:247 blueprints/api/llm.py:322
 msgid "Invalid book type."
 msgstr "无效的书籍类型。"
 
-#: blueprints/api/llm.py:227 blueprints/api/llm.py:297
+#: blueprints/api/llm.py:248 blueprints/api/llm.py:323
 #, python-format
 msgid "Failed to get book content: %(error)s"
 msgstr "获取书籍内容失败：%(error)s"
 
-#: blueprints/api/llm.py:228 blueprints/api/llm.py:298
+#: blueprints/api/llm.py:249 blueprints/api/llm.py:324
 msgid "Could not extract text from the book."
 msgstr "无法从书籍中提取文本。"
 
-#: blueprints/api/llm.py:229 blueprints/api/llm.py:299
+#: blueprints/api/llm.py:250 blueprints/api/llm.py:325
 msgid "LLM settings are not configured in user settings."
 msgstr "用户设置中未配置 LLM。"
 
-#: blueprints/api/llm.py:230 blueprints/api/llm.py:300
+#: blueprints/api/llm.py:251 blueprints/api/llm.py:326
 #, python-format
 msgid ""
 " Here is the full text of the book:\n"
@@ -608,43 +612,43 @@ msgstr ""
 "%(book_content)s\n"
 "---书籍内容结束---"
 
-#: blueprints/api/llm.py:231 blueprints/api/llm.py:301
+#: blueprints/api/llm.py:252 blueprints/api/llm.py:327
 #: static/js/page/translations.js:87
 msgid "Please provide a comprehensive summary and a profound review of this book."
 msgstr "请对这本书进行全面总结和深刻评论。"
 
-#: blueprints/api/llm.py:232 blueprints/api/llm.py:302
+#: blueprints/api/llm.py:253 blueprints/api/llm.py:328
 #, python-format
 msgid "Failed to communicate with LLM provider: %(error)s"
 msgstr "与 LLM 提供商通信失败：%(error)s"
 
-#: blueprints/api/llm.py:233 blueprints/api/llm.py:303
+#: blueprints/api/llm.py:254 blueprints/api/llm.py:329
 #: static/js/page/translations.js:79
 msgid "Extracting entire book content..."
 msgstr "正在提取整本书的内容..."
 
-#: blueprints/api/llm.py:234 blueprints/api/llm.py:304
+#: blueprints/api/llm.py:255 blueprints/api/llm.py:330
 #: static/js/page/translations.js:80
 msgid "Thinking..."
 msgstr "思考中..."
 
-#: blueprints/api/llm.py:247
+#: blueprints/api/llm.py:268
 msgid "Message ID is required."
 msgstr "消息 ID 是必需的。"
 
-#: blueprints/api/llm.py:258
+#: blueprints/api/llm.py:279
 msgid "Message not found."
 msgstr "消息未找到。"
 
-#: blueprints/api/llm.py:260
+#: blueprints/api/llm.py:281
 msgid "Permission denied."
 msgstr "权限被拒绝。"
 
-#: blueprints/api/llm.py:269
+#: blueprints/api/llm.py:295
 msgid "Regenerate response"
 msgstr "重新生成回应"
 
-#: blueprints/api/llm.py:286
+#: blueprints/api/llm.py:312
 msgid ""
 "IMPORTANT Mermaid Rules:\n"
 "1. Node IDs must be single words (no spaces or special characters).\n"
@@ -665,46 +669,46 @@ msgstr ""
 "4. 使用有效的箭头类型：`-->`、`---`、`==>`。\n"
 "5. 不要使用 `style` 或 `linkStyle` 定义；主题会自动处理。"
 
-#: blueprints/api/llm.py:325
+#: blueprints/api/llm.py:351
 msgid "Base URL and API Key are required."
 msgstr "需要提供基础 URL 和 API 密钥。"
 
-#: blueprints/api/llm.py:341
+#: blueprints/api/llm.py:367
 msgid "Unexpected response format from model provider."
 msgstr "模型提供商返回了意外的响应格式。"
 
-#: blueprints/api/llm.py:346
+#: blueprints/api/llm.py:372
 msgid "Authentication error. Please check your API Key."
 msgstr "身份验证错误。请检查您的 API 密钥。"
 
-#: blueprints/api/llm.py:348
+#: blueprints/api/llm.py:374
 msgid "Invalid API endpoint. Please check your Base URL."
 msgstr "无效的 API 端点。请检查您的基础 URL。"
 
-#: blueprints/api/llm.py:350
+#: blueprints/api/llm.py:376
 #, python-format
 msgid "Could not connect to the model provider: %(error)s"
 msgstr "无法连接到模型提供商：%(error)s"
 
-#: blueprints/api/llm.py:352
+#: blueprints/api/llm.py:378
 #, python-format
 msgid "An unexpected error occurred: %(error)s"
 msgstr "发生意外错误：%(error)s"
 
-#: blueprints/api/llm.py:364
+#: blueprints/api/llm.py:390
 msgid "Session not found or permission denied."
 msgstr "会话未找到或权限被拒绝。"
 
-#: blueprints/api/llm.py:371
+#: blueprints/api/llm.py:397
 #, python-format
 msgid "Session ID: %(session_id)s"
 msgstr "会话 ID：%(session_id)s"
 
-#: blueprints/api/llm.py:372
+#: blueprints/api/llm.py:398
 msgid "Chat session deleted successfully."
 msgstr "聊天会话已成功删除。"
 
-#: blueprints/api/llm.py:395
+#: blueprints/api/llm.py:421
 #, python-format
 msgid "Message ID: %(message_id)s"
 msgstr "消息 ID：%(message_id)s"
@@ -815,8 +819,8 @@ msgid "Failed to load activities"
 msgstr "加载活动失败"
 
 #: blueprints/api/user_activities.py:243
-#: static/js/settings/user_activities.js:361
-#: static/js/settings/user_activities.js:365
+#: static/js/settings/user_activities.js:408
+#: static/js/settings/user_activities.js:412
 msgid "Failed to load activity details"
 msgstr "加载活动详情失败"
 
@@ -825,7 +829,7 @@ msgid "Failed to load event statistics"
 msgstr "加载事件统计失败"
 
 #: blueprints/api/user_activities.py:302
-#: static/js/settings/user_activities.js:654
+#: static/js/settings/user_activities.js:701
 msgid "Locked by administrator"
 msgstr "被管理员锁定"
 
@@ -844,13 +848,13 @@ msgid "Account locked %(time)s. Reason: %(reason)s"
 msgstr "账户已锁定 %(time)s。原因：%(reason)s"
 
 #: blueprints/api/user_activities.py:337
-#: static/js/settings/user_activities.js:659
+#: static/js/settings/user_activities.js:706
 msgid "User account locked successfully"
 msgstr "用户账户锁定成功"
 
 #: blueprints/api/user_activities.py:343
-#: static/js/settings/user_activities.js:664
-#: static/js/settings/user_activities.js:668
+#: static/js/settings/user_activities.js:711
+#: static/js/settings/user_activities.js:715
 msgid "Failed to lock user account"
 msgstr "锁定用户账户失败"
 
@@ -859,13 +863,13 @@ msgid "Account unlocked by administrator"
 msgstr "账户已被管理员解锁"
 
 #: blueprints/api/user_activities.py:374
-#: static/js/settings/user_activities.js:691
+#: static/js/settings/user_activities.js:738
 msgid "User account unlocked successfully"
 msgstr "用户账户解锁成功"
 
 #: blueprints/api/user_activities.py:378
-#: static/js/settings/user_activities.js:695
-#: static/js/settings/user_activities.js:699
+#: static/js/settings/user_activities.js:742
+#: static/js/settings/user_activities.js:746
 msgid "Failed to unlock user account"
 msgstr "解锁用户账户失败"
 
@@ -874,13 +878,13 @@ msgid "Failed login attempts reset by administrator"
 msgstr "登录失败次数已被管理员重置"
 
 #: blueprints/api/user_activities.py:408
-#: static/js/settings/user_activities.js:722
+#: static/js/settings/user_activities.js:769
 msgid "Failed login attempts reset successfully"
 msgstr "登录失败次数重置成功"
 
 #: blueprints/api/user_activities.py:412
-#: static/js/settings/user_activities.js:726
-#: static/js/settings/user_activities.js:730
+#: static/js/settings/user_activities.js:773
+#: static/js/settings/user_activities.js:777
 msgid "Failed to reset login attempts"
 msgstr "重置登录失败次数失败"
 
@@ -1165,6 +1169,7 @@ msgid "Generating..."
 msgstr "生成中..."
 
 #: static/js/page/translations.js:40 static/js/settings/user_activities.js:32
+#: templates/settings/settings_user_activities.html:147
 msgid "Download Audiobook"
 msgstr "下载有声书"
 
@@ -1400,6 +1405,7 @@ msgid "Failed to fetch audiobook list."
 msgstr "获取有声书列表失败。"
 
 #: static/js/page/translations.js:108 static/js/settings/user_activities.js:33
+#: templates/settings/settings_user_activities.html:148
 msgid "Delete Audiobook"
 msgstr "删除有声书"
 
@@ -1539,7 +1545,7 @@ msgstr "成功"
 msgid "Total"
 msgstr "总计"
 
-#: static/js/page/translations.js:145 static/js/settings/common.js:35
+#: static/js/page/translations.js:145 static/js/settings/common.js:76
 msgid "Active"
 msgstr "启用"
 
@@ -1580,7 +1586,7 @@ msgid "IP"
 msgstr "IP 地址"
 
 #: static/js/page/translations.js:155
-#: templates/settings/settings_user_activities.html:191
+#: templates/settings/settings_user_activities.html:204
 msgid "Reason"
 msgstr "原因"
 
@@ -1648,234 +1654,234 @@ msgstr "删除所有活动失败"
 msgid "An error occurred while deleting all activities."
 msgstr "删除所有活动时发生错误。"
 
-#: static/js/settings/common.js:13
+#: static/js/settings/common.js:54
 #, python-brace-format
 msgid ""
 "Please make sure to add the sender email address ({email}) to your Amazon"
 " Kindle trusted email list."
 msgstr "请确保将发件人电子邮件地址 ({email}) 添加到您的亚马逊 Kindle 受信任电子邮件列表中。"
 
-#: static/js/settings/common.js:14
+#: static/js/settings/common.js:55
 msgid "WebDAV address copied to clipboard"
 msgstr "WebDAV 地址已复制到剪贴板"
 
-#: static/js/settings/common.js:15
+#: static/js/settings/common.js:56
 msgid "Copy failed"
 msgstr "复制失败"
 
-#: static/js/settings/common.js:16
+#: static/js/settings/common.js:57
 msgid "2FA has been enabled."
 msgstr "两步验证已启用。"
 
-#: static/js/settings/common.js:17
+#: static/js/settings/common.js:58
 msgid "Disable"
 msgstr "禁用"
 
-#: static/js/settings/common.js:18
+#: static/js/settings/common.js:59
 msgid "2FA is not enabled."
 msgstr "两步验证未启用。"
 
-#: static/js/settings/common.js:19
+#: static/js/settings/common.js:60
 msgid "Enable"
 msgstr "启用"
 
-#: static/js/settings/common.js:20
+#: static/js/settings/common.js:61
 msgid "Failed to start 2FA setup."
 msgstr "启动两步验证设置失败。"
 
-#: static/js/settings/common.js:21
+#: static/js/settings/common.js:62
 msgid "Are you sure you want to disable 2FA?"
 msgstr "你确定要禁用两步验证吗？"
 
-#: static/js/settings/common.js:22
+#: static/js/settings/common.js:63
 msgid "No available tokens."
 msgstr "没有可用的令牌。"
 
-#: static/js/settings/common.js:23
+#: static/js/settings/common.js:64
 msgid "Created at"
 msgstr "创建时间"
 
-#: static/js/settings/common.js:24 templates/index.html:204
+#: static/js/settings/common.js:65 templates/index.html:204
 #: templates/settings/settings_user_settings.html:48
 #: templates/settings/settings_user_settings.html:116
 msgid "Delete"
 msgstr "删除"
 
-#: static/js/settings/common.js:25
+#: static/js/settings/common.js:66
 msgid "New token has been generated."
 msgstr "新令牌已生成。"
 
-#: static/js/settings/common.js:26
+#: static/js/settings/common.js:67
 msgid "Failed to generate token."
 msgstr "生成令牌失败。"
 
-#: static/js/settings/common.js:27
+#: static/js/settings/common.js:68
 msgid "Are you sure you want to delete this token?"
 msgstr "你确定要删除这个令牌吗？"
 
-#: static/js/settings/common.js:28
+#: static/js/settings/common.js:69
 msgid ""
 "Are you sure you want to delete ALL generated audiobook files? This "
 "action cannot be undone."
 msgstr "您确定要删除所有生成的有声书文件吗？此操作无法撤销。"
 
-#: static/js/settings/common.js:29
+#: static/js/settings/common.js:70
 msgid "Cleanup failed"
 msgstr "清理失败"
 
-#: static/js/settings/common.js:30
+#: static/js/settings/common.js:71
 msgid "An error occurred"
 msgstr "发生错误"
 
-#: static/js/settings/common.js:31
+#: static/js/settings/common.js:72
 msgid "Please enter a test recipient email address."
 msgstr "请输入测试收件人电子邮件地址。"
 
-#: static/js/settings/common.js:32 templates/index.html:124
+#: static/js/settings/common.js:73 templates/index.html:124
 #: templates/index.html:203
 msgid "Edit"
 msgstr "编辑"
 
-#: static/js/settings/common.js:33
+#: static/js/settings/common.js:74
 #: templates/settings/settings_user_management.html:5
 msgid "Add"
 msgstr "添加"
 
-#: static/js/settings/common.js:34
+#: static/js/settings/common.js:75
 msgid "Are you sure you want to delete this user?"
 msgstr "你确定要删除这个用户吗？"
 
-#: static/js/settings/common.js:36
+#: static/js/settings/common.js:77
 msgid "Disabled"
 msgstr "禁用"
 
-#: static/js/settings/common.js:37
+#: static/js/settings/common.js:78
 msgid "Never expires"
 msgstr "永不过期"
 
-#: static/js/settings/common.js:38
+#: static/js/settings/common.js:79
 msgid "Unknown"
 msgstr "未知"
 
-#: static/js/settings/common.js:39
+#: static/js/settings/common.js:80
 #, python-brace-format
 msgid "Invite code generated successfully: {code}"
 msgstr "邀请码生成成功：{code}"
 
-#: static/js/settings/common.js:40
+#: static/js/settings/common.js:81
 #, python-brace-format
 msgid "Failed to generate: {error}"
 msgstr "生成失败：{error}"
 
-#: static/js/settings/common.js:42
+#: static/js/settings/common.js:83
 msgid "An error occurred while generating the invite code."
 msgstr "生成邀请码时发生错误。"
 
-#: static/js/settings/common.js:43
+#: static/js/settings/common.js:84
 #, python-brace-format
 msgid "Operation failed: {error}"
 msgstr "操作失败：{error}"
 
-#: static/js/settings/common.js:45
+#: static/js/settings/common.js:86
 msgid "Are you sure you want to delete this invite code?"
 msgstr "你确定要删除此邀请码吗？"
 
-#: static/js/settings/common.js:46
+#: static/js/settings/common.js:87
 #, python-brace-format
 msgid "Delete failed: {error}"
 msgstr "删除失败：{error}"
 
-#: static/js/settings/common.js:47
+#: static/js/settings/common.js:88
 msgid "Delete failed"
 msgstr "删除失败"
 
-#: static/js/settings/common.js:49
+#: static/js/settings/common.js:90
 msgid "Current Settings"
 msgstr "当前设置"
 
-#: static/js/settings/common.js:50
+#: static/js/settings/common.js:91
 msgid "Please enter a name for this TTS profile:"
 msgstr "请输入此 TTS 配置方案的名称："
 
-#: static/js/settings/common.js:51
+#: static/js/settings/common.js:92
 msgid "TTS profile saved successfully!"
 msgstr "TTS 配置方案保存成功！"
 
-#: static/js/settings/common.js:52
+#: static/js/settings/common.js:93
 msgid "Failed to save TTS profile"
 msgstr "保存 TTS 配置方案失败"
 
-#: static/js/settings/common.js:53 static/js/settings/service_profiles.js:306
+#: static/js/settings/common.js:94 static/js/settings/service_profiles.js:306
 msgid "An error occurred while saving the profile"
 msgstr "保存配置方案时发生错误"
 
-#: static/js/settings/common.js:54 static/js/settings/service_profiles.js:319
+#: static/js/settings/common.js:95 static/js/settings/service_profiles.js:319
 msgid "Please select a profile to update"
 msgstr "请选择要更新的配置方案"
 
-#: static/js/settings/common.js:55 static/js/settings/service_profiles.js:326
+#: static/js/settings/common.js:96 static/js/settings/service_profiles.js:326
 #, python-brace-format
 msgid "Update profile \"{name}\"?"
 msgstr "更新配置方案 “{name}” 吗？"
 
-#: static/js/settings/common.js:56
+#: static/js/settings/common.js:97
 msgid "TTS profile updated successfully!"
 msgstr "TTS 配置方案更新成功！"
 
-#: static/js/settings/common.js:57
+#: static/js/settings/common.js:98
 msgid "Failed to update TTS profile"
 msgstr "更新 TTS 配置方案失败"
 
-#: static/js/settings/common.js:58 static/js/settings/service_profiles.js:348
+#: static/js/settings/common.js:99 static/js/settings/service_profiles.js:348
 msgid "An error occurred while updating the profile"
 msgstr "更新配置方案时发生错误"
 
-#: static/js/settings/common.js:59 static/js/settings/service_profiles.js:361
+#: static/js/settings/common.js:100 static/js/settings/service_profiles.js:361
 msgid "Please select a profile to delete"
 msgstr "请选择要删除的配置方案"
 
-#: static/js/settings/common.js:60 static/js/settings/service_profiles.js:368
+#: static/js/settings/common.js:101 static/js/settings/service_profiles.js:368
 #, python-brace-format
 msgid "Delete profile \"{name}\"? This cannot be undone."
 msgstr "删除配置方案 “{name}” 吗？此操作无法撤销。"
 
-#: static/js/settings/common.js:61
+#: static/js/settings/common.js:102
 msgid "TTS profile deleted successfully!"
 msgstr "TTS 配置方案删除成功！"
 
-#: static/js/settings/common.js:62
+#: static/js/settings/common.js:103
 msgid "Failed to delete TTS profile"
 msgstr "删除 TTS 配置方案失败"
 
-#: static/js/settings/common.js:63 static/js/settings/service_profiles.js:384
+#: static/js/settings/common.js:104 static/js/settings/service_profiles.js:384
 msgid "An error occurred while deleting the profile"
 msgstr "删除配置方案时发生错误"
 
-#: static/js/settings/common.js:64 static/js/settings/service_profiles.js:282
+#: static/js/settings/common.js:105 static/js/settings/service_profiles.js:282
 msgid "Please enter a name for this LLM profile:"
 msgstr "请输入此 LLM 配置方案的名称："
 
-#: static/js/settings/common.js:65 static/js/settings/service_profiles.js:300
+#: static/js/settings/common.js:106 static/js/settings/service_profiles.js:300
 msgid "LLM profile saved successfully!"
 msgstr "LLM 配置方案保存成功！"
 
-#: static/js/settings/common.js:66 static/js/settings/service_profiles.js:303
+#: static/js/settings/common.js:107 static/js/settings/service_profiles.js:303
 msgid "Failed to save LLM profile"
 msgstr "保存 LLM 配置方案失败"
 
-#: static/js/settings/common.js:67 static/js/settings/service_profiles.js:342
+#: static/js/settings/common.js:108 static/js/settings/service_profiles.js:342
 msgid "LLM profile updated successfully!"
 msgstr "LLM 配置方案更新成功！"
 
-#: static/js/settings/common.js:68 static/js/settings/service_profiles.js:345
+#: static/js/settings/common.js:109 static/js/settings/service_profiles.js:345
 msgid "Failed to update LLM profile"
 msgstr "更新 LLM 配置方案失败"
 
-#: static/js/settings/common.js:69 static/js/settings/service_profiles.js:377
+#: static/js/settings/common.js:110 static/js/settings/service_profiles.js:377
 msgid "LLM profile deleted successfully!"
 msgstr "LLM 配置方案删除成功！"
 
-#: static/js/settings/common.js:70 static/js/settings/service_profiles.js:381
+#: static/js/settings/common.js:111 static/js/settings/service_profiles.js:381
 msgid "Failed to delete LLM profile"
 msgstr "删除 LLM 配置方案失败"
 
@@ -1890,226 +1896,241 @@ msgid "Login Failed"
 msgstr "登录失败"
 
 #: static/js/settings/user_activities.js:21 templates/base.html:90
+#: templates/settings/settings_user_activities.html:136
 msgid "Logout"
 msgstr "登出"
 
 #: static/js/settings/user_activities.js:22 templates/register.html:3
 #: templates/register.html:58
+#: templates/settings/settings_user_activities.html:137
 msgid "Register"
 msgstr "注册"
 
 #: static/js/settings/user_activities.js:23
-#: static/js/settings/user_activities.js:442
-#: templates/settings/settings_user_activities.html:136
+#: static/js/settings/user_activities.js:489
+#: templates/settings/settings_user_activities.html:138
 msgid "Download Book"
 msgstr "下载图书"
 
 #: static/js/settings/user_activities.js:24
-#: static/js/settings/user_activities.js:443
-#: templates/settings/settings_user_activities.html:137
+#: static/js/settings/user_activities.js:490
+#: templates/settings/settings_user_activities.html:139
 msgid "Upload Book"
 msgstr "上传图书"
 
 #: static/js/settings/user_activities.js:25
+#: templates/settings/settings_user_activities.html:140
 msgid "Delete Book"
 msgstr "删除图书"
 
 #: static/js/settings/user_activities.js:26
-#: static/js/settings/user_activities.js:444
-#: templates/settings/settings_user_activities.html:138
+#: static/js/settings/user_activities.js:491
+#: templates/settings/settings_user_activities.html:141
 msgid "Search Books"
 msgstr "搜索图书"
 
 #: static/js/settings/user_activities.js:27
+#: templates/settings/settings_user_activities.html:142
 msgid "Edit Metadata"
 msgstr "编辑元数据"
 
 #: static/js/settings/user_activities.js:28
-#: static/js/settings/user_activities.js:446
-#: templates/settings/settings_user_activities.html:139
+#: static/js/settings/user_activities.js:493
+#: templates/settings/settings_user_activities.html:143
 msgid "Push to Kindle"
 msgstr "推送到 Kindle"
 
 #: static/js/settings/user_activities.js:29
+#: templates/settings/settings_user_activities.html:144
 msgid "Push to Anx"
 msgstr "推送到 Anx"
 
 #: static/js/settings/user_activities.js:30
+#: templates/settings/settings_user_activities.html:145
 msgid "Push Anx to Calibre"
 msgstr "推送 Anx 到 Calibre"
 
 #: static/js/settings/user_activities.js:31
-#: static/js/settings/user_activities.js:447 templates/index.html:128
+#: static/js/settings/user_activities.js:494 templates/index.html:128
 #: templates/index.html:207
-#: templates/settings/settings_user_activities.html:140
+#: templates/settings/settings_user_activities.html:146
 msgid "Generate Audiobook"
 msgstr "生成有声书"
 
 #: static/js/settings/user_activities.js:34
+#: templates/settings/settings_user_activities.html:149
 msgid "Update Audiobook Progress"
 msgstr "更新有声书进度"
 
 #: static/js/settings/user_activities.js:35
+#: templates/settings/settings_user_activities.html:150
 msgid "Update Audiobook Reading Time"
 msgstr "更新有声书阅读时间"
 
 #: static/js/settings/user_activities.js:36
-#: templates/settings/settings_user_activities.html:141
+#: templates/settings/settings_user_activities.html:151
+msgid "Update Audiobook Reading Progress"
+msgstr "更新有声书进度"
+
+#: static/js/settings/user_activities.js:37
+#: templates/settings/settings_user_activities.html:152
 msgid "Update Reading Progress"
 msgstr "更新阅读进度"
 
-#: static/js/settings/user_activities.js:37
+#: static/js/settings/user_activities.js:38
+#: templates/settings/settings_user_activities.html:153
 msgid "Update Reading Time"
 msgstr "更新阅读时间"
 
-#: static/js/settings/user_activities.js:38
+#: static/js/settings/user_activities.js:39
 msgid "Start LLM Chat"
 msgstr "开始 LLM 聊天"
 
-#: static/js/settings/user_activities.js:39
+#: static/js/settings/user_activities.js:40
 msgid "LLM Chat Message"
 msgstr "LLM 聊天消息"
 
-#: static/js/settings/user_activities.js:40
+#: static/js/settings/user_activities.js:41
 msgid "Delete LLM Session"
 msgstr "删除 LLM 会话"
 
-#: static/js/settings/user_activities.js:41
+#: static/js/settings/user_activities.js:42
 msgid "Delete LLM Message"
 msgstr "删除 LLM 消息"
 
-#: static/js/settings/user_activities.js:42
+#: static/js/settings/user_activities.js:43
 msgid "Generate MCP Token"
 msgstr "生成 MCP 令牌"
 
-#: static/js/settings/user_activities.js:43
+#: static/js/settings/user_activities.js:44
 msgid "Delete MCP Token"
 msgstr "删除 MCP 令牌"
 
-#: static/js/settings/user_activities.js:44
+#: static/js/settings/user_activities.js:45
 msgid "MCP API Call"
 msgstr "MCP API 调用"
 
-#: static/js/settings/user_activities.js:45
+#: static/js/settings/user_activities.js:46
 msgid "Update User Settings"
 msgstr "更新用户设置"
 
-#: static/js/settings/user_activities.js:46
+#: static/js/settings/user_activities.js:47
 msgid "Update Global Settings"
 msgstr "更新全局设置"
 
-#: static/js/settings/user_activities.js:47
+#: static/js/settings/user_activities.js:48
 msgid "Update Password"
 msgstr "更新密码"
 
-#: static/js/settings/user_activities.js:48
+#: static/js/settings/user_activities.js:49
 msgid "Enable 2FA"
 msgstr "启用双因素身份验证"
 
-#: static/js/settings/user_activities.js:49
+#: static/js/settings/user_activities.js:50
 msgid "Disable 2FA"
 msgstr "禁用双因素身份验证"
 
-#: static/js/settings/user_activities.js:50
+#: static/js/settings/user_activities.js:51
 msgid "Create User"
 msgstr "创建用户"
 
-#: static/js/settings/user_activities.js:51
+#: static/js/settings/user_activities.js:52
 msgid "Update User"
 msgstr "更新用户"
 
-#: static/js/settings/user_activities.js:52
+#: static/js/settings/user_activities.js:53
 msgid "Delete User"
 msgstr "删除用户"
 
-#: static/js/settings/user_activities.js:53
+#: static/js/settings/user_activities.js:54
 msgid "Lock User"
 msgstr "锁定用户"
 
-#: static/js/settings/user_activities.js:54
+#: static/js/settings/user_activities.js:55
 msgid "Unlock User"
 msgstr "解锁用户"
 
-#: static/js/settings/user_activities.js:55
+#: static/js/settings/user_activities.js:56
 msgid "Create Invite Code"
 msgstr "创建邀请码"
 
-#: static/js/settings/user_activities.js:56
+#: static/js/settings/user_activities.js:57
 msgid "Delete Invite Code"
 msgstr "删除邀请码"
 
-#: static/js/settings/user_activities.js:57
+#: static/js/settings/user_activities.js:58
 msgid "Use Invite Code"
 msgstr "使用邀请码"
 
-#: static/js/settings/user_activities.js:58
+#: static/js/settings/user_activities.js:59
 msgid "Toggle Invite Code"
 msgstr "切换邀请码状态"
 
-#: static/js/settings/user_activities.js:59
+#: static/js/settings/user_activities.js:60
 msgid "Create Service Config"
 msgstr "创建服务配置"
 
-#: static/js/settings/user_activities.js:60
+#: static/js/settings/user_activities.js:61
 msgid "Update Service Config"
 msgstr "更新服务配置"
 
-#: static/js/settings/user_activities.js:61
+#: static/js/settings/user_activities.js:62
 msgid "Delete Service Config"
 msgstr "删除服务配置"
 
-#: static/js/settings/user_activities.js:62
+#: static/js/settings/user_activities.js:63
 msgid "Test SMTP"
 msgstr "测试 SMTP"
 
-#: static/js/settings/user_activities.js:63
+#: static/js/settings/user_activities.js:64
+#: templates/settings/settings_user_activities.html:154
 msgid "KOReader Sync Progress"
 msgstr "KOReader 同步进度"
 
-#: static/js/settings/user_activities.js:64
+#: static/js/settings/user_activities.js:65
 msgid "KOReader Sync Reading Time"
 msgstr "KOReader 同步阅读时间"
 
-#: static/js/settings/user_activities.js:65
+#: static/js/settings/user_activities.js:66
 msgid "KOReader Update Summary"
 msgstr "KOReader 更新摘要"
 
-#: static/js/settings/user_activities.js:66
+#: static/js/settings/user_activities.js:67
 msgid "Delete User Activity Log"
 msgstr "删除用户活动日志"
 
-#: static/js/settings/user_activities.js:67
+#: static/js/settings/user_activities.js:68
 msgid "Delete All Activity Logs"
 msgstr "删除所有活动日志"
 
-#: static/js/settings/user_activities.js:382
-#: static/js/settings/user_activities.js:528
+#: static/js/settings/user_activities.js:429
+#: static/js/settings/user_activities.js:575
 msgid "Activity Details for"
 msgstr "活动详情："
 
-#: static/js/settings/user_activities.js:445 templates/index.html:188
+#: static/js/settings/user_activities.js:492 templates/index.html:188
 msgid "Reading Progress"
 msgstr "阅读进度"
 
-#: static/js/settings/user_activities.js:508
-#: static/js/settings/user_activities.js:512
+#: static/js/settings/user_activities.js:555
+#: static/js/settings/user_activities.js:559
 msgid "Failed to load event type details"
 msgstr "加载事件类型详情失败"
 
-#: static/js/settings/user_activities.js:610
-#: templates/settings/settings_user_activities.html:173
+#: static/js/settings/user_activities.js:657
+#: templates/settings/settings_user_activities.html:186
 msgid "Lock User Account"
 msgstr "锁定用户账户"
 
-#: static/js/settings/user_activities.js:642
+#: static/js/settings/user_activities.js:689
 msgid "Please enter a valid duration"
 msgstr "请输入有效的时长。"
 
-#: static/js/settings/user_activities.js:678
+#: static/js/settings/user_activities.js:725
 msgid "Are you sure you want to unlock this user account?"
 msgstr "您确定要解锁此用户账户吗？"
 
-#: static/js/settings/user_activities.js:709
+#: static/js/settings/user_activities.js:756
 msgid "Are you sure you want to reset failed login attempts for this user?"
 msgstr "您确定要重置此用户的登录失败次数吗？"
 
@@ -2364,7 +2385,7 @@ msgid "Select files:"
 msgstr "选择文件："
 
 #: templates/index.html:236 templates/index.html:254 templates/index.html:273
-#: templates/settings/settings_user_activities.html:198
+#: templates/settings/settings_user_activities.html:211
 #: templates/settings/settings_user_management.html:25
 #: templates/settings/settings_user_settings.html:173
 msgid "Cancel"
@@ -3318,19 +3339,19 @@ msgstr "活动历史"
 msgid "All Types"
 msgstr "所有类型"
 
-#: templates/settings/settings_user_activities.html:181
+#: templates/settings/settings_user_activities.html:194
 msgid "Lock Duration (minutes)"
 msgstr "锁定时长（分钟）"
 
-#: templates/settings/settings_user_activities.html:187
+#: templates/settings/settings_user_activities.html:200
 msgid "Lock Permanently"
 msgstr "永久锁定"
 
-#: templates/settings/settings_user_activities.html:192
+#: templates/settings/settings_user_activities.html:205
 msgid "Optional: Reason for locking account"
 msgstr "可选：锁定账户的原因"
 
-#: templates/settings/settings_user_activities.html:197
+#: templates/settings/settings_user_activities.html:210
 msgid "Confirm Lock"
 msgstr "确认锁定"
 
@@ -3617,12 +3638,4 @@ msgstr "需要管理员权限。"
 msgid "Authentication required."
 msgstr "需要身份验证。"
 
-#~ msgid "Global settings updated"
-#~ msgstr "全局设置已更新。"
-
-#~ msgid "Submit an issue on GitHub"
-#~ msgstr "在 GitHub 上提交问题"
-
-#~ msgid "Quick Bug Report"
-#~ msgstr ""
 
