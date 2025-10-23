@@ -2043,7 +2043,7 @@ msgstr "Hörbuch-Lesezeit aktualisieren"
 #: static/js/settings/user_activities.js:36
 #: templates/settings/settings_user_activities.html:151
 msgid "Update Audiobook Reading Progress"
-msgstr "Hörbuch-Fortschritt aktualisieren"
+msgstr "Hörbuch-Lesefortschritt aktualisieren"
 
 #: static/js/settings/user_activities.js:37
 #: templates/settings/settings_user_activities.html:152

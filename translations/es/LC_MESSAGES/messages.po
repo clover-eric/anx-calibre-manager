@@ -2051,7 +2051,7 @@ msgstr "Actualizar tiempo de lectura del audiolibro"
 #: static/js/settings/user_activities.js:36
 #: templates/settings/settings_user_activities.html:151
 msgid "Update Audiobook Reading Progress"
-msgstr "Actualizar progreso del audiolibro"
+msgstr "Actualizar progreso de lectura del audiolibro"
 
 #: static/js/settings/user_activities.js:37
 #: templates/settings/settings_user_activities.html:152

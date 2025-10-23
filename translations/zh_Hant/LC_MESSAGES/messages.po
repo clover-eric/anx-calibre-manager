@@ -1973,7 +1973,7 @@ msgstr "更新有聲書閱讀時間"
 #: static/js/settings/user_activities.js:36
 #: templates/settings/settings_user_activities.html:151
 msgid "Update Audiobook Reading Progress"
-msgstr "更新有聲書進度"
+msgstr "更新有聲書閱讀進度"
 
 #: static/js/settings/user_activities.js:37
 #: templates/settings/settings_user_activities.html:152
