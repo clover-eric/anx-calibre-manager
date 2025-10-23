@@ -616,7 +616,7 @@ window.closeEventTypeModal = function() {
 window.filterUserActivities = function() {
     const activityType = document.getElementById('activityTypeFilter').value;
     
-    if (!window.currentUserActivities || !window.currentUsername) {
+    if (!window.currentUserActivitiesBackup || !window.currentUsername) {
         return;
     }
     
