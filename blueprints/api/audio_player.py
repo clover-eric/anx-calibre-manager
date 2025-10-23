@@ -135,17 +135,24 @@ def handle_progress(task_id):
             progress_ms = int(float(current_time) * 1000)
             duration_ms = int(float(total_duration) * 1000)
 
-            db.execute("""
-                INSERT INTO audiobook_progress (user_id, task_id, progress_ms, duration_ms, playback_rate, chapter_index, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-                ON CONFLICT(user_id, task_id) DO UPDATE SET
-                progress_ms = excluded.progress_ms,
-                duration_ms = excluded.duration_ms,
-                playback_rate = excluded.playback_rate,
-                chapter_index = excluded.chapter_index,
-                updated_at = CURRENT_TIMESTAMP
-            """, (user_id, task_id, progress_ms, duration_ms, playback_rate, chapter_index))
-            db.commit()
+            try:
+                db.execute("""
+                    INSERT INTO audiobook_progress (user_id, task_id, progress_ms, duration_ms, playback_rate, chapter_index, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                    ON CONFLICT(user_id, task_id) DO UPDATE SET
+                    progress_ms = excluded.progress_ms,
+                    duration_ms = excluded.duration_ms,
+                    playback_rate = excluded.playback_rate,
+                    chapter_index = excluded.chapter_index,
+                    updated_at = CURRENT_TIMESTAMP
+                """, (user_id, task_id, progress_ms, duration_ms, playback_rate, chapter_index))
+                db.commit()
+                if is_user_action:
+                    log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=True)
+            except Exception as e:
+                logger.error(f"Failed to update audiobook_progress for task {task_id}: {e}")
+                if is_user_action:
+                    log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=False, failure_reason=str(e))
 
             task = db.execute("SELECT book_id, library_type FROM audiobook_tasks WHERE task_id = ?", (task_id,)).fetchone()
             if task and task['library_type'] == 'anx' and chapter_index is not None:
@@ -155,20 +162,19 @@ def handle_progress(task_id):
                     epubcfi = get_cfi_for_chapter(epub_path, chapter_index)
                     if epubcfi:
                         total_chapters = get_total_chapters(epub_path)
-                        percentage = ((chapter_index + 1) / total_chapters) * 100 if total_chapters > 0 else 0
+                        percentage = ((chapter_index + 1) / total_chapters) if total_chapters > 0 else 0
                         dirs = get_anx_user_dirs(g.user.username)
                         if dirs and os.path.exists(dirs["db_path"]):
                             with closing(sqlite3.connect(dirs["db_path"])) as anx_db:
                                 current_time_str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
                                 anx_db.execute("UPDATE tb_books SET last_read_position = ?, reading_percentage = ?, update_time = ? WHERE id = ?", (epubcfi, percentage, current_time_str, book_id))
                                 anx_db.commit()
+                                if is_user_action:
+                                    log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_PROGRESS, book_id=book_id, library_type='anx', success=True)
                 except Exception as e:
                     logger.error(f"Failed to update Anx DB for book {task['book_id']}: {e}")
-
-            if is_user_action:
-                log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_PLAYING_PROGRESS, task_id=task_id, success=True)
-                if task and task['library_type'] == 'anx':
-                    log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_PROGRESS, book_id=task['book_id'], library_type='anx', success=True)
+                    if is_user_action:
+                        log_activity(ActivityType.PLAY_AUDIOBOOK_UPDATE_READING_PROGRESS, book_id=task['book_id'], library_type='anx', success=False, failure_reason=str(e))
 
             return jsonify({'message': _('Progress updated')})
         else:  # GET
