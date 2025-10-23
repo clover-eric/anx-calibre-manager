@@ -57,6 +57,13 @@ def verify_conversion(epub_path):
     else:
         print(f"Failure: {mismatch_count} out of {total_chapters} chapters did not convert correctly.")
 
+    print("\n--- Special Test for Range CFI ---")
+    range_cfi = "epubcfi(/6/40!/4,/18/1:137,/24/1:161)"
+    print(f"Testing CFI: {range_cfi}")
+    range_chapter_index = get_chapter_from_cfi(epub_path, range_cfi)
+    print(f"Resulting Chapter Index: {range_chapter_index}")
+    # You can manually verify if this index is correct for your book.
+
 if __name__ == "__main__":
     # Set the path to your target EPUB file here
     target_epub_path = "./a.epub"
