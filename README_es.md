@@ -34,8 +34,8 @@ Una aplicación web moderna y orientada a dispositivos móviles para gestionar t
     - **Mantenedor**: Puede editar los metadatos de todos los libros.
     - **Usuario**: Puede subir libros, gestionar su propia biblioteca WebDAV, tokens MCP, enviar libros a Kindle y **editar los libros que ha subido**.
 - **Registro solo por Invitación**: Los administradores pueden generar códigos de invitación para controlar el registro de usuarios. Esta función está habilitada por defecto para evitar registros no autorizados.
-- **Libros Subidos Editables por el Usuario**: Los usuarios regulares ahora pueden editar los metadatos de los libros que han subido. Esta funcionalidad se basa en una columna personalizada de Calibre llamada `#library` (tipo: `Texto, con comas tratadas como etiquetas separadas`). Cuando un usuario sube un libro, su nombre de usuario se guarda automáticamente en este campo. Los usuarios pueden editar cualquier libro en el que figuren como propietarios en el campo `#library`.
-    - **Recomendación para Usuarios de Docker**: Para habilitar esta función, asegúrate de tener una columna personalizada en tu biblioteca de Calibre llamada `#library` (sensible a mayúsculas y minúsculas) con el tipo `Texto, con comas tratadas como etiquetas separadas`.
+- **Libros Subidos Editables por el Usuario**: Los usuarios regulares ahora pueden editar los metadatos de los libros que han subido. Esta funcionalidad se basa en una columna personalizada de Calibre llamada `#library` (tipo: `Texto`). Cuando un usuario sube un libro, su nombre de usuario se guarda automáticamente en este campo. Los usuarios pueden editar cualquier libro en el que figuren como propietarios en el campo `#library`.
+    - **Recomendación para Usuarios de Docker**: Para habilitar esta función, asegúrate de tener una columna personalizada en tu biblioteca de Calibre llamada `#library` (sensible a mayúsculas y minúsculas) con el tipo `Texto`.
 - **Despliegue Fácil**: Desplegable como un único contenedor de Docker con soporte de localización multilingüe incorporado.
 - **Estadísticas de Lectura**: Genera automáticamente una página personal de estadísticas de lectura, con un mapa de calor de lectura anual, una lista de libros que se están leyendo actualmente y una lista de libros terminados. La página se puede compartir públicamente o mantener privada.
 
@@ -267,7 +267,7 @@ Aquí hay algunos problemas comunes y sus soluciones:
     3.  Crea la primera columna con los siguientes detalles:
         *   **Nombre de búsqueda**: `#library`
         *   **Encabezado de columna**: `Library` (o como prefieras)
-        *   **Tipo de columna**: `Texto, con comas tratadas como etiquetas separadas`
+        *   **Tipo de columna**: `Texto`
     4.  Crea la segunda columna con estos detalles:
         *   **Nombre de búsqueda**: `#readdate`
         *   **Encabezado de columna**: `Read Date` (o como prefieras)

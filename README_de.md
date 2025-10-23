@@ -34,8 +34,8 @@ Eine moderne, mobil-orientierte Webanwendung zur Verwaltung Ihrer E-Book-Bibliot
     - **Maintainer**: Kann alle Buchmetadaten bearbeiten.
     - **Benutzer**: Kann Bücher hochladen, seine eigene WebDAV-Bibliothek, MCP-Token verwalten, Bücher an Kindle senden und **von ihm hochgeladene Bücher bearbeiten**.
 - **Registrierung nur mit Einladung**: Administratoren können Einladungscodes generieren, um die Benutzerregistrierung zu steuern. Diese Funktion ist standardmäßig aktiviert, um unbefugte Anmeldungen zu verhindern.
-- **Vom Benutzer bearbeitbare hochgeladene Bücher**: Reguläre Benutzer können jetzt Metadaten für von ihnen hochgeladene Bücher bearbeiten. Diese Funktionalität basiert auf einer benutzerdefinierten Spalte in Calibre namens `#library` (Typ: `Text, wobei Kommas als separate Tags behandelt werden`). Wenn ein Benutzer ein Buch hochlädt, wird sein Benutzername automatisch in diesem Feld gespeichert. Benutzer können dann jedes Buch bearbeiten, bei dem sie im Feld `#library` als Eigentümer aufgeführt sind.
-    - **Empfehlung für Docker-Benutzer**: Um diese Funktion zu aktivieren, stellen Sie bitte sicher, dass Sie in Ihrer Calibre-Bibliothek eine benutzerdefinierte Spalte namens `#library` (Groß-/Kleinschreibung beachten) vom Typ `Text, wobei Kommas als separate Tags behandelt werden` haben.
+- **Vom Benutzer bearbeitbare hochgeladene Bücher**: Reguläre Benutzer können jetzt Metadaten für von ihnen hochgeladene Bücher bearbeiten. Diese Funktionalität basiert auf einer benutzerdefinierten Spalte in Calibre namens `#library` (Typ: `Text`). Wenn ein Benutzer ein Buch hochlädt, wird sein Benutzername automatisch in diesem Feld gespeichert. Benutzer können dann jedes Buch bearbeiten, bei dem sie im Feld `#library` als Eigentümer aufgeführt sind.
+    - **Empfehlung für Docker-Benutzer**: Um diese Funktion zu aktivieren, stellen Sie bitte sicher, dass Sie in Ihrer Calibre-Bibliothek eine benutzerdefinierte Spalte namens `#library` (Groß-/Kleinschreibung beachten) vom Typ `Text` haben.
 - **Einfache Bereitstellung**: Als einzelner Docker-Container mit integrierter mehrsprachiger Locale-Unterstützung bereitstellbar.
 - **Lesestatistiken**: Generiert automatisch eine persönliche Lesestatistikseite mit einer jährlichen Lese-Heatmap, einer Liste der aktuell gelesenen Bücher und einer Liste der beendeten Bücher. Die Seite kann öffentlich geteilt oder privat gehalten werden.
 
@@ -267,7 +267,7 @@ Hier sind einige häufige Probleme und deren Lösungen:
     3.  Erstellen Sie die erste Spalte mit den folgenden Details:
         *   **Nachschlagename**: `#library`
         *   **Spaltenüberschrift**: `Library` (oder wie Sie bevorzugen)
-        *   **Spaltentyp**: `Text, wobei Kommas als separate Tags behandelt werden`
+        *   **Spaltentyp**: `Text`
     4.  Erstellen Sie die zweite Spalte mit diesen Details:
         *   **Nachschlagename**: `#readdate`
         *   **Spaltenüberschrift**: `Read Date` (oder wie Sie bevorzugen)

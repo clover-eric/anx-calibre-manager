@@ -34,8 +34,8 @@ A modern, mobile-first web application to manage your ebook library, integrating
     - **Maintainer**: Can edit all book metadata.
     - **User**: Can upload books, manage their own WebDAV library, MCP tokens, send books to Kindle, and **edit books they have uploaded**.
 - **Invite-Only Registration**: Admins can generate invite codes to control user registration. This feature is enabled by default to prevent unauthorized sign-ups.
-- **User-Editable Uploaded Books**: Regular users can now edit metadata for books they have uploaded. This functionality relies on a Calibre custom column named `#library` (type: `Text, with commas treated as separate tags`). When a user uploads a book, their username is automatically saved to this field. Users can then edit any book where they are listed as the owner in the `#library` field.
-    - **Recommendation for Docker Users**: To enable this feature, please ensure you have a custom column in your Calibre library named `#library` (case-sensitive) with the type `Text, with commas treated as separate tags`.
+- **User-Editable Uploaded Books**: Regular users can now edit metadata for books they have uploaded. This functionality relies on a Calibre custom column named `#library` (type: `Text`). When a user uploads a book, their username is automatically saved to this field. Users can then edit any book where they are listed as the owner in the `#library` field.
+    - **Recommendation for Docker Users**: To enable this feature, please ensure you have a custom column in your Calibre library named `#library` (case-sensitive) with the type `Text`.
 - **Easy Deployment**: Deployable as a single Docker container with built-in multi-language locale support.
 - **Reading Stats**: Automatically generates a personal reading statistics page, featuring a yearly reading heatmap, a list of books currently being read, and a list of finished books. The page can be shared publicly or kept private.
 ## 📸 Screenshots
@@ -265,7 +265,7 @@ Here are some common issues and their solutions:
     3.  Create the first column with the following details:
         *   **Lookup name**: `#library`
         *   **Column heading**: `Library` (or as you prefer)
-        *   **Column type**: `Text, with commas treated as separate tags`
+        *   **Column type**: `Text`
     4.  Create the second column with these details:
         *   **Lookup name**: `#readdate`
         *   **Column heading**: `Read Date` (or as you prefer)

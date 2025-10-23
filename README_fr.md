@@ -34,8 +34,8 @@ Une application web moderne et axée sur le mobile pour gérer votre bibliothèq
     - **Mainteneur**: Peut modifier les métadonnées de tous les livres.
     - **Utilisateur**: Peut téléverser des livres, gérer sa propre bibliothèque WebDAV, ses jetons MCP, envoyer des livres à Kindle et **modifier les livres qu'il a téléversés**.
 - **Inscription sur Invitation Uniquement**: Les administrateurs peuvent générer des codes d'invitation pour contrôler l'inscription des utilisateurs. Cette fonctionnalité est activée par défaut pour empêcher les inscriptions non autorisées.
-- **Livres Téléversés Modifiables par l'Utilisateur**: Les utilisateurs réguliers peuvent désormais modifier les métadonnées des livres qu'ils ont téléversés. Cette fonctionnalité repose sur une colonne personnalisée de Calibre nommée `#library` (type : `Texte, avec les virgules traitées comme des balises distinctes`). Lorsqu'un utilisateur téléverse un livre, son nom d'utilisateur est automatiquement enregistré dans ce champ. Les utilisateurs peuvent alors modifier tout livre où ils sont listés comme propriétaires dans le champ `#library`.
-    - **Recommandation pour les Utilisateurs de Docker**: Pour activer cette fonctionnalité, veuillez vous assurer que vous avez une colonne personnalisée dans votre bibliothèque Calibre nommée `#library` (sensible à la casse) de type `Texte, avec les virgules traitées comme des balises distinctes`.
+- **Livres Téléversés Modifiables par l'Utilisateur**: Les utilisateurs réguliers peuvent désormais modifier les métadonnées des livres qu'ils ont téléversés. Cette fonctionnalité repose sur une colonne personnalisée de Calibre nommée `#library` (type : `Texte`). Lorsqu'un utilisateur téléverse un livre, son nom d'utilisateur est automatiquement enregistré dans ce champ. Les utilisateurs peuvent alors modifier tout livre où ils sont listés comme propriétaires dans le champ `#library`.
+    - **Recommandation pour les Utilisateurs de Docker**: Pour activer cette fonctionnalité, veuillez vous assurer que vous avez une colonne personnalisée dans votre bibliothèque Calibre nommée `#library` (sensible à la casse) de type `Texte`.
 - **Déploiement Facile**: Déployable en tant que conteneur Docker unique avec prise en charge des locales multilingues intégrée.
 - **Statistiques de Lecture**: Génère automatiquement une page de statistiques de lecture personnelle, avec une carte de chaleur de lecture annuelle, une liste des livres en cours de lecture et une liste des livres terminés. La page peut être partagée publiquement ou rester privée.
 
@@ -267,7 +267,7 @@ Voici quelques problèmes courants et leurs solutions :
     3.  Créez la première colonne avec les détails suivants :
         *   **Nom de recherche**: `#library`
         *   **En-tête de colonne**: `Library` (ou ce que vous préférez)
-        *   **Type de colonne**: `Texte, avec les virgules traitées comme des balises distinctes`
+        *   **Type de colonne**: `Texte`
     4.  Créez la deuxième colonne avec ces détails :
         *   **Nom de recherche**: `#readdate`
         *   **En-tête de colonne**: `Read Date` (ou ce que vous préférez)
