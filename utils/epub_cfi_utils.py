@@ -72,8 +72,13 @@ def get_chapter_from_cfi(epub_path: str, cfi: str) -> int:
     if not cfi:
         return 0
 
-    match = re.search(r'epubcfi\(/6/(\d+)', cfi)
+    # Handle both simple and range CFIs by focusing on the part before '!'
+    # e.g., epubcfi(/6/40!/4,/18/1:137,/24/1:161) -> /6/40
+    base_cfi_part = cfi.split('!')[0]
+    
+    match = re.search(r'epubcfi\(/6/(\d+)', base_cfi_part)
     if not match:
+        logger.warning(f"CFI '{cfi}' does not match expected format.")
         return 0
 
     try:
@@ -82,10 +87,11 @@ def get_chapter_from_cfi(epub_path: str, cfi: str) -> int:
             spine_index = (path_component // 2) - 1
             
             toc_to_spine_map = _get_toc_to_spine_map(epub_path)
-            # Invert the map to find the toc_index from a spine_index
             spine_to_toc_map = {v: k for k, v in toc_to_spine_map.items()}
             
             return spine_to_toc_map.get(spine_index, 0)
+        
+        logger.warning(f"CFI '{cfi}' has an invalid path component {path_component}.")
         return 0
     except (ValueError, IndexError) as e:
         logger.error(f"Failed to parse chapter from CFI '{cfi}': {e}")
