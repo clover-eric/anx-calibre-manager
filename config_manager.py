@@ -157,7 +157,7 @@ class ConfigManager:
                     except (ValueError, TypeError):
                         pass
                 elif key == 'SMTP_ENCRYPTION':
-                    current_config[key] = value.lower() if value in ['ssl', 'tls', 'none'] else 'tls'
+                    current_config[key] = value.lower() if value in ['ssl', 'starttls', 'none'] else 'starttls'
                 else:
                     current_config[key] = value
 
